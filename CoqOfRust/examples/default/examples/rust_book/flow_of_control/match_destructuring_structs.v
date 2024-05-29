@@ -32,7 +32,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let foo :=
+        let~ foo :=
           M.alloc (|
             Value.StructRecord
               "match_destructuring_structs::Foo"
@@ -60,7 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let _ := M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                 let b := M.copy (| γ1_1 |) in
                 let y := M.copy (| γ0_1 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -128,7 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 2 |) in
                 let i := M.copy (| γ0_1 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -180,7 +180,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "y"
                   |) in
                 let y := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

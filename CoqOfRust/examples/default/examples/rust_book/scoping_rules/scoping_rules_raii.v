@@ -14,7 +14,7 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _box1 :=
+        let~ _box1 :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -61,7 +61,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _box2 :=
+        let~ _box2 :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -74,8 +74,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 5 ]
             |)
           |) in
-        let _ :=
-          let _box3 :=
+        let~ _ :=
+          let~ _box3 :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -113,7 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -130,7 +130,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
@@ -139,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "scoping_rules_raii::create_box", [] |),

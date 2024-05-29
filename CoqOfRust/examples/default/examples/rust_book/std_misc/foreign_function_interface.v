@@ -47,21 +47,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let z :=
+        let~ z :=
           M.alloc (|
             Value.StructRecord
               "foreign_function_interface::Complex"
               [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let z_sqrt :=
+        let~ z_sqrt :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "foreign_function_interface::csqrtf", [] |),
               [ M.read (| z |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -109,8 +109,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

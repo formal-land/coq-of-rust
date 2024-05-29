@@ -103,16 +103,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let c := M.alloc (| Value.UnicodeChar 81 |) in
+        let~ c := M.alloc (| Value.UnicodeChar 81 |) in
         M.match_operator (|
           c,
           [
             fun γ =>
               ltac:(M.monadic
                 (let ref_c1 := M.alloc (| γ |) in
-                let ref_c2 := M.alloc (| c |) in
-                let _ :=
-                  let _ :=
+                let~ ref_c2 := M.alloc (| c |) in
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -161,13 +161,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let point :=
+                let~ point :=
                   M.alloc (|
                     Value.StructRecord
                       "scoping_rules_borrowing_the_ref_pattern::Point"
                       [ ("x", Value.Integer 0); ("y", Value.Integer 0) ]
                   |) in
-                let _copy_of_x :=
+                let~ _copy_of_x :=
                   M.copy (|
                     M.match_operator (|
                       point,
@@ -191,8 +191,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let mutable_point := M.copy (| point |) in
-                let _ :=
+                let~ mutable_point := M.copy (| point |) in
+                let~ _ :=
                   M.match_operator (|
                     mutable_point,
                     [
@@ -211,12 +211,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "y"
                             |) in
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
-                          let _ := M.write (| M.read (| mut_ref_to_y |), Value.Integer 1 |) in
+                          let~ _ := M.write (| M.read (| mut_ref_to_y |), Value.Integer 1 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -280,8 +280,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -345,7 +345,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let mutable_tuple :=
+                let~ mutable_tuple :=
                   M.alloc (|
                     Value.Tuple
                       [
@@ -362,7 +362,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Integer 3
                       ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     mutable_tuple,
                     [
@@ -371,12 +371,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
-                          let _ := M.write (| M.read (| last |), Value.Integer 2 |) in
+                          let~ _ := M.write (| M.read (| last |), Value.Integer 2 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

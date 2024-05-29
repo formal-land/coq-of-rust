@@ -13,7 +13,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.read (|
-        let first :=
+        let~ first :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -50,10 +50,10 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.alloc (|
-          BinOp.Panic.mul (|
-            Integer.I32,
-            Value.Integer 2,
-            M.call_closure (|
+          BinOp.Wrap.mul
+            Integer.I32
+            (Value.Integer 2)
+            (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -67,8 +67,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   [ M.read (| M.read (| first |) |) ]
                 |)
               ]
-            |)
-          |)
+            |))
         |)
       |)))
   | _, _ => M.impossible
@@ -96,7 +95,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let numbers :=
+        let~ numbers :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -134,7 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let empty :=
+        let~ empty :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -147,7 +146,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let strings :=
+        let~ strings :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -185,8 +184,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -232,8 +231,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -279,8 +278,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

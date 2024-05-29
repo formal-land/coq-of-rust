@@ -253,7 +253,7 @@ Module collections.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let old_kv := M.copy (| γ0_0 |) in
                         let pos := M.copy (| γ0_1 |) in
-                        let len :=
+                        let~ len :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -320,7 +320,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -342,7 +342,7 @@ Module collections.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let idx :=
+                                  let~ idx :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -368,7 +368,7 @@ Module collections.
                                         [ pos ]
                                       |)
                                     |) in
-                                  let new_pos :=
+                                  let~ new_pos :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -451,7 +451,7 @@ Module collections.
                                                   0
                                                 |) in
                                               let left_parent_kv := M.copy (| γ1_0 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -464,7 +464,7 @@ Module collections.
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
-                                                        let _ :=
+                                                        let~ _ :=
                                                           M.match_operator (|
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
@@ -486,15 +486,14 @@ Module collections.
                                                                               |),
                                                                               [ left_parent_kv ]
                                                                             |))
-                                                                            (BinOp.Panic.sub (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              |))
+                                                                              (Value.Integer 1)))
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -583,7 +582,7 @@ Module collections.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let _ :=
+                                                      (let~ _ :=
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
@@ -599,7 +598,7 @@ Module collections.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
@@ -696,7 +695,7 @@ Module collections.
                                                   0
                                                 |) in
                                               let right_parent_kv := M.copy (| γ1_0 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -709,7 +708,7 @@ Module collections.
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
-                                                        let _ :=
+                                                        let~ _ :=
                                                           M.match_operator (|
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
@@ -731,15 +730,14 @@ Module collections.
                                                                               |),
                                                                               [ right_parent_kv ]
                                                                             |))
-                                                                            (BinOp.Panic.sub (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              |))
+                                                                              (Value.Integer 1)))
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -828,7 +826,7 @@ Module collections.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let _ :=
+                                                      (let~ _ :=
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
@@ -844,7 +842,7 @@ Module collections.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
@@ -965,7 +963,7 @@ Module collections.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       pos,
                                       M.call_closure (|
@@ -1156,7 +1154,7 @@ Module collections.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_trait_method (|
@@ -1241,7 +1239,7 @@ Module collections.
               let handle_emptied_internal_root := M.alloc (| handle_emptied_internal_root |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let left_leaf_kv :=
+                let~ left_leaf_kv :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1323,7 +1321,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let left_leaf_kv :=
+                let~ left_leaf_kv :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1422,7 +1420,7 @@ Module collections.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let left_kv := M.copy (| γ0_0 |) in
                         let left_hole := M.copy (| γ0_1 |) in
-                        let internal :=
+                        let~ internal :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1509,7 +1507,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let old_kv :=
+                        let~ old_kv :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1537,7 +1535,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let pos :=
+                        let~ pos :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|

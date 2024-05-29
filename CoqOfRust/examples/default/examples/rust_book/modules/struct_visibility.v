@@ -71,14 +71,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let open_box :=
+        let~ open_box :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
               [ ("contents", M.read (| Value.String "public information" |)) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -123,7 +123,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _closed_box :=
+        let~ _closed_box :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|

@@ -34,9 +34,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let count := M.alloc (| Value.Integer 0 |) in
-        let _ :=
-          let _ :=
+        let~ count := M.alloc (| Value.Integer 0 |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -58,10 +58,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.loop (|
           ltac:(M.monadic
-            (let _ :=
+            (let~ _ :=
               let β := count in
-              M.write (| β, BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |) |) in
-            let _ :=
+              M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1) |) in
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -74,8 +74,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         M.never_to_any (|
                           M.read (|
-                            let _ :=
-                              let _ :=
+                            let~ _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -106,8 +106,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -158,8 +158,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let _ :=
-                            let _ :=
+                          let~ _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),

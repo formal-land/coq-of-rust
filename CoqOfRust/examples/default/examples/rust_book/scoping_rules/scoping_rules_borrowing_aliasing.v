@@ -70,16 +70,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let point :=
+        let~ point :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
               [ ("x", Value.Integer 0); ("y", Value.Integer 0); ("z", Value.Integer 0) ]
           |) in
-        let borrowed_point := M.alloc (| point |) in
-        let another_borrow := M.alloc (| point |) in
-        let _ :=
-          let _ :=
+        let~ borrowed_point := M.alloc (| point |) in
+        let~ another_borrow := M.alloc (| point |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -154,8 +154,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -230,8 +230,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let mutable_borrow := M.alloc (| point |) in
-        let _ :=
+        let~ mutable_borrow := M.alloc (| point |) in
+        let~ _ :=
           M.write (|
             M.SubPointer.get_struct_record_field (|
               M.read (| mutable_borrow |),
@@ -240,7 +240,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             Value.Integer 5
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_struct_record_field (|
               M.read (| mutable_borrow |),
@@ -249,7 +249,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             Value.Integer 2
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_struct_record_field (|
               M.read (| mutable_borrow |),
@@ -258,8 +258,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             Value.Integer 1
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -334,9 +334,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let new_borrowed_point := M.alloc (| point |) in
-        let _ :=
-          let _ :=
+        let~ new_borrowed_point := M.alloc (| point |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

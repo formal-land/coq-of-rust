@@ -86,8 +86,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let _selector := M.copy (| γ0_0 |) in
                   let _message := M.copy (| γ0_1 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -160,8 +160,8 @@ Module Impl_wildcard_selector_WildcardSelector.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),

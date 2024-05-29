@@ -83,11 +83,10 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let second_number := M.copy (| γ |) in
-                                              BinOp.Panic.mul (|
-                                                Integer.I32,
-                                                M.read (| first_number |),
-                                                M.read (| second_number |)
-                                              |)))
+                                              BinOp.Wrap.mul
+                                                Integer.I32
+                                                (M.read (| first_number |))
+                                                (M.read (| second_number |))))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
@@ -127,7 +126,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -173,7 +172,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -235,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "aliases_for_result::print", [] |),
@@ -247,7 +246,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "aliases_for_result::print", [] |),

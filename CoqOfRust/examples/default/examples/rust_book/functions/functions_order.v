@@ -29,7 +29,7 @@ Module Impl_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "functions_order::SomeType", "meth2", [] |),
@@ -69,7 +69,7 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
       (let u := M.alloc (| u |) in
       let b := M.alloc (| b |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -82,7 +82,7 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -201,7 +201,7 @@ Module inner_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (| M.get_function (| "functions_order::inner_mod::tar", [] |), [] |)
             |) in
@@ -229,7 +229,7 @@ Module inner_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "functions_order::inner_mod::nested_mod::tack", [] |),
@@ -264,13 +264,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (| M.call_closure (| M.get_function (| "functions_order::foo", [] |), [] |) |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [] |), [] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [] |),

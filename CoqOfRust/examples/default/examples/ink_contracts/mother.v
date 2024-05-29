@@ -511,7 +511,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -521,7 +521,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -593,14 +593,17 @@ Module Impl_core_clone_Clone_for_mother_Outline.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "mother::Outline::NoWinner" |) in
                   M.alloc (| Value.StructTuple "mother::Outline::NoWinner" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "mother::Outline::WinnerDetected" |) in
                   M.alloc (| Value.StructTuple "mother::Outline::WinnerDetected" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "mother::Outline::PayoutCompleted" |) in
                   M.alloc (| Value.StructTuple "mother::Outline::PayoutCompleted" [] |)))
             ]
           |)
@@ -673,7 +676,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -683,7 +686,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -862,10 +865,12 @@ Module Impl_core_clone_Clone_for_mother_Status.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "mother::Status::NotStarted" |) in
                   M.alloc (| Value.StructTuple "mother::Status::NotStarted" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "mother::Status::OpeningPeriod" |) in
                   M.alloc (| Value.StructTuple "mother::Status::OpeningPeriod" [] |)));
               fun γ =>
                 ltac:(M.monadic
@@ -1524,7 +1529,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1534,7 +1539,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1926,7 +1931,7 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "mother::Env", "emit_event", [] |),
@@ -2019,6 +2024,7 @@ Module Impl_mother_Mother.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "mother::Failure::Panic" |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
@@ -2032,7 +2038,8 @@ Module Impl_mother_Mother.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)))
             ]
           |)
         |)))
@@ -2054,8 +2061,8 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),

@@ -18,7 +18,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let first_number :=
+            let~ first_number :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -72,7 +72,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let second_number :=
+            let~ second_number :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -130,11 +130,10 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
               Value.StructTuple
                 "core::result::Result::Ok"
                 [
-                  BinOp.Panic.mul (|
-                    Integer.I32,
-                    M.read (| first_number |),
-                    M.read (| second_number |)
-                  |)
+                  BinOp.Wrap.mul
+                    Integer.I32
+                    (M.read (| first_number |))
+                    (M.read (| second_number |))
                 ]
             |)
           |)))
@@ -167,7 +166,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -213,7 +212,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -276,7 +275,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|
@@ -294,7 +293,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|

@@ -257,6 +257,11 @@ Module collections.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
@@ -343,7 +348,7 @@ Module collections.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -353,7 +358,7 @@ Module collections.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -510,6 +515,11 @@ Module collections.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -656,7 +666,7 @@ Module collections.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -731,7 +741,7 @@ Module collections.
                           val))
                     ]
                   |) in
-                let reason :=
+                let~ reason :=
                   M.copy (|
                     M.match_operator (|
                       M.SubPointer.get_struct_record_field (|
@@ -742,11 +752,21 @@ Module collections.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (Value.String
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                              |) in
+                            Value.String
                               " because the computed capacity exceeded the collection's maximum"));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "alloc::collections::TryReserveErrorKind::AllocError"
+                              |) in
+                            M.alloc (|
                               M.read (|
                                 Value.String " because the memory allocator returned an error"
                               |)

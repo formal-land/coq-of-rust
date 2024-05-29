@@ -291,6 +291,11 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
@@ -332,7 +337,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -342,7 +347,7 @@ Module ffi.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -482,6 +487,11 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -585,12 +595,22 @@ Module ffi.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul"
+                        |) in
+                      M.alloc (|
                         M.read (| Value.String "data provided contains an interior nul byte" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
+                      M.alloc (|
                         M.read (| Value.String "data provided is not nul terminated" |)
                       |)))
                 ]
@@ -958,7 +978,7 @@ Module ffi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1044,7 +1064,7 @@ Module ffi.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1063,7 +1083,7 @@ Module ffi.
                                 0
                               |) in
                             let pos := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -1211,7 +1231,7 @@ Module ffi.
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ffi::c_str::const_strlen", [] |),
@@ -1237,7 +1257,7 @@ Module ffi.
                           |),
                           [ M.read (| ptr |) ]
                         |);
-                        BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1)
                       ]
                     |)
                   ]
@@ -1271,7 +1291,7 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let nul_pos :=
+              let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
@@ -1290,7 +1310,7 @@ Module ffi.
                           0
                         |) in
                       let nul_pos := M.copy (| γ0_0 |) in
-                      let subslice :=
+                      let~ subslice :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
@@ -1306,11 +1326,7 @@ Module ffi.
                                 |),
                                 [ M.read (| bytes |) ]
                               |);
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| nul_pos |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1)
                             ]
                           |)
                         |) in
@@ -1330,7 +1346,8 @@ Module ffi.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
                           [
@@ -1368,7 +1385,7 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let nul_pos :=
+              let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
@@ -1390,11 +1407,7 @@ Module ffi.
                       let γ :=
                         M.alloc (|
                           BinOp.Pure.eq
-                            (BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (| nul_pos |),
-                              Value.Integer 1
-                            |))
+                            (BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1))
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -1444,7 +1457,8 @@ Module ffi.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
                           [
@@ -1580,9 +1594,9 @@ Module ffi.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.Usize,
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.Usize
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
                   "len",
@@ -1595,9 +1609,8 @@ Module ffi.
                     "inner"
                   |)
                 ]
-              |),
-              Value.Integer 1
-            |)))
+              |))
+              (Value.Integer 1)))
         | _, _ => M.impossible
         end.
       
@@ -1653,7 +1666,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1676,18 +1689,17 @@ Module ffi.
                       |),
                       [ M.read (| bytes |) ]
                     |);
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                           "len",
                           []
                         |),
                         [ M.read (| bytes |) ]
-                      |),
-                      Value.Integer 1
-                    |)
+                      |))
+                      (Value.Integer 1)
                   ]
                 |)
               |)
@@ -1925,7 +1937,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2186,8 +2198,8 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
-              let len := M.alloc (| Value.Integer 0 |) in
-              let _ :=
+              let~ len := M.alloc (| Value.Integer 0 |) in
+              let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2213,11 +2225,11 @@ Module ffi.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               let β := len in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -2225,7 +2237,7 @@ Module ffi.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)

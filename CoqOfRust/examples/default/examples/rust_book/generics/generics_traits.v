@@ -60,9 +60,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
-        let null := M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
-        let _ :=
+        let~ empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
+        let~ null := M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|

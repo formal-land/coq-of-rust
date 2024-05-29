@@ -208,7 +208,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -218,7 +218,7 @@ Module fmt.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -953,7 +953,7 @@ Module fmt.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.read (|
-                                          let _v :=
+                                          let~ _v :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_function (|

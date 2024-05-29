@@ -108,7 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let form :=
+        let~ form :=
           M.alloc (|
             Value.StructRecord
               "disambiguating_overlapping_traits::Form"
@@ -127,7 +127,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("age", Value.Integer 28)
               ]
           |) in
-        let username :=
+        let~ username :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -140,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ form ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -192,7 +192,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -221,7 +221,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let age :=
+        let~ age :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -234,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ form ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [ M.alloc (| Value.Integer 28 |); age ] |),
             [
@@ -262,7 +262,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

@@ -311,7 +311,7 @@ Module Impl_custom_environment_Topics.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "custom_environment::Env", "emit_event", [] |),

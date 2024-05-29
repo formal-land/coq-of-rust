@@ -2944,9 +2944,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3013,9 +3013,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3082,9 +3082,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3151,9 +3151,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3220,9 +3220,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3289,9 +3289,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3358,9 +3358,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3427,9 +3427,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3496,9 +3496,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3565,9 +3565,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5419,9 +5419,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5488,9 +5488,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5557,9 +5557,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5626,9 +5626,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5695,9 +5695,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5764,9 +5764,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5833,9 +5833,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5902,9 +5902,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -5971,9 +5971,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6040,9 +6040,9 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let min :=
+              let~ min :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-              let max :=
+              let~ max :=
                 M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6778,9 +6778,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -6851,9 +6851,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -6924,9 +6924,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7119,9 +7119,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7192,9 +7192,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7265,9 +7265,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7764,9 +7764,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8085,9 +8085,9 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let min :=
+                let~ min :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
-                let max :=
+                let~ max :=
                   M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),

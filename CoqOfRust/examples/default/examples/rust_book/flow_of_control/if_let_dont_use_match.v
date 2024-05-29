@@ -23,9 +23,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let optional :=
+        let~ optional :=
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 7 ] |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             optional,
             [
@@ -34,8 +34,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let i := M.copy (| γ0_0 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),

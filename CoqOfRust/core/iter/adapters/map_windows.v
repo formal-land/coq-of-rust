@@ -76,7 +76,7 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -126,7 +126,7 @@ Module iter.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -144,7 +144,7 @@ Module iter.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -310,7 +310,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let iter :=
+                    let~ iter :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -393,7 +393,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -403,7 +403,8 @@ Module iter.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (M.write (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::map_windows::MapWindowsInner",
@@ -446,6 +447,8 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -462,7 +465,7 @@ Module iter.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -694,15 +697,14 @@ Module iter.
                                                 |),
                                                 [
                                                   M.read (| lo |);
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (|
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (|
                                                       M.get_constant (|
                                                         "core::iter::adapters::map_windows::N"
                                                       |)
-                                                    |),
-                                                    Value.Integer 1
-                                                  |)
+                                                    |))
+                                                    (Value.Integer 1)
                                                 ]
                                               |);
                                               M.call_closure (|
@@ -739,15 +741,14 @@ Module iter.
                                                                     |),
                                                                     [
                                                                       M.read (| hi |);
-                                                                      BinOp.Panic.sub (|
-                                                                        Integer.Usize,
-                                                                        M.read (|
+                                                                      BinOp.Wrap.sub
+                                                                        Integer.Usize
+                                                                        (M.read (|
                                                                           M.get_constant (|
                                                                             "core::iter::adapters::map_windows::N"
                                                                           |)
-                                                                        |),
-                                                                        Value.Integer 1
-                                                                      |)
+                                                                        |))
+                                                                        (Value.Integer 1)
                                                                     ]
                                                                   |)))
                                                             ]
@@ -793,7 +794,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let first_half :=
+                    let~ first_half :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -884,7 +885,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let buffer :=
+                    let~ buffer :=
                       M.alloc (|
                         Value.Array
                           [
@@ -1062,7 +1063,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1071,7 +1072,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1082,30 +1083,28 @@ Module iter.
                                         (M.alloc (|
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (|
+                                              (BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |),
-                                                M.read (|
+                                                |))
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |))
-                                              (BinOp.Panic.mul (|
-                                                Integer.Usize,
-                                                Value.Integer 2,
-                                                M.read (|
+                                                |)))
+                                              (BinOp.Wrap.mul
+                                                Integer.Usize
+                                                (Value.Integer 2)
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |)))
+                                                |))))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1194,7 +1193,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1203,7 +1202,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1214,30 +1213,28 @@ Module iter.
                                         (M.alloc (|
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (|
+                                              (BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |),
-                                                M.read (|
+                                                |))
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |))
-                                              (BinOp.Panic.mul (|
-                                                Integer.Usize,
-                                                Value.Integer 2,
-                                                M.read (|
+                                                |)))
+                                              (BinOp.Wrap.mul
+                                                Integer.Usize
+                                                (Value.Integer 2)
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |)))
+                                                |))))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1380,7 +1377,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let next := M.alloc (| next |) in
               M.read (|
-                let buffer_mut_ptr :=
+                let~ buffer_mut_ptr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1391,7 +1388,7 @@ Module iter.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1400,7 +1397,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1411,30 +1408,28 @@ Module iter.
                                         (M.alloc (|
                                           UnOp.Pure.not
                                             (BinOp.Pure.le
-                                              (BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (|
+                                              (BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |),
-                                                M.read (|
+                                                |))
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |))
-                                              (BinOp.Panic.mul (|
-                                                Integer.Usize,
-                                                Value.Integer 2,
-                                                M.read (|
+                                                |)))
+                                              (BinOp.Wrap.mul
+                                                Integer.Usize
+                                                (Value.Integer 2)
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "core::iter::adapters::map_windows::N"
                                                   |)
-                                                |)
-                                              |)))
+                                                |))))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1461,7 +1456,7 @@ Module iter.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let to_drop :=
+                let~ to_drop :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1485,9 +1480,9 @@ Module iter.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let to_drop :=
+                            let~ to_drop :=
                               M.copy (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (|
@@ -1515,33 +1510,31 @@ Module iter.
                                             |),
                                             [
                                               M.read (| buffer_mut_ptr |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (|
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::iter::adapters::map_windows::Buffer",
                                                     "start"
                                                   |)
-                                                |),
-                                                Value.Integer 1
-                                              |)
+                                                |))
+                                                (Value.Integer 1)
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (|
                                             M.get_constant (|
                                               "core::iter::adapters::map_windows::N"
                                             |)
-                                          |),
-                                          Value.Integer 1
-                                        |)
+                                          |))
+                                          (Value.Integer 1)
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1566,15 +1559,14 @@ Module iter.
                                           |),
                                           [
                                             M.read (| buffer_mut_ptr |);
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (|
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (|
                                                 M.get_constant (|
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
-                                              |),
-                                              Value.Integer 1
-                                            |)
+                                              |))
+                                              (Value.Integer 1)
                                           ]
                                         |);
                                         M.read (| next |)
@@ -1607,7 +1599,7 @@ Module iter.
                                   |)
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1619,9 +1611,9 @@ Module iter.
                             to_drop));
                         fun γ =>
                           ltac:(M.monadic
-                            (let to_drop :=
+                            (let~ to_drop :=
                               M.copy (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1646,21 +1638,20 @@ Module iter.
                                           |),
                                           [
                                             M.read (| buffer_mut_ptr |);
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (|
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::iter::adapters::map_windows::Buffer",
                                                   "start"
                                                 |)
-                                              |),
-                                              M.read (|
+                                              |))
+                                              (M.read (|
                                                 M.get_constant (|
                                                   "core::iter::adapters::map_windows::N"
                                                 |)
-                                              |)
-                                            |)
+                                              |))
                                           ]
                                         |);
                                         M.read (| next |)
@@ -1693,7 +1684,7 @@ Module iter.
                                   |)
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1702,13 +1693,13 @@ Module iter.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             to_drop))
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::drop_in_place", [ T ] |),
@@ -1757,7 +1748,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let buffer :=
+                let~ buffer :=
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::map_windows::Buffer"
@@ -1792,7 +1783,7 @@ Module iter.
                           |))
                       ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1944,7 +1935,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let initialized_part :=
+                let~ initialized_part :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
@@ -1993,7 +1984,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -2040,7 +2031,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let window :=
+                    let~ window :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -2123,7 +2114,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let out :=
+                    let~ out :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|

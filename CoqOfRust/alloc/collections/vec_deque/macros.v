@@ -27,7 +27,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -201,7 +201,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -376,7 +376,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -551,7 +551,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -725,7 +725,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -903,7 +903,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [

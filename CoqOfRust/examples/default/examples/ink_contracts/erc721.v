@@ -428,7 +428,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -438,7 +438,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -723,7 +723,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let id := M.alloc (| id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -838,7 +838,7 @@ Module Impl_erc721_Erc721.
         let from := M.alloc (| from |) in
         let id := M.alloc (| id |) in
         M.read (|
-          let owner :=
+          let~ owner :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [] |),
@@ -1102,7 +1102,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
@@ -1116,7 +1116,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1152,7 +1152,7 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),
@@ -1177,7 +1177,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1186,7 +1186,7 @@ Module Impl_erc721_Erc721.
                         (let γ := M.use approved in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1214,7 +1214,7 @@ Module Impl_erc721_Erc721.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1266,7 +1266,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -1388,7 +1388,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
@@ -1402,14 +1402,14 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let owner :=
+              let~ owner :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [] |),
                     [ M.read (| self |); M.read (| id |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1486,7 +1486,7 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1536,7 +1536,7 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1578,7 +1578,7 @@ Module Impl_erc721_Erc721.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1602,7 +1602,7 @@ Module Impl_erc721_Erc721.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),
@@ -1651,7 +1651,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -1785,7 +1785,7 @@ Module Impl_erc721_Erc721.
                         |) in
                       let token_owner := M.alloc (| γ1_0 |) in
                       let owned_tokens_count := M.alloc (| γ1_1 |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1825,7 +1825,7 @@ Module Impl_erc721_Erc721.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let count :=
+                      let~ count :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -1882,13 +1882,12 @@ Module Impl_erc721_Erc721.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let c := M.copy (| γ |) in
-                                                          BinOp.Panic.sub (|
-                                                            Integer.U32,
-                                                            M.read (| c |),
-                                                            M.read (|
+                                                          BinOp.Wrap.sub
+                                                            Integer.U32
+                                                            (M.read (| c |))
+                                                            (M.read (|
                                                               M.use (M.alloc (| Value.Integer 1 |))
-                                                            |)
-                                                          |)))
+                                                            |))))
                                                     ]
                                                   |)
                                                 | _ => M.impossible (||)
@@ -1951,7 +1950,7 @@ Module Impl_erc721_Erc721.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1968,7 +1967,7 @@ Module Impl_erc721_Erc721.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2072,7 +2071,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
@@ -2086,7 +2085,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -2190,7 +2189,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -2294,7 +2293,7 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [] |),
@@ -2308,7 +2307,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -2382,7 +2381,7 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [] |),

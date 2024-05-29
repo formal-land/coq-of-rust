@@ -35,7 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let vec1 :=
+        let~ vec1 :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -68,7 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let vec2 :=
+        let~ vec2 :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -101,7 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let iter :=
+        let~ iter :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -125,7 +125,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let into_iter :=
+        let~ into_iter :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -140,8 +140,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| vec2 |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -232,8 +232,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -313,12 +313,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let array1 :=
+        let~ array1 :=
           M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
-        let array2 :=
+        let~ array2 :=
           M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -418,8 +418,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

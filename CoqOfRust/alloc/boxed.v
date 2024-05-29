@@ -254,7 +254,7 @@ Module boxed.
           (let x := M.alloc (| x |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let boxed :=
+            let~ boxed :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -265,7 +265,7 @@ Module boxed.
                   [ M.read (| alloc |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "write", [] |),
@@ -324,7 +324,7 @@ Module boxed.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let boxed :=
+                let~ boxed :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -411,7 +411,7 @@ Module boxed.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "write", [] |),
@@ -474,7 +474,7 @@ Module boxed.
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.read (|
-            let layout :=
+            let~ layout :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -548,7 +548,7 @@ Module boxed.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let ptr :=
+                let~ ptr :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -578,7 +578,7 @@ Module boxed.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let layout :=
+                            (let~ layout :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -761,7 +761,7 @@ Module boxed.
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.read (|
-            let layout :=
+            let~ layout :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -835,7 +835,7 @@ Module boxed.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let ptr :=
+                let~ ptr :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -865,7 +865,7 @@ Module boxed.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let layout :=
+                            (let~ layout :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1278,7 +1278,7 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
-            let alloc :=
+            let~ alloc :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [ A ] |),
@@ -1534,7 +1534,7 @@ Module boxed.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let ptr :=
+                let~ ptr :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1566,7 +1566,7 @@ Module boxed.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let layout :=
+                            (let~ layout :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -1805,7 +1805,7 @@ Module boxed.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let ptr :=
+                let~ ptr :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1837,7 +1837,7 @@ Module boxed.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let layout :=
+                            (let~ layout :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -2208,7 +2208,7 @@ Module boxed.
           (let boxed := M.alloc (| boxed |) in
           let value := M.alloc (| value |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2338,11 +2338,11 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let ptr :=
+            let~ ptr :=
               M.copy (|
                 M.SubPointer.get_struct_tuple_field (| M.read (| self |), "alloc::boxed::Box", 0 |)
               |) in
-            let layout :=
+            let~ layout :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2384,7 +2384,7 @@ Module boxed.
                             (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2497,7 +2497,7 @@ Module boxed.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let ptr :=
+            let~ ptr :=
               M.alloc (|
                 (* Unsize *)
                 M.pointer_coercion
@@ -2549,9 +2549,9 @@ Module boxed.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let ptr :=
+            let~ ptr :=
               M.copy (|
-                let bytes :=
+                let~ bytes :=
                   M.alloc (|
                     (* Unsize *)
                     M.pointer_coercion
@@ -2626,7 +2626,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let boxed :=
+            let~ boxed :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2648,7 +2648,7 @@ Module boxed.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -2700,7 +2700,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
@@ -2742,7 +2742,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -3009,7 +3009,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
@@ -3501,14 +3501,14 @@ Module boxed.
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.read (|
-            let len :=
+            let~ len :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                   [ M.read (| slice |) ]
                 |)
               |) in
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3521,7 +3521,7 @@ Module boxed.
                   [ M.read (| len |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
@@ -3970,7 +3970,7 @@ Module boxed.
       ltac:(M.monadic
         (let boxed_slice := M.alloc (| boxed_slice |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -3978,7 +3978,7 @@ Module boxed.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (|
                           Value.Tuple
@@ -4024,7 +4024,7 @@ Module boxed.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let kind :=
+                                            let~ kind :=
                                               M.alloc (|
                                                 Value.StructTuple
                                                   "core::panicking::AssertKind::Eq"
@@ -4232,7 +4232,7 @@ Module boxed.
                             (M.read (| M.get_constant (| "alloc::boxed::N" |) |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let boxed_slice :=
+                    let~ boxed_slice :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4363,7 +4363,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4371,7 +4371,7 @@ Module boxed.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4529,7 +4529,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4537,7 +4537,7 @@ Module boxed.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4696,7 +4696,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4704,7 +4704,7 @@ Module boxed.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4868,7 +4868,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let ptr := M.alloc (| M.read (| M.read (| self |) |) |) in
+            let~ ptr := M.alloc (| M.read (| M.read (| self |) |) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -5499,7 +5499,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let alloc :=
+            let~ alloc :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
@@ -5584,7 +5584,7 @@ Module boxed.
                             |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -5598,7 +5598,7 @@ Module boxed.
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
+                    (let~ _ :=
                       M.write (|
                         M.read (| self |),
                         M.call_closure (|
@@ -6107,7 +6107,7 @@ Module boxed.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let raw :=
+                    let~ raw :=
                       M.alloc (|
                         (* Unsize *)
                         M.pointer_coercion
@@ -6170,7 +6170,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
+            let~ err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -6288,7 +6288,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
+            let~ err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -6553,7 +6553,7 @@ Module boxed.
           (* Unsize *)
           M.pointer_coercion
             (M.read (|
-              let err1 :=
+              let~ err1 :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -6571,7 +6571,7 @@ Module boxed.
                     [ M.read (| str_err |) ]
                   |)
                 |) in
-              let err2 := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err1 |)) |) in
+              let~ err2 := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err1 |)) |) in
               M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err2 |)) |)
             |))))
       | _, _ => M.impossible
@@ -6853,7 +6853,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::error::Error", T, [], "provide", [] |),

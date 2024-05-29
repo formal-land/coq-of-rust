@@ -32,15 +32,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a := M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
+        let~ a := M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
         M.match_operator (|
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let γ := a in
-                let _ :=
-                  let _ :=
+                let _ := M.is_struct_tuple (| γ, "if_let_challenge::Foo::Bar" |) in
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

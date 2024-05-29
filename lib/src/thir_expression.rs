@@ -36,16 +36,16 @@ fn path_of_bin_op(
     };
 
     match bin_op {
-        BinOp::Add => ("BinOp.Panic.add", CallKind::Effectful, additional_args),
-        BinOp::Sub => ("BinOp.Panic.sub", CallKind::Effectful, additional_args),
-        BinOp::Mul => ("BinOp.Panic.mul", CallKind::Effectful, additional_args),
-        BinOp::Div => ("BinOp.Panic.div", CallKind::Effectful, additional_args),
-        BinOp::Rem => ("BinOp.Panic.rem", CallKind::Effectful, additional_args),
+        BinOp::Add => ("BinOp.Wrap.add", CallKind::Pure, additional_args),
+        BinOp::Sub => ("BinOp.Wrap.sub", CallKind::Pure, additional_args),
+        BinOp::Mul => ("BinOp.Wrap.mul", CallKind::Pure, additional_args),
+        BinOp::Div => ("BinOp.Wrap.div", CallKind::Pure, additional_args),
+        BinOp::Rem => ("BinOp.Wrap.rem", CallKind::Pure, additional_args),
         BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure, additional_args),
         BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure, additional_args),
         BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure, additional_args),
-        BinOp::Shl => ("BinOp.Panic.shl", CallKind::Effectful, additional_args),
-        BinOp::Shr => ("BinOp.Panic.shr", CallKind::Effectful, additional_args),
+        BinOp::Shl => ("BinOp.Wrap.shl", CallKind::Pure, additional_args),
+        BinOp::Shr => ("BinOp.Wrap.shr", CallKind::Pure, additional_args),
         BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure, additional_args),
         BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure, additional_args),
         BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure, additional_args),
@@ -60,7 +60,7 @@ fn path_of_bin_op(
 pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
     bindings.iter().rfold(body, |body, binding| {
         Rc::new(Expr::Let {
-            is_monadic: false,
+            is_user: false,
             name: Some(binding.clone()),
             init: Expr::local_var(binding).alloc(),
             body,
@@ -82,7 +82,7 @@ fn build_inner_match(
                 is_with_ref,
                 pattern,
             } => Rc::new(Expr::Let {
-                is_monadic: false,
+                is_user: false,
                 name: Some(name.clone()),
                 init: if *is_with_ref {
                     Expr::local_var(&scrutinee).alloc()
@@ -114,7 +114,7 @@ fn build_inner_match(
                     .enumerate()
                     .rfold(body, |body, (index, (field_name, _))| {
                         Rc::new(Expr::Let {
-                            is_monadic: false,
+                            is_user: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
                                 func: Expr::local_var("M.SubPointer.get_struct_record_field"),
@@ -140,9 +140,9 @@ fn build_inner_match(
                     depth + 1,
                 );
 
-                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                let body = patterns.iter().enumerate().rfold(body, |body, (index, _)| {
                     Rc::new(Expr::Let {
-                        is_monadic: false,
+                        is_user: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_struct_tuple_field"),
@@ -155,10 +155,30 @@ fn build_inner_match(
                         }),
                         body,
                     })
-                })
+                });
+
+                // We add a test to cover the case where there are no parameters to the constructor,
+                // but we still need to check that we have the right one.
+                if patterns.is_empty() {
+                    return Rc::new(Expr::Let {
+                        is_user: false,
+                        name: None,
+                        init: Rc::new(Expr::Call {
+                            func: Expr::local_var("M.is_struct_tuple"),
+                            args: vec![
+                                Expr::local_var(&scrutinee),
+                                Rc::new(Expr::InternalString(path.to_string())),
+                            ],
+                            kind: CallKind::Effectful,
+                        }),
+                        body,
+                    });
+                }
+
+                body
             }
             Pattern::Deref(pattern) => Rc::new(Expr::Let {
-                is_monadic: false,
+                is_user: false,
                 name: Some(scrutinee.clone()),
                 init: Expr::local_var(&scrutinee).read(),
                 body: build_inner_match(
@@ -227,7 +247,7 @@ fn build_inner_match(
 
                 patterns.iter().enumerate().rfold(body, |body, (index, _)| {
                     Rc::new(Expr::Let {
-                        is_monadic: false,
+                        is_user: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_tuple_field"),
@@ -242,7 +262,7 @@ fn build_inner_match(
                 })
             }
             Pattern::Literal(literal) => Rc::new(Expr::Let {
-                is_monadic: false,
+                is_user: false,
                 name: None,
                 init: Rc::new(Expr::Call {
                     func: Expr::local_var("M.is_constant_or_break_match"),
@@ -292,7 +312,7 @@ fn build_inner_match(
                         .rev()
                         .rfold(body, |body, (index, _)| {
                             Rc::new(Expr::Let {
-                                is_monadic: false,
+                                is_user: false,
                                 name: Some(format!("γ{depth}_rev{index}")),
                                 init: Rc::new(Expr::Call {
                                     func: Expr::local_var("M.SubPointer.get_slice_rev_index"),
@@ -309,7 +329,7 @@ fn build_inner_match(
                 let body = match slice_pattern {
                     None => body,
                     Some(_) => Rc::new(Expr::Let {
-                        is_monadic: false,
+                        is_user: false,
                         name: Some(format!("γ{depth}_rest")),
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_slice_rest"),
@@ -329,7 +349,7 @@ fn build_inner_match(
                     .enumerate()
                     .rfold(body, |body, (index, _)| {
                         Rc::new(Expr::Let {
-                            is_monadic: false,
+                            is_user: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
                                 func: Expr::local_var("M.SubPointer.get_slice_index"),
@@ -361,7 +381,7 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
                         .into_iter()
                         .rfold(body, |body, (pattern, guard)| {
                             Rc::new(Expr::Let {
-                                is_monadic: false,
+                                is_user: false,
                                 name: Some("γ".to_string()),
                                 init: guard,
                                 body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
@@ -664,7 +684,7 @@ pub(crate) fn compile_expr<'a>(
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Let {
-                is_monadic: false,
+                is_user: false,
                 name: Some("β".to_string()),
                 init: lhs,
                 body: Rc::new(Expr::Call {
@@ -1164,7 +1184,7 @@ fn compile_stmts<'a>(
                             pattern: None,
                             is_with_ref: false,
                         } => Rc::new(Expr::Let {
-                            is_monadic: false,
+                            is_user: true,
                             name: Some(name.clone()),
                             init: init.copy(),
                             body,
@@ -1188,7 +1208,7 @@ fn compile_stmts<'a>(
                     }
 
                     Rc::new(Expr::Let {
-                        is_monadic: false,
+                        is_user: true,
                         name: None,
                         init,
                         body,

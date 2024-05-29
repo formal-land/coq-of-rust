@@ -160,7 +160,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let names :=
+              let~ names :=
                 M.alloc (|
                   M.alloc (|
                     Value.Array
@@ -174,7 +174,7 @@ Module interpreter.
                       ]
                   |)
                 |) in
-              let values :=
+              let~ values :=
                 M.alloc (|
                   (* Unsize *)
                   M.pointer_coercion
@@ -381,7 +381,7 @@ Module interpreter.
             let caller := M.alloc (| caller |) in
             let call_value := M.alloc (| call_value |) in
             M.read (|
-              let bytecode :=
+              let~ bytecode :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "revm_interpreter::interpreter::analysis::to_analysed", [] |),
@@ -430,7 +430,7 @@ Module interpreter.
             let bytecode := M.alloc (| bytecode |) in
             let hash := M.alloc (| hash |) in
             M.read (|
-              let contract_address :=
+              let~ contract_address :=
                 M.copy (|
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
@@ -455,7 +455,9 @@ Module interpreter.
                           caller));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.get_constant (| "alloy_primitives::bits::address::ZERO" |)))
+                          (let _ :=
+                            M.is_struct_tuple (| γ, "revm_primitives::env::TransactTo::Create" |) in
+                          M.get_constant (| "alloy_primitives::bits::address::ZERO" |)))
                     ]
                   |)
                 |) in

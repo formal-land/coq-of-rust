@@ -66,8 +66,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -127,8 +127,8 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -188,9 +188,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 7 |) in
-        let ref_x := M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
-        let _ :=
+        let~ x := M.alloc (| Value.Integer 7 |) in
+        let~ ref_x := M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|
@@ -200,7 +200,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ ref_x ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|

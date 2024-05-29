@@ -180,14 +180,14 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let t :=
+            let~ t :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
                   []
                 |)
               |) in
-            let concrete :=
+            let~ concrete :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -351,7 +351,7 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -359,7 +359,7 @@ Module any.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -425,7 +425,7 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -433,7 +433,7 @@ Module any.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -969,7 +969,7 @@ Module any.
       | [ T ], [] =>
         ltac:(M.monadic
           (M.read (|
-            let t :=
+            let~ t :=
               M.alloc (|
                 M.call_closure (| M.get_function (| "core::intrinsics::type_id", [ T ] |), [] |)
               |) in
@@ -1008,7 +1008,7 @@ Module any.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ H ] |),

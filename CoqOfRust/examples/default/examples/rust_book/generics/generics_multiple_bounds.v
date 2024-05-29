@@ -13,8 +13,8 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -50,8 +50,8 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -109,8 +109,8 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
       (let t := M.alloc (| t |) in
       let u := M.alloc (| u |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -146,8 +146,8 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -208,10 +208,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let string := M.copy (| Value.String "words" |) in
-        let array :=
+        let~ string := M.copy (| Value.String "words" |) in
+        let~ array :=
           M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
-        let vec :=
+        let~ vec :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -244,7 +244,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|
@@ -254,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ string ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|

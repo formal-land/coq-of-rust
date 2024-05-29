@@ -195,7 +195,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let remainder := M.alloc (| remainder |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -212,7 +212,7 @@ Module str.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let chunks :=
+                        let~ chunks :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -238,8 +238,8 @@ Module str.
                               ]
                             |)
                           |) in
-                        let bytes_skipped := M.alloc (| Value.Integer 0 |) in
-                        let _ :=
+                        let~ bytes_skipped := M.alloc (| Value.Integer 0 |) in
+                        let~ _ :=
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
@@ -285,23 +285,22 @@ Module str.
                                           0
                                         |) in
                                       let chunk := M.copy (| γ0_0 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := bytes_skipped in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            M.read (|
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (M.read (|
                                               M.get_constant (|
                                                 "core::str::iter::advance_by::CHUNK_SIZE"
                                               |)
-                                            |)
-                                          |)
+                                            |))
                                         |) in
-                                      let start_bytes :=
+                                      let~ start_bytes :=
                                         M.alloc (| repeat (Value.Bool false) 32 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.use
                                           (M.match_operator (|
                                             M.alloc (|
@@ -336,7 +335,7 @@ Module str.
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
                                                     ltac:(M.monadic
-                                                      (let _ :=
+                                                      (let~ _ :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -356,7 +355,12 @@ Module str.
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (|
+                                                                (let _ :=
+                                                                  M.is_struct_tuple (|
+                                                                    γ,
+                                                                    "core::option::Option::None"
+                                                                  |) in
+                                                                M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (| M.break (||) |)
                                                                   |)
@@ -370,7 +374,7 @@ Module str.
                                                                     0
                                                                   |) in
                                                                 let i := M.copy (| γ0_0 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     M.SubPointer.get_array_field (|
                                                                       start_bytes,
@@ -399,14 +403,14 @@ Module str.
                                                   |)))
                                             ]
                                           |)) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := remainder in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            M.rust_cast
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (M.rust_cast
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
@@ -472,8 +476,7 @@ Module str.
                                                     ]
                                                   |)
                                                 ]
-                                              |))
-                                          |)
+                                              |)))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -481,7 +484,7 @@ Module str.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
@@ -492,7 +495,7 @@ Module str.
                                 ]
                               |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -559,7 +562,7 @@ Module str.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let b :=
+                                    let~ b :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.call_closure (|
@@ -581,7 +584,7 @@ Module str.
                                           M.alloc (| Value.Integer 0 |)
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -610,7 +613,7 @@ Module str.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -652,7 +655,7 @@ Module str.
                                     (M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |) in
@@ -666,7 +669,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -704,13 +707,13 @@ Module str.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               let β := remainder in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
-                            let b :=
+                            let~ b :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.call_closure (|
@@ -730,7 +733,7 @@ Module str.
                                   M.alloc (| Value.Integer 0 |)
                                 |)
                               |) in
-                            let slurp :=
+                            let~ slurp :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -740,7 +743,7 @@ Module str.
                                   [ M.read (| b |) ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -779,7 +782,7 @@ Module str.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -839,7 +842,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -861,11 +864,10 @@ Module str.
               M.alloc (|
                 Value.Tuple
                   [
-                    BinOp.Panic.div (|
-                      Integer.Usize,
-                      BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 3 |),
-                      Value.Integer 4
-                    |);
+                    BinOp.Wrap.div
+                      Integer.Usize
+                      (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 3))
+                      (Value.Integer 4);
                     Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
                   ]
               |)
@@ -933,7 +935,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1023,7 +1025,7 @@ Module str.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1127,7 +1129,7 @@ Module str.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1485,7 +1487,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let pre_len :=
+              let~ pre_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1530,7 +1532,8 @@ Module str.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -1540,7 +1543,7 @@ Module str.
                           0
                         |) in
                       let ch := M.copy (| γ0_0 |) in
-                      let index :=
+                      let~ index :=
                         M.copy (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -1548,7 +1551,7 @@ Module str.
                             "front_offset"
                           |)
                         |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -1571,7 +1574,7 @@ Module str.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -1580,15 +1583,10 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| pre_len |),
-                              M.read (| len |)
-                            |)
-                          |)
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| β |))
+                            (BinOp.Wrap.sub Integer.Usize (M.read (| pre_len |)) (M.read (| len |)))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1756,18 +1754,18 @@ Module str.
                               ltac:(M.monadic
                                 (let ch := M.copy (| γ |) in
                                 M.read (|
-                                  let index :=
+                                  let~ index :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (|
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::str::iter::CharIndices",
                                             "front_offset"
                                           |)
-                                        |),
-                                        M.call_closure (|
+                                        |))
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
@@ -1788,8 +1786,7 @@ Module str.
                                               "iter"
                                             |)
                                           ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.alloc (| Value.Tuple [ M.read (| index |); M.read (| ch |) ] |)
                                 |)))
@@ -2620,7 +2617,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s := M.copy (| self |) in
+              let~ s := M.copy (| self |) in
               M.alloc (|
                 M.struct_record_update
                   (M.read (| M.read (| s |) |))
@@ -2838,7 +2835,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2858,7 +2855,7 @@ Module str.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -2885,23 +2882,22 @@ Module str.
                                             |),
                                             ltac:(M.monadic
                                               (BinOp.Pure.gt
-                                                (BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (|
+                                                (BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::iter::SplitInternal",
                                                       "end"
                                                     |)
-                                                  |),
-                                                  M.read (|
+                                                  |))
+                                                  (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::iter::SplitInternal",
                                                       "start"
                                                     |)
-                                                  |)
-                                                |))
+                                                  |)))
                                                 (Value.Integer 0)))
                                           |)
                                         |)) in
@@ -2913,7 +2909,7 @@ Module str.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let string :=
+                                          let~ string :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -3016,7 +3012,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3041,7 +3037,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let haystack :=
+                  let~ haystack :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -3092,7 +3088,7 @@ Module str.
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let a := M.copy (| γ1_0 |) in
                           let b := M.copy (| γ1_1 |) in
-                          let elt :=
+                          let~ elt :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3119,7 +3115,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -3133,7 +3129,8 @@ Module str.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
@@ -3183,7 +3180,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3208,7 +3205,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let haystack :=
+                  let~ haystack :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -3258,7 +3255,7 @@ Module str.
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let b := M.copy (| γ1_1 |) in
-                          let elt :=
+                          let~ elt :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3285,7 +3282,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -3299,7 +3296,8 @@ Module str.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
@@ -3366,7 +3364,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3391,7 +3389,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3411,7 +3409,7 @@ Module str.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -3507,7 +3505,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let haystack :=
+                  let~ haystack :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -3558,7 +3556,7 @@ Module str.
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let a := M.copy (| γ1_0 |) in
                           let b := M.copy (| γ1_1 |) in
-                          let elt :=
+                          let~ elt :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3585,7 +3583,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -3599,7 +3597,8 @@ Module str.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -3711,7 +3710,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3736,7 +3735,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3756,7 +3755,7 @@ Module str.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -3852,7 +3851,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let haystack :=
+                  let~ haystack :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -3902,7 +3901,7 @@ Module str.
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let b := M.copy (| γ1_1 |) in
-                          let elt :=
+                          let~ elt :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3929,7 +3928,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -3943,7 +3942,8 @@ Module str.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -4023,7 +4023,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -5134,7 +5134,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s := M.copy (| self |) in
+              let~ s := M.copy (| self |) in
               M.alloc (|
                 M.struct_record_update
                   (M.read (| M.read (| s |) |))
@@ -5308,7 +5308,7 @@ Module str.
                     ltac:(M.monadic
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -5335,7 +5335,7 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -5344,7 +5344,7 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5413,7 +5413,7 @@ Module str.
                     ltac:(M.monadic
                       (let _ :=
                         M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -5440,7 +5440,7 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -5449,7 +5449,7 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5945,7 +5945,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s := M.copy (| self |) in
+              let~ s := M.copy (| self |) in
               M.alloc (|
                 Value.StructTuple
                   "core::str::iter::MatchIndicesInternal"
@@ -6723,7 +6723,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s := M.copy (| self |) in
+              let~ s := M.copy (| self |) in
               M.alloc (|
                 Value.StructTuple
                   "core::str::iter::MatchesInternal"
@@ -8599,7 +8599,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -9056,7 +9056,7 @@ Module str.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -9080,7 +9080,7 @@ Module str.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let tmp :=
+                                  let~ tmp :=
                                     M.copy (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -9088,7 +9088,7 @@ Module str.
                                         "extra"
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -9108,7 +9108,7 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let buf := M.alloc (| repeat (Value.Integer 0) 2 |) in
+                  let~ buf := M.alloc (| repeat (Value.Integer 0) 2 |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -9146,7 +9146,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let ch := M.copy (| γ |) in
                                         M.read (|
-                                          let n :=
+                                          let~ n :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -9169,7 +9169,7 @@ Module str.
                                                 ]
                                               |)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -9187,7 +9187,7 @@ Module str.
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.write (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.read (| self |),
@@ -9249,7 +9249,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -9294,15 +9294,10 @@ Module str.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Panic.div (|
-                              Integer.Usize,
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 2
-                              |),
-                              Value.Integer 3
-                            |);
+                            BinOp.Wrap.div
+                              Integer.Usize
+                              (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 2))
+                              (Value.Integer 3);
                             Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
                           ]
                       |)));
@@ -9311,28 +9306,16 @@ Module str.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              BinOp.Panic.div (|
-                                Integer.Usize,
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  Value.Integer 2
-                                |),
-                                Value.Integer 3
-                              |),
-                              Value.Integer 1
-                            |);
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (BinOp.Wrap.div
+                                Integer.Usize
+                                (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 2))
+                                (Value.Integer 3))
+                              (Value.Integer 1);
                             Value.StructTuple
                               "core::option::Option::Some"
-                              [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  Value.Integer 1
-                                |)
-                              ]
+                              [ BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1) ]
                           ]
                       |)))
                 ]

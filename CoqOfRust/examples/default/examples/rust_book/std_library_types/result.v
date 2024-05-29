@@ -48,14 +48,26 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (| γ, "result::checked::MathError::DivisionByZero" |) in
                         M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result::checked::MathError::NonPositiveLogarithm"
+                          |) in
                         M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result::checked::MathError::NegativeSquareRoot"
+                          |) in
                         M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
                   ]
                 |)
@@ -119,7 +131,7 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ BinOp.Panic.div (| Integer.Usize, M.read (| x |), M.read (| y |) |) ]
+                      [ BinOp.Wrap.div Integer.Usize (M.read (| x |)) (M.read (| y |)) ]
                   |)))
             ]
           |)
@@ -458,8 +470,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

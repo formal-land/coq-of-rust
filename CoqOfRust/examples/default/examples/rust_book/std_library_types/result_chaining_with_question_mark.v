@@ -48,14 +48,29 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                          |) in
                         M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                          |) in
                         M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                          |) in
                         M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
                   ]
                 |)
@@ -120,7 +135,7 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ BinOp.Panic.div (| Integer.Usize, M.read (| x |), M.read (| y |) |) ]
+                      [ BinOp.Wrap.div Integer.Usize (M.read (| x |)) (M.read (| y |)) ]
                   |)))
             ]
           |)
@@ -260,7 +275,7 @@ Module checked.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let ratio :=
+              let~ ratio :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -343,7 +358,7 @@ Module checked.
                     ]
                   |)
                 |) in
-              let ln :=
+              let~ ln :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -486,13 +501,29 @@ Module checked.
                             why,
                             [
                               fun γ =>
-                                ltac:(M.monadic (Value.String "logarithm of non-positive number"));
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    M.is_struct_tuple (|
+                                      γ,
+                                      "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                                    |) in
+                                  Value.String "logarithm of non-positive number"));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.read (| Value.String "division by zero" |) |)));
+                                  (let _ :=
+                                    M.is_struct_tuple (|
+                                      γ,
+                                      "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                                    |) in
+                                  M.alloc (| M.read (| Value.String "division by zero" |) |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (|
+                                      γ,
+                                      "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                                    |) in
+                                  M.alloc (|
                                     M.read (| Value.String "square root of negative number" |)
                                   |)))
                             ]
@@ -506,7 +537,7 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -565,7 +596,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "result_chaining_with_question_mark::checked::op", [] |),

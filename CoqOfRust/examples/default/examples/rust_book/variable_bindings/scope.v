@@ -27,11 +27,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let long_lived_binding := M.alloc (| Value.Integer 1 |) in
-        let _ :=
-          let short_lived_binding := M.alloc (| Value.Integer 2 |) in
-          let _ :=
-            let _ :=
+        let~ long_lived_binding := M.alloc (| Value.Integer 1 |) in
+        let~ _ :=
+          let~ short_lived_binding := M.alloc (| Value.Integer 2 |) in
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -71,8 +71,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

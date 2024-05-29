@@ -35,7 +35,7 @@ Module vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -77,36 +77,34 @@ Module vec.
                         let step_expand := M.copy (| γ1_0 |) in
                         M.alloc (|
                           BinOp.Pure.ge
-                            (BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.call_closure (|
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ SRC ] |),
                                 []
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_merge |) ]
-                              |)
-                            |))
-                            (BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.call_closure (|
+                              |)))
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ DEST ] |),
                                 []
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_expand |) ]
-                              |)
-                            |))
+                              |)))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
@@ -151,7 +149,7 @@ Module vec.
             ltac:(M.monadic
               (M.never_to_any (|
                 M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -176,7 +174,7 @@ Module vec.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -200,22 +198,20 @@ Module vec.
                       BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0),
                       ltac:(M.monadic
                         (BinOp.Pure.ne
-                          (BinOp.Panic.mul (|
-                            Integer.Usize,
-                            M.read (| src_cap |),
-                            M.call_closure (|
+                          (BinOp.Wrap.mul
+                            Integer.Usize
+                            (M.read (| src_cap |))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ SRC ] |),
                               []
-                            |)
-                          |))
-                          (BinOp.Panic.mul (|
-                            Integer.Usize,
-                            M.read (| dst_cap |),
-                            M.call_closure (|
+                            |)))
+                          (BinOp.Wrap.mul
+                            Integer.Usize
+                            (M.read (| dst_cap |))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ DEST ] |),
                               []
-                            |)
-                          |))))
+                            |)))))
                     |)
                   |)
                 |)
@@ -349,7 +345,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -386,7 +382,7 @@ Module vec.
                       ]
                     |) in
                   M.match_operator (|
-                    let inner :=
+                    let~ inner :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -468,27 +464,25 @@ Module vec.
                                 "end"
                               |)
                             |));
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.read (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| inner |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "cap"
                                 |)
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                 []
-                              |)
-                            |),
-                            M.call_closure (|
+                              |)))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ T ] |),
                               []
-                            |)
-                          |)
+                            |))
                         ]
                     |),
                     [
@@ -506,7 +500,7 @@ Module vec.
                           let dst_buf := M.copy (| γ0_3 |) in
                           let dst_end := M.copy (| γ0_4 |) in
                           let dst_cap := M.copy (| γ0_5 |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -519,7 +513,7 @@ Module vec.
                                 [ iterator; M.read (| dst_buf |); M.read (| dst_end |) ]
                               |)
                             |) in
-                          let src :=
+                          let~ src :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -543,7 +537,7 @@ Module vec.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -555,7 +549,7 @@ Module vec.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           Value.Tuple
@@ -614,7 +608,7 @@ Module vec.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
-                                                            let kind :=
+                                                            let~ kind :=
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "core::panicking::AssertKind::Eq"
@@ -656,7 +650,7 @@ Module vec.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -680,7 +674,7 @@ Module vec.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -692,7 +686,7 @@ Module vec.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -775,7 +769,7 @@ Module vec.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let dst_guard :=
+                          let~ dst_guard :=
                             M.alloc (|
                               Value.StructRecord
                                 "alloc::vec::in_place_drop::InPlaceDstBufDrop"
@@ -785,7 +779,7 @@ Module vec.
                                   ("cap", M.read (| dst_cap |))
                                 ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -798,7 +792,7 @@ Module vec.
                                 [ M.read (| src |) ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -820,9 +814,9 @@ Module vec.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let alloc :=
+                                    let~ alloc :=
                                       M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -834,7 +828,7 @@ Module vec.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
@@ -873,7 +867,7 @@ Module vec.
                                                                 M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (|
-                                                                      let kind :=
+                                                                      let~ kind :=
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::panicking::AssertKind::Ne"
@@ -912,7 +906,7 @@ Module vec.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -924,7 +918,7 @@ Module vec.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
@@ -963,7 +957,7 @@ Module vec.
                                                                 M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (|
-                                                                      let kind :=
+                                                                      let~ kind :=
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::panicking::AssertKind::Ne"
@@ -1002,7 +996,7 @@ Module vec.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let src_align :=
+                                    let~ src_align :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (|
@@ -1012,7 +1006,7 @@ Module vec.
                                           []
                                         |)
                                       |) in
-                                    let src_size :=
+                                    let~ src_size :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1032,7 +1026,7 @@ Module vec.
                                           ]
                                         |)
                                       |) in
-                                    let old_layout :=
+                                    let~ old_layout :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1043,14 +1037,14 @@ Module vec.
                                           [ M.read (| src_size |); M.read (| src_align |) ]
                                         |)
                                       |) in
-                                    let dst_align :=
+                                    let~ dst_align :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "core::mem::align_of", [ T ] |),
                                           []
                                         |)
                                       |) in
-                                    let dst_size :=
+                                    let~ dst_size :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1067,7 +1061,7 @@ Module vec.
                                           ]
                                         |)
                                       |) in
-                                    let new_layout :=
+                                    let~ new_layout :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1078,7 +1072,7 @@ Module vec.
                                           [ M.read (| dst_size |); M.read (| dst_align |) ]
                                         |)
                                       |) in
-                                    let result :=
+                                    let~ result :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1117,7 +1111,7 @@ Module vec.
                                                 0
                                               |) in
                                             let reallocated := M.copy (| γ0_0 |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 dst_buf,
                                                 M.rust_cast
@@ -1141,7 +1135,7 @@ Module vec.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -1153,36 +1147,34 @@ Module vec.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
                                                       [
                                                         M.alloc (|
-                                                          BinOp.Panic.mul (|
-                                                            Integer.Usize,
-                                                            M.read (| src_cap |),
-                                                            M.call_closure (|
+                                                          BinOp.Wrap.mul
+                                                            Integer.Usize
+                                                            (M.read (| src_cap |))
+                                                            (M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ Ty.associated ]
                                                               |),
                                                               []
-                                                            |)
-                                                          |)
+                                                            |))
                                                         |);
                                                         M.alloc (|
-                                                          BinOp.Panic.mul (|
-                                                            Integer.Usize,
-                                                            M.read (| dst_cap |),
-                                                            M.call_closure (|
+                                                          BinOp.Wrap.mul
+                                                            Integer.Usize
+                                                            (M.read (| dst_cap |))
+                                                            (M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ T ]
                                                               |),
                                                               []
-                                                            |)
-                                                          |)
+                                                            |))
                                                         |)
                                                       ]
                                                   |),
@@ -1220,7 +1212,7 @@ Module vec.
                                                                 M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (|
-                                                                      let kind :=
+                                                                      let~ kind :=
                                                                         M.alloc (|
                                                                           Value.StructTuple
                                                                             "core::panicking::AssertKind::Eq"
@@ -1262,7 +1254,7 @@ Module vec.
                                     M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -1276,7 +1268,7 @@ Module vec.
                                 [ M.read (| dst_guard |) ]
                               |)
                             |) in
-                          let vec :=
+                          let~ vec :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1348,8 +1340,8 @@ Module vec.
                                 ltac:(M.monadic
                                   (let item := M.copy (| γ |) in
                                   M.read (|
-                                    let _ :=
-                                      let _ :=
+                                    let~ _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -1361,7 +1353,7 @@ Module vec.
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1431,7 +1423,7 @@ Module vec.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_function (| "core::ptr::write", [ T ] |),
@@ -1447,7 +1439,7 @@ Module vec.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           M.SubPointer.get_struct_record_field (|
                                             sink,
@@ -1525,13 +1517,13 @@ Module vec.
             let dst_buf := M.alloc (| dst_buf |) in
             let end_ := M.alloc (| end_ |) in
             M.read (|
-              let sink :=
+              let~ sink :=
                 M.alloc (|
                   Value.StructRecord
                     "alloc::vec::in_place_drop::InPlaceDrop"
                     [ ("inner", M.read (| dst_buf |)); ("dst", M.read (| dst_buf |)) ]
                 |) in
-              let sink :=
+              let~ sink :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1666,7 +1658,7 @@ Module vec.
             let dst_buf := M.alloc (| dst_buf |) in
             let end_ := M.alloc (| end_ |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1679,13 +1671,13 @@ Module vec.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let drop_guard :=
+              let~ drop_guard :=
                 M.alloc (|
                   Value.StructRecord
                     "alloc::vec::in_place_drop::InPlaceDrop"
                     [ ("inner", M.read (| dst_buf |)); ("dst", M.read (| dst_buf |)) ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -1710,7 +1702,7 @@ Module vec.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -1729,7 +1721,9 @@ Module vec.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -1741,7 +1735,7 @@ Module vec.
                                             0
                                           |) in
                                         let i := M.copy (| γ0_0 |) in
-                                        let dst :=
+                                        let~ dst :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1752,7 +1746,7 @@ Module vec.
                                               [ M.read (| dst_buf |); M.read (| i |) ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -1764,7 +1758,7 @@ Module vec.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -1829,7 +1823,7 @@ Module vec.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_function (| "core::ptr::write", [ T ] |),
@@ -1848,7 +1842,7 @@ Module vec.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
                                               drop_guard,
@@ -1871,7 +1865,7 @@ Module vec.
                           |)))
                     ]
                   |)) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|

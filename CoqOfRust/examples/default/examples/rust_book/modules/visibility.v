@@ -12,8 +12,8 @@ Module my_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -56,8 +56,8 @@ Module my_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -99,8 +99,8 @@ Module my_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -129,7 +129,7 @@ Module my_mod.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "visibility::my_mod::private_function", [] |),
@@ -155,8 +155,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -198,8 +198,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -247,8 +247,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -278,7 +278,7 @@ Module my_mod.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "visibility::my_mod::nested::public_function_in_nested", [] |),
@@ -305,8 +305,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -356,8 +356,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -411,8 +411,8 @@ Module my_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -442,15 +442,15 @@ Module my_mod.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "visibility::my_mod::nested::public_function_in_my_mod", [] |),
                 []
               |)
             |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -471,7 +471,7 @@ Module my_mod.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "visibility::my_mod::nested::public_function_in_super_mod", [] |),
@@ -498,8 +498,8 @@ Module my_mod.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -547,8 +547,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -594,8 +594,8 @@ Module my_mod.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -645,8 +645,8 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -718,28 +718,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (| M.call_closure (| M.get_function (| "visibility::function", [] |), [] |) |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "visibility::my_mod::function", [] |), [] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "visibility::my_mod::indirect_access", [] |), [] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "visibility::my_mod::nested::function", [] |), [] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "visibility::my_mod::call_public_function_in_my_mod", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "visibility::my_mod::public_function_in_crate", [] |),

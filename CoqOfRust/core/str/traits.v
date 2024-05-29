@@ -615,8 +615,8 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
-              let _ :=
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -715,7 +715,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -744,25 +744,24 @@ Module str.
                     ]
                   |)
                 |) in
-              let len :=
+              let~ len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.rust_cast
@@ -797,8 +796,8 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
-              let _ :=
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -897,7 +896,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -924,25 +923,24 @@ Module str.
                     ]
                   |)
                 |) in
-              let len :=
+              let~ len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.rust_cast
@@ -1024,7 +1022,8 @@ Module str.
                               M.alloc (| M.read (| s |) |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
                                     M.get_function (| "core::str::slice_error_fail", [] |),
@@ -1422,7 +1421,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1469,7 +1468,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1825,7 +1824,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let end_ :=
+              let~ end_ :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     self,
@@ -1859,7 +1858,8 @@ Module str.
                       M.alloc (| M.read (| s |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::str::slice_error_fail", [] |),
@@ -2126,7 +2126,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2182,7 +2182,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2290,7 +2290,8 @@ Module str.
                               M.alloc (| M.read (| s |) |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
                                     M.get_function (| "core::str::slice_error_fail", [] |),
@@ -2635,7 +2636,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2713,7 +2714,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

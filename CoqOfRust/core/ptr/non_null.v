@@ -54,7 +54,7 @@ Module ptr.
         | [], [] =>
           ltac:(M.monadic
             (M.read (|
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::invalid_mut", [ T ] |),
@@ -172,7 +172,7 @@ Module ptr.
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -181,7 +181,7 @@ Module ptr.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -1638,7 +1638,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

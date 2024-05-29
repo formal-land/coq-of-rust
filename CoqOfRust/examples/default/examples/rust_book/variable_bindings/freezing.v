@@ -25,11 +25,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _mutable_integer := M.alloc (| Value.Integer 7 |) in
-        let _ :=
-          let _mutable_integer := M.copy (| _mutable_integer |) in
+        let~ _mutable_integer := M.alloc (| Value.Integer 7 |) in
+        let~ _ :=
+          let~ _mutable_integer := M.copy (| _mutable_integer |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ := M.write (| _mutable_integer, Value.Integer 3 |) in
+        let~ _ := M.write (| _mutable_integer, Value.Integer 3 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

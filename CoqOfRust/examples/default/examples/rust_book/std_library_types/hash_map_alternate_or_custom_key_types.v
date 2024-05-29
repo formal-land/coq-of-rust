@@ -145,7 +145,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -243,8 +243,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
       let username := M.alloc (| username |) in
       let password := M.alloc (| password |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -281,8 +281,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -319,8 +319,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -340,7 +340,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let logon :=
+        let~ logon :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -369,8 +369,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let account_info := M.copy (| γ0_0 |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -394,8 +394,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -444,8 +444,8 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -497,7 +497,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -556,7 +556,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let accounts :=
+        let~ accounts :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -573,7 +573,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let account :=
+        let~ account :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -582,7 +582,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("password", M.read (| Value.String "password123" |))
               ]
           |) in
-        let account_info :=
+        let~ account_info :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
@@ -591,7 +591,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("email", M.read (| Value.String "j.everyman@email.com" |))
               ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -608,7 +608,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ accounts; M.read (| account |); M.read (| account_info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
@@ -619,7 +619,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),

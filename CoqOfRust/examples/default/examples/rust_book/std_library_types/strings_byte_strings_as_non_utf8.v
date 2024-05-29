@@ -42,9 +42,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let bytestring := M.alloc (| M.read (| UnsupportedLiteral |) |) in
-        let _ :=
-          let _ :=
+        let~ bytestring := M.alloc (| M.read (| UnsupportedLiteral |) |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -87,9 +87,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let escaped := M.copy (| UnsupportedLiteral |) in
-        let _ :=
-          let _ :=
+        let~ escaped := M.copy (| UnsupportedLiteral |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -132,9 +132,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let raw_bytestring := M.copy (| UnsupportedLiteral |) in
-        let _ :=
-          let _ :=
+        let~ raw_bytestring := M.copy (| UnsupportedLiteral |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -174,7 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -190,8 +190,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let my_str := M.copy (| γ0_0 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -238,9 +238,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _quotes := M.copy (| UnsupportedLiteral |) in
-        let shift_jis := M.copy (| UnsupportedLiteral |) in
-        let _ :=
+        let~ _quotes := M.copy (| UnsupportedLiteral |) in
+        let~ shift_jis := M.copy (| UnsupportedLiteral |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
@@ -254,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let my_str := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -302,7 +302,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let e := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

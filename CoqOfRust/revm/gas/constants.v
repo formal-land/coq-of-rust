@@ -104,11 +104,12 @@ Module gas.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.sub (|
-              Integer.U64,
-              M.read (| M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |) |),
-              M.read (| M.get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST" |) |)
-            |)
+            BinOp.Wrap.sub
+              Integer.U64
+              (M.read (| M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |) |))
+              (M.read (|
+                M.get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST" |)
+              |))
           |))).
     
     Definition value_INITCODE_WORD_COST : Value.t :=

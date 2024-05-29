@@ -19,7 +19,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -54,7 +54,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -72,7 +72,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -103,7 +103,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -145,7 +145,7 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let op1 := M.copy (| γ0_0 |) in
                         let op2 := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| op2 |),
                             M.call_closure (|
@@ -165,6 +165,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_add : M.IsFunction "revm_interpreter::instructions::arithmetic::add" add.
+    
     (*
     pub fn mul<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -181,7 +183,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -214,7 +216,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -232,7 +234,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -263,7 +265,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -305,7 +307,7 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let op1 := M.copy (| γ0_0 |) in
                         let op2 := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| op2 |),
                             M.call_closure (|
@@ -325,6 +327,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mul : M.IsFunction "revm_interpreter::instructions::arithmetic::mul" mul.
+    
     (*
     pub fn sub<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -341,7 +345,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -376,7 +380,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -394,7 +398,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -425,7 +429,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -467,7 +471,7 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let op1 := M.copy (| γ0_0 |) in
                         let op2 := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| op2 |),
                             M.call_closure (|
@@ -487,6 +491,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_sub : M.IsFunction "revm_interpreter::instructions::arithmetic::sub" sub.
+    
     (*
     pub fn div<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -505,7 +511,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -538,7 +544,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -556,7 +562,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -587,7 +593,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -653,7 +659,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.read (| op2 |),
                                     M.call_closure (|
@@ -676,6 +682,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_div : M.IsFunction "revm_interpreter::instructions::arithmetic::div" div.
+    
     (*
     pub fn sdiv<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -692,7 +700,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -725,7 +733,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -743,7 +751,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -774,7 +782,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -816,7 +824,7 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let op1 := M.copy (| γ0_0 |) in
                         let op2 := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| op2 |),
                             M.call_closure (|
@@ -834,6 +842,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sdiv : M.IsFunction "revm_interpreter::instructions::arithmetic::sdiv" sdiv.
     
     (*
     pub fn rem<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -853,7 +863,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -886,7 +896,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -904,7 +914,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -935,7 +945,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1001,7 +1011,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.read (| op2 |),
                                     M.call_closure (|
@@ -1024,6 +1034,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_rem : M.IsFunction "revm_interpreter::instructions::arithmetic::rem" rem.
+    
     (*
     pub fn smod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -1040,7 +1052,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1073,7 +1085,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1091,7 +1103,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1122,7 +1134,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1181,6 +1193,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_smod : M.IsFunction "revm_interpreter::instructions::arithmetic::smod" smod.
+    
     (*
     pub fn addmod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::MID);
@@ -1197,7 +1211,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1230,7 +1244,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1248,7 +1262,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1279,7 +1293,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1337,6 +1351,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_addmod :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::addmod" addmod.
+    
     (*
     pub fn mulmod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::MID);
@@ -1353,7 +1370,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1386,7 +1403,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1404,7 +1421,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1435,7 +1452,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1493,6 +1510,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mulmod :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::mulmod" mulmod.
+    
     (*
     pub fn exp<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
         pop_top!(interpreter, op1, op2);
@@ -1509,7 +1529,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1540,7 +1560,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1582,7 +1602,7 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let op1 := M.copy (| γ0_0 |) in
                         let op2 := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1640,7 +1660,7 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| interpreter |),
@@ -1660,10 +1680,12 @@ Module instructions.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| interpreter |),
@@ -1680,7 +1702,7 @@ Module instructions.
                                   |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| op2 |),
                             M.call_closure (|
@@ -1695,6 +1717,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_exp : M.IsFunction "revm_interpreter::instructions::arithmetic::exp" exp.
     
     (*
     pub fn signextend<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1719,7 +1743,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1752,7 +1776,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1770,7 +1794,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1801,7 +1825,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1879,7 +1903,7 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let ext :=
+                                let~ ext :=
                                   M.copy (|
                                     M.SubPointer.get_array_field (|
                                       M.call_closure (|
@@ -1893,20 +1917,18 @@ Module instructions.
                                       M.alloc (| Value.Integer 0 |)
                                     |)
                                   |) in
-                                let bit_index :=
+                                let~ bit_index :=
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.U64,
-                                        BinOp.Panic.mul (|
-                                          Integer.U64,
-                                          Value.Integer 8,
-                                          M.read (| ext |)
-                                        |),
-                                        Value.Integer 7
-                                      |))
+                                      (BinOp.Wrap.add
+                                        Integer.U64
+                                        (BinOp.Wrap.mul
+                                          Integer.U64
+                                          (Value.Integer 8)
+                                          (M.read (| ext |)))
+                                        (Value.Integer 7))
                                   |) in
-                                let bit :=
+                                let~ bit :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1917,7 +1939,7 @@ Module instructions.
                                       [ M.read (| x |); M.read (| bit_index |) ]
                                     |)
                                   |) in
-                                let mask :=
+                                let~ mask :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -1959,7 +1981,7 @@ Module instructions.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.read (| x |),
                                     M.read (|
@@ -2026,5 +2048,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_signextend :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::signextend" signextend.
   End arithmetic.
 End instructions.

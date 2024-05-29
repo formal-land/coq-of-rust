@@ -949,7 +949,7 @@ Module host.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
@@ -963,7 +963,7 @@ Module host.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
@@ -977,7 +977,7 @@ Module host.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),

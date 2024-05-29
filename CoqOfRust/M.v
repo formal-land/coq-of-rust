@@ -381,11 +381,13 @@ Module LowM.
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
+  | Let (e : t A) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
   | Impossible.
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments CallClosure {_}.
+  Arguments Let {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
 
@@ -396,6 +398,8 @@ Module LowM.
       CallPrimitive primitive (fun v => let_ (k v) e2)
     | CallClosure f args k =>
       CallClosure f args (fun v => let_ (k v) e2)
+    | Let e k =>
+      Let e (fun v => let_ (k v) e2)
     | Loop body k =>
       Loop body (fun v => let_ (k v) e2)
     | Impossible => Impossible
@@ -423,6 +427,16 @@ Definition pure (v : Value.t) : M :=
 
 Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   LowM.let_ e1 (fun v1 =>
+  match v1 with
+  | inl v1 => e2 v1
+  | inr error => LowM.Pure (inr error)
+  end).
+
+Definition let_user (e1 : Value.t) (e2 : Value.t -> Value.t) : Value.t :=
+  e2 e1.
+
+Definition let_user_monadic (e1 : M) (e2 : Value.t -> M) : M :=
+  LowM.Let e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
@@ -474,6 +488,32 @@ Parameter IsProvidedMethod :
     (method : Ty.t -> list Ty.t -> list Value.t -> M),
   Prop.
 
+Module IsTraitMethod.
+  Inductive t
+      (trait_name : string)
+      (self_ty : Ty.t)
+      (trait_tys : list Ty.t)
+      (method_name : string) :
+      (list Ty.t -> list Value.t -> M) -> Prop :=
+  | Explicit (instance : Instance.t) (method : list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = Some (InstanceField.Method method) ->
+    t trait_name self_ty trait_tys method_name method
+  | Implicit (instance : Instance.t) (method : Ty.t -> list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = None ->
+    M.IsProvidedMethod trait_name method_name method ->
+    t trait_name self_ty trait_tys method_name (method self_ty).
+End IsTraitMethod.
+
 Module Option.
   Definition map {A B : Set} (x : option A) (f : A -> B) : option B :=
     match x with
@@ -508,6 +548,14 @@ Module Notations.
     (let_ b (fun a => c))
     (at level 200, a pattern, b at level 100, c at level 200).
 
+  Notation "'let~' a := b 'in' c" :=
+    (let_user b (fun a => c))
+      (at level 200, b at level 100, a name).
+
+  Notation "'let*~' a := b 'in' c" :=
+    (let_user_monadic b (fun a => c))
+      (at level 200, b at level 100, a name).
+
   Notation "e (| e1 , .. , en |)" :=
     (run ((.. (e e1) ..) en))
     (at level 100).
@@ -523,8 +571,29 @@ Import Notations.
     explicit names for all intermediate computation results. *)
 Ltac monadic e :=
   lazymatch e with
-  | context ctxt [let v : _ := ?x in @?f v] =>
+  | context ctxt [let v := ?x in @?f v] =>
     refine (let_ _ _);
+      [ monadic x
+      | let v' := fresh v in
+        intro v';
+        let y := (eval cbn beta in (f v')) in
+        lazymatch context ctxt [let v := x in y] with
+        | let _ := x in y => monadic y
+        | _ =>
+          refine (let_ _ _);
+            [ monadic y
+            | let w := fresh "v" in
+              intro w;
+              let z := context ctxt [w] in
+              monadic z
+            ]
+        end
+      ]
+  (* We uses the `let~` notation for lets that come from the source code, in order to keep this
+     abstraction barrier. The code below is simply a copy and paste of the code for the
+     normal `let`. *)
+  | context ctxt [let~ v := ?x in @?f v] =>
+    refine (let_user_monadic _ _);
       [ monadic x
       | let v' := fresh v in
         intro v';
@@ -782,6 +851,16 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
     pure (Value.Tuple [])
   else
     break_match.
+
+Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  match value with
+  | Value.StructTuple current_constructor _ =>
+    if String.eqb current_constructor constructor then
+      pure (Value.Tuple [])
+    else
+      break_match
+  | _ => break_match
+  end.
 
 Parameter pointer_coercion : Value.t -> Value.t.
 

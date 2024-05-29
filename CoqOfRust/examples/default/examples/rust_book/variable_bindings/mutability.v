@@ -23,10 +23,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _immutable_binding := M.alloc (| Value.Integer 1 |) in
-        let mutable_binding := M.alloc (| Value.Integer 1 |) in
-        let _ :=
-          let _ :=
+        let~ _immutable_binding := M.alloc (| Value.Integer 1 |) in
+        let~ mutable_binding := M.alloc (| Value.Integer 1 |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -65,11 +65,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           let β := mutable_binding in
-          M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
-        let _ :=
-          let _ :=
+          M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

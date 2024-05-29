@@ -45,7 +45,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let array :=
+        let~ array :=
           M.alloc (| Value.Array [ Value.Integer 1; Value.Integer (-2); Value.Integer 6 ] |) in
         M.match_operator (|
           array,
@@ -58,7 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                 let second := M.copy (| γ0_1 |) in
                 let third := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -117,7 +117,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
                 let third := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -167,7 +167,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer (-1) |) in
                 let second := M.copy (| γ0_1 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -220,7 +220,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
                 let second := M.copy (| γ0_1 |) in
                 let tail := M.copy (| γ0_rest |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -280,7 +280,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let first := M.copy (| γ0_0 |) in
                 let middle := M.copy (| γ0_rest |) in
                 let last := M.copy (| γ0_rev0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

@@ -18,7 +18,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.never_to_any (|
             M.read (|
-              let file :=
+              let~ file :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -88,7 +88,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let lines :=
+        let~ lines :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "file_io_read_lines::read_lines", [] |),
@@ -132,7 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -155,7 +155,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
@@ -165,8 +166,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     0
                                   |) in
                                 let line := M.copy (| γ0_0 |) in
-                                let _ :=
-                                  let _ :=
+                                let~ _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "std::io::stdio::_print", [] |),

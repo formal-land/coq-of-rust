@@ -61,21 +61,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Bar" [] |) in
-        let b := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
-        let c :=
+        let~ a := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Bar" [] |) in
+        let~ b := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
+        let~ c :=
           M.alloc (|
             Value.StructTuple "if_let_match_enum_values::Foo::Qux" [ Value.Integer 100 ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := a in
-                  let _ :=
-                    let _ :=
+                  let _ := M.is_struct_tuple (| γ, "if_let_match_enum_values::Foo::Bar" |) in
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -103,15 +104,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := b in
-                  let _ :=
-                    let _ :=
+                  let _ := M.is_struct_tuple (| γ, "if_let_match_enum_values::Foo::Bar" |) in
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -139,7 +141,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -153,8 +155,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       0
                     |) in
                   let value := M.copy (| γ0_0 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -215,8 +217,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let value := M.copy (| γ0_0 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 100 |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

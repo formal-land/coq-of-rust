@@ -341,7 +341,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         M.read (|
-          let value :=
+          let~ value :=
             M.copy (|
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),

@@ -12,7 +12,7 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.add (| Integer.I32, M.read (| a |), M.read (| b |) |)))
+      BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
   | _, _ => M.impossible
   end.
 
@@ -29,7 +29,7 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.sub (| Integer.I32, M.read (| a |), M.read (| b |) |)))
+      BinOp.Wrap.sub Integer.I32 (M.read (| a |)) (M.read (| b |))))
   | _, _ => M.impossible
   end.
 
@@ -46,7 +46,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -85,7 +85,7 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -130,7 +130,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -169,7 +169,7 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in

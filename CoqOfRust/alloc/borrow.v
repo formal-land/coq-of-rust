@@ -47,7 +47,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| target |),
                 M.call_closure (|
@@ -101,7 +101,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
@@ -188,7 +188,7 @@ Module borrow.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
                     let o := M.alloc (| γ0_0 |) in
-                    let b :=
+                    let~ b :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -425,7 +425,7 @@ Module borrow.
                     let borrowed := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.read (|
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.read (| self |),
                             Value.StructTuple
@@ -450,7 +450,9 @@ Module borrow.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.alloc (|
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "alloc::borrow::Cow::Borrowed" |) in
+                                    M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
                                           M.get_function (| "core::panicking::panic", [] |),
@@ -1045,7 +1047,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1090,7 +1092,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1188,7 +1190,7 @@ Module borrow.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1202,7 +1204,7 @@ Module borrow.
                                           0
                                         |) in
                                       let lhs := M.copy (| γ0_0 |) in
-                                      let s :=
+                                      let~ s :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1211,29 +1213,28 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| rhs |) ]
-                                                |)
-                                              |)
+                                                |))
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1244,7 +1245,7 @@ Module borrow.
                                             [ s; M.read (| lhs |) ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           M.read (| self |),
                                           Value.StructTuple
@@ -1255,7 +1256,7 @@ Module borrow.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1375,7 +1376,7 @@ Module borrow.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1389,7 +1390,7 @@ Module borrow.
                                           0
                                         |) in
                                       let lhs := M.copy (| γ0_0 |) in
-                                      let s :=
+                                      let~ s :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1398,17 +1399,17 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
@@ -1428,12 +1429,11 @@ Module borrow.
                                                       [ rhs ]
                                                     |)
                                                   ]
-                                                |)
-                                              |)
+                                                |))
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1444,7 +1444,7 @@ Module borrow.
                                             [ s; M.read (| lhs |) ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           M.read (| self |),
                                           Value.StructTuple
@@ -1455,7 +1455,7 @@ Module borrow.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|

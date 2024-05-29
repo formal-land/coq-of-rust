@@ -48,9 +48,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let pangram := M.copy (| Value.String "the quick brown fox jumps over the lazy dog" |) in
-        let _ :=
-          let _ :=
+        let~ pangram := M.copy (| Value.String "the quick brown fox jumps over the lazy dog" |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -86,8 +86,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -107,7 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -146,7 +146,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -165,7 +165,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -175,8 +177,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let word := M.copy (| γ0_0 |) in
-                                  let _ :=
-                                    let _ :=
+                                  let~ _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -230,7 +232,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let chars :=
+        let~ chars :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -252,7 +254,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -276,7 +278,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -289,14 +291,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ chars ]
             |)
           |) in
-        let string :=
+        let~ string :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -319,7 +321,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -338,7 +340,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -348,7 +352,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let c := M.copy (| γ0_0 |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -359,7 +363,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [ string; M.read (| c |) ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -377,13 +381,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let chars_to_trim :=
+        let~ chars_to_trim :=
           M.alloc (|
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |))
           |) in
-        let trimmed_str :=
+        let~ trimmed_str :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -406,8 +410,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -446,7 +450,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let alice :=
+        let~ alice :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -459,7 +463,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "I like dogs" |) ]
             |)
           |) in
-        let bob :=
+        let~ bob :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -483,8 +487,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -523,8 +527,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

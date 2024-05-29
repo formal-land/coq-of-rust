@@ -58,11 +58,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.I8,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.I8
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -130,11 +129,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.I8,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.I8
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -360,11 +358,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.I16,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.I16
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -432,11 +429,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.I16,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.I16
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -662,11 +658,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.I32,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.I32
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -734,11 +729,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.I32,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.I32
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -964,11 +958,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.I64,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.I64
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1036,11 +1029,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.I64,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.I64
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1266,11 +1258,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.I128,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.I128
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1338,11 +1329,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.I128,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.I128
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1568,11 +1558,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.Isize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.Isize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1640,11 +1629,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.Isize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.Isize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1870,11 +1858,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.U8,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.U8
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -1942,11 +1929,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.U8,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.U8
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2172,11 +2158,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.U16,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.U16
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2244,11 +2229,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.U16,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.U16
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2474,11 +2458,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.U32,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.U32
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2546,11 +2529,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.U32,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.U32
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2776,11 +2758,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.U64,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.U64
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -2848,11 +2829,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.U64,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.U64
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -3078,11 +3058,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.U128,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.U128
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -3150,11 +3129,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.U128,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.U128
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -3380,11 +3358,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -3452,11 +3429,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -8434,11 +8410,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -8506,11 +8481,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -8736,11 +8710,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
@@ -8808,11 +8781,10 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (| a |),
-                                            M.read (| b |)
-                                          |)))
+                                          BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (| a |))
+                                            (M.read (| b |))))
                                     ]
                                   |)))
                             ]
