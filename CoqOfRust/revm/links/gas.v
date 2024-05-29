@@ -91,3 +91,207 @@ Module Impl_Clone.
     }
   Defined.
 End Impl_Clone.
+
+Module Impl_revm_interpreter_gas_Gas.
+  Definition Self : Set := Gas.t.
+
+  (*
+      pub const fn new(limit: u64) -> Self {
+          Self {
+              limit,
+              remaining: limit,
+              refunded: 0,
+          }
+      }
+  *)
+  Definition run_new (limit : Z) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.new [] [φ limit] ⇓
+      fun (v : Self) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    now instantiate (1 := Gas.Build_t _ _ _).
+  Defined.
+
+  (*
+      pub const fn new_spent(limit: u64) -> Self {
+          Self {
+              limit,
+              remaining: 0,
+              refunded: 0,
+          }
+      }
+  *)
+  Definition run_new_spent (limit : Z) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.new_spent [] [φ limit] ⇓
+      fun (v : Self) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    now instantiate (1 := Gas.Build_t _ _ _).
+  Defined.
+
+  (*
+      pub const fn limit(&self) -> u64 {
+          self.limit
+      }
+  *)
+  Definition run_limit (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.limit [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_limit_is_valid.
+    run_symbolic.
+  Defined.
+
+  (*
+      pub const fn memory(&self) -> u64 {
+          0
+      }
+  *)
+  Definition run_memory (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.memory [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+  Defined.
+
+  (*
+      pub const fn refunded(&self) -> i64 {
+          self.refunded
+      }
+  *)
+  Definition run_refunded (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.refunded [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+    run_symbolic.
+  Defined.
+
+  (*
+      pub const fn spent(&self) -> u64 {
+          self.limit - self.remaining
+      }
+  *)
+  Definition run_spent (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.spent [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_limit_is_valid.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
+    run_symbolic.
+  Defined.
+
+  (*
+      pub const fn spend(&self) -> u64 {
+          self.spent()
+      }
+  *)
+  Definition run_spend (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.spend [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    eapply Run.CallPrimitiveGetAssociatedFunction. {
+      apply gas.Impl_revm_interpreter_gas_Gas.AssociatedFunction_spent.
+    }
+    run_symbolic.
+    eapply Run.CallClosure. {
+      apply run_spent.
+    }
+    intros; run_symbolic.
+  Defined.
+
+  (*
+      pub const fn remaining(&self) -> u64 {
+          self.remaining
+      }
+  *)
+  Definition run_remaining (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.remaining [] [φ self] ⇓
+      fun (v : Z) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
+    run_symbolic.
+  Defined.
+
+  (*
+      pub fn erase_cost(&mut self, returned: u64) {
+          self.remaining += returned;
+      }
+  *)
+  Definition run_erase_cost (self : Ref.t Self) (returned : Z) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [φ self; φ returned] ⇓
+      fun (v : unit) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
+  Defined.
+
+  (*
+      pub fn spend_all(&mut self) {
+          self.remaining = 0;
+      }
+  *)
+  Definition run_spend_all (self : Ref.t Self) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.spend_all [] [φ self] ⇓
+      fun (v : unit) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+      run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
+      run_symbolic.
+    }
+    intros; run_symbolic.
+  Defined.
+
+  (*
+      pub fn record_refund(&mut self, refund: i64) {
+          self.refunded += refund;
+      }
+  *)
+  Definition run_record_refund (self : Ref.t Self) (refund : Z) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.record_refund [] [φ self; φ refund] ⇓
+      fun (v : unit) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
+  Defined.
+End Impl_revm_interpreter_gas_Gas.

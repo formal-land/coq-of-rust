@@ -463,6 +463,30 @@ End Run.
 
 Import Run.
 
+Definition run_sub_pointer {Output A Sub_A : Set}
+    {IsToValueA : ToValue A} {IsToValueSub_A : ToValue Sub_A}
+    {runner : SubPointer.Runner.t A Sub_A}
+    (H_runner : SubPointer.Runner.Valid.t runner)
+    (ref : Ref.t A) (pointer : Pointer.t Value.t)
+    (k : Value.t -> M)
+    (output_to_value : Output -> Value.t + Exception.t)
+    (H_pointer : pointer = Ref.to_pointer ref)
+    (H_k : forall (sub_ref : Ref.t Sub_A),
+      let sub_pointer := Ref.to_pointer sub_ref in
+      {{ k (Value.Pointer sub_pointer) ⇓ output_to_value }}
+    ) :
+  {{
+    LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
+    output_to_value
+  }}.
+Proof.
+  intros.
+  eapply Run.CallPrimitiveGetSubPointer;
+    try apply H_pointer;
+    try apply H_runner;
+    try apply H_k.
+Defined.
+
 Module Primitive.
   Inductive t : Set -> Set :=
   | StateAlloc {A : Set} `{ToValue A} (value : A) : t (Ref.t A)
@@ -561,19 +585,25 @@ Proof.
 Defined.
 
 Ltac run_symbolic_state_alloc :=
-  (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
-  with_strategy opaque [φ] cbn;
-  match goal with
-  | |-
-    {{
-      CoqOfRust.M.LowM.CallPrimitive
-        (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
-      _
-    }} =>
-      eapply Run.CallPrimitiveStateAlloc with (A := B);
-      [try reflexivity |];
-      intros
-  end.
+  (
+    (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
+    with_strategy opaque [φ] cbn;
+    match goal with
+    | |-
+      {{
+        CoqOfRust.M.LowM.CallPrimitive
+          (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
+        _
+      }} =>
+        eapply Run.CallPrimitiveStateAlloc with (A := B);
+        [try reflexivity |];
+        intros
+    end
+  ) || (
+    (* An important case is the allocation of the unit value *)
+    eapply Run.CallPrimitiveStateAlloc with (value := tt); [reflexivity |];
+    intros
+  ).
 
 Ltac run_symbolic_state_read :=
   cbn;
@@ -582,7 +612,7 @@ Ltac run_symbolic_state_read :=
 
 Ltac run_symbolic_state_write :=
   cbn;
-  eapply Run.CallPrimitiveStateWrite; [reflexivity |];
+  eapply Run.CallPrimitiveStateWrite; [reflexivity | reflexivity |];
   intros.
 
 Ltac run_symbolic_one_step :=
@@ -596,3 +626,6 @@ Ltac run_symbolic_one_step :=
 
 Ltac run_symbolic :=
   repeat run_symbolic_one_step.
+
+Ltac run_sub_pointer sub_pointer_is_valid :=
+  cbn; eapply (run_sub_pointer sub_pointer_is_valid); [reflexivity|]; intros.
