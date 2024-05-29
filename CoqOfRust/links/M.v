@@ -4,11 +4,14 @@ Import List.ListNotations.
 
 Local Open Scope list.
 
+(** Not all the types have a unique representation in Rust. For example, integer types in Coq are
+    all represented by [Z]. We have various types on the Rust side, like `u64`, `i32`, ... *)
 Class ToTy (A : Set) : Set := {
   Φ : Ty.t;
 }.
 Arguments Φ _ {_}.
 
+(** For each type, we should have a canonical way to convert it to a [Value.t]. *)
 Class ToValue (A : Set) : Set := {
   φ : A -> Value.t;
 }.
@@ -180,6 +183,8 @@ Module TupleIsToValue.
 End TupleIsToValue.
 
 Module Ref.
+  (** A general type for references. Can be used for mutable or non-mutable references, as well as
+      for unsafe pointers (we assume that the `unsafe` code is safe). *)
   Inductive t (A : Set) `{ToValue A} : Set :=
   | Immediate (value : A)
   | Mutable {Address Big_A : Set}
@@ -211,6 +216,11 @@ End Ref.
 
 Module SubPointer.
   Module Runner.
+    (** We group in a single data structure how we can access to the address of a field of a value
+        pointed by a pointer. The field is given by [index]. The functions [projection]
+        and [injection] are to read or update values at this [index], once we have a typed
+        representation. These operations can fail if the field is from an enum case that is not the
+        one currently selected. *)
     Record t (A Sub_A : Set) {H_A : ToValue A} {H_Sub_A : ToValue Sub_A} : Set := {
       index : Pointer.Index.t;
       projection : A -> option Sub_A;
@@ -221,6 +231,7 @@ Module SubPointer.
     Arguments injection {_ _ _ _}.
 
     Module Valid.
+      (** What does it mean for a [runner] to be well formed. *)
       Record t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A} (runner : Runner.t A Sub_A) : Prop := {
         read_commutativity (a : A) :
           Option.map (runner.(projection) a) φ =
@@ -231,79 +242,11 @@ Module SubPointer.
       }.
     End Valid.
   End Runner.
-
-  (* Definition run {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
-      (runner : Runner.t A Sub_A) (ref : Ref.t A) : Ref.t Sub_A :=
-    match ref with
-    | Ref.Immediate value =>
-      match runner.(Runner.projection) value with
-      | Some sub_value => Ref.Immediate sub_value
-      | None => Ref.Immediate (Value.Error "SubPointer.run: projection failed")
-      end
-    | Ref.Mutable address path big_to_value projection injection =>
-      Ref.Mutable address (path ++ [runner.(Runner.index)]) big_to_value
-        (fun big_a =>
-          match projection big_a with
-          | Some a => runner.(Runner.projection) a
-          | None => None
-          end
-        )
-        (fun big_a new_sub_a =>
-          match projection big_a with
-          | Some a =>
-            match runner.(Runner.injection) a new_sub_a with
-            | Some new_a => injection big_a new_a
-            | None => None
-            end
-          | None => None
-          end
-        )
-    end. *)
-(* 
-  Definition get_sub
-      {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
-      (mutable : Pointer.Mutable.t (A := A) Value.t φ)
-      (runner : Runner.t A Sub_A) :
-      Pointer.Mutable.t (A := Sub_A) Value.t φ :=
-    Pointer.Mutable.get_sub
-      mutable
-      runner.(Runner.index)
-      runner.(Runner.projection)
-      runner.(Runner.injection)
-      φ. *)
 End SubPointer.
 
-(* Module IsAlloc.
-  Inductive t {A : Set} (to_value : A -> Value.t) (value : A) : Ref.t A -> Set :=
-  | Immediate :
-    t to_value value (Ref.Immediate to_value value)
-  | Mutable {Address : Set} (address : Address) :
-    t to_value value (Ref.Mutable
-      address []
-      to_value
-      (fun state => Some state)
-      (fun _ new_state => Some new_state)
-      to_value
-    ).
-End IsAlloc.
-
-Module IsRead.
-  Inductive t {A : Set} (to_value : A -> Value.t) (value : A) : Ref.t A -> A -> Set :=
-  | Immediate :
-    IsRead.t to_value value (Ref.Immediate to_value value) value
-  | Mutable {Address Big_A : Set}
-    (address : Address)
-    (path : Pointer.Path.t)
-    (big_to_value : Big_A -> Value.t)
-    (projection : Big_A -> option A)
-    (injection : Big_A -> A -> option Big_A)
-    (to_value' : A -> Value.t)
-    (big_value : Big_A) :
-    projection big_value = Some value ->
-    IsRead.t to_value value (Ref.Mutable address path big_to_value projection injection to_value') big_value.
-End IsRead. *)
-
 Module IsSubPointer.
+  (** If a pointer (the sub-pointer) targets the field given by a [runner] of another value
+      targetted by a pointer. *)
   Inductive t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
       (runner : SubPointer.Runner.t A Sub_A) : Ref.t A -> Ref.t Sub_A -> Set :=
   | Immediate (value : A) (sub_value : Sub_A) :
@@ -346,6 +289,14 @@ End IsSubPointer.
 Module Run.
   Reserved Notation "{{ e ⇓ output_to_value }}" (at level 70, no associativity).
 
+  (** The [Run.t] predicate to show that there exists a trace of execution for an expression [e]
+      if we choose the right types/`to_value` functions and make a valid names and traits
+      resolution.
+
+      The function [output_to_value] is used to convert the output of the expression [e] to
+      a [Value.t] or an [Exception.t] at the end. It gives a constraint on what kinds of results
+      the expression [e] can produce.
+  *)
   Inductive t {Output : Set} (output_to_value : Output -> Value.t + Exception.t) : M -> Set :=
   | Pure
       (output : Output)
@@ -463,6 +414,8 @@ End Run.
 
 Import Run.
 
+(** This lemma is convenient to handle the case of sub-pointers. We even have a dedicated tactic
+    using it (defined below). Using the tactic is the recommended way. *)
 Definition run_sub_pointer {Output A Sub_A : Set}
     {IsToValueA : ToValue A} {IsToValueSub_A : ToValue Sub_A}
     {runner : SubPointer.Runner.t A Sub_A}
@@ -488,6 +441,9 @@ Proof.
 Defined.
 
 Module Primitive.
+  (** These primitives are equivalent to the ones in the generated code, except that we are now
+      with types. We have also removed the primitives related to name/trait resolution, as this is
+      now done. *)
   Inductive t : Set -> Set :=
   | StateAlloc {A : Set} `{ToValue A} (value : A) : t (Ref.t A)
   | StateRead {A : Set} `{ToValue A} (ref : Ref.t A) : t A
@@ -498,15 +454,15 @@ Module Primitive.
 End Primitive.
 
 Module LowM.
+  (** The typed version of the [LowM.t] monad used in the generated code. We might need to use a
+      co-inductive definition instead at some point. *)
   Inductive t (Output : Set) : Set :=
   | Pure (value : Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t Output)
-  (* | CallClosure {A B : Set} (closure : A -> t B) (args : A) (k : B -> t Output) *)
   | Let {A : Set} (e : t A) (k : A -> t Output)
   | Loop {A : Set} (body : t A) (k : A -> t Output).
   Arguments Pure {_}.
   Arguments CallPrimitive {_ _}.
-  (* Arguments CallClosure {_ _ _}. *)
   Arguments Let {_ _}.
   Arguments Loop {_ _}.
 End LowM.
@@ -514,6 +470,8 @@ End LowM.
 (* We do not define an equivalent of [M] as the resulting term is generated, so we are not
    interested into having syntactic sugar for the error monad. *)
 
+(** With this function we generate an expression in [LowM.t Output] that is equivalent to the
+    input [e] expression, following the proof of equivalence provided in [run]. *)
 Fixpoint evaluate {Output : Set}
   {e : M} {output_to_value : Output -> Value.t + Exception.t}
   (run : {{ e ⇓ output_to_value }}) :
@@ -624,8 +582,11 @@ Ltac run_symbolic_one_step :=
     run_symbolic_state_write
   end.
 
+(** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
   repeat run_symbolic_one_step.
 
+(** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
+    validity statement for the index that we access. *)
 Ltac run_sub_pointer sub_pointer_is_valid :=
   cbn; eapply (run_sub_pointer sub_pointer_is_valid); [reflexivity|]; intros.

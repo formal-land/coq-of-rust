@@ -1,4 +1,3 @@
-core/proofs/option.v
 examples/default/examples/ink_contracts/proofs/erc20.v
 examples/default/examples/ink_contracts/proofs/lib.v
 examples/default/examples/ink_contracts/simulations/erc20.v
