@@ -124,35 +124,6 @@ Module Pointer.
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A).
     Arguments Make {_ _ _ _}.
-
-    (* Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
-        (mutable : t Value to_value)
-        (index : Index.t)
-        (sub_projection : A -> option Sub_A)
-        (sub_injection : A -> Sub_A -> option A)
-        (sub_to_value : Sub_A -> Value) :
-        t Value sub_to_value :=
-      let 'Make address path big_to_value projection injection := mutable in
-      Make
-        address
-        (path ++ [index])
-        big_to_value
-        (fun big_a =>
-          match projection big_a with
-          | Some a => sub_projection a
-          | None => None
-          end
-        )
-        (fun big_a new_sub_a =>
-          match projection big_a with
-          | Some a =>
-            match sub_injection a new_sub_a with
-            | Some new_a => injection big_a new_a
-            | None => None
-            end
-          | None => None
-          end
-        ). *)
   End Mutable.
 
   Module Core.
@@ -166,27 +137,6 @@ Module Pointer.
   Inductive t (Value : Set) : Set :=
   | Make {A : Set} (to_value : A -> Value) (core : Core.t Value A).
   Arguments Make {_ _}.
-
-  (* Definition mutable {Value Address A : Set}
-      (address : Address)
-      (to_value : A -> Value) :
-      t Value :=
-    Mutable (to_value := to_value) (Mutable.Make
-      address
-      []
-      to_value
-      (fun x => Some x)
-      (fun _ y => Some y)
-    ). *)
-
-  (* Inductive t (Value : Set) : Set :=
-  | Make {Address Big_A A : Set}
-    (address : Address)
-    (path : Pointer.Path.t)
-    (projection : Big_A -> option A)
-    (injection : Big_A -> A -> option Big_A)
-    (to_value : A -> Value).
-  Arguments Make {_ _ _ _}. *)
 End Pointer.
 
 Module Value.
