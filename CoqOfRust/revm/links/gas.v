@@ -86,24 +86,7 @@ Module Impl_Clone.
         { reflexivity. }
       }
       { intros.
-        cbn.
-        eapply Run.CallPrimitiveStateAlloc with (A := Ref.t Gas.t). {
-          reflexivity.
-        }
-        intros.
-        cbn.
-        eapply Run.CallPrimitiveStateRead with (A := Ref.t Gas.t). {
-          reflexivity.
-        }
-        intros.
-        cbn.
-        eapply Run.CallPrimitiveStateRead with (A := Gas.t). {
-          reflexivity.
-        }
-        intros.
-        cbn.
-        eapply Run.Pure.
-        reflexivity.
+        run_symbolic.
       }
     }
   Defined.

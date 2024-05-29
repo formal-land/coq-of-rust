@@ -116,14 +116,14 @@ Module Pointer.
   End Path.
 
   Module Mutable.
-    Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
+    Inductive t (Value A : Set) : Set :=
     | Make {Address Big_A : Set}
       (address : Address)
       (path : Path.t)
       (big_to_value : Big_A -> Value)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _ _}.
+    Arguments Make {_ _ _ _}.
 
     (* Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
         (mutable : t Value to_value)
@@ -155,13 +155,19 @@ Module Pointer.
         ). *)
   End Mutable.
 
-  Inductive t (Value : Set) : Set :=
-  | Immediate (value : Value)
-  | Mutable {A : Set} {to_value : A -> Value} (mutable : Mutable.t Value to_value).
-  Arguments Immediate {_}.
-  Arguments Mutable {_ _ _}.
+  Module Core.
+    Inductive t (Value A : Set) : Set :=
+    | Immediate (value : Value)
+    | Mutable (mutable : Mutable.t Value A).
+    Arguments Immediate {_ _}.
+    Arguments Mutable {_ _}.
+  End Core.
 
-  Definition mutable {Value Address A : Set}
+  Inductive t (Value : Set) : Set :=
+  | Make {A : Set} (to_value : A -> Value) (core : Core.t Value A).
+  Arguments Make {_ _}.
+
+  (* Definition mutable {Value Address A : Set}
       (address : Address)
       (to_value : A -> Value) :
       t Value :=
@@ -171,7 +177,7 @@ Module Pointer.
       to_value
       (fun x => Some x)
       (fun _ y => Some y)
-    ).
+    ). *)
 
   (* Inductive t (Value : Set) : Set :=
   | Make {Address Big_A A : Set}
