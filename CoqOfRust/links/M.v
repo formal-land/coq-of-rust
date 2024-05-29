@@ -180,7 +180,7 @@ Module TupleIsToValue.
 End TupleIsToValue.
 
 Module Ref.
-  Inductive t (A : Set) {IsToValue : ToValue A} : Set :=
+  Inductive t (A : Set) `{ToValue A} : Set :=
   | Immediate (value : A)
   | Mutable {Address Big_A : Set}
     (address : Address)
@@ -191,14 +191,18 @@ Module Ref.
   Arguments Immediate {_ _}.
   Arguments Mutable {_ _ _ _}.
 
-  Definition to_pointer {A : Set} `{ToValue A} (ref : Ref.t A) : Pointer.t Value.t :=
-    match ref with
-    | Immediate value => Pointer.Immediate (φ value)
+  Definition to_core {A : Set} `{ToValue A} (core : t A) : Pointer.Core.t Value.t A :=
+    match core with
+    | Immediate value =>
+      Pointer.Core.Immediate (φ value)
     | Mutable address path big_to_value projection injection =>
-      Pointer.Mutable (Pointer.Mutable.Make (to_value := φ)
+      Pointer.Core.Mutable (Pointer.Mutable.Make
         address path big_to_value projection injection
       )
     end.
+
+  Definition to_pointer {A : Set} `{ToValue A} (ref : Ref.t A) : Pointer.t Value.t :=
+    Pointer.Make φ (to_core ref).
 
   Global Instance IsToValue {A : Set} `{ToValue A} : ToValue (t A) := {
     φ r := Value.Pointer (to_pointer r);
@@ -304,16 +308,18 @@ Module IsSubPointer.
       (runner : SubPointer.Runner.t A Sub_A) : Ref.t A -> Ref.t Sub_A -> Set :=
   | Immediate (value : A) (sub_value : Sub_A) :
     runner.(SubPointer.Runner.projection) value = Some sub_value ->
-    t runner (Ref.Immediate value) (Ref.Immediate sub_value)
+    t runner
+      (Ref.Immediate value)
+      (Ref.Immediate sub_value)
   | Mutable {Address Big_A : Set}
       (address : Address)
       (path : Pointer.Path.t)
       (big_to_value : Big_A -> Value.t)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A) :
-    let ref :=
+    let ref : Ref.t A :=
       Ref.Mutable address path big_to_value projection injection in
-    let sub_ref :=
+    let sub_ref : Ref.t Sub_A :=
       Ref.Mutable
         address
         (path ++ [runner.(SubPointer.Runner.index)])
@@ -346,7 +352,7 @@ Module Run.
       (output' : Value.t + Exception.t) :
     output' = output_to_value output ->
     {{ LowM.Pure output' ⇓ output_to_value }}
-  | CallPrimitiveStateAlloc {A : Set} `{ToValue A}
+  | CallPrimitiveStateAlloc {A : Set} (IsToValueA : ToValue A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
     value' = φ value ->
@@ -354,23 +360,30 @@ Module Run.
       {{ k (φ ref) ⇓ output_to_value }}
      ) ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateRead {A : Set} `{ToValue A}
-      (ref : Ref.t A) (pointer : Pointer.t Value.t)
+  | CallPrimitiveStateRead {A : Set}
+      (* We make the [to_value] explicit instead of using the class to avoid inference problems *)
+      (to_value : A -> Value.t)
+      (ref : @Ref.t A {| φ := to_value |}) (pointer_core : Pointer.Core.t Value.t A)
       (k : Value.t -> M) :
-    pointer = Ref.to_pointer ref ->
+    let pointer := Pointer.Make to_value pointer_core in
+    pointer_core = Ref.to_core ref ->
     (forall (value : A),
-      {{ k (φ value) ⇓ output_to_value }}
+      {{ k (to_value value) ⇓ output_to_value }}
     ) ->
     {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateWrite {A : Set} `{ToValue A}
-      (ref : Ref.t A) (pointer : Pointer.t Value.t)
+  | CallPrimitiveStateWrite {A : Set}
+      (* Same as with [Read], we use an explicit [to_value] *)
+      (to_value : A -> Value.t)
+      (ref : @Ref.t A {| φ := to_value |}) (pointer_core : Pointer.Core.t Value.t A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
-    pointer = Ref.to_pointer ref ->
-    value' = φ value ->
+    let pointer := Pointer.Make to_value pointer_core in
+    pointer_core = Ref.to_core ref ->
+    value' = to_value value ->
     {{ k (Value.Tuple []) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateWrite pointer value') k ⇓ output_to_value }}
-  | CallPrimitiveGetSubPointer {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+  | CallPrimitiveGetSubPointer {A Sub_A : Set}
+      {IsToValueA : ToValue A} {IsToValueSub_A : ToValue Sub_A}
       (ref : Ref.t A) (pointer : Pointer.t Value.t)
       (runner : SubPointer.Runner.t A Sub_A)
       (k : Value.t -> M) :
@@ -488,10 +501,10 @@ Proof.
   }
   { (* Alloc *)
     apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
-    intros ref.
+    intros ref_core.
     eapply evaluate.
     match goal with
-    | H : forall _, _ |- _ => apply (H ref)
+    | H : forall _, _ |- _ => apply (H ref_core)
     end.
   }
   { (* Read *)
@@ -546,3 +559,40 @@ Proof.
     exact (evaluate _ _ _ run).
   }
 Defined.
+
+Ltac run_symbolic_state_alloc :=
+  (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
+  with_strategy opaque [φ] cbn;
+  match goal with
+  | |-
+    {{
+      CoqOfRust.M.LowM.CallPrimitive
+        (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
+      _
+    }} =>
+      eapply Run.CallPrimitiveStateAlloc with (A := B);
+      [try reflexivity |];
+      intros
+  end.
+
+Ltac run_symbolic_state_read :=
+  cbn;
+  eapply Run.CallPrimitiveStateRead; [reflexivity |];
+  intros.
+
+Ltac run_symbolic_state_write :=
+  cbn;
+  eapply Run.CallPrimitiveStateWrite; [reflexivity |];
+  intros.
+
+Ltac run_symbolic_one_step :=
+  match goal with
+  | |- {{ _ ⇓ _ }} =>
+    (eapply Run.Pure; try reflexivity) ||
+    run_symbolic_state_alloc ||
+    run_symbolic_state_read ||
+    run_symbolic_state_write
+  end.
+
+Ltac run_symbolic :=
+  repeat run_symbolic_one_step.
