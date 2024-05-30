@@ -7760,9 +7760,19 @@ Module sync.
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
-  Module Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_A.
+  Module Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
     Definition Self (A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::sync::Arc") [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ].
+      Ty.apply
+        (Ty.path "alloc::sync::Arc")
+        [
+          Ty.dyn
+            [
+              ("core::any::Any::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          A
+        ].
     
     (*
         pub fn downcast<T>(self) -> Result<Arc<T, A>, Self>
@@ -7798,7 +7808,12 @@ Module sync.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ],
                               "is",
                               [ T ]
                             |),
@@ -7808,7 +7823,15 @@ Module sync.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "alloc::sync::Arc")
-                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("core::any::Any::Trait", []);
+                                          ("core::marker::Sync::AutoTrait", []);
+                                          ("core::marker::Send::AutoTrait", [])
+                                        ];
+                                      A
+                                    ],
                                   [],
                                   "deref",
                                   []
@@ -7828,7 +7851,14 @@ Module sync.
                               [
                                 Ty.apply
                                   (Ty.path "alloc::sync::ArcInner")
-                                  [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                  [
+                                    Ty.dyn
+                                      [
+                                        ("core::any::Any::Trait", []);
+                                        ("core::marker::Sync::AutoTrait", []);
+                                        ("core::marker::Send::AutoTrait", [])
+                                      ]
+                                  ]
                               ],
                             "cast",
                             [ Ty.apply (Ty.path "alloc::sync::ArcInner") [ T ] ]
@@ -7865,7 +7895,15 @@ Module sync.
                             [
                               Ty.apply
                                 (Ty.path "alloc::sync::Arc")
-                                [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                                [
+                                  Ty.dyn
+                                    [
+                                      ("core::any::Any::Trait", []);
+                                      ("core::marker::Sync::AutoTrait", []);
+                                      ("core::marker::Send::AutoTrait", [])
+                                    ];
+                                  A
+                                ]
                             ]
                           |),
                           [ M.read (| self |) ]
@@ -7931,7 +7969,14 @@ Module sync.
                       [
                         Ty.apply
                           (Ty.path "alloc::sync::ArcInner")
-                          [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                          [
+                            Ty.dyn
+                              [
+                                ("core::any::Any::Trait", []);
+                                ("core::marker::Sync::AutoTrait", []);
+                                ("core::marker::Send::AutoTrait", [])
+                              ]
+                          ]
                       ],
                     "cast",
                     [ Ty.apply (Ty.path "alloc::sync::ArcInner") [ T ] ]
@@ -7958,7 +8003,15 @@ Module sync.
                     [
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
-                        [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                        [
+                          Ty.dyn
+                            [
+                              ("core::any::Any::Trait", []);
+                              ("core::marker::Sync::AutoTrait", []);
+                              ("core::marker::Send::AutoTrait", [])
+                            ];
+                          A
+                        ]
                     ]
                   |),
                   [ M.read (| self |) ]
@@ -7981,7 +8034,7 @@ Module sync.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-  End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_A.
+  End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
   
   Module Impl_alloc_sync_Weak_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
