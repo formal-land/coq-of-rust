@@ -58,8 +58,26 @@ jobs:
           #   ./generate_ink_example.sh
           #   cd ..
           # endGroup
-          startGroup "Check that the diff is empty"
-            git -c color.ui=always diff --exit-code
+          startGroup "Translate the alloc library"
+            cd third-party/rust/library/alloc
+            cp ../../../../rust-toolchain ./
+            cargo build
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
+            cd ../../../..
+          endGroup
+          startGroup "Translate the core library"
+            cd third-party/rust/library/core
+            cp ../../../../rust-toolchain ./
+            cargo build
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
+            cd ../../../..
+          endGroup
+          startGroup "Check that the diff is empty (excluding third-party)"
+            git -c color.ui=always diff --exit-code --ignore-submodules=dirty
           endGroup
           startGroup "Compile Coq translations"
             cd CoqOfRust
