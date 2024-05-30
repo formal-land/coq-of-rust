@@ -578,7 +578,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
                                               [
-                                                Ty.dyn [ ("core::any::Any::Trait", []) ];
+                                                Ty.dyn
+                                                  [
+                                                    ("core::any::Any::Trait", []);
+                                                    ("core::marker::Send::AutoTrait", [])
+                                                  ];
                                                 Ty.path "alloc::alloc::Global"
                                               ]
                                           ],

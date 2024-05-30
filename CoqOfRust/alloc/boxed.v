@@ -4450,6 +4450,14 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
+  
+  Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
+    Definition Self (A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [ Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]; A ].
+    
     (*
         pub fn downcast<T: Any>(self) -> Result<Box<T, A>, Self> {
             if self.is::<T>() { unsafe { Ok(self.downcast_unchecked::<T>()) } } else { Err(self) }
@@ -4472,7 +4480,11 @@ Module boxed.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ],
                               "is",
                               [ T ]
                             |),
@@ -4488,7 +4500,14 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                                [
+                                  Ty.dyn
+                                    [
+                                      ("core::any::Any::Trait", []);
+                                      ("core::marker::Send::AutoTrait", [])
+                                    ];
+                                  A
+                                ],
                               "downcast_unchecked",
                               [ T ]
                             |),
@@ -4549,7 +4568,11 @@ Module boxed.
                                       UnOp.Pure.not
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                            Ty.dyn
+                                              [
+                                                ("core::any::Any::Trait", []);
+                                                ("core::marker::Send::AutoTrait", [])
+                                              ],
                                             "is",
                                             [ T ]
                                           |),
@@ -4583,7 +4606,11 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                      [
+                        Ty.dyn
+                          [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
+                        A
+                      ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -4616,6 +4643,22 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
+  
+  Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
+    Definition Self (A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [
+          Ty.dyn
+            [
+              ("core::any::Any::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          A
+        ].
+    
     (*
         pub fn downcast<T: Any>(self) -> Result<Box<T, A>, Self> {
             if self.is::<T>() { unsafe { Ok(self.downcast_unchecked::<T>()) } } else { Err(self) }
@@ -4638,7 +4681,12 @@ Module boxed.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ],
                               "is",
                               [ T ]
                             |),
@@ -4654,7 +4702,15 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
-                                [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                                [
+                                  Ty.dyn
+                                    [
+                                      ("core::any::Any::Trait", []);
+                                      ("core::marker::Sync::AutoTrait", []);
+                                      ("core::marker::Send::AutoTrait", [])
+                                    ];
+                                  A
+                                ],
                               "downcast_unchecked",
                               [ T ]
                             |),
@@ -4716,7 +4772,12 @@ Module boxed.
                                       UnOp.Pure.not
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                            Ty.dyn
+                                              [
+                                                ("core::any::Any::Trait", []);
+                                                ("core::marker::Sync::AutoTrait", []);
+                                                ("core::marker::Send::AutoTrait", [])
+                                              ],
                                             "is",
                                             [ T ]
                                           |),
@@ -4750,7 +4811,15 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                      [
+                        Ty.dyn
+                          [
+                            ("core::any::Any::Trait", []);
+                            ("core::marker::Sync::AutoTrait", []);
+                            ("core::marker::Send::AutoTrait", [])
+                          ];
+                        A
+                      ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -4783,9 +4852,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
-  
-  
+  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
     Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ].
@@ -6155,6 +6222,12 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+  End Impl_Dyn_core_error_Error_Trait.
+  
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ].
+    
     (*
         pub fn downcast<T: Error + 'static>(self: Box<Self>) -> Result<Box<T>, Box<dyn Error + Send>> {
             let err: Box<dyn Error> = self;
@@ -6189,7 +6262,11 @@ Module boxed.
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
+                      [
+                        Ty.dyn
+                          [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", [])
+                          ];
+                        Ty.path "alloc::alloc::Global"
                       ];
                     Ty.function
                       [
@@ -6206,7 +6283,11 @@ Module boxed.
                       (Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         [
-                          Ty.dyn [ ("core::error::Error::Trait", []) ];
+                          Ty.dyn
+                            [
+                              ("core::error::Error::Trait", []);
+                              ("core::marker::Send::AutoTrait", [])
+                            ];
                           Ty.path "alloc::alloc::Global"
                         ])
                   ]
@@ -6238,7 +6319,11 @@ Module boxed.
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
                                           [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.dyn
+                                              [
+                                                ("core::error::Error::Trait", []);
+                                                ("core::marker::Send::AutoTrait", [])
+                                              ];
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "from_raw",
@@ -6273,6 +6358,17 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
+  
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn
+        [
+          ("core::error::Error::Trait", []);
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
+        ].
+    
     (*
         pub fn downcast<T: Error + 'static>(self: Box<Self>) -> Result<Box<T>, Box<Self>> {
             let err: Box<dyn Error> = self;
@@ -6307,7 +6403,14 @@ Module boxed.
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
+                      [
+                        Ty.dyn
+                          [
+                            ("core::error::Error::Trait", []);
+                            ("core::marker::Sync::AutoTrait", []);
+                            ("core::marker::Send::AutoTrait", [])
+                          ];
+                        Ty.path "alloc::alloc::Global"
                       ];
                     Ty.function
                       [
@@ -6324,7 +6427,12 @@ Module boxed.
                       (Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         [
-                          Ty.dyn [ ("core::error::Error::Trait", []) ];
+                          Ty.dyn
+                            [
+                              ("core::error::Error::Trait", []);
+                              ("core::marker::Sync::AutoTrait", []);
+                              ("core::marker::Send::AutoTrait", [])
+                            ];
                           Ty.path "alloc::alloc::Global"
                         ])
                   ]
@@ -6356,7 +6464,12 @@ Module boxed.
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
                                           [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.dyn
+                                              [
+                                                ("core::error::Error::Trait", []);
+                                                ("core::marker::Sync::AutoTrait", []);
+                                                ("core::marker::Send::AutoTrait", [])
+                                              ];
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "from_raw",
@@ -6391,9 +6504,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
-  End Impl_Dyn_core_error_Error_Trait.
-  
-  
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   Module Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
     Definition Self (E : Ty.t) : Ty.t :=
@@ -6436,11 +6547,19 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
   End Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+  Module Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+        [
+          Ty.dyn
+            [
+              ("core::error::Error::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          Ty.path "alloc::alloc::Global"
+        ].
     
     (*
         fn from(err: E) -> Box<dyn Error + Send + Sync + 'a> {
@@ -6475,13 +6594,21 @@ Module boxed.
         (Self E)
         (* Trait polymorphic types *) [ (* T *) E ]
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
-  End Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+  End Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+  Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+        [
+          Ty.dyn
+            [
+              ("core::error::Error::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          Ty.path "alloc::alloc::Global"
+        ].
     
     (*
         fn from(err: String) -> Box<dyn Error + Send + Sync> {
@@ -6538,6 +6665,14 @@ Module boxed.
         Self
         (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  
+  Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+    
     (*
         fn from(str_err: String) -> Box<dyn Error> {
             let err1: Box<dyn Error + Send + Sync> = From::from(str_err);
@@ -6561,7 +6696,12 @@ Module boxed.
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         [
-                          Ty.dyn [ ("core::error::Error::Trait", []) ];
+                          Ty.dyn
+                            [
+                              ("core::error::Error::Trait", []);
+                              ("core::marker::Sync::AutoTrait", []);
+                              ("core::marker::Send::AutoTrait", [])
+                            ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       [ Ty.path "alloc::string::String" ],
@@ -6585,12 +6725,19 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  
-  Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+  Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+        [
+          Ty.dyn
+            [
+              ("core::error::Error::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          Ty.path "alloc::alloc::Global"
+        ].
     
     (*
         fn from(err: &str) -> Box<dyn Error + Send + Sync + 'a> {
@@ -6609,7 +6756,15 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
-                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+                  [
+                    Ty.dyn
+                      [
+                        ("core::error::Error::Trait", []);
+                        ("core::marker::Sync::AutoTrait", []);
+                        ("core::marker::Send::AutoTrait", [])
+                      ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 [ Ty.path "alloc::string::String" ],
                 "from",
                 []
@@ -6636,6 +6791,14 @@ Module boxed.
         Self
         (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  
+  Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+    
     (*
         fn from(err: &str) -> Box<dyn Error> {
             From::from(String::from(err))
@@ -6682,12 +6845,19 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  
-  Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+  Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
-        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+        [
+          Ty.dyn
+            [
+              ("core::error::Error::Trait", []);
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
+            ];
+          Ty.path "alloc::alloc::Global"
+        ].
     
     (*
         fn from(err: Cow<'b, str>) -> Box<dyn Error + Send + Sync + 'a> {
@@ -6706,7 +6876,15 @@ Module boxed.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
-                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+                  [
+                    Ty.dyn
+                      [
+                        ("core::error::Error::Trait", []);
+                        ("core::marker::Sync::AutoTrait", []);
+                        ("core::marker::Send::AutoTrait", [])
+                      ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 [ Ty.path "alloc::string::String" ],
                 "from",
                 []
@@ -6734,6 +6912,14 @@ Module boxed.
         (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  
+  Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
+    
     (*
         fn from(err: Cow<'a, str>) -> Box<dyn Error> {
             From::from(String::from(err))
@@ -6780,7 +6966,6 @@ Module boxed.
         [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
-  
   
   Module Impl_core_error_Error_where_core_error_Error_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
