@@ -6,7 +6,6 @@ examples/default/examples/ink_contracts/simulations/erc721.v
 revm/opcode.v
 examples/default/examples/ink_contracts/proofs/erc721.v
 move/
-alloc/boxed.v
 core/any.v
 core/array/mod.v
 core/cmp/bytewise.v
