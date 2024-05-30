@@ -116,62 +116,27 @@ Module Pointer.
   End Path.
 
   Module Mutable.
-    Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
+    Inductive t (Value A : Set) : Set :=
     | Make {Address Big_A : Set}
       (address : Address)
       (path : Path.t)
       (big_to_value : Big_A -> Value)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _ _}.
-
-    Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
-        (mutable : t Value to_value)
-        (index : Index.t)
-        (sub_projection : A -> option Sub_A)
-        (sub_injection : A -> Sub_A -> option A)
-        (sub_to_value : Sub_A -> Value) :
-        t Value sub_to_value :=
-      let 'Make address path big_to_value projection injection := mutable in
-      Make
-        address
-        (path ++ [index])
-        big_to_value
-        (fun big_a =>
-          match projection big_a with
-          | Some a => sub_projection a
-          | None => None
-          end
-        )
-        (fun big_a new_sub_a =>
-          match projection big_a with
-          | Some a =>
-            match sub_injection a new_sub_a with
-            | Some new_a => injection big_a new_a
-            | None => None
-            end
-          | None => None
-          end
-        ).
+    Arguments Make {_ _ _ _}.
   End Mutable.
 
-  Inductive t (Value : Set) : Set :=
-  | Immediate (value : Value)
-  | Mutable {A : Set} {to_value : A -> Value} (mutable : Mutable.t Value to_value).
-  Arguments Immediate {_}.
-  Arguments Mutable {_ _ _}.
+  Module Core.
+    Inductive t (Value A : Set) : Set :=
+    | Immediate (value : Value)
+    | Mutable (mutable : Mutable.t Value A).
+    Arguments Immediate {_ _}.
+    Arguments Mutable {_ _}.
+  End Core.
 
-  Definition mutable {Value Address A : Set}
-      (address : Address)
-      (to_value : A -> Value) :
-      t Value :=
-    Mutable (to_value := to_value) (Mutable.Make
-      address
-      []
-      to_value
-      (fun x => Some x)
-      (fun _ y => Some y)
-    ).
+  Inductive t (Value : Set) : Set :=
+  | Make {A : Set} (to_value : A -> Value) (core : Core.t Value A).
+  Arguments Make {_ _}.
 End Pointer.
 
 Module Value.
@@ -190,7 +155,7 @@ Module Value.
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
-  | Closure : {'(t, M) : Set * Set @ list t -> M} -> t
+  | Closure : {'(Value, M) : (Set * Set) @ list Value -> M} -> t
   (** A special value that does not appear in the translation, but that we use
       to implement primitive functions over values that are not total. We
       statically know, from the fact that the source Rust code is well-typed,
@@ -357,14 +322,9 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-  | StateWrite {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (value : Value.t)
-  | GetSubPointer {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (index : Pointer.Index.t)
+  | StateRead (pointer : Pointer.t Value.t)
+  | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
+  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -664,17 +624,13 @@ Definition alloc (v : Value.t) : M :=
 
 Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.StateRead mutable)
+  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
   | _ => impossible
   end.
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => impossible
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.StateWrite mutable update)
+  | Value.Pointer pointer => call_primitive (Primitive.StateWrite pointer update)
   | _ => impossible
   end.
 
@@ -686,13 +642,8 @@ Definition copy (r : Value.t) : M :=
     access in an array, we do a [break_match]. *)
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) =>
-    match Value.read_path v [index] with
-    | Some v => alloc v
-    | None => break_match
-    end
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.GetSubPointer mutable index)
+  | Value.Pointer pointer =>
+    call_primitive (Primitive.GetSubPointer pointer index)
   | _ => impossible
   end.
 
@@ -870,7 +821,7 @@ Parameter pointer_coercion : Value.t -> Value.t.
 Parameter rust_cast : Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
-  Value.Closure (existS (Value.t, M) f).
+  Value.Closure (existS (_, _) f).
 
 Definition constructor_as_closure (constructor : string) : Value.t :=
   closure (fun args =>
