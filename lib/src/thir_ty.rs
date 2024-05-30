@@ -95,6 +95,12 @@ pub(crate) fn compile_type<'a>(
                                 compile_def_id(env, existential_trait_ref.def_id),
                                 Path::new(&["Trait"]),
                             ])),
+                            rustc_middle::ty::ExistentialPredicate::AutoTrait(def_id) => {
+                                Some(Path::concat(&[
+                                    compile_def_id(env, def_id),
+                                    Path::new(&["AutoTrait"]),
+                                ]))
+                            }
                             _ => None,
                         },
                     },
