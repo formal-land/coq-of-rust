@@ -1,3 +1,6 @@
 [submodule "ink"]
 	path = ink
 	url = https://github.com/formal-land/ink
+[submodule "third-party/rust"]
+	path = third-party/rust
+	url = https://github.com/rust-lang/rust.git

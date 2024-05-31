@@ -286,142 +286,6 @@ Module error.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
     (*
-        pub fn is<T: Error + 'static>(&self) -> bool {
-            <dyn Error + 'static>::is::<T>(self)
-        }
-    *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "is",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    
-    (*
-        pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
-            <dyn Error + 'static>::downcast_ref::<T>(self)
-        }
-    *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "downcast_ref",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    
-    (*
-        pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
-            <dyn Error + 'static>::downcast_mut::<T>(self)
-        }
-    *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "downcast_mut",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    (*
-        pub fn is<T: Error + 'static>(&self) -> bool {
-            <dyn Error + 'static>::is::<T>(self)
-        }
-    *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "is",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    
-    (*
-        pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
-            <dyn Error + 'static>::downcast_ref::<T>(self)
-        }
-    *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "downcast_ref",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    
-    (*
-        pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
-            <dyn Error + 'static>::downcast_mut::<T>(self)
-        }
-    *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::error::Error::Trait", []) ],
-              "downcast_mut",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    (*
         pub fn sources(&self) -> Source<'_> {
             // You may think this method would be better in the Error trait, and you'd be right.
             // Unfortunately that doesn't work, not because of the object safety rules but because we
@@ -456,7 +320,158 @@ Module error.
     Axiom AssociatedFunction_sources : M.IsAssociatedFunction Self "sources" sources.
   End Impl_Dyn_core_error_Error_Trait.
   
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ].
+    
+    (*
+        pub fn is<T: Error + 'static>(&self) -> bool {
+            <dyn Error + 'static>::is::<T>(self)
+        }
+    *)
+    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "is",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    
+    (*
+        pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
+            <dyn Error + 'static>::downcast_ref::<T>(self)
+        }
+    *)
+    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "downcast_ref",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    
+    (*
+        pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
+            <dyn Error + 'static>::downcast_mut::<T>(self)
+        }
+    *)
+    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "downcast_mut",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn
+        [
+          ("core::error::Error::Trait", []);
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
+        ].
+    
+    (*
+        pub fn is<T: Error + 'static>(&self) -> bool {
+            <dyn Error + 'static>::is::<T>(self)
+        }
+    *)
+    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "is",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    
+    (*
+        pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
+            <dyn Error + 'static>::downcast_ref::<T>(self)
+        }
+    *)
+    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "downcast_ref",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    
+    (*
+        pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
+            <dyn Error + 'static>::downcast_mut::<T>(self)
+        }
+    *)
+    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::error::Error::Trait", []) ],
+              "downcast_mut",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   
   (*

@@ -77,87 +77,102 @@ Module any.
         Self
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-    (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.debug_struct("Any").finish_non_exhaustive()
-        }
-    *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::fmt::builders::DebugStruct",
-              "finish_non_exhaustive",
-              []
-            |),
-            [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
-                |)
-              |)
-            ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::fmt::Debug"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-    (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.debug_struct("Any").finish_non_exhaustive()
-        }
-    *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::fmt::builders::DebugStruct",
-              "finish_non_exhaustive",
-              []
-            |),
-            [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
-                |)
-              |)
-            ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::fmt::Debug"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait.
   
+  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ].
+    
+    (*
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.debug_struct("Any").finish_non_exhaustive()
+        }
+    *)
+    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugStruct",
+              "finish_non_exhaustive",
+              []
+            |),
+            [
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_struct",
+                    []
+                  |),
+                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+                |)
+              |)
+            ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
+  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn
+        [
+          ("core::any::Any::Trait", []);
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
+        ].
+    
+    (*
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            f.debug_struct("Any").finish_non_exhaustive()
+        }
+    *)
+    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugStruct",
+              "finish_non_exhaustive",
+              []
+            |),
+            [
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_struct",
+                    []
+                  |),
+                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+                |)
+              |)
+            ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait.
     Definition Self : Ty.t := Ty.dyn [ ("core::any::Any::Trait", []) ].
@@ -485,237 +500,252 @@ Module any.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-    (*
-        pub fn is<T: Any>(&self) -> bool {
-            <dyn Any>::is::<T>(self)
-        }
-    *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    
-    (*
-        pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
-            <dyn Any>::downcast_ref::<T>(self)
-        }
-    *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    
-    (*
-        pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
-            <dyn Any>::downcast_mut::<T>(self)
-        }
-    *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    
-    (*
-        pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
-            // SAFETY: guaranteed by caller
-            unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
-        }
-    *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref_unchecked",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
-    
-    (*
-        pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
-            // SAFETY: guaranteed by caller
-            unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
-        }
-    *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut_unchecked",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-    (*
-        pub fn is<T: Any>(&self) -> bool {
-            <dyn Any>::is::<T>(self)
-        }
-    *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    
-    (*
-        pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
-            <dyn Any>::downcast_ref::<T>(self)
-        }
-    *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    
-    (*
-        pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
-            <dyn Any>::downcast_mut::<T>(self)
-        }
-    *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    
-    (*
-        pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
-            // SAFETY: guaranteed by caller
-            unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
-        }
-    *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref_unchecked",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
-    
-    (*
-        pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
-            // SAFETY: guaranteed by caller
-            unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
-        }
-    *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut_unchecked",
-              [ T ]
-            |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait.
   
+  Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ].
+    
+    (*
+        pub fn is<T: Any>(&self) -> bool {
+            <dyn Any>::is::<T>(self)
+        }
+    *)
+    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    
+    (*
+        pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
+            <dyn Any>::downcast_ref::<T>(self)
+        }
+    *)
+    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_ref",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    
+    (*
+        pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
+            <dyn Any>::downcast_mut::<T>(self)
+        }
+    *)
+    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_mut",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    
+    (*
+        pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
+            // SAFETY: guaranteed by caller
+            unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
+        }
+    *)
+    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_ref_unchecked",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref_unchecked :
+      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    
+    (*
+        pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
+            // SAFETY: guaranteed by caller
+            unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
+        }
+    *)
+    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_mut_unchecked",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut_unchecked :
+      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
+  End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
+  Module Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+    Definition Self : Ty.t :=
+      Ty.dyn
+        [
+          ("core::any::Any::Trait", []);
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
+        ].
+    
+    (*
+        pub fn is<T: Any>(&self) -> bool {
+            <dyn Any>::is::<T>(self)
+        }
+    *)
+    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    
+    (*
+        pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
+            <dyn Any>::downcast_ref::<T>(self)
+        }
+    *)
+    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_ref",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    
+    (*
+        pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
+            <dyn Any>::downcast_mut::<T>(self)
+        }
+    *)
+    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_mut",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    
+    (*
+        pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
+            // SAFETY: guaranteed by caller
+            unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
+        }
+    *)
+    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_ref_unchecked",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_ref_unchecked :
+      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    
+    (*
+        pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
+            // SAFETY: guaranteed by caller
+            unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
+        }
+    *)
+    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+      match τ, α with
+      | [ T ], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "downcast_mut_unchecked",
+              [ T ]
+            |),
+            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+          |)))
+      | _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_downcast_mut_unchecked :
+      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
+  End Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   (* StructRecord
     {

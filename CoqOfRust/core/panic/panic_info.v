@@ -9,7 +9,11 @@ Module panic.
         ty_params := [];
         fields :=
           [
-            ("payload", Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]);
+            ("payload",
+              Ty.apply
+                (Ty.path "&")
+                [ Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                ]);
             ("message",
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -658,7 +662,11 @@ Module panic.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                            Ty.dyn
+                                              [
+                                                ("core::any::Any::Trait", []);
+                                                ("core::marker::Send::AutoTrait", [])
+                                              ],
                                             "downcast_ref",
                                             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                           |),
