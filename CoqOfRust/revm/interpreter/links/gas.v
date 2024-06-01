@@ -77,18 +77,23 @@ Module Gas.
 End Gas.
 
 Module Impl_Clone.
+  Definition run_clone : clone.Clone.Run_clone Gas.t (Φ Gas.t).
+  Proof.
+    eexists; split.
+    { eapply IsTraitMethod.Explicit.
+      { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
+      { reflexivity. }
+    }
+    { intros.
+      run_symbolic.
+    }
+  Defined.
+
   Definition run_impl : clone.Clone.RunImpl Gas.t (Φ Gas.t).
   Proof.
     constructor.
     { (* clone *)
-      eexists; split.
-      { eapply IsTraitMethod.Explicit.
-        { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
-        { reflexivity. }
-      }
-      { intros.
-        run_symbolic.
-      }
+      exact run_clone.
     }
   Defined.
 End Impl_Clone.
