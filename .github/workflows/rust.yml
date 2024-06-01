@@ -76,7 +76,42 @@ jobs:
             rsync -av src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
-          startGroup "Check that the diff is empty (excluding third-party)"
+          startGroup "Translate Revm"
+            cd third-party/revm
+            cp ../../rust-toolchain ./
+            cd crates
+            # We compile each library twice to avoid errors. TODO: investigate why this is needed
+            # interpreter
+            cd interpreter
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/revm/interpreter/ --include='*/' --include='*.v' --exclude='*'
+            cd ..
+            # precompile
+            cd precompile
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/revm/precompile/ --include='*/' --include='*.v' --exclude='*'
+            cd ..
+            # primitives
+            cd primitives
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/revm/primitives/ --include='*/' --include='*.v' --exclude='*'
+            cd ..
+            # revm
+            cd revm
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -av src/ ../../../../CoqOfRust/revm/revm/ --include='*/' --include='*.v' --exclude='*'
+            cd ..
+            cd ../../..
+          endGroup
+          startGroup "Check that the diff is empty (excluding submodules)"
             git -c color.ui=always diff --exit-code --ignore-submodules=dirty
           endGroup
           startGroup "Compile Coq translations"
