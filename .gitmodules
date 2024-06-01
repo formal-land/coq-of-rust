@@ -4,3 +4,6 @@
 [submodule "third-party/rust"]
 	path = third-party/rust
 	url = https://github.com/rust-lang/rust.git
+[submodule "third-party/revm"]
+	path = third-party/revm
+	url = https://github.com/bluealloy/revm.git
