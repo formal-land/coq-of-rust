@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
+Require core.links.default.
 Require Import revm.interpreter.gas.
 
 Import Run.
@@ -91,6 +92,54 @@ Module Impl_Clone.
     }
   Defined.
 End Impl_Clone.
+
+Module Impl_Default.
+  Definition run_default : default.Default.Run_default Gas.t (Φ Gas.t).
+  Proof.
+    eexists; split.
+    { eapply IsTraitMethod.Explicit.
+      { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements. }
+      { reflexivity. }
+    }
+    { intros; cbn.
+      destruct default.Impl_Default_for_u64.run_default
+        as [default_u64 [H_default_u64 run_default_u64]].
+      destruct default.Impl_Default_for_i64.run_default
+        as [default_i64 [H_default_i64 run_default_i64]].
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_u64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_u64.
+      }
+      intros; cbn.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_u64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_u64.
+      }
+      intros; cbn.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_i64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_i64.
+      }
+      intros; cbn.
+      run_symbolic.
+      now instantiate (1 := Gas.Build_t _ _ _).
+    }
+  Defined.
+
+  Definition run_impl : default.Default.RunImpl Gas.t (Φ Gas.t).
+  Proof.
+    constructor.
+    { (* default *)
+      exact run_default.
+    }
+  Defined.
+End Impl_Default.
 
 Module Impl_revm_interpreter_gas_Gas.
   Definition Self : Set := Gas.t.
