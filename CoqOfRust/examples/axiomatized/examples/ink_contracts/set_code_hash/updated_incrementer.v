@@ -44,7 +44,7 @@ End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
 Axiom Hash :
   (Ty.path "updated_incrementer::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum Error

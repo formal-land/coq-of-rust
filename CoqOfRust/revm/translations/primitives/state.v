@@ -22,9 +22,15 @@ Module state.
           Ty.tuple
             [
               Ty.path "alloy_primitives::bits::address::Address";
-              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []
             ];
-          Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+          Ty.apply
+            (Ty.path "ruint::Uint")
+            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+            [];
           Ty.path "std::hash::random::RandomState"
         ]).
   
@@ -34,7 +40,10 @@ Module state.
         (Ty.path "std::collections::hash::map::HashMap")
         []
         [
-          Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+          Ty.apply
+            (Ty.path "ruint::Uint")
+            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+            [];
           Ty.path "revm_primitives::state::StorageSlot";
           Ty.path "std::hash::random::RandomState"
         ]).
@@ -52,7 +61,10 @@ Module state.
               (Ty.path "std::collections::hash::map::HashMap")
               []
               [
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [];
                 Ty.path "revm_primitives::state::StorageSlot";
                 Ty.path "std::hash::random::RandomState"
               ]);
@@ -101,7 +113,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -149,7 +161,10 @@ Module state.
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -183,7 +198,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -246,7 +261,10 @@ Module state.
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -257,7 +275,8 @@ Module state.
                         [
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [];
                           Ty.path "revm_primitives::state::StorageSlot";
                           Ty.path "std::hash::random::RandomState"
@@ -303,7 +322,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -347,7 +366,7 @@ Module state.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -389,7 +408,10 @@ Module state.
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -411,7 +433,7 @@ Module state.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -450,7 +472,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -476,7 +498,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -540,7 +562,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -570,7 +592,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -613,7 +635,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -655,7 +677,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -693,7 +715,7 @@ Module state.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -716,7 +738,7 @@ Module state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (M.read (| M.get_constant (| "revm_primitives::state::Loaded" |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -764,7 +786,10 @@ Module state.
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -776,7 +801,7 @@ Module state.
               ("status",
                 M.read (| M.get_constant (| "revm_primitives::state::LoadedAsNotExisting" |) |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_not_existing :
@@ -815,7 +840,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_mark_selfdestruct :
@@ -854,7 +879,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unmark_selfdestruct :
@@ -885,7 +910,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::SelfDestructed" |) |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_selfdestructed :
@@ -924,7 +949,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_mark_touch : M.IsAssociatedFunction Self "mark_touch" mark_touch.
@@ -962,7 +987,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unmark_touch : M.IsAssociatedFunction Self "unmark_touch" unmark_touch.
@@ -992,7 +1017,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::Touched" |) |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_touched : M.IsAssociatedFunction Self "is_touched" is_touched.
@@ -1030,7 +1055,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_mark_created : M.IsAssociatedFunction Self "mark_created" mark_created.
@@ -1068,7 +1093,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unmark_created :
@@ -1103,7 +1128,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::LoadedAsNotExisting" |) |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_loaded_as_not_existing :
@@ -1134,7 +1159,7 @@ Module state.
               M.read (| M.get_constant (| "revm_primitives::state::Created" |) |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_created : M.IsAssociatedFunction Self "is_created" is_created.
@@ -1163,7 +1188,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -1185,7 +1210,10 @@ Module state.
                 (Ty.path "std::collections::hash::map::Iter")
                 []
                 [
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [];
                   Ty.path "revm_primitives::state::StorageSlot"
                 ],
               [],
@@ -1207,7 +1235,10 @@ Module state.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       []
                                   ];
                                 Ty.apply
@@ -1228,7 +1259,10 @@ Module state.
                     (Ty.path "std::collections::hash::map::HashMap")
                     []
                     [
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [];
                       Ty.path "revm_primitives::state::StorageSlot";
                       Ty.path "std::hash::random::RandomState"
                     ],
@@ -1248,30 +1282,31 @@ Module state.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let slot := M.alloc (| γ1_1 |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm_primitives::state::StorageSlot",
-                                  "is_changed",
-                                  []
-                                |),
-                                [ M.read (| M.read (| slot |) |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let slot := M.alloc (| γ1_1 |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "revm_primitives::state::StorageSlot",
+                                    "is_changed",
+                                    []
+                                  |),
+                                  [ M.read (| M.read (| slot |) |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_changed_storage_slots :
@@ -1306,7 +1341,10 @@ Module state.
                       (Ty.path "std::collections::hash::map::HashMap")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "revm_primitives::state::StorageSlot";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -1317,7 +1355,7 @@ Module state.
                 |));
               ("status", M.read (| M.get_constant (| "revm_primitives::state::Loaded" |) |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1336,9 +1374,15 @@ Module state.
       fields :=
         [
           ("previous_or_original_value",
-            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("present_value",
-            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              [])
         ];
     } *)
   
@@ -1377,7 +1421,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1404,7 +1448,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -1421,7 +1468,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -1435,7 +1485,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1461,7 +1511,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "default",
                     []
@@ -1472,7 +1525,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "default",
                     []
@@ -1480,7 +1536,7 @@ Module state.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1516,8 +1572,16 @@ Module state.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ],
                 "eq",
                 []
               |),
@@ -1538,8 +1602,16 @@ Module state.
               (M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                   "eq",
                   []
                 |),
@@ -1557,7 +1629,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1587,7 +1659,7 @@ Module state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1615,7 +1687,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -1634,7 +1709,10 @@ Module state.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::hash::Hash",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
                   [],
                   "hash",
                   [ __H ]
@@ -1650,7 +1728,7 @@ Module state.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1683,7 +1761,7 @@ Module state.
               ("previous_or_original_value", M.read (| original |));
               ("present_value", M.read (| original |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1708,7 +1786,7 @@ Module state.
               ("previous_or_original_value", M.read (| previous_or_original_value |));
               ("present_value", M.read (| present_value |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_changed : M.IsAssociatedFunction Self "new_changed" new_changed.
@@ -1726,8 +1804,16 @@ Module state.
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [],
+              [
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  []
+              ],
               "ne",
               []
             |),
@@ -1744,7 +1830,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_changed : M.IsAssociatedFunction Self "is_changed" is_changed.
@@ -1766,7 +1852,7 @@ Module state.
               "previous_or_original_value"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_original_value :
@@ -1789,7 +1875,7 @@ Module state.
               "present_value"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_present_value :
@@ -1803,10 +1889,17 @@ Module state.
       ty_params := [];
       fields :=
         [
-          ("balance", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("balance",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("nonce", Ty.path "u64");
           ("code_hash",
-            Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ Value.Integer 32 ] []);
+            Ty.apply
+              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+              [ Value.Integer IntegerKind.Usize 32 ]
+              []);
           ("code",
             Ty.apply
               (Ty.path "core::option::Option")
@@ -1831,7 +1924,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -1861,7 +1957,7 @@ Module state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [],
                     [],
                     "clone",
@@ -1896,7 +1992,7 @@ Module state.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1954,7 +2050,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2005,7 +2101,7 @@ Module state.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2055,9 +2151,9 @@ Module state.
                       []
                     |)
                   ]);
-              ("nonce", Value.Integer 0)
+              ("nonce", Value.Integer IntegerKind.U64 0)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2089,8 +2185,16 @@ Module state.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                   "eq",
                   []
                 |),
@@ -2108,21 +2212,22 @@ Module state.
                 ]
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::state::AccountInfo",
                       "nonce"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_primitives::state::AccountInfo",
                       "nonce"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
               (M.call_closure (|
@@ -2130,12 +2235,12 @@ Module state.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer 32 ]
+                    [ Value.Integer IntegerKind.Usize 32 ]
                     [],
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       []
                   ],
                   "eq",
@@ -2155,7 +2260,7 @@ Module state.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2188,7 +2293,10 @@ Module state.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ H ]
@@ -2224,7 +2332,7 @@ Module state.
                     "core::hash::Hash",
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [],
                     [],
                     "hash",
@@ -2242,7 +2350,7 @@ Module state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2282,7 +2390,7 @@ Module state.
               ("code", Value.StructTuple "core::option::Option::Some" [ M.read (| code |) ]);
               ("code_hash", M.read (| code_hash |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2312,7 +2420,7 @@ Module state.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_without_code : M.IsAssociatedFunction Self "without_code" without_code.
@@ -2346,12 +2454,12 @@ Module state.
                         "core::cmp::PartialEq",
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [],
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             []
                         ],
                         "eq",
@@ -2376,8 +2484,16 @@ Module state.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                         "eq",
                         []
@@ -2393,19 +2509,20 @@ Module state.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::state::AccountInfo",
                         "nonce"
                       |)
-                    |))
-                    (Value.Integer 0)))
+                    |),
+                    Value.Integer IntegerKind.U64 0
+                  |)))
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -2420,16 +2537,17 @@ Module state.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.path "revm_primitives::state::AccountInfo",
                 "is_empty",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
@@ -2454,17 +2572,18 @@ Module state.
               [ M.read (| self |) ]
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::state::AccountInfo",
                     "nonce"
                   |)
-                |))
-                (Value.Integer 0)))
+                |),
+                Value.Integer IntegerKind.U64 0
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_has_no_code_and_nonce :
@@ -2487,7 +2606,7 @@ Module state.
               "code_hash"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_code_hash : M.IsAssociatedFunction Self "code_hash" code_hash.
@@ -2507,12 +2626,12 @@ Module state.
               "core::cmp::PartialEq",
               Ty.apply
                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                [ Value.Integer 32 ]
+                [ Value.Integer IntegerKind.Usize 32 ]
                 [],
               [
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   []
               ],
               "eq",
@@ -2527,7 +2646,7 @@ Module state.
               M.get_constant (| "revm_primitives::utilities::KECCAK_EMPTY" |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty_code_hash :
@@ -2560,7 +2679,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_bytecode :
@@ -2591,7 +2710,7 @@ Module state.
               []
             |))
             [ ("balance", M.read (| balance |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_balance : M.IsAssociatedFunction Self "from_balance" from_balance.

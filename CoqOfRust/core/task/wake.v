@@ -37,21 +37,22 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -75,7 +76,7 @@ Module task.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -121,7 +122,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -149,7 +150,7 @@ Module task.
             Value.StructRecord
               "core::task::wake::RawWaker"
               [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -171,7 +172,7 @@ Module task.
                 "data"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -193,7 +194,7 @@ Module task.
                 "vtable"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
@@ -272,73 +273,77 @@ Module task.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -396,7 +401,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -454,7 +459,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -494,7 +499,7 @@ Module task.
                 ("wake_by_ref", M.read (| wake_by_ref |));
                 ("drop", M.read (| drop |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -580,7 +585,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -652,7 +657,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
@@ -674,7 +679,7 @@ Module task.
                 "waker"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
@@ -696,7 +701,7 @@ Module task.
                 "local_waker"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
@@ -755,7 +760,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
@@ -809,7 +814,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -900,7 +905,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -958,7 +963,7 @@ Module task.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
@@ -1055,7 +1060,7 @@ Module task.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
@@ -1072,7 +1077,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let waker := M.alloc (| waker |) in
             M.struct_record_update (M.read (| self |)) [ ("waker", M.read (| waker |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
@@ -1091,7 +1096,7 @@ Module task.
             M.struct_record_update
               (M.read (| self |))
               [ ("local_waker", M.read (| local_waker |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
@@ -1111,7 +1116,7 @@ Module task.
               (M.read (| self |))
               [ ("ext", Value.StructTuple "core::task::wake::ExtData::Some" [ M.read (| data |) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
@@ -1185,7 +1190,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
@@ -1330,7 +1335,7 @@ Module task.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
@@ -1381,7 +1386,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
@@ -1450,7 +1455,7 @@ Module task.
                               let b_vtable := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq (M.read (| a_data |)) (M.read (| b_data |)),
+                                  BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_function (|
@@ -1466,7 +1471,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
@@ -1482,7 +1487,7 @@ Module task.
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             Value.StructRecord "core::task::wake::Waker" [ ("waker", M.read (| waker |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
@@ -1497,7 +1502,7 @@ Module task.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
@@ -1517,7 +1522,7 @@ Module task.
               "core::task::wake::Waker",
               "waker"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
@@ -1578,7 +1583,7 @@ Module task.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1603,15 +1608,16 @@ Module task.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::Waker",
                                   "will_wake",
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| source |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -1633,7 +1639,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1694,7 +1700,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1793,7 +1799,7 @@ Module task.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1921,7 +1927,7 @@ Module task.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
@@ -1972,7 +1978,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
@@ -2041,7 +2047,7 @@ Module task.
                               let b_vtable := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq (M.read (| a_data |)) (M.read (| b_data |)),
+                                  BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_function (|
@@ -2057,7 +2063,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
@@ -2073,7 +2079,7 @@ Module task.
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             Value.StructRecord "core::task::wake::LocalWaker" [ ("waker", M.read (| waker |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
@@ -2088,7 +2094,7 @@ Module task.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
@@ -2108,7 +2114,7 @@ Module task.
               "core::task::wake::LocalWaker",
               "waker"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
@@ -2169,7 +2175,7 @@ Module task.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2194,15 +2200,16 @@ Module task.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::LocalWaker",
                                   "will_wake",
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| source |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -2224,7 +2231,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2261,7 +2268,7 @@ Module task.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2320,7 +2327,7 @@ Module task.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2419,7 +2426,7 @@ Module task.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

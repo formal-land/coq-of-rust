@@ -46,7 +46,7 @@ Module collections.
                       [ M.read (| iter |) ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -245,7 +245,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

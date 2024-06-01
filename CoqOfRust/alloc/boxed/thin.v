@@ -86,7 +86,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -145,28 +145,29 @@ Module boxed.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let ptr := M.copy (| γ |) in
-                                    Value.StructRecord
-                                      "alloc::boxed::thin::ThinBox"
-                                      [
-                                        ("ptr", M.read (| ptr |));
-                                        ("_marker",
-                                          Value.StructTuple "core::marker::PhantomData" [])
-                                      ]))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let ptr := M.copy (| γ |) in
+                                      Value.StructRecord
+                                        "alloc::boxed::thin::ThinBox"
+                                        [
+                                          ("ptr", M.read (| ptr |));
+                                          ("_marker",
+                                            Value.StructTuple "core::marker::PhantomData" [])
+                                        ]))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_try_new :
@@ -204,7 +205,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_meta :
@@ -239,7 +240,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data :
@@ -264,7 +265,7 @@ Module boxed.
                 "alloc::boxed::thin::ThinBox",
                 "ptr"
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_header :
@@ -311,12 +312,13 @@ Module boxed.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.call_closure (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ T ] |),
                                 []
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ ptr :=
@@ -369,7 +371,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unsize :
@@ -409,7 +411,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -453,7 +455,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -518,7 +520,7 @@ Module boxed.
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -584,7 +586,7 @@ Module boxed.
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -653,7 +655,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -727,7 +729,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -773,7 +775,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unsize_zst :
@@ -821,30 +823,31 @@ Module boxed.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let ptr := M.copy (| γ |) in
-                                Value.StructTuple
-                                  "alloc::boxed::thin::WithOpaqueHeader"
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        ptr,
-                                        "alloc::boxed::thin::WithHeader",
-                                        0
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let ptr := M.copy (| γ |) in
+                                  Value.StructTuple
+                                    "alloc::boxed::thin::WithOpaqueHeader"
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          ptr,
+                                          "alloc::boxed::thin::WithHeader",
+                                          0
+                                        |)
                                       |)
-                                    |)
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -949,16 +952,17 @@ Module boxed.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq
-                                          (M.call_closure (|
+                                        BinOp.eq (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "size",
                                               []
                                             |),
                                             [ layout ]
-                                          |))
-                                          (Value.Integer 0)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -986,12 +990,15 @@ Module boxed.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not
-                                                              (LogicalOp.and (|
+                                                            UnOp.not (|
+                                                              LogicalOp.and (|
                                                                 LogicalOp.and (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (| value_offset |))
-                                                                    (Value.Integer 0),
+                                                                  BinOp.eq (|
+                                                                    M.read (| value_offset |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  |),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
                                                                       M.get_constant (|
@@ -1005,7 +1012,8 @@ Module boxed.
                                                                       "core::mem::SizedTypeProperties::IS_ZST"
                                                                     |)
                                                                   |)))
-                                                              |))
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -1173,7 +1181,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -1274,16 +1282,17 @@ Module boxed.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.eq
-                                              (M.call_closure (|
+                                            BinOp.eq (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ layout ]
-                                              |))
-                                              (Value.Integer 0)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1311,34 +1320,44 @@ Module boxed.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (LogicalOp.and (|
+                                                                UnOp.not (|
+                                                                  LogicalOp.and (|
                                                                     LogicalOp.and (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (| value_offset |))
-                                                                        (Value.Integer 0),
+                                                                      BinOp.eq (|
+                                                                        M.read (| value_offset |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |),
                                                                       ltac:(M.monadic
-                                                                        (BinOp.Pure.eq
-                                                                          (M.call_closure (|
+                                                                        (BinOp.eq (|
+                                                                          M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::mem::size_of",
                                                                               [ T ]
                                                                             |),
                                                                             []
-                                                                          |))
-                                                                          (Value.Integer 0)))
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            0
+                                                                        |)))
                                                                     |),
                                                                     ltac:(M.monadic
-                                                                      (BinOp.Pure.eq
-                                                                        (M.call_closure (|
+                                                                      (BinOp.eq (|
+                                                                        M.call_closure (|
                                                                           M.get_function (|
                                                                             "core::mem::size_of",
                                                                             [ H ]
                                                                           |),
                                                                           []
-                                                                        |))
-                                                                        (Value.Integer 0)))
-                                                                  |))
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |)))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -1521,7 +1540,7 @@ Module boxed.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_try_new :
@@ -1600,13 +1619,15 @@ Module boxed.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.eq
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                BinOp.eq (|
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ T ] |),
                                     []
-                                  |))
-                                  (Value.Integer 0))
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1651,7 +1672,9 @@ Module boxed.
                               "add",
                               []
                             |),
-                            [ M.read (| M.use (M.alloc (| M.read (| alloc |) |)) |); Value.Integer 1
+                            [
+                              M.read (| M.use (M.alloc (| M.read (| alloc |) |)) |);
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         ]
@@ -1677,15 +1700,16 @@ Module boxed.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "is_aligned",
                                               []
                                             |),
                                             [ M.read (| value_ptr |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1755,7 +1779,7 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unsize_zst :
@@ -1845,7 +1869,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_drop :
@@ -1928,15 +1952,16 @@ Module boxed.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ H ],
                                               "is_aligned",
                                               []
                                             |),
                                             [ M.read (| hp |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1964,7 +1989,7 @@ Module boxed.
                 |) in
               hp
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_header :
@@ -1998,7 +2023,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value :
@@ -2016,7 +2041,7 @@ Module boxed.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::mem::size_of", [ H ] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_header_size :
@@ -2055,7 +2080,7 @@ Module boxed.
                 M.read (| value_layout |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_alloc_layout :
@@ -2093,7 +2118,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -66,7 +66,7 @@ Module annotated_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -165,7 +165,7 @@ Module annotated_value.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -202,7 +202,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -271,7 +271,7 @@ Module annotated_value.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -595,7 +595,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -650,7 +650,7 @@ Module annotated_value.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1080,7 +1080,7 @@ Module annotated_value.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1180,7 +1180,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1500,7 +1500,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1558,7 +1558,7 @@ Module annotated_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1616,7 +1616,7 @@ Module annotated_value.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1656,13 +1656,13 @@ Module annotated_value.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "MoveFieldLayout" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1824,7 +1824,7 @@ Module annotated_value.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1865,7 +1865,7 @@ Module annotated_value.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1903,13 +1903,13 @@ Module annotated_value.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "MoveStructLayout" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -2079,7 +2079,7 @@ Module annotated_value.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2120,7 +2120,7 @@ Module annotated_value.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2163,7 +2163,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "bool" |)
                           ]
                         |)
@@ -2187,7 +2187,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "u8" |)
                           ]
                         |)
@@ -2211,7 +2211,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 2;
+                            Value.Integer IntegerKind.U32 2;
                             M.read (| Value.String "u64" |)
                           ]
                         |)
@@ -2235,7 +2235,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 3;
+                            Value.Integer IntegerKind.U32 3;
                             M.read (| Value.String "u128" |)
                           ]
                         |)
@@ -2259,7 +2259,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 4;
+                            Value.Integer IntegerKind.U32 4;
                             M.read (| Value.String "address" |)
                           ]
                         |)
@@ -2293,7 +2293,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 5;
+                            Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "vector" |);
                             M.read (| __field0 |)
                           ]
@@ -2320,7 +2320,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 6;
+                            Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "struct" |);
                             M.read (| __field0 |)
                           ]
@@ -2345,7 +2345,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 7;
+                            Value.Integer IntegerKind.U32 7;
                             M.read (| Value.String "signer" |)
                           ]
                         |)
@@ -2369,7 +2369,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 8;
+                            Value.Integer IntegerKind.U32 8;
                             M.read (| Value.String "u16" |)
                           ]
                         |)
@@ -2393,7 +2393,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 9;
+                            Value.Integer IntegerKind.U32 9;
                             M.read (| Value.String "u32" |)
                           ]
                         |)
@@ -2417,7 +2417,7 @@ Module annotated_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 10;
+                            Value.Integer IntegerKind.U32 10;
                             M.read (| Value.String "u256" |)
                           ]
                         |)
@@ -2425,7 +2425,7 @@ Module annotated_value.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2468,7 +2468,7 @@ Module annotated_value.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2498,7 +2498,7 @@ Module annotated_value.
           Value.StructRecord
             "move_core_types::annotated_value::MoveFieldLayout"
             [ ("name", M.read (| name |)); ("layout", M.read (| layout |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2558,7 +2558,7 @@ Module annotated_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2622,7 +2622,7 @@ Module annotated_value.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2930,7 +2930,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3118,7 +3118,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3240,7 +3240,7 @@ Module annotated_value.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_deserialize :
@@ -3405,7 +3405,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_visit_deserialize :
@@ -3446,7 +3446,7 @@ Module annotated_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_serialize :
@@ -3723,7 +3723,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
@@ -3829,47 +3829,48 @@ Module annotated_value.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let val := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                      ],
-                                    "expect",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_core_types::annotated_value::MoveValue",
-                                        "simple_serialize",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let val := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                      |),
-                                      [ M.read (| val |) ]
-                                    |);
-                                    M.read (| Value.String "serialization should succeed" |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ],
+                                      "expect",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::annotated_value::MoveValue",
+                                          "simple_serialize",
+                                          []
+                                        |),
+                                        [ M.read (| val |) ]
+                                      |);
+                                      M.read (| Value.String "serialization should succeed" |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_values :
@@ -3892,7 +3893,7 @@ Module annotated_value.
           Value.StructRecord
             "move_core_types::annotated_value::MoveStruct"
             [ ("type_", M.read (| type_ |)); ("fields", M.read (| fields |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4003,7 +4004,7 @@ Module annotated_value.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_deserialize :
@@ -4168,7 +4169,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_visit_deserialize :
@@ -4294,24 +4295,25 @@ Module annotated_value.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let f := M.copy (| γ0_1 |) in
-                                  M.read (| f |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let f := M.copy (| γ0_1 |) in
+                                    M.read (| f |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
@@ -4420,7 +4422,7 @@ Module annotated_value.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
@@ -4443,7 +4445,7 @@ Module annotated_value.
           Value.StructRecord
             "move_core_types::annotated_value::MoveStructLayout"
             [ ("type_", M.read (| type_ |)); ("fields", M.read (| fields |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4538,28 +4540,29 @@ Module annotated_value.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let f := M.copy (| γ |) in
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      f,
-                                      "move_core_types::annotated_value::MoveFieldLayout",
-                                      "layout"
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let f := M.copy (| γ |) in
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        f,
+                                        "move_core_types::annotated_value::MoveFieldLayout",
+                                        "layout"
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
@@ -5207,7 +5210,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5254,7 +5257,7 @@ Module annotated_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5460,7 +5463,7 @@ Module annotated_value.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5528,7 +5531,7 @@ Module annotated_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5878,7 +5881,7 @@ Module annotated_value.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6047,7 +6050,7 @@ Module annotated_value.
                     ]
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6264,7 +6267,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6829,7 +6832,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7206,7 +7209,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7274,7 +7277,7 @@ Module annotated_value.
                                     "move_core_types::annotated_value::MOVE_STRUCT_NAME"
                                   |)
                                 |);
-                                Value.Integer 2
+                                Value.Integer IntegerKind.Usize 2
                               ]
                             |)
                           ]
@@ -7560,7 +7563,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7938,10 +7941,10 @@ Module annotated_value.
                                         []
                                       |),
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.U32 4;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -8096,10 +8099,10 @@ Module annotated_value.
                                         []
                                       |),
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.U32 4;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -8175,7 +8178,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8279,10 +8282,10 @@ Module annotated_value.
                                         []
                                       |),
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.U32 4;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -8348,7 +8351,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8728,7 +8731,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8963,7 +8966,7 @@ Module annotated_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9007,7 +9010,7 @@ Module annotated_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9799,7 +9802,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10150,7 +10153,7 @@ Module annotated_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

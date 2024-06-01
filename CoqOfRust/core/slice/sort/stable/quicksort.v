@@ -109,9 +109,9 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.le
-                                            (M.read (| len |))
-                                            (M.call_closure (|
+                                          BinOp.le (|
+                                            M.read (| len |),
+                                            M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
                                                 T,
@@ -120,7 +120,8 @@ Module slice.
                                                 []
                                               |),
                                               []
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -163,7 +164,10 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| limit |)) (Value.Integer 0)
+                                          BinOp.eq (|
+                                            M.read (| limit |),
+                                            Value.Integer IntegerKind.U32 0
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -199,7 +203,7 @@ Module slice.
                             let β := limit in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
                             |) in
                           let~ pivot_pos :=
                             M.alloc (|
@@ -217,16 +221,17 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (| "core::intrinsics::assume", [] |),
                                   [
-                                    BinOp.Pure.lt
-                                      (M.read (| pivot_pos |))
-                                      (M.call_closure (|
+                                    BinOp.lt (|
+                                      M.read (| pivot_pos |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| v |) ]
-                                      |))
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -259,14 +264,15 @@ Module slice.
                                   [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (|
                                         "core::slice::sort::stable::quicksort::has_direct_interior_mutability",
                                         [ T ]
                                       |),
                                       []
-                                    |));
+                                    |)
+                                  |);
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
@@ -301,8 +307,8 @@ Module slice.
                                     let~ _ :=
                                       M.write (|
                                         perform_equal_partition,
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
@@ -327,13 +333,15 @@ Module slice.
                                                   |)
                                                 ]
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let~ left_partition_len := M.alloc (| Value.Integer 0 |) in
+                          let~ left_partition_len :=
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                           let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -343,7 +351,7 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not (M.read (| perform_equal_partition |))
+                                          UnOp.not (| M.read (| perform_equal_partition |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -370,9 +378,10 @@ Module slice.
                                     let~ _ :=
                                       M.write (|
                                         perform_equal_partition,
-                                        BinOp.Pure.eq
-                                          (M.read (| left_partition_len |))
-                                          (Value.Integer 0)
+                                        BinOp.eq (|
+                                          M.read (| left_partition_len |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -422,60 +431,65 @@ Module slice.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0; α1 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let a := M.copy (| γ |) in
-                                                                    M.match_operator (|
-                                                                      M.alloc (| α1 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let b :=
-                                                                              M.copy (| γ |) in
-                                                                            UnOp.Pure.not
-                                                                              (M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::function::FnMut",
-                                                                                  F,
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "&")
-                                                                                          []
-                                                                                          [ T ];
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "&")
-                                                                                          []
-                                                                                          [ T ]
-                                                                                      ]
-                                                                                  ],
-                                                                                  "call_mut",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    is_less
-                                                                                  |);
-                                                                                  Value.Tuple
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let a := M.copy (| γ |) in
+                                                                      M.match_operator (|
+                                                                        M.alloc (| α1 |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let b :=
+                                                                                M.copy (| γ |) in
+                                                                              UnOp.not (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::function::FnMut",
+                                                                                    F,
                                                                                     [
-                                                                                      M.read (|
-                                                                                        b
-                                                                                      |);
-                                                                                      M.read (| a |)
-                                                                                    ]
-                                                                                ]
-                                                                              |))))
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                                      Ty.tuple
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [ T ];
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [ T ]
+                                                                                        ]
+                                                                                    ],
+                                                                                    "call_mut",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      is_less
+                                                                                    |);
+                                                                                    Value.Tuple
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          b
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          a
+                                                                                        |)
+                                                                                      ]
+                                                                                  ]
+                                                                                |)
+                                                                              |)))
+                                                                        ]
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   |)
                                                 ]
@@ -559,7 +573,7 @@ Module slice.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_quicksort :
@@ -695,8 +709,8 @@ Module slice.
                                   M.get_function (| "core::intrinsics::unlikely", [] |),
                                   [
                                     LogicalOp.or (|
-                                      BinOp.Pure.lt
-                                        (M.call_closure (|
+                                      BinOp.lt (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -711,10 +725,11 @@ Module slice.
                                             []
                                           |),
                                           [ M.read (| scratch |) ]
-                                        |))
-                                        (M.read (| len |)),
+                                        |),
+                                        M.read (| len |)
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.ge (M.read (| pivot_pos |)) (M.read (| len |))))
+                                        (BinOp.ge (| M.read (| pivot_pos |), M.read (| len |) |)))
                                     |)
                                   ]
                                 |)
@@ -821,14 +836,14 @@ Module slice.
                                           |),
                                           [
                                             M.read (| loop_end_pos |);
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN"
                                                 |)
-                                              |))
-                                              (Value.Integer 1)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -844,15 +859,16 @@ Module slice.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.lt
-                                                    (M.read (|
+                                                  BinOp.lt (|
+                                                    M.read (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         state,
                                                         "core::slice::sort::stable::quicksort::PartitionState",
                                                         "scan"
                                                       |)
-                                                    |))
-                                                    (M.read (| unroll_end |))
+                                                    |),
+                                                    M.read (| unroll_end |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1085,15 +1101,16 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (|
+                                          BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 state,
                                                 "core::slice::sort::stable::quicksort::PartitionState",
                                                 "scan"
                                               |)
-                                            |))
-                                            (M.read (| loop_end |))
+                                            |),
+                                            M.read (| loop_end |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1172,7 +1189,7 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.eq (M.read (| loop_end_pos |)) (M.read (| len |))
+                                      BinOp.eq (| M.read (| loop_end_pos |), M.read (| len |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1224,7 +1241,10 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                                [ M.read (| pivot |); M.read (| pivot_in_scratch |); Value.Integer 1
+                                [
+                                  M.read (| pivot |);
+                                  M.read (| pivot_in_scratch |);
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |)
                             |) in
@@ -1276,18 +1296,18 @@ Module slice.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| len |))
-                                    (M.read (|
+                                  BinOp.Wrap.sub (|
+                                    M.read (| len |),
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         state,
                                         "core::slice::sort::stable::quicksort::PartitionState",
                                         "num_left"
                                       |)
-                                    |)))
+                                    |)
+                                  |))
                               ]
                           ]
                         |)
@@ -1353,13 +1373,13 @@ Module slice.
                                                       |),
                                                       [
                                                         M.read (| scratch_base |);
-                                                        BinOp.Wrap.sub
-                                                          Integer.Usize
-                                                          (BinOp.Wrap.sub
-                                                            Integer.Usize
-                                                            (M.read (| len |))
-                                                            (Value.Integer 1))
-                                                          (M.read (| i |))
+                                                        BinOp.Wrap.sub (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| len |),
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          |),
+                                                          M.read (| i |)
+                                                        |)
                                                       ]
                                                     |));
                                                   M.call_closure (|
@@ -1370,19 +1390,19 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (| v_base |);
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (|
+                                                      BinOp.Wrap.add (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             state,
                                                             "core::slice::sort::stable::quicksort::PartitionState",
                                                             "num_left"
                                                           |)
-                                                        |))
-                                                        (M.read (| i |))
+                                                        |),
+                                                        M.read (| i |)
+                                                      |)
                                                     ]
                                                   |);
-                                                  Value.Integer 1
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |)
                                             |) in
@@ -1399,7 +1419,7 @@ Module slice.
                   "num_left"
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_stable_partition :
@@ -1407,7 +1427,7 @@ Module slice.
         
         Module stable_partition.
           Definition value_UNROLL_LEN : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
         End stable_partition.
         
         (* StructRecord
@@ -1447,7 +1467,7 @@ Module slice.
                   [
                     ("scratch_base", M.read (| scratch |));
                     ("scan", M.read (| scan |));
-                    ("num_left", Value.Integer 0);
+                    ("num_left", Value.Integer IntegerKind.Usize 0);
                     ("scratch_rev",
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1458,7 +1478,7 @@ Module slice.
                         [ M.read (| scratch |); M.read (| len |) ]
                       |))
                   ]))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_new :
@@ -1521,7 +1541,7 @@ Module slice.
                               "scratch_rev"
                             |)
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
@@ -1586,7 +1606,7 @@ Module slice.
                             |)
                           |);
                           M.read (| dst |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
@@ -1599,10 +1619,7 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (| β |))
-                        (M.rust_cast (M.read (| towards_left |)))
+                      BinOp.Wrap.add (| M.read (| β |), M.rust_cast (M.read (| towards_left |)) |)
                     |) in
                   let~ _ :=
                     M.write (|
@@ -1625,13 +1642,13 @@ Module slice.
                               "scan"
                             |)
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
                   dst
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_partition_one :
@@ -1659,7 +1676,7 @@ Module slice.
             let Self : Ty.t := Self T in
             match ε, τ, α with
             | [], [], [] => ltac:(M.monadic (Value.Bool false))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -1688,7 +1705,7 @@ Module slice.
             let Self : Ty.t := Self T in
             match ε, τ, α with
             | [], [], [] => ltac:(M.monadic (Value.Bool true))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -1716,8 +1733,8 @@ Module slice.
           match ε, τ, α with
           | [], [ T ], [] =>
             ltac:(M.monadic
-              (UnOp.Pure.not
-                (M.call_closure (|
+              (UnOp.not (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::slice::sort::stable::quicksort::IsFreeze",
                     T,
@@ -1726,8 +1743,9 @@ Module slice.
                     []
                   |),
                   []
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_has_direct_interior_mutability :

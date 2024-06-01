@@ -16,7 +16,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -38,7 +38,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -60,7 +60,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.UnicodeChar 0))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -83,7 +83,7 @@ Module default.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -104,8 +104,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Usize 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -126,8 +126,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U8 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -148,8 +148,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U16 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -170,8 +170,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U32 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -192,8 +192,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U64 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -214,8 +214,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U128 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -236,8 +236,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Isize 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -258,8 +258,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I8 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -280,8 +280,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I16 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -302,8 +302,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I32 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -324,8 +324,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I64 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -346,8 +346,8 @@ Module default.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Integer 0))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I128 0))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -369,7 +369,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -391,7 +391,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -413,7 +413,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -435,7 +435,7 @@ Module default.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

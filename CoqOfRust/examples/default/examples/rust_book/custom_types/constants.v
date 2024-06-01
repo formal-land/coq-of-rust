@@ -3,7 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition value_LANGUAGE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.String "Rust" |))).
 
-Definition value_THRESHOLD : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+Definition value_THRESHOLD : Value.t :=
+  M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
 
 (*
 fn is_big(n: i32) -> bool {
@@ -16,8 +17,8 @@ Definition is_big (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
-      BinOp.Pure.gt (M.read (| n |)) (M.read (| M.get_constant (| "constants::THRESHOLD" |) |))))
-  | _, _, _ => M.impossible
+      BinOp.gt (| M.read (| n |), M.read (| M.get_constant (| "constants::THRESHOLD" |) |) |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
@@ -41,7 +42,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ n := M.alloc (| Value.Integer 16 |) in
+        let~ n := M.alloc (| Value.Integer IntegerKind.I32 16 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -183,7 +184,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "constants::main" main.

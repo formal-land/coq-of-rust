@@ -78,7 +78,7 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_fmt : M.IsFunction "core::panicking::panic_fmt" panic_fmt.
@@ -149,7 +149,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_nounwind_fmt :
@@ -237,7 +237,7 @@ Module panicking.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::panicking::panic_nounwind_fmt::runtime" runtime.
@@ -265,7 +265,7 @@ Module panicking.
             M.get_function (| "core::panicking::panic_fmt", [] |),
             [ M.read (| fmt |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::panicking::panic_nounwind_fmt::comptime" comptime.
@@ -301,7 +301,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
@@ -335,7 +335,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_add_overflow :
@@ -371,7 +371,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_sub_overflow :
@@ -407,7 +407,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_mul_overflow :
@@ -443,7 +443,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_div_overflow :
@@ -481,7 +481,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_rem_overflow :
@@ -517,7 +517,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_neg_overflow :
@@ -553,7 +553,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_shr_overflow :
@@ -589,7 +589,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_shl_overflow :
@@ -625,7 +625,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_div_by_zero :
@@ -664,7 +664,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_rem_by_zero :
@@ -702,7 +702,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_coroutine_resumed :
@@ -742,7 +742,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_async_fn_resumed :
@@ -783,7 +783,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_async_gen_fn_resumed :
@@ -824,7 +824,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_gen_fn_none :
@@ -862,7 +862,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_coroutine_resumed_panic :
@@ -902,7 +902,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_async_fn_resumed_panic :
@@ -943,7 +943,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_async_gen_fn_resumed_panic :
@@ -988,7 +988,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_const_gen_fn_none_panic :
@@ -1017,7 +1017,7 @@ Module panicking.
             Value.Bool false
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_nounwind : M.IsFunction "core::panicking::panic_nounwind" panic_nounwind.
@@ -1042,7 +1042,7 @@ Module panicking.
             Value.Bool true
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_nounwind_nobacktrace :
@@ -1064,7 +1064,7 @@ Module panicking.
           |),
           [ Value.String "explicit panic" ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_explicit : M.IsFunction "core::panicking::panic_explicit" panic_explicit.
@@ -1106,7 +1106,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_unreachable_display :
@@ -1129,7 +1129,7 @@ Module panicking.
           |),
           [ expr ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_str_2015 : M.IsFunction "core::panicking::panic_str_2015" panic_str_2015.
@@ -1168,7 +1168,7 @@ Module panicking.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_display : M.IsFunction "core::panicking::panic_display" panic_display.
@@ -1246,7 +1246,7 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_bounds_check :
@@ -1345,10 +1345,10 @@ Module panicking.
                               []
                             |),
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.UnicodeChar 32;
                               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                              Value.Integer 4;
+                              Value.Integer IntegerKind.U32 4;
                               Value.StructTuple "core::fmt::rt::Count::Implied" [];
                               Value.StructTuple "core::fmt::rt::Count::Implied" []
                             ]
@@ -1360,10 +1360,10 @@ Module panicking.
                               []
                             |),
                             [
-                              Value.Integer 1;
+                              Value.Integer IntegerKind.Usize 1;
                               Value.UnicodeChar 32;
                               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                              Value.Integer 4;
+                              Value.Integer IntegerKind.U32 4;
                               Value.StructTuple "core::fmt::rt::Count::Implied" [];
                               Value.StructTuple "core::fmt::rt::Count::Implied" []
                             ]
@@ -1381,7 +1381,7 @@ Module panicking.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_misaligned_pointer_dereference :
@@ -1403,7 +1403,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_nounwind", [] |),
           [ M.read (| Value.String "panic in a function that cannot unwind" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_cannot_unwind :
@@ -1423,7 +1423,7 @@ Module panicking.
           M.get_function (| "core::panicking::panic_nounwind_nobacktrace", [] |),
           [ M.read (| Value.String "panic in a destructor during cleanup" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_in_cleanup :
@@ -1491,7 +1491,7 @@ Module panicking.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_const_panic_fmt : M.IsFunction "core::panicking::const_panic_fmt" const_panic_fmt.
@@ -1560,7 +1560,7 @@ Module panicking.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1597,7 +1597,7 @@ Module panicking.
           M.get_function (| "core::panicking::assert_failed_inner", [] |),
           [ M.read (| kind |); left; right; M.read (| args |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_assert_failed : M.IsFunction "core::panicking::assert_failed" assert_failed.
@@ -1638,7 +1638,7 @@ Module panicking.
             M.read (| args |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_assert_matches_failed :
@@ -1680,7 +1680,7 @@ Module panicking.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1901,7 +1901,7 @@ Module panicking.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_assert_failed_inner :

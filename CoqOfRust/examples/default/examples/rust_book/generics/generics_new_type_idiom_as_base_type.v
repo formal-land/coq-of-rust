@@ -23,7 +23,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ years :=
           M.alloc (|
-            Value.StructTuple "generics_new_type_idiom_as_base_type::Years" [ Value.Integer 42 ]
+            Value.StructTuple
+              "generics_new_type_idiom_as_base_type::Years"
+              [ Value.Integer IntegerKind.I64 42 ]
           |) in
         let~ years_as_primitive_1 :=
           M.copy (|
@@ -49,7 +51,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom_as_base_type::main" main.

@@ -79,7 +79,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -131,7 +131,7 @@ Module env.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -187,7 +187,7 @@ Module env.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -288,7 +288,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -332,7 +332,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -374,7 +374,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -407,7 +407,7 @@ Module env.
                 ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_boxed : M.IsAssociatedFunction Self "boxed" boxed.
@@ -456,7 +456,10 @@ Module env.
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               []
                           ]
                         |),
@@ -477,12 +480,18 @@ Module env.
                               "core::ops::arith::Add",
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   []
                               ],
                               "add",
@@ -520,7 +529,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_effective_gas_price :
@@ -543,10 +552,16 @@ Module env.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               "map",
               [
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [];
                 Ty.function
                   [ Ty.tuple [ Ty.path "u128" ] ]
-                  (Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+                  (Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [])
               ]
             |),
             [
@@ -569,68 +584,78 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let blob_gas_price := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
-                                    [],
-                                  "saturating_mul",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
-                                      "from",
-                                      [ Ty.path "u128" ]
-                                    |),
-                                    [ M.read (| blob_gas_price |) ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
-                                      "from",
-                                      [ Ty.path "u64" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_primitives::env::TxEnv",
-                                          "get_total_blob_gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_primitives::env::Env",
-                                            "tx"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let blob_gas_price := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "saturating_mul",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "from",
+                                        [ Ty.path "u128" ]
+                                      |),
+                                      [ M.read (| blob_gas_price |) ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "from",
+                                        [ Ty.path "u64" ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_primitives::env::TxEnv",
+                                            "get_total_blob_gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "revm_primitives::env::Env",
+                                              "tx"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_calc_data_fee :
@@ -653,16 +678,32 @@ Module env.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ],
               "map",
               [
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [];
                 Ty.function
                   [
                     Ty.tuple
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]
                   ]
-                  (Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+                  (Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [])
               ]
             |),
             [
@@ -682,58 +723,65 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let max_fee_per_blob_gas := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
-                                    [],
-                                  "saturating_mul",
-                                  []
-                                |),
-                                [
-                                  M.read (| max_fee_per_blob_gas |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
-                                      "from",
-                                      [ Ty.path "u64" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_primitives::env::TxEnv",
-                                          "get_total_blob_gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_primitives::env::Env",
-                                            "tx"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let max_fee_per_blob_gas := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "saturating_mul",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| max_fee_per_blob_gas |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "from",
+                                        [ Ty.path "u64" ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_primitives::env::TxEnv",
+                                            "get_total_blob_gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "revm_primitives::env::Env",
+                                              "tx"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_calc_max_data_fee :
@@ -793,7 +841,7 @@ Module env.
                                           [
                                             Ty.apply
                                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
+                                              [ Value.Integer IntegerKind.Usize 32 ]
                                               []
                                           ],
                                         "is_none",
@@ -904,7 +952,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_validate_block_env :
@@ -1114,12 +1162,18 @@ Module env.
                                                       "core::cmp::PartialOrd",
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           []
                                                       ],
                                                       "gt",
@@ -1174,8 +1228,8 @@ Module env.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.and (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "revm_primitives::env::CfgEnv",
                                                 "is_base_fee_check_disabled",
@@ -1188,19 +1242,26 @@ Module env.
                                                   "cfg"
                                                 |)
                                               ]
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
                                             (M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::cmp::PartialOrd",
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     []
                                                 ],
                                                 "lt",
@@ -1266,8 +1327,8 @@ Module env.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_primitives::env::CfgEnv",
                                         "is_block_gas_limit_disabled",
@@ -1280,19 +1341,26 @@ Module env.
                                           "cfg"
                                         |)
                                       ]
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [],
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             []
                                         ],
                                         "gt",
@@ -1304,7 +1372,10 @@ Module env.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               "from",
                                               [ Ty.path "u64" ]
@@ -1444,23 +1515,27 @@ Module env.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let limit := M.copy (| γ |) in
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "usize",
-                                                          "saturating_mul",
-                                                          []
-                                                        |),
-                                                        [ M.read (| limit |); Value.Integer 2 ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let limit := M.copy (| γ |) in
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "usize",
+                                                            "saturating_mul",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| limit |);
+                                                            Value.Integer IntegerKind.Usize 2
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |);
@@ -1480,8 +1555,8 @@ Module env.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "bytes::bytes::Bytes",
                                               "len",
@@ -1509,8 +1584,9 @@ Module env.
                                                 ]
                                               |)
                                             ]
-                                          |))
-                                          (M.read (| max_initcode_size |))
+                                          |),
+                                          M.read (| max_initcode_size |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1569,9 +1645,9 @@ Module env.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne
-                                          (M.read (| tx_chain_id |))
-                                          (M.read (|
+                                        BinOp.ne (|
+                                          M.read (| tx_chain_id |),
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
@@ -1581,7 +1657,8 @@ Module env.
                                               "revm_primitives::env::CfgEnv",
                                               "chain_id"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1619,8 +1696,8 @@ Module env.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "revm_primitives::specification::Spec",
                                         SPEC,
@@ -1633,10 +1710,11 @@ Module env.
                                           "revm_primitives::specification::SpecId::BERLIN"
                                           []
                                       ]
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (UnOp.Pure.not
-                                      (M.call_closure (|
+                                    (UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -1652,7 +1730,10 @@ Module env.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [];
                                                       Ty.path "alloc::alloc::Global"
                                                     ]
@@ -1673,7 +1754,8 @@ Module env.
                                             "access_list"
                                           |)
                                         ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1788,12 +1870,18 @@ Module env.
                                                       "core::cmp::PartialOrd",
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           []
                                                       ],
                                                       "gt",
@@ -1805,7 +1893,10 @@ Module env.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "ruint::Uint")
-                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
                                                               [],
                                                             "from",
                                                             [ Ty.path "u128" ]
@@ -1858,7 +1949,7 @@ Module env.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloy_primitives::bits::fixed::FixedBytes")
-                                                            [ Value.Integer 32 ]
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
                                                             [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
@@ -1966,7 +2057,7 @@ Module env.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloy_primitives::bits::fixed::FixedBytes")
-                                                    [ Value.Integer 32 ]
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
                                                     []
                                                 ],
                                               [],
@@ -1983,7 +2074,7 @@ Module env.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloy_primitives::bits::fixed::FixedBytes")
-                                                        [ Value.Integer 32 ]
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
                                                         []
                                                     ],
                                                   "iter",
@@ -2000,7 +2091,7 @@ Module env.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloy_primitives::bits::fixed::FixedBytes")
-                                                            [ Value.Integer 32 ]
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
                                                             [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
@@ -2044,7 +2135,11 @@ Module env.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloy_primitives::bits::fixed::FixedBytes")
-                                                                  [ Value.Integer 32 ]
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      32
+                                                                  ]
                                                                   []
                                                               ],
                                                             [],
@@ -2084,8 +2179,8 @@ Module env.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.Pure.ne
-                                                                            (M.read (|
+                                                                          BinOp.ne (|
+                                                                            M.read (|
                                                                               M.call_closure (|
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::index::Index",
@@ -2094,6 +2189,7 @@ Module env.
                                                                                       "alloy_primitives::bits::fixed::FixedBytes")
                                                                                     [
                                                                                       Value.Integer
+                                                                                        IntegerKind.Usize
                                                                                         32
                                                                                     ]
                                                                                     [],
@@ -2104,15 +2200,18 @@ Module env.
                                                                                 |),
                                                                                 [
                                                                                   M.read (| blob |);
-                                                                                  Value.Integer 0
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0
                                                                                 ]
                                                                               |)
-                                                                            |))
-                                                                            (M.read (|
+                                                                            |),
+                                                                            M.read (|
                                                                               M.get_constant (|
                                                                                 "revm_primitives::constants::VERSIONED_HASH_VERSION_KZG"
                                                                               |)
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -2153,8 +2252,8 @@ Module env.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.gt
-                                                  (M.call_closure (|
+                                                BinOp.gt (|
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
@@ -2163,7 +2262,7 @@ Module env.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloy_primitives::bits::fixed::FixedBytes")
-                                                            [ Value.Integer 32 ]
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
                                                             [];
                                                           Ty.path "alloc::alloc::Global"
                                                         ],
@@ -2181,13 +2280,14 @@ Module env.
                                                         "blob_hashes"
                                                       |)
                                                     ]
-                                                  |))
-                                                  (M.rust_cast
+                                                  |),
+                                                  M.rust_cast
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "revm_primitives::constants::MAX_BLOB_NUMBER_PER_BLOCK"
                                                       |)
-                                                    |)))
+                                                    |))
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -2226,8 +2326,8 @@ Module env.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -2236,7 +2336,7 @@ Module env.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloy_primitives::bits::fixed::FixedBytes")
-                                                      [ Value.Integer 32 ]
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
                                                       [];
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
@@ -2254,7 +2354,8 @@ Module env.
                                                   "blob_hashes"
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2295,7 +2396,10 @@ Module env.
                                               [
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   []
                                               ],
                                             "is_some",
@@ -2373,8 +2477,8 @@ Module env.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -2397,7 +2501,8 @@ Module env.
                                                 "eof_initcodes"
                                               |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2413,8 +2518,8 @@ Module env.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
@@ -2423,7 +2528,7 @@ Module env.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloy_primitives::bits::fixed::FixedBytes")
-                                                              [ Value.Integer 32 ]
+                                                              [ Value.Integer IntegerKind.Usize 32 ]
                                                               [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
@@ -2441,7 +2546,8 @@ Module env.
                                                           "blob_hashes"
                                                         |)
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -2483,7 +2589,10 @@ Module env.
                                                         [
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
-                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
                                                             []
                                                         ],
                                                       "is_some",
@@ -2591,8 +2700,8 @@ Module env.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.gt
-                                                    (M.call_closure (|
+                                                  BinOp.gt (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
@@ -2616,8 +2725,9 @@ Module env.
                                                           "eof_initcodes"
                                                         |)
                                                       ]
-                                                    |))
-                                                    (Value.Integer 256)
+                                                    |),
+                                                    Value.Integer IntegerKind.Usize 256
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -2660,7 +2770,7 @@ Module env.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloy_primitives::bits::fixed::FixedBytes")
-                                                          [ Value.Integer 32 ]
+                                                          [ Value.Integer IntegerKind.Usize 32 ]
                                                           [];
                                                         Ty.path "alloy_primitives::bytes_::Bytes"
                                                       ],
@@ -2680,7 +2790,11 @@ Module env.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "alloy_primitives::bits::fixed::FixedBytes")
-                                                                        [ Value.Integer 32 ]
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            32
+                                                                        ]
                                                                         []
                                                                     ];
                                                                   Ty.apply
@@ -2708,7 +2822,8 @@ Module env.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloy_primitives::bits::fixed::FixedBytes")
-                                                                [ Value.Integer 32 ]
+                                                                [ Value.Integer IntegerKind.Usize 32
+                                                                ]
                                                                 [];
                                                               Ty.path
                                                                 "alloy_primitives::bytes_::Bytes";
@@ -2736,52 +2851,55 @@ Module env.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        0
-                                                                      |) in
-                                                                    let γ0_1 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        1
-                                                                      |) in
-                                                                    let i := M.copy (| γ0_1 |) in
-                                                                    BinOp.Pure.ge
-                                                                      (M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "bytes::bytes::Bytes",
-                                                                          "len",
-                                                                          []
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          0
+                                                                        |) in
+                                                                      let γ0_1 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          1
+                                                                        |) in
+                                                                      let i := M.copy (| γ0_1 |) in
+                                                                      BinOp.ge (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "bytes::bytes::Bytes",
+                                                                            "len",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.path
+                                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                                [],
+                                                                                "deref",
+                                                                                []
+                                                                              |),
+                                                                              [ M.read (| i |) ]
+                                                                            |)
+                                                                          ]
                                                                         |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::deref::Deref",
-                                                                              Ty.path
-                                                                                "alloy_primitives::bytes_::Bytes",
-                                                                              [],
-                                                                              "deref",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| i |) ]
+                                                                        M.read (|
+                                                                          M.get_constant (|
+                                                                            "revm_primitives::constants::MAX_INITCODE_SIZE"
                                                                           |)
-                                                                        ]
-                                                                      |))
-                                                                      (M.read (|
-                                                                        M.get_constant (|
-                                                                          "revm_primitives::constants::MAX_INITCODE_SIZE"
                                                                         |)
-                                                                      |))))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -2821,8 +2939,8 @@ Module env.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -2845,7 +2963,8 @@ Module env.
                                                 "eof_initcodes"
                                               |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2875,7 +2994,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_validate_tx : M.IsAssociatedFunction Self "validate_tx" validate_tx.
@@ -2959,8 +3078,8 @@ Module env.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_primitives::env::CfgEnv",
                                         "is_eip3607_disabled",
@@ -2973,19 +3092,20 @@ Module env.
                                           "cfg"
                                         |)
                                       ]
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
                                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                          [ Value.Integer 32 ]
+                                          [ Value.Integer IntegerKind.Usize 32 ]
                                           [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             []
                                         ],
                                         "ne",
@@ -3140,7 +3260,10 @@ Module env.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "revm_primitives::result::InvalidTransaction"
                               ],
@@ -3157,7 +3280,10 @@ Module env.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       []
                                   ],
                                 "ok_or",
@@ -3172,14 +3298,20 @@ Module env.
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           []
                                       ],
                                     "and_then",
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [];
                                       Ty.function
                                         [
@@ -3187,7 +3319,10 @@ Module env.
                                             [
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 []
                                             ]
                                         ]
@@ -3197,7 +3332,10 @@ Module env.
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               []
                                           ])
                                     ]
@@ -3207,7 +3345,10 @@ Module env.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [],
                                         "checked_mul",
                                         []
@@ -3217,7 +3358,10 @@ Module env.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               [],
                                             "from",
                                             [ Ty.path "u64" ]
@@ -3254,39 +3398,43 @@ Module env.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let gas_cost := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
-                                                          [],
-                                                        "checked_add",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| gas_cost |);
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let gas_cost := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
+                                                            [],
+                                                          "checked_add",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| gas_cost |);
+                                                          M.read (|
                                                             M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "revm_primitives::env::Env",
-                                                              "tx"
-                                                            |),
-                                                            "revm_primitives::env::TxEnv",
-                                                            "value"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "revm_primitives::env::Env",
+                                                                "tx"
+                                                              |),
+                                                              "revm_primitives::env::TxEnv",
+                                                              "value"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |);
@@ -3389,7 +3537,10 @@ Module env.
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         []
                                     ],
                                   "unwrap_or_default",
@@ -3422,7 +3573,10 @@ Module env.
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               [];
                                             Ty.path "revm_primitives::result::InvalidTransaction"
                                           ],
@@ -3439,7 +3593,10 @@ Module env.
                                               [
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   []
                                               ],
                                             "ok_or",
@@ -3451,7 +3608,10 @@ Module env.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [],
                                                 "checked_add",
                                                 []
@@ -3462,13 +3622,19 @@ Module env.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
                                                       [],
                                                     "from",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
-                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
                                                         []
                                                     ]
                                                   |),
@@ -3560,12 +3726,18 @@ Module env.
                                     "core::cmp::PartialOrd",
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [],
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         []
                                     ],
                                     "gt",
@@ -3650,7 +3822,10 @@ Module env.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "ruint::Uint")
-                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
                                                               [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
@@ -3668,7 +3843,10 @@ Module env.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "ruint::Uint")
-                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
                                                               [];
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
@@ -3703,7 +3881,7 @@ Module env.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_validate_tx_against_state :
@@ -3800,7 +3978,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3858,7 +4036,7 @@ Module env.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3909,7 +4087,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3945,21 +4123,22 @@ Module env.
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::env::CfgEnv",
                       "chain_id"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_primitives::env::CfgEnv",
                       "chain_id"
                     |)
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -4029,7 +4208,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4067,7 +4246,7 @@ Module env.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_chain_id :
@@ -4084,7 +4263,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_eip3607_disabled :
@@ -4105,7 +4284,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_balance_check_disabled :
@@ -4122,7 +4301,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_gas_refund_disabled :
@@ -4143,7 +4322,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_base_fee_check_disabled :
@@ -4164,7 +4343,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_block_gas_limit_disabled :
@@ -4185,7 +4364,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_beneficiary_reward_disabled :
@@ -4227,7 +4406,7 @@ Module env.
           (Value.StructRecord
             "revm_primitives::env::CfgEnv"
             [
-              ("chain_id", Value.Integer 1);
+              ("chain_id", Value.Integer IntegerKind.U64 1);
               ("perf_analyse_created_bytecodes",
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4243,7 +4422,7 @@ Module env.
               ("kzg_settings",
                 Value.StructTuple "revm_primitives::kzg::env_settings::EnvKzgSettings::Default" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4261,13 +4440,32 @@ Module env.
       ty_params := [];
       fields :=
         [
-          ("number", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("number",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("coinbase", Ty.path "alloy_primitives::bits::address::Address");
-          ("timestamp", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
-          ("gas_limit", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
-          ("basefee", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("timestamp",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
+          ("gas_limit",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
+          ("basefee",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("difficulty",
-            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("prevrandao",
             Ty.apply
               (Ty.path "core::option::Option")
@@ -4275,7 +4473,7 @@ Module env.
               [
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   []
               ]);
           ("blob_excess_gas_and_price",
@@ -4302,7 +4500,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4336,7 +4537,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4353,7 +4557,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4370,7 +4577,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4387,7 +4597,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4410,7 +4623,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ],
                     [],
@@ -4446,7 +4659,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4550,7 +4763,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4594,12 +4807,18 @@ Module env.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [],
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 []
                             ],
                             "eq",
@@ -4647,12 +4866,18 @@ Module env.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [],
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 []
                             ],
                             "eq",
@@ -4678,12 +4903,16 @@ Module env.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               []
                           ],
                           "eq",
@@ -4707,8 +4936,16 @@ Module env.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                         "eq",
                         []
@@ -4731,8 +4968,15 @@ Module env.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                       "eq",
                       []
@@ -4761,7 +5005,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ],
                     [
@@ -4771,7 +5015,7 @@ Module env.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             []
                         ]
                     ],
@@ -4823,7 +5067,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4874,7 +5118,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4902,7 +5146,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -4942,7 +5189,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -4962,7 +5212,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -4982,7 +5235,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -5002,7 +5258,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "hash",
                     [ __H ]
@@ -5028,7 +5287,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ],
                     [],
@@ -5068,7 +5327,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5120,7 +5379,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_blob_excess_gas_and_price :
@@ -5188,26 +5447,27 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| a |),
-                                  "revm_primitives::env::BlobExcessGasAndPrice",
-                                  "blob_gasprice"
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| a |),
+                                    "revm_primitives::env::BlobExcessGasAndPrice",
+                                    "blob_gasprice"
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_blob_gasprice :
@@ -5275,26 +5535,27 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| a |),
-                                  "revm_primitives::env::BlobExcessGasAndPrice",
-                                  "excess_blob_gas"
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| a |),
+                                    "revm_primitives::env::BlobExcessGasAndPrice",
+                                    "excess_blob_gas"
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_blob_excess_gas :
@@ -5327,7 +5588,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -5363,11 +5624,14 @@ Module env.
               ("timestamp",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     "from",
                     [ Ty.path "i32" ]
                   |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.I32 1 ]
                 |));
               ("gas_limit", M.read (| M.get_constant (| "ruint::MAX" |) |));
               ("basefee", M.read (| M.get_constant (| "ruint::ZERO" |) |));
@@ -5386,11 +5650,11 @@ Module env.
                         "new",
                         []
                       |),
-                      [ Value.Integer 0 ]
+                      [ Value.Integer IntegerKind.U64 0 ]
                     |)
                   ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5410,9 +5674,17 @@ Module env.
         [
           ("caller", Ty.path "alloy_primitives::bits::address::Address");
           ("gas_limit", Ty.path "u64");
-          ("gas_price", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("gas_price",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("transact_to", Ty.path "revm_primitives::env::TransactTo");
-          ("value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+          ("value",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("data", Ty.path "alloy_primitives::bytes_::Bytes");
           ("nonce", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
           ("chain_id", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
@@ -5428,7 +5700,10 @@ Module env.
                       (Ty.path "alloc::vec::Vec")
                       []
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "alloc::alloc::Global"
                       ]
                   ];
@@ -5438,7 +5713,12 @@ Module env.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]);
+              [
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  []
+              ]);
           ("blob_hashes",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -5446,7 +5726,7 @@ Module env.
               [
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   [];
                 Ty.path "alloc::alloc::Global"
               ]);
@@ -5454,7 +5734,12 @@ Module env.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]);
+              [
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  []
+              ]);
           ("eof_initcodes",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -5467,7 +5752,7 @@ Module env.
               [
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer 32 ]
+                  [ Value.Integer IntegerKind.Usize 32 ]
                   [];
                 Ty.path "alloy_primitives::bytes_::Bytes";
                 Ty.path "std::hash::random::RandomState"
@@ -5519,7 +5804,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -5553,7 +5841,10 @@ Module env.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -5634,7 +5925,10 @@ Module env.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "alloc::alloc::Global"
                               ]
@@ -5660,7 +5954,11 @@ Module env.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                     [],
                     "clone",
@@ -5684,7 +5982,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -5707,7 +6005,11 @@ Module env.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                     [],
                     "clone",
@@ -5751,7 +6053,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
@@ -5769,7 +6071,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5909,7 +6211,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5976,21 +6278,22 @@ Module env.
                                       ]
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.read (|
+                                      (BinOp.eq (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "revm_primitives::env::TxEnv",
                                             "gas_limit"
                                           |)
-                                        |))
-                                        (M.read (|
+                                        |),
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| other |),
                                             "revm_primitives::env::TxEnv",
                                             "gas_limit"
                                           |)
-                                        |))))
+                                        |)
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -5998,12 +6301,18 @@ Module env.
                                         "core::cmp::PartialEq",
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [],
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             []
                                         ],
                                         "eq",
@@ -6052,12 +6361,18 @@ Module env.
                                     "core::cmp::PartialEq",
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [],
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         []
                                     ],
                                     "eq",
@@ -6163,7 +6478,10 @@ Module env.
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [];
                                         Ty.path "alloc::alloc::Global"
                                       ]
@@ -6184,7 +6502,10 @@ Module env.
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [];
                                           Ty.path "alloc::alloc::Global"
                                         ]
@@ -6219,7 +6540,10 @@ Module env.
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 []
                             ],
                           [
@@ -6229,7 +6553,10 @@ Module env.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   []
                               ]
                           ],
@@ -6260,7 +6587,7 @@ Module env.
                           [
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer 32 ]
+                              [ Value.Integer IntegerKind.Usize 32 ]
                               [];
                             Ty.path "alloc::alloc::Global"
                           ],
@@ -6271,7 +6598,7 @@ Module env.
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer 32 ]
+                                [ Value.Integer IntegerKind.Usize 32 ]
                                 [];
                               Ty.path "alloc::alloc::Global"
                             ]
@@ -6300,7 +6627,12 @@ Module env.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                       [
                         Ty.apply
@@ -6309,7 +6641,10 @@ Module env.
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               []
                           ]
                       ],
@@ -6372,7 +6707,7 @@ Module env.
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer 32 ]
+                        [ Value.Integer IntegerKind.Usize 32 ]
                         [];
                       Ty.path "alloy_primitives::bytes_::Bytes";
                       Ty.path "std::hash::random::RandomState"
@@ -6384,7 +6719,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
@@ -6407,7 +6742,7 @@ Module env.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6531,7 +6866,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6587,10 +6922,9 @@ Module env.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.mul
-            Integer.U64
-            (M.read (| M.get_constant (| "revm_primitives::constants::GAS_PER_BLOB" |) |))
-            (M.rust_cast
+          BinOp.Wrap.mul (|
+            M.read (| M.get_constant (| "revm_primitives::constants::GAS_PER_BLOB" |) |),
+            M.rust_cast
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
@@ -6599,7 +6933,7 @@ Module env.
                     [
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer 32 ]
+                        [ Value.Integer IntegerKind.Usize 32 ]
                         [];
                       Ty.path "alloc::alloc::Global"
                     ],
@@ -6613,8 +6947,9 @@ Module env.
                     "blob_hashes"
                   |)
                 ]
-              |)))))
-      | _, _, _ => M.impossible
+              |))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_total_blob_gas :
@@ -6647,7 +6982,7 @@ Module env.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -6721,7 +7056,10 @@ Module env.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [];
                                 Ty.path "alloc::alloc::Global"
                               ]
@@ -6742,7 +7080,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -6773,7 +7111,7 @@ Module env.
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer 32 ]
+                          [ Value.Integer IntegerKind.Usize 32 ]
                           [];
                         Ty.path "alloy_primitives::bytes_::Bytes";
                         Ty.path "std::hash::random::RandomState"
@@ -6784,7 +7122,7 @@ Module env.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6838,7 +7176,7 @@ Module env.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6884,7 +7222,7 @@ Module env.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6917,39 +7255,41 @@ Module env.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::env::BlobExcessGasAndPrice",
                   "excess_blob_gas"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_primitives::env::BlobExcessGasAndPrice",
                   "excess_blob_gas"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::env::BlobExcessGasAndPrice",
                     "blob_gasprice"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_primitives::env::BlobExcessGasAndPrice",
                     "blob_gasprice"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6986,7 +7326,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7037,7 +7377,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7082,7 +7422,7 @@ Module env.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -7157,7 +7497,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7220,7 +7560,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7275,7 +7615,7 @@ Module env.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7328,7 +7668,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7358,7 +7698,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7427,7 +7767,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7452,7 +7792,7 @@ Module env.
         ltac:(M.monadic
           (let address := M.alloc (| address |) in
           Value.StructTuple "revm_primitives::env::TransactTo::Call" [ M.read (| address |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -7466,7 +7806,7 @@ Module env.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::env::TransactTo::Create" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
@@ -7499,7 +7839,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -7528,7 +7868,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -7550,7 +7890,12 @@ Module env.
           name := "Create2";
           item :=
             StructRecord
-              [ ("salt", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+              [
+                ("salt",
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [])
               ];
           discriminant := None;
         }
@@ -7573,7 +7918,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7652,7 +7997,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7682,7 +8027,7 @@ Module env.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7738,7 +8083,7 @@ Module env.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7774,7 +8119,10 @@ Module env.
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         []
                                     ],
                                   [
@@ -7784,7 +8132,10 @@ Module env.
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           []
                                       ]
                                   ],
@@ -7801,7 +8152,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7859,7 +8210,8 @@ Module env.
                           "core::hash::Hash",
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           [],
                           "hash",
@@ -7872,7 +8224,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7933,7 +8285,7 @@ Module env.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7952,7 +8304,7 @@ Module env.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::env::AnalysisKind::Analyse" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8001,7 +8353,7 @@ Module env.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8026,7 +8378,7 @@ Module env.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8080,9 +8432,9 @@ Module env.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8121,7 +8473,7 @@ Module env.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

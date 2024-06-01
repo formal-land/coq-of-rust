@@ -23,7 +23,7 @@ Module Impl_incrementer_Incrementer.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -46,7 +46,7 @@ Module Impl_incrementer_Incrementer.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -70,10 +70,10 @@ Module Impl_incrementer_Incrementer.
                 "incrementer::Incrementer",
                 "value"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| by_ |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| by_ |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -95,7 +95,7 @@ Module Impl_incrementer_Incrementer.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

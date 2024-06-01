@@ -1342,7 +1342,11 @@ impl FunDefinition {
                                     coq::Expression::Wild,
                                     coq::Expression::Wild,
                                 ],
-                                coq::Expression::just_name("M.impossible"),
+                                coq::Expression::just_name("M.impossible").apply(
+                                    &coq::Expression::String(
+                                        "wrong number of arguments".to_string(),
+                                    ),
+                                ),
                             ),
                         ],
                     };

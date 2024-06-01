@@ -35,16 +35,16 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -88,16 +88,16 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -160,7 +160,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 1024
+                  Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
             let~ parts :=
@@ -177,7 +177,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 4
+                  Value.Integer IntegerKind.Usize 4
                 |)
               |) in
             let~ formatted :=
@@ -240,7 +240,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_common_exact :
@@ -296,7 +296,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 17
+                  Value.Integer IntegerKind.Usize 17
                 |)
               |) in
             let~ parts :=
@@ -313,7 +313,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 4
+                  Value.Integer IntegerKind.Usize 4
                 |)
               |) in
             let~ formatted :=
@@ -375,7 +375,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_common_shortest :
@@ -468,7 +468,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ min_precision := M.alloc (| Value.Integer 0 |) in
+                    (let~ min_precision := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -486,7 +486,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_display :
@@ -543,7 +543,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 1024
+                  Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
             let~ parts :=
@@ -560,7 +560,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 6
+                  Value.Integer IntegerKind.Usize 6
                 |)
               |) in
             let~ formatted :=
@@ -624,7 +624,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common_exact :
@@ -683,7 +683,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 17
+                  Value.Integer IntegerKind.Usize 17
                 |)
               |) in
             let~ parts :=
@@ -700,7 +700,7 @@ Module fmt.
                     |),
                     []
                   |),
-                  Value.Integer 6
+                  Value.Integer IntegerKind.Usize 6
                 |)
               |) in
             let~ formatted :=
@@ -745,7 +745,8 @@ Module fmt.
                     M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
-                    Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.I16 0; Value.Integer IntegerKind.I16 0 ];
                     M.read (| upper |);
                     buf;
                     parts
@@ -763,7 +764,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common_shortest :
@@ -855,7 +856,10 @@ Module fmt.
                           M.read (| fmt |);
                           M.read (| num |);
                           M.read (| sign |);
-                          BinOp.Wrap.add Integer.Usize (M.read (| precision |)) (Value.Integer 1);
+                          BinOp.Wrap.add (|
+                            M.read (| precision |),
+                            Value.Integer IntegerKind.Usize 1
+                          |);
                           M.read (| upper |)
                         ]
                       |)
@@ -875,7 +879,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common :
@@ -1011,7 +1015,8 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ min_precision := M.alloc (| Value.Integer 1 |) in
+                            (let~ min_precision :=
+                              M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -1031,7 +1036,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_general_debug :
@@ -1055,7 +1060,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1084,7 +1089,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1116,7 +1121,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1148,7 +1153,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1177,7 +1182,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1206,7 +1211,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1238,7 +1243,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1270,7 +1275,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1337,12 +1342,14 @@ Module fmt.
                               []
                             |),
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.UnicodeChar 32;
                               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                              Value.Integer 12;
+                              Value.Integer IntegerKind.U32 12;
                               Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                              Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
+                              Value.StructTuple
+                                "core::fmt::rt::Count::Is"
+                                [ Value.Integer IntegerKind.Usize 6 ]
                             ]
                           |)
                         ]
@@ -1355,7 +1362,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1422,12 +1429,14 @@ Module fmt.
                               []
                             |),
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.UnicodeChar 32;
                               Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                              Value.Integer 12;
+                              Value.Integer IntegerKind.U32 12;
                               Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                              Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 34 ]
+                              Value.StructTuple
+                                "core::fmt::rt::Count::Is"
+                                [ Value.Integer IntegerKind.Usize 34 ]
                             ]
                           |)
                         ]
@@ -1440,7 +1449,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

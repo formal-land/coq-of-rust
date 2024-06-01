@@ -385,15 +385,16 @@ Module constant.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)))
                 ]
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_sig_to_ty : M.IsFunction "move_binary_format::constant::sig_to_ty" sig_to_ty.
@@ -730,7 +731,7 @@ Module constant.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ty_to_sig : M.IsFunction "move_binary_format::constant::ty_to_sig" ty_to_sig.
@@ -925,7 +926,7 @@ Module constant.
                     ]
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_serialize_constant :
@@ -1071,7 +1072,7 @@ Module constant.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_deserialize_constant :

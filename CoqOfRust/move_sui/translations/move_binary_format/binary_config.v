@@ -193,7 +193,7 @@ Module binary_config.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -333,7 +333,7 @@ Module binary_config.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -389,7 +389,7 @@ Module binary_config.
               ("field_instantiations", M.read (| M.get_constant (| "core::num::MAX" |) |));
               ("friend_decls", M.read (| M.get_constant (| "core::num::MAX" |) |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
@@ -460,7 +460,7 @@ Module binary_config.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -512,7 +512,7 @@ Module binary_config.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -553,7 +553,7 @@ Module binary_config.
               ("check_no_extraneous_bytes", M.read (| check_no_extraneous_bytes |));
               ("table_config", M.read (| table_config |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -588,7 +588,7 @@ Module binary_config.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
@@ -629,7 +629,7 @@ Module binary_config.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_extraneous_bytes_check :
@@ -666,7 +666,7 @@ Module binary_config.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_standard : M.IsAssociatedFunction Self "standard" standard.

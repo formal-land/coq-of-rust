@@ -28,8 +28,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer 5 |)) |) in
-        let~ inches := M.copy (| M.use (M.alloc (| Value.Integer 2 |)) |) in
+        let~ nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer IntegerKind.U64 5 |)) |) in
+        let~ inches := M.copy (| M.use (M.alloc (| Value.Integer IntegerKind.U64 2 |)) |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -76,10 +76,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  BinOp.Wrap.add
-                                    Integer.U64
-                                    (M.read (| nanoseconds |))
-                                    (M.read (| inches |))
+                                  BinOp.Wrap.add (| M.read (| nanoseconds |), M.read (| inches |) |)
                                 |)
                               ]
                             |)
@@ -93,7 +90,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "aliasing::main" main.

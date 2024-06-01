@@ -22,7 +22,7 @@ Module ptr.
             M.get_function (| "core::intrinsics::ptr_metadata", [ T; Ty.associated ] |),
             [ M.read (| ptr |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
@@ -52,7 +52,7 @@ Module ptr.
             |),
             [ M.read (| data_pointer |); M.read (| metadata |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_raw_parts :
@@ -83,7 +83,7 @@ Module ptr.
             |),
             [ M.read (| data_pointer |); M.read (| metadata |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_raw_parts_mut :
@@ -139,7 +139,7 @@ Module ptr.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_vtable_ptr :
@@ -184,7 +184,7 @@ Module ptr.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_size_of :
@@ -226,7 +226,7 @@ Module ptr.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align_of :
@@ -271,7 +271,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_layout :
@@ -359,7 +359,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -413,7 +413,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -475,7 +475,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -534,7 +534,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -581,7 +581,7 @@ Module ptr.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -623,7 +623,7 @@ Module ptr.
                 M.read (| hasher |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

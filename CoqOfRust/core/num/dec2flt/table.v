@@ -5,27 +5,27 @@ Module num.
   Module dec2flt.
     Module table.
       Definition value_SMALLEST_POWER_OF_FIVE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer (-342) |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
       
       Definition value_LARGEST_POWER_OF_FIVE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 308 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
       
       Definition value_N_POWERS_OF_FIVE : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.rust_cast
-                (BinOp.Wrap.add
-                  Integer.I32
-                  (BinOp.Wrap.sub
-                    Integer.I32
-                    (M.read (|
+                (BinOp.Wrap.add (|
+                  BinOp.Wrap.sub (|
+                    M.read (|
                       M.get_constant (| "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE" |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.get_constant (| "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
-                    |)))
-                  (Value.Integer 1))
+                    |)
+                  |),
+                  Value.Integer IntegerKind.I32 1
+                |))
             |))).
       
       Definition value_POWER_OF_FIVE_128 : Value.t :=
@@ -36,1279 +36,3260 @@ Module num.
                 Value.Array
                   [
                     Value.Tuple
-                      [ Value.Integer 17218479456385750618; Value.Integer 1242899115359157055 ];
-                    Value.Tuple
-                      [ Value.Integer 10761549660241094136; Value.Integer 5388497965526861063 ];
-                    Value.Tuple
-                      [ Value.Integer 13451937075301367670; Value.Integer 6735622456908576329 ];
-                    Value.Tuple
-                      [ Value.Integer 16814921344126709587; Value.Integer 17642900107990496220 ];
-                    Value.Tuple
-                      [ Value.Integer 10509325840079193492; Value.Integer 8720969558280366185 ];
-                    Value.Tuple
-                      [ Value.Integer 13136657300098991865; Value.Integer 10901211947850457732 ];
-                    Value.Tuple
-                      [ Value.Integer 16420821625123739831; Value.Integer 18238200953240460069 ];
-                    Value.Tuple
-                      [ Value.Integer 10263013515702337394; Value.Integer 18316404623416369399 ];
-                    Value.Tuple
-                      [ Value.Integer 12828766894627921743; Value.Integer 13672133742415685941 ];
-                    Value.Tuple
-                      [ Value.Integer 16035958618284902179; Value.Integer 12478481159592219522 ];
-                    Value.Tuple
-                      [ Value.Integer 10022474136428063862; Value.Integer 5493207715531443249 ];
-                    Value.Tuple
-                      [ Value.Integer 12528092670535079827; Value.Integer 16089881681269079869 ];
-                    Value.Tuple
-                      [ Value.Integer 15660115838168849784; Value.Integer 15500666083158961933 ];
-                    Value.Tuple
-                      [ Value.Integer 9787572398855531115; Value.Integer 9687916301974351208 ];
-                    Value.Tuple
-                      [ Value.Integer 12234465498569413894; Value.Integer 7498209359040551106 ];
-                    Value.Tuple
-                      [ Value.Integer 15293081873211767368; Value.Integer 149389661945913074 ];
-                    Value.Tuple
-                      [ Value.Integer 9558176170757354605; Value.Integer 93368538716195671 ];
-                    Value.Tuple
-                      [ Value.Integer 11947720213446693256; Value.Integer 4728396691822632493 ];
-                    Value.Tuple
-                      [ Value.Integer 14934650266808366570; Value.Integer 5910495864778290617 ];
-                    Value.Tuple
-                      [ Value.Integer 9334156416755229106; Value.Integer 8305745933913819539 ];
-                    Value.Tuple
-                      [ Value.Integer 11667695520944036383; Value.Integer 1158810380537498616 ];
-                    Value.Tuple
-                      [ Value.Integer 14584619401180045478; Value.Integer 15283571030954036982 ];
-                    Value.Tuple
-                      [ Value.Integer 18230774251475056848; Value.Integer 9881091751837770420 ];
-                    Value.Tuple
-                      [ Value.Integer 11394233907171910530; Value.Integer 6175682344898606512 ];
-                    Value.Tuple
-                      [ Value.Integer 14242792383964888162; Value.Integer 16942974967978033949 ];
-                    Value.Tuple
-                      [ Value.Integer 17803490479956110203; Value.Integer 11955346673117766628 ];
-                    Value.Tuple
-                      [ Value.Integer 11127181549972568877; Value.Integer 5166248661484910190 ];
-                    Value.Tuple
-                      [ Value.Integer 13908976937465711096; Value.Integer 11069496845283525642 ];
-                    Value.Tuple
-                      [ Value.Integer 17386221171832138870; Value.Integer 13836871056604407053 ];
-                    Value.Tuple
-                      [ Value.Integer 10866388232395086794; Value.Integer 4036358391950366504 ];
-                    Value.Tuple
-                      [ Value.Integer 13582985290493858492; Value.Integer 14268820026792733938 ];
-                    Value.Tuple
-                      [ Value.Integer 16978731613117323115; Value.Integer 17836025033490917422 ];
-                    Value.Tuple
-                      [ Value.Integer 10611707258198326947; Value.Integer 8841672636718129437 ];
-                    Value.Tuple
-                      [ Value.Integer 13264634072747908684; Value.Integer 6440404777470273892 ];
-                    Value.Tuple
-                      [ Value.Integer 16580792590934885855; Value.Integer 8050505971837842365 ];
-                    Value.Tuple
-                      [ Value.Integer 10362995369334303659; Value.Integer 11949095260039733334 ];
-                    Value.Tuple
-                      [ Value.Integer 12953744211667879574; Value.Integer 10324683056622278764 ];
-                    Value.Tuple
-                      [ Value.Integer 16192180264584849468; Value.Integer 3682481783923072647 ];
-                    Value.Tuple
-                      [ Value.Integer 10120112665365530917; Value.Integer 11524923151806696212 ];
-                    Value.Tuple
-                      [ Value.Integer 12650140831706913647; Value.Integer 571095884476206553 ];
-                    Value.Tuple
-                      [ Value.Integer 15812676039633642058; Value.Integer 14548927910877421904 ];
-                    Value.Tuple
-                      [ Value.Integer 9882922524771026286; Value.Integer 13704765962725776594 ];
-                    Value.Tuple
-                      [ Value.Integer 12353653155963782858; Value.Integer 7907585416552444934 ];
-                    Value.Tuple
-                      [ Value.Integer 15442066444954728573; Value.Integer 661109733835780360 ];
-                    Value.Tuple
-                      [ Value.Integer 9651291528096705358; Value.Integer 2719036592861056677 ];
-                    Value.Tuple
-                      [ Value.Integer 12064114410120881697; Value.Integer 12622167777931096654 ];
-                    Value.Tuple
-                      [ Value.Integer 15080143012651102122; Value.Integer 1942651667131707105 ];
-                    Value.Tuple
-                      [ Value.Integer 9425089382906938826; Value.Integer 5825843310384704845 ];
-                    Value.Tuple
-                      [ Value.Integer 11781361728633673532; Value.Integer 16505676174835656864 ];
-                    Value.Tuple
-                      [ Value.Integer 14726702160792091916; Value.Integer 2185351144835019464 ];
-                    Value.Tuple
-                      [ Value.Integer 18408377700990114895; Value.Integer 2731688931043774330 ];
-                    Value.Tuple
-                      [ Value.Integer 11505236063118821809; Value.Integer 8624834609543440812 ];
-                    Value.Tuple
-                      [ Value.Integer 14381545078898527261; Value.Integer 15392729280356688919 ];
-                    Value.Tuple
-                      [ Value.Integer 17976931348623159077; Value.Integer 5405853545163697437 ];
-                    Value.Tuple
-                      [ Value.Integer 11235582092889474423; Value.Integer 5684501474941004850 ];
-                    Value.Tuple
-                      [ Value.Integer 14044477616111843029; Value.Integer 2493940825248868159 ];
-                    Value.Tuple
-                      [ Value.Integer 17555597020139803786; Value.Integer 7729112049988473103 ];
-                    Value.Tuple
-                      [ Value.Integer 10972248137587377366; Value.Integer 9442381049670183593 ];
-                    Value.Tuple
-                      [ Value.Integer 13715310171984221708; Value.Integer 2579604275232953683 ];
-                    Value.Tuple
-                      [ Value.Integer 17144137714980277135; Value.Integer 3224505344041192104 ];
-                    Value.Tuple
-                      [ Value.Integer 10715086071862673209; Value.Integer 8932844867666826921 ];
-                    Value.Tuple
-                      [ Value.Integer 13393857589828341511; Value.Integer 15777742103010921555 ];
-                    Value.Tuple
-                      [ Value.Integer 16742321987285426889; Value.Integer 15110491610336264040 ];
-                    Value.Tuple
-                      [ Value.Integer 10463951242053391806; Value.Integer 2526528228819083169 ];
-                    Value.Tuple
-                      [ Value.Integer 13079939052566739757; Value.Integer 12381532322878629770 ];
-                    Value.Tuple
-                      [ Value.Integer 16349923815708424697; Value.Integer 1641857348316123500 ];
-                    Value.Tuple
-                      [ Value.Integer 10218702384817765435; Value.Integer 12555375888766046947 ];
-                    Value.Tuple
-                      [ Value.Integer 12773377981022206794; Value.Integer 11082533842530170780 ];
-                    Value.Tuple
-                      [ Value.Integer 15966722476277758493; Value.Integer 4629795266307937667 ];
-                    Value.Tuple
-                      [ Value.Integer 9979201547673599058; Value.Integer 5199465050656154994 ];
-                    Value.Tuple
-                      [ Value.Integer 12474001934591998822; Value.Integer 15722703350174969551 ];
-                    Value.Tuple
-                      [ Value.Integer 15592502418239998528; Value.Integer 10430007150863936130 ];
-                    Value.Tuple
-                      [ Value.Integer 9745314011399999080; Value.Integer 6518754469289960081 ];
-                    Value.Tuple
-                      [ Value.Integer 12181642514249998850; Value.Integer 8148443086612450102 ];
-                    Value.Tuple
-                      [ Value.Integer 15227053142812498563; Value.Integer 962181821410786819 ];
-                    Value.Tuple
-                      [ Value.Integer 9516908214257811601; Value.Integer 16742264702877599426 ];
-                    Value.Tuple
-                      [ Value.Integer 11896135267822264502; Value.Integer 7092772823314835570 ];
-                    Value.Tuple
-                      [ Value.Integer 14870169084777830627; Value.Integer 18089338065998320271 ];
-                    Value.Tuple
-                      [ Value.Integer 9293855677986144142; Value.Integer 8999993282035256217 ];
-                    Value.Tuple
-                      [ Value.Integer 11617319597482680178; Value.Integer 2026619565689294464 ];
-                    Value.Tuple
-                      [ Value.Integer 14521649496853350222; Value.Integer 11756646493966393888 ];
-                    Value.Tuple
-                      [ Value.Integer 18152061871066687778; Value.Integer 5472436080603216552 ];
-                    Value.Tuple
-                      [ Value.Integer 11345038669416679861; Value.Integer 8031958568804398249 ];
-                    Value.Tuple
-                      [ Value.Integer 14181298336770849826; Value.Integer 14651634229432885715 ];
-                    Value.Tuple
-                      [ Value.Integer 17726622920963562283; Value.Integer 9091170749936331336 ];
-                    Value.Tuple
-                      [ Value.Integer 11079139325602226427; Value.Integer 3376138709496513133 ];
-                    Value.Tuple
-                      [ Value.Integer 13848924157002783033; Value.Integer 18055231442152805128 ];
-                    Value.Tuple
-                      [ Value.Integer 17311155196253478792; Value.Integer 8733981247408842698 ];
-                    Value.Tuple
-                      [ Value.Integer 10819471997658424245; Value.Integer 5458738279630526686 ];
-                    Value.Tuple
-                      [ Value.Integer 13524339997073030306; Value.Integer 11435108867965546262 ];
-                    Value.Tuple
-                      [ Value.Integer 16905424996341287883; Value.Integer 5070514048102157020 ];
-                    Value.Tuple
-                      [ Value.Integer 10565890622713304927; Value.Integer 863228270850154185 ];
-                    Value.Tuple
-                      [ Value.Integer 13207363278391631158; Value.Integer 14914093393844856443 ];
-                    Value.Tuple
-                      [ Value.Integer 16509204097989538948; Value.Integer 9419244705451294746 ];
-                    Value.Tuple
-                      [ Value.Integer 10318252561243461842; Value.Integer 15110399977761835024 ];
-                    Value.Tuple
-                      [ Value.Integer 12897815701554327303; Value.Integer 9664627935347517973 ];
-                    Value.Tuple
-                      [ Value.Integer 16122269626942909129; Value.Integer 7469098900757009562 ];
-                    Value.Tuple
-                      [ Value.Integer 10076418516839318205; Value.Integer 16197401859041600736 ];
-                    Value.Tuple
-                      [ Value.Integer 12595523146049147757; Value.Integer 6411694268519837208 ];
-                    Value.Tuple
-                      [ Value.Integer 15744403932561434696; Value.Integer 12626303854077184414 ];
-                    Value.Tuple
-                      [ Value.Integer 9840252457850896685; Value.Integer 7891439908798240259 ];
-                    Value.Tuple
-                      [ Value.Integer 12300315572313620856; Value.Integer 14475985904425188227 ];
-                    Value.Tuple
-                      [ Value.Integer 15375394465392026070; Value.Integer 18094982380531485284 ];
-                    Value.Tuple
-                      [ Value.Integer 9609621540870016294; Value.Integer 6697677969404790399 ];
-                    Value.Tuple
-                      [ Value.Integer 12012026926087520367; Value.Integer 17595469498610763806 ];
-                    Value.Tuple
-                      [ Value.Integer 15015033657609400459; Value.Integer 17382650854836066854 ];
-                    Value.Tuple
-                      [ Value.Integer 9384396036005875287; Value.Integer 8558313775058847832 ];
-                    Value.Tuple
-                      [ Value.Integer 11730495045007344109; Value.Integer 6086206200396171886 ];
-                    Value.Tuple
-                      [ Value.Integer 14663118806259180136; Value.Integer 12219443768922602761 ];
-                    Value.Tuple
-                      [ Value.Integer 18328898507823975170; Value.Integer 15274304711153253452 ];
-                    Value.Tuple
-                      [ Value.Integer 11455561567389984481; Value.Integer 14158126462898171311 ];
-                    Value.Tuple
-                      [ Value.Integer 14319451959237480602; Value.Integer 3862600023340550427 ];
-                    Value.Tuple
-                      [ Value.Integer 17899314949046850752; Value.Integer 14051622066030463842 ];
-                    Value.Tuple
-                      [ Value.Integer 11187071843154281720; Value.Integer 8782263791269039901 ];
-                    Value.Tuple
-                      [ Value.Integer 13983839803942852150; Value.Integer 10977829739086299876 ];
-                    Value.Tuple
-                      [ Value.Integer 17479799754928565188; Value.Integer 4498915137003099037 ];
-                    Value.Tuple
-                      [ Value.Integer 10924874846830353242; Value.Integer 12035193997481712706 ];
-                    Value.Tuple
-                      [ Value.Integer 13656093558537941553; Value.Integer 5820620459997365075 ];
-                    Value.Tuple
-                      [ Value.Integer 17070116948172426941; Value.Integer 11887461593424094248 ];
-                    Value.Tuple
-                      [ Value.Integer 10668823092607766838; Value.Integer 9735506505103752857 ];
-                    Value.Tuple
-                      [ Value.Integer 13336028865759708548; Value.Integer 2946011094524915263 ];
-                    Value.Tuple
-                      [ Value.Integer 16670036082199635685; Value.Integer 3682513868156144079 ];
-                    Value.Tuple
-                      [ Value.Integer 10418772551374772303; Value.Integer 4607414176811284001 ];
-                    Value.Tuple
-                      [ Value.Integer 13023465689218465379; Value.Integer 1147581702586717097 ];
-                    Value.Tuple
-                      [ Value.Integer 16279332111523081723; Value.Integer 15269535183515560084 ];
-                    Value.Tuple
-                      [ Value.Integer 10174582569701926077; Value.Integer 7237616480483531100 ];
-                    Value.Tuple
-                      [ Value.Integer 12718228212127407596; Value.Integer 13658706619031801779 ];
-                    Value.Tuple
-                      [ Value.Integer 15897785265159259495; Value.Integer 17073383273789752224 ];
-                    Value.Tuple
-                      [ Value.Integer 9936115790724537184; Value.Integer 17588393573759676996 ];
-                    Value.Tuple
-                      [ Value.Integer 12420144738405671481; Value.Integer 3538747893490044629 ];
-                    Value.Tuple
-                      [ Value.Integer 15525180923007089351; Value.Integer 9035120885289943691 ];
-                    Value.Tuple
-                      [ Value.Integer 9703238076879430844; Value.Integer 12564479580947296663 ];
-                    Value.Tuple
-                      [ Value.Integer 12129047596099288555; Value.Integer 15705599476184120828 ];
-                    Value.Tuple
-                      [ Value.Integer 15161309495124110694; Value.Integer 15020313326802763131 ];
-                    Value.Tuple
-                      [ Value.Integer 9475818434452569184; Value.Integer 4776009810824339053 ];
-                    Value.Tuple
-                      [ Value.Integer 11844773043065711480; Value.Integer 5970012263530423816 ];
-                    Value.Tuple
-                      [ Value.Integer 14805966303832139350; Value.Integer 7462515329413029771 ];
-                    Value.Tuple
-                      [ Value.Integer 9253728939895087094; Value.Integer 52386062455755702 ];
-                    Value.Tuple
-                      [ Value.Integer 11567161174868858867; Value.Integer 9288854614924470436 ];
-                    Value.Tuple
-                      [ Value.Integer 14458951468586073584; Value.Integer 6999382250228200141 ];
-                    Value.Tuple
-                      [ Value.Integer 18073689335732591980; Value.Integer 8749227812785250177 ];
-                    Value.Tuple
-                      [ Value.Integer 11296055834832869987; Value.Integer 14691639419845557168 ];
-                    Value.Tuple
-                      [ Value.Integer 14120069793541087484; Value.Integer 13752863256379558556 ];
-                    Value.Tuple
-                      [ Value.Integer 17650087241926359355; Value.Integer 17191079070474448196 ];
-                    Value.Tuple
-                      [ Value.Integer 11031304526203974597; Value.Integer 8438581409832836170 ];
-                    Value.Tuple
-                      [ Value.Integer 13789130657754968246; Value.Integer 15159912780718433117 ];
-                    Value.Tuple
-                      [ Value.Integer 17236413322193710308; Value.Integer 9726518939043265588 ];
-                    Value.Tuple
-                      [ Value.Integer 10772758326371068942; Value.Integer 15302446373756816800 ];
-                    Value.Tuple
-                      [ Value.Integer 13465947907963836178; Value.Integer 9904685930341245193 ];
-                    Value.Tuple
-                      [ Value.Integer 16832434884954795223; Value.Integer 3157485376071780683 ];
-                    Value.Tuple
-                      [ Value.Integer 10520271803096747014; Value.Integer 8890957387685944783 ];
-                    Value.Tuple
-                      [ Value.Integer 13150339753870933768; Value.Integer 1890324697752655170 ];
-                    Value.Tuple
-                      [ Value.Integer 16437924692338667210; Value.Integer 2362905872190818963 ];
-                    Value.Tuple
-                      [ Value.Integer 10273702932711667006; Value.Integer 6088502188546649756 ];
-                    Value.Tuple
-                      [ Value.Integer 12842128665889583757; Value.Integer 16833999772538088003 ];
-                    Value.Tuple
-                      [ Value.Integer 16052660832361979697; Value.Integer 7207441660390446292 ];
-                    Value.Tuple
-                      [ Value.Integer 10032913020226237310; Value.Integer 16033866083812498692 ];
-                    Value.Tuple
-                      [ Value.Integer 12541141275282796638; Value.Integer 10818960567910847557 ];
-                    Value.Tuple
-                      [ Value.Integer 15676426594103495798; Value.Integer 4300328673033783639 ];
-                    Value.Tuple
-                      [ Value.Integer 9797766621314684873; Value.Integer 16522763475928278486 ];
-                    Value.Tuple
-                      [ Value.Integer 12247208276643356092; Value.Integer 6818396289628184396 ];
-                    Value.Tuple
-                      [ Value.Integer 15309010345804195115; Value.Integer 8522995362035230495 ];
-                    Value.Tuple
-                      [ Value.Integer 9568131466127621947; Value.Integer 3021029092058325107 ];
-                    Value.Tuple
-                      [ Value.Integer 11960164332659527433; Value.Integer 17611344420355070096 ];
-                    Value.Tuple
-                      [ Value.Integer 14950205415824409292; Value.Integer 8179122470161673908 ];
-                    Value.Tuple
-                      [ Value.Integer 9343878384890255807; Value.Integer 14335323580705822000 ];
-                    Value.Tuple
-                      [ Value.Integer 11679847981112819759; Value.Integer 13307468457454889596 ];
-                    Value.Tuple
-                      [ Value.Integer 14599809976391024699; Value.Integer 12022649553391224092 ];
-                    Value.Tuple
-                      [ Value.Integer 18249762470488780874; Value.Integer 10416625923311642211 ];
-                    Value.Tuple
-                      [ Value.Integer 11406101544055488046; Value.Integer 11122077220497164286 ];
-                    Value.Tuple
-                      [ Value.Integer 14257626930069360058; Value.Integer 4679224488766679549 ];
-                    Value.Tuple
-                      [ Value.Integer 17822033662586700072; Value.Integer 15072402647813125244 ];
-                    Value.Tuple
-                      [ Value.Integer 11138771039116687545; Value.Integer 9420251654883203278 ];
-                    Value.Tuple
-                      [ Value.Integer 13923463798895859431; Value.Integer 16387000587031392001 ];
-                    Value.Tuple
-                      [ Value.Integer 17404329748619824289; Value.Integer 15872064715361852097 ];
-                    Value.Tuple
-                      [ Value.Integer 10877706092887390181; Value.Integer 3002511419460075705 ];
-                    Value.Tuple
-                      [ Value.Integer 13597132616109237726; Value.Integer 8364825292752482535 ];
-                    Value.Tuple
-                      [ Value.Integer 16996415770136547158; Value.Integer 1232659579085827361 ];
-                    Value.Tuple
-                      [ Value.Integer 10622759856335341973; Value.Integer 14605470292210805812 ];
-                    Value.Tuple
-                      [ Value.Integer 13278449820419177467; Value.Integer 4421779809981343554 ];
-                    Value.Tuple
-                      [ Value.Integer 16598062275523971834; Value.Integer 915538744049291538 ];
-                    Value.Tuple
-                      [ Value.Integer 10373788922202482396; Value.Integer 5183897733458195115 ];
-                    Value.Tuple
-                      [ Value.Integer 12967236152753102995; Value.Integer 6479872166822743894 ];
-                    Value.Tuple
-                      [ Value.Integer 16209045190941378744; Value.Integer 3488154190101041964 ];
-                    Value.Tuple
-                      [ Value.Integer 10130653244338361715; Value.Integer 2180096368813151227 ];
-                    Value.Tuple
-                      [ Value.Integer 12663316555422952143; Value.Integer 16560178516298602746 ];
-                    Value.Tuple
-                      [ Value.Integer 15829145694278690179; Value.Integer 16088537126945865529 ];
-                    Value.Tuple
-                      [ Value.Integer 9893216058924181362; Value.Integer 7749492695127472003 ];
-                    Value.Tuple
-                      [ Value.Integer 12366520073655226703; Value.Integer 463493832054564196 ];
-                    Value.Tuple
-                      [ Value.Integer 15458150092069033378; Value.Integer 14414425345350368957 ];
-                    Value.Tuple
-                      [ Value.Integer 9661343807543145861; Value.Integer 13620701859271368502 ];
-                    Value.Tuple
-                      [ Value.Integer 12076679759428932327; Value.Integer 3190819268807046916 ];
-                    Value.Tuple
-                      [ Value.Integer 15095849699286165408; Value.Integer 17823582141290972357 ];
-                    Value.Tuple
-                      [ Value.Integer 9434906062053853380; Value.Integer 11139738838306857723 ];
-                    Value.Tuple
-                      [ Value.Integer 11793632577567316725; Value.Integer 13924673547883572154 ];
-                    Value.Tuple
-                      [ Value.Integer 14742040721959145907; Value.Integer 3570783879572301480 ];
-                    Value.Tuple
-                      [ Value.Integer 18427550902448932383; Value.Integer 18298537904747540562 ];
-                    Value.Tuple
-                      [ Value.Integer 11517219314030582739; Value.Integer 18354115218108294707 ];
-                    Value.Tuple
-                      [ Value.Integer 14396524142538228424; Value.Integer 18330958004207980480 ];
-                    Value.Tuple
-                      [ Value.Integer 17995655178172785531; Value.Integer 4466953431550423984 ];
-                    Value.Tuple
-                      [ Value.Integer 11247284486357990957; Value.Integer 486002885505321038 ];
-                    Value.Tuple
-                      [ Value.Integer 14059105607947488696; Value.Integer 5219189625309039202 ];
-                    Value.Tuple
-                      [ Value.Integer 17573882009934360870; Value.Integer 6523987031636299002 ];
-                    Value.Tuple
-                      [ Value.Integer 10983676256208975543; Value.Integer 17912549950054850588 ];
-                    Value.Tuple
-                      [ Value.Integer 13729595320261219429; Value.Integer 17779001419141175331 ];
-                    Value.Tuple
-                      [ Value.Integer 17161994150326524287; Value.Integer 8388693718644305452 ];
-                    Value.Tuple
-                      [ Value.Integer 10726246343954077679; Value.Integer 12160462601793772764 ];
-                    Value.Tuple
-                      [ Value.Integer 13407807929942597099; Value.Integer 10588892233814828051 ];
-                    Value.Tuple
-                      [ Value.Integer 16759759912428246374; Value.Integer 8624429273841147159 ];
-                    Value.Tuple
-                      [ Value.Integer 10474849945267653984; Value.Integer 778582277723329070 ];
-                    Value.Tuple
-                      [ Value.Integer 13093562431584567480; Value.Integer 973227847154161338 ];
-                    Value.Tuple
-                      [ Value.Integer 16366953039480709350; Value.Integer 1216534808942701673 ];
-                    Value.Tuple
-                      [ Value.Integer 10229345649675443343; Value.Integer 14595392310871352257 ];
-                    Value.Tuple
-                      [ Value.Integer 12786682062094304179; Value.Integer 13632554370161802418 ];
-                    Value.Tuple
-                      [ Value.Integer 15983352577617880224; Value.Integer 12429006944274865118 ];
-                    Value.Tuple
-                      [ Value.Integer 9989595361011175140; Value.Integer 7768129340171790699 ];
-                    Value.Tuple
-                      [ Value.Integer 12486994201263968925; Value.Integer 9710161675214738374 ];
-                    Value.Tuple
-                      [ Value.Integer 15608742751579961156; Value.Integer 16749388112445810871 ];
-                    Value.Tuple
-                      [ Value.Integer 9755464219737475723; Value.Integer 1244995533423855986 ];
-                    Value.Tuple
-                      [ Value.Integer 12194330274671844653; Value.Integer 15391302472061983695 ];
-                    Value.Tuple
-                      [ Value.Integer 15242912843339805817; Value.Integer 5404070034795315907 ];
-                    Value.Tuple
-                      [ Value.Integer 9526820527087378635; Value.Integer 14906758817815542202 ];
-                    Value.Tuple
-                      [ Value.Integer 11908525658859223294; Value.Integer 14021762503842039848 ];
-                    Value.Tuple
-                      [ Value.Integer 14885657073574029118; Value.Integer 8303831092947774002 ];
-                    Value.Tuple
-                      [ Value.Integer 9303535670983768199; Value.Integer 578208414664970847 ];
-                    Value.Tuple
-                      [ Value.Integer 11629419588729710248; Value.Integer 14557818573613377271 ];
-                    Value.Tuple
-                      [ Value.Integer 14536774485912137810; Value.Integer 18197273217016721589 ];
-                    Value.Tuple
-                      [ Value.Integer 18170968107390172263; Value.Integer 13523219484416126178 ];
-                    Value.Tuple
-                      [ Value.Integer 11356855067118857664; Value.Integer 15369541205401160717 ];
-                    Value.Tuple
-                      [ Value.Integer 14196068833898572081; Value.Integer 765182433041899281 ];
-                    Value.Tuple
-                      [ Value.Integer 17745086042373215101; Value.Integer 5568164059729762005 ];
-                    Value.Tuple
-                      [ Value.Integer 11090678776483259438; Value.Integer 5785945546544795205 ];
-                    Value.Tuple
-                      [ Value.Integer 13863348470604074297; Value.Integer 16455803970035769814 ];
-                    Value.Tuple
-                      [ Value.Integer 17329185588255092872; Value.Integer 6734696907262548556 ];
-                    Value.Tuple
-                      [ Value.Integer 10830740992659433045; Value.Integer 4209185567039092847 ];
-                    Value.Tuple
-                      [ Value.Integer 13538426240824291306; Value.Integer 9873167977226253963 ];
-                    Value.Tuple
-                      [ Value.Integer 16923032801030364133; Value.Integer 3118087934678041646 ];
-                    Value.Tuple
-                      [ Value.Integer 10576895500643977583; Value.Integer 4254647968387469981 ];
-                    Value.Tuple
-                      [ Value.Integer 13221119375804971979; Value.Integer 706623942056949572 ];
-                    Value.Tuple
-                      [ Value.Integer 16526399219756214973; Value.Integer 14718337982853350677 ];
-                    Value.Tuple
-                      [ Value.Integer 10328999512347634358; Value.Integer 11504804248497038125 ];
-                    Value.Tuple
-                      [ Value.Integer 12911249390434542948; Value.Integer 5157633273766521849 ];
-                    Value.Tuple
-                      [ Value.Integer 16139061738043178685; Value.Integer 6447041592208152311 ];
-                    Value.Tuple
-                      [ Value.Integer 10086913586276986678; Value.Integer 6335244004343789146 ];
-                    Value.Tuple
-                      [ Value.Integer 12608641982846233347; Value.Integer 17142427042284512241 ];
-                    Value.Tuple
-                      [ Value.Integer 15760802478557791684; Value.Integer 16816347784428252397 ];
-                    Value.Tuple
-                      [ Value.Integer 9850501549098619803; Value.Integer 1286845328412881940 ];
-                    Value.Tuple
-                      [ Value.Integer 12313126936373274753; Value.Integer 15443614715798266137 ];
-                    Value.Tuple
-                      [ Value.Integer 15391408670466593442; Value.Integer 5469460339465668959 ];
-                    Value.Tuple
-                      [ Value.Integer 9619630419041620901; Value.Integer 8030098730593431003 ];
-                    Value.Tuple
-                      [ Value.Integer 12024538023802026126; Value.Integer 14649309431669176658 ];
-                    Value.Tuple
-                      [ Value.Integer 15030672529752532658; Value.Integer 9088264752731695015 ];
-                    Value.Tuple
-                      [ Value.Integer 9394170331095332911; Value.Integer 10291851488884697288 ];
-                    Value.Tuple
-                      [ Value.Integer 11742712913869166139; Value.Integer 8253128342678483706 ];
-                    Value.Tuple
-                      [ Value.Integer 14678391142336457674; Value.Integer 5704724409920716729 ];
-                    Value.Tuple
-                      [ Value.Integer 18347988927920572092; Value.Integer 16354277549255671720 ];
-                    Value.Tuple
-                      [ Value.Integer 11467493079950357558; Value.Integer 998051431430019017 ];
-                    Value.Tuple
-                      [ Value.Integer 14334366349937946947; Value.Integer 10470936326142299579 ];
-                    Value.Tuple
-                      [ Value.Integer 17917957937422433684; Value.Integer 8476984389250486570 ];
-                    Value.Tuple
-                      [ Value.Integer 11198723710889021052; Value.Integer 14521487280136329914 ];
-                    Value.Tuple
-                      [ Value.Integer 13998404638611276315; Value.Integer 18151859100170412392 ];
-                    Value.Tuple
-                      [ Value.Integer 17498005798264095394; Value.Integer 18078137856785627587 ];
-                    Value.Tuple
-                      [ Value.Integer 10936253623915059621; Value.Integer 15910522178918405146 ];
-                    Value.Tuple
-                      [ Value.Integer 13670317029893824527; Value.Integer 6053094668365842720 ];
-                    Value.Tuple
-                      [ Value.Integer 17087896287367280659; Value.Integer 2954682317029915496 ];
-                    Value.Tuple
-                      [ Value.Integer 10679935179604550411; Value.Integer 17987577512639554849 ];
-                    Value.Tuple
-                      [ Value.Integer 13349918974505688014; Value.Integer 17872785872372055657 ];
-                    Value.Tuple
-                      [ Value.Integer 16687398718132110018; Value.Integer 13117610303610293764 ];
-                    Value.Tuple
-                      [ Value.Integer 10429624198832568761; Value.Integer 12810192458183821506 ];
-                    Value.Tuple
-                      [ Value.Integer 13037030248540710952; Value.Integer 2177682517447613171 ];
-                    Value.Tuple
-                      [ Value.Integer 16296287810675888690; Value.Integer 2722103146809516464 ];
-                    Value.Tuple
-                      [ Value.Integer 10185179881672430431; Value.Integer 6313000485183335694 ];
-                    Value.Tuple
-                      [ Value.Integer 12731474852090538039; Value.Integer 3279564588051781713 ];
-                    Value.Tuple
-                      [ Value.Integer 15914343565113172548; Value.Integer 17934513790346890853 ];
-                    Value.Tuple
-                      [ Value.Integer 9946464728195732843; Value.Integer 1985699082112030975 ];
-                    Value.Tuple
-                      [ Value.Integer 12433080910244666053; Value.Integer 16317181907922202431 ];
-                    Value.Tuple
-                      [ Value.Integer 15541351137805832567; Value.Integer 6561419329620589327 ];
-                    Value.Tuple
-                      [ Value.Integer 9713344461128645354; Value.Integer 11018416108653950185 ];
-                    Value.Tuple
-                      [ Value.Integer 12141680576410806693; Value.Integer 4549648098962661924 ];
-                    Value.Tuple
-                      [ Value.Integer 15177100720513508366; Value.Integer 10298746142130715309 ];
-                    Value.Tuple
-                      [ Value.Integer 9485687950320942729; Value.Integer 1825030320404309164 ];
-                    Value.Tuple
-                      [ Value.Integer 11857109937901178411; Value.Integer 6892973918932774359 ];
-                    Value.Tuple
-                      [ Value.Integer 14821387422376473014; Value.Integer 4004531380238580045 ];
-                    Value.Tuple
-                      [ Value.Integer 9263367138985295633; Value.Integer 16337890167931276240 ];
-                    Value.Tuple
-                      [ Value.Integer 11579208923731619542; Value.Integer 6587304654631931588 ];
-                    Value.Tuple
-                      [ Value.Integer 14474011154664524427; Value.Integer 17457502855144690293 ];
-                    Value.Tuple
-                      [ Value.Integer 18092513943330655534; Value.Integer 17210192550503474962 ];
-                    Value.Tuple
-                      [ Value.Integer 11307821214581659709; Value.Integer 6144684325637283947 ];
-                    Value.Tuple
-                      [ Value.Integer 14134776518227074636; Value.Integer 12292541425473992838 ];
-                    Value.Tuple
-                      [ Value.Integer 17668470647783843295; Value.Integer 15365676781842491048 ];
-                    Value.Tuple
-                      [ Value.Integer 11042794154864902059; Value.Integer 16521077016292638761 ];
-                    Value.Tuple
-                      [ Value.Integer 13803492693581127574; Value.Integer 16039660251938410547 ];
-                    Value.Tuple
-                      [ Value.Integer 17254365866976409468; Value.Integer 10826203278068237376 ];
-                    Value.Tuple
-                      [ Value.Integer 10783978666860255917; Value.Integer 15989749085647424168 ];
-                    Value.Tuple
-                      [ Value.Integer 13479973333575319897; Value.Integer 6152128301777116498 ];
-                    Value.Tuple
-                      [ Value.Integer 16849966666969149871; Value.Integer 12301846395648783526 ];
-                    Value.Tuple
-                      [ Value.Integer 10531229166855718669; Value.Integer 14606183024921571560 ];
-                    Value.Tuple
-                      [ Value.Integer 13164036458569648337; Value.Integer 4422670725869800738 ];
-                    Value.Tuple
-                      [ Value.Integer 16455045573212060421; Value.Integer 10140024425764638826 ];
-                    Value.Tuple
-                      [ Value.Integer 10284403483257537763; Value.Integer 8643358275316593218 ];
-                    Value.Tuple
-                      [ Value.Integer 12855504354071922204; Value.Integer 6192511825718353619 ];
-                    Value.Tuple
-                      [ Value.Integer 16069380442589902755; Value.Integer 7740639782147942024 ];
-                    Value.Tuple
-                      [ Value.Integer 10043362776618689222; Value.Integer 2532056854628769813 ];
-                    Value.Tuple
-                      [ Value.Integer 12554203470773361527; Value.Integer 12388443105140738074 ];
-                    Value.Tuple
-                      [ Value.Integer 15692754338466701909; Value.Integer 10873867862998534689 ];
-                    Value.Tuple
-                      [ Value.Integer 9807971461541688693; Value.Integer 9102010423587778132 ];
-                    Value.Tuple
-                      [ Value.Integer 12259964326927110866; Value.Integer 15989199047912110569 ];
-                    Value.Tuple
-                      [ Value.Integer 15324955408658888583; Value.Integer 10763126773035362404 ];
-                    Value.Tuple
-                      [ Value.Integer 9578097130411805364; Value.Integer 13644483260788183358 ];
-                    Value.Tuple
-                      [ Value.Integer 11972621413014756705; Value.Integer 17055604075985229198 ];
-                    Value.Tuple
-                      [ Value.Integer 14965776766268445882; Value.Integer 7484447039699372786 ];
-                    Value.Tuple
-                      [ Value.Integer 9353610478917778676; Value.Integer 9289465418239495895 ];
-                    Value.Tuple
-                      [ Value.Integer 11692013098647223345; Value.Integer 11611831772799369869 ];
-                    Value.Tuple
-                      [ Value.Integer 14615016373309029182; Value.Integer 679731660717048624 ];
-                    Value.Tuple
-                      [ Value.Integer 18268770466636286477; Value.Integer 10073036612751086588 ];
-                    Value.Tuple
-                      [ Value.Integer 11417981541647679048; Value.Integer 8601490892183123070 ];
-                    Value.Tuple
-                      [ Value.Integer 14272476927059598810; Value.Integer 10751863615228903838 ];
-                    Value.Tuple
-                      [ Value.Integer 17840596158824498513; Value.Integer 4216457482181353989 ];
-                    Value.Tuple
-                      [ Value.Integer 11150372599265311570; Value.Integer 14164500972431816003 ];
-                    Value.Tuple
-                      [ Value.Integer 13937965749081639463; Value.Integer 8482254178684994196 ];
-                    Value.Tuple
-                      [ Value.Integer 17422457186352049329; Value.Integer 5991131704928854841 ];
-                    Value.Tuple
-                      [ Value.Integer 10889035741470030830; Value.Integer 15273672361649004036 ];
-                    Value.Tuple
-                      [ Value.Integer 13611294676837538538; Value.Integer 9868718415206479237 ];
-                    Value.Tuple
-                      [ Value.Integer 17014118346046923173; Value.Integer 3112525982153323238 ];
-                    Value.Tuple
-                      [ Value.Integer 10633823966279326983; Value.Integer 4251171748059520976 ];
-                    Value.Tuple
-                      [ Value.Integer 13292279957849158729; Value.Integer 702278666647013315 ];
-                    Value.Tuple
-                      [ Value.Integer 16615349947311448411; Value.Integer 5489534351736154548 ];
-                    Value.Tuple
-                      [ Value.Integer 10384593717069655257; Value.Integer 1125115960621402641 ];
-                    Value.Tuple
-                      [ Value.Integer 12980742146337069071; Value.Integer 6018080969204141205 ];
-                    Value.Tuple
-                      [ Value.Integer 16225927682921336339; Value.Integer 2910915193077788602 ];
-                    Value.Tuple
-                      [ Value.Integer 10141204801825835211; Value.Integer 17960223060169475540 ];
-                    Value.Tuple
-                      [ Value.Integer 12676506002282294014; Value.Integer 17838592806784456521 ];
-                    Value.Tuple
-                      [ Value.Integer 15845632502852867518; Value.Integer 13074868971625794844 ];
-                    Value.Tuple
-                      [ Value.Integer 9903520314283042199; Value.Integer 3560107088838733873 ];
-                    Value.Tuple
-                      [ Value.Integer 12379400392853802748; Value.Integer 18285191916330581054 ];
-                    Value.Tuple
-                      [ Value.Integer 15474250491067253436; Value.Integer 4409745821703674701 ];
-                    Value.Tuple
-                      [ Value.Integer 9671406556917033397; Value.Integer 11979463175419572496 ];
-                    Value.Tuple
-                      [ Value.Integer 12089258196146291747; Value.Integer 1139270913992301908 ];
-                    Value.Tuple
-                      [ Value.Integer 15111572745182864683; Value.Integer 15259146697772541097 ];
-                    Value.Tuple
-                      [ Value.Integer 9444732965739290427; Value.Integer 7231123676894144234 ];
-                    Value.Tuple
-                      [ Value.Integer 11805916207174113034; Value.Integer 4427218577690292388 ];
-                    Value.Tuple
-                      [ Value.Integer 14757395258967641292; Value.Integer 14757395258967641293 ];
-                    Value.Tuple [ Value.Integer 9223372036854775808; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 11529215046068469760; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 14411518807585587200; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 18014398509481984000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 11258999068426240000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 14073748835532800000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 17592186044416000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 10995116277760000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 13743895347200000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 17179869184000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 10737418240000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 13421772800000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 16777216000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 10485760000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 13107200000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 16384000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 10240000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 12800000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 16000000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 10000000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 12500000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 15625000000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 9765625000000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 12207031250000000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 15258789062500000000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 9536743164062500000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 11920928955078125000; Value.Integer 0 ];
-                    Value.Tuple [ Value.Integer 14901161193847656250; Value.Integer 0 ];
-                    Value.Tuple
-                      [ Value.Integer 9313225746154785156; Value.Integer 4611686018427387904 ];
-                    Value.Tuple
-                      [ Value.Integer 11641532182693481445; Value.Integer 5764607523034234880 ];
-                    Value.Tuple
-                      [ Value.Integer 14551915228366851806; Value.Integer 11817445422220181504 ];
-                    Value.Tuple
-                      [ Value.Integer 18189894035458564758; Value.Integer 5548434740920451072 ];
-                    Value.Tuple
-                      [ Value.Integer 11368683772161602973; Value.Integer 17302829768357445632 ];
-                    Value.Tuple
-                      [ Value.Integer 14210854715202003717; Value.Integer 7793479155164643328 ];
-                    Value.Tuple
-                      [ Value.Integer 17763568394002504646; Value.Integer 14353534962383192064 ];
-                    Value.Tuple
-                      [ Value.Integer 11102230246251565404; Value.Integer 4359273333062107136 ];
-                    Value.Tuple
-                      [ Value.Integer 13877787807814456755; Value.Integer 5449091666327633920 ];
-                    Value.Tuple
-                      [ Value.Integer 17347234759768070944; Value.Integer 2199678564482154496 ];
-                    Value.Tuple
-                      [ Value.Integer 10842021724855044340; Value.Integer 1374799102801346560 ];
-                    Value.Tuple
-                      [ Value.Integer 13552527156068805425; Value.Integer 1718498878501683200 ];
-                    Value.Tuple
-                      [ Value.Integer 16940658945086006781; Value.Integer 6759809616554491904 ];
-                    Value.Tuple
-                      [ Value.Integer 10587911840678754238; Value.Integer 6530724019560251392 ];
-                    Value.Tuple
-                      [ Value.Integer 13234889800848442797; Value.Integer 17386777061305090048 ];
-                    Value.Tuple
-                      [ Value.Integer 16543612251060553497; Value.Integer 7898413271349198848 ];
-                    Value.Tuple
-                      [ Value.Integer 10339757656912845935; Value.Integer 16465723340661719040 ];
-                    Value.Tuple
-                      [ Value.Integer 12924697071141057419; Value.Integer 15970468157399760896 ];
-                    Value.Tuple
-                      [ Value.Integer 16155871338926321774; Value.Integer 15351399178322313216 ];
-                    Value.Tuple
-                      [ Value.Integer 10097419586828951109; Value.Integer 4982938468024057856 ];
-                    Value.Tuple
-                      [ Value.Integer 12621774483536188886; Value.Integer 10840359103457460224 ];
-                    Value.Tuple
-                      [ Value.Integer 15777218104420236108; Value.Integer 4327076842467049472 ];
-                    Value.Tuple
-                      [ Value.Integer 9860761315262647567; Value.Integer 11927795063396681728 ];
-                    Value.Tuple
-                      [ Value.Integer 12325951644078309459; Value.Integer 10298057810818464256 ];
-                    Value.Tuple
-                      [ Value.Integer 15407439555097886824; Value.Integer 8260886245095692416 ];
-                    Value.Tuple
-                      [ Value.Integer 9629649721936179265; Value.Integer 5163053903184807760 ];
-                    Value.Tuple
-                      [ Value.Integer 12037062152420224081; Value.Integer 11065503397408397604 ];
-                    Value.Tuple
-                      [ Value.Integer 15046327690525280101; Value.Integer 18443565265187884909 ];
-                    Value.Tuple
-                      [ Value.Integer 9403954806578300063; Value.Integer 13833071299956122020 ];
-                    Value.Tuple
-                      [ Value.Integer 11754943508222875079; Value.Integer 12679653106517764621 ];
-                    Value.Tuple
-                      [ Value.Integer 14693679385278593849; Value.Integer 11237880364719817872 ];
-                    Value.Tuple
-                      [ Value.Integer 18367099231598242312; Value.Integer 212292400617608628 ];
-                    Value.Tuple
-                      [ Value.Integer 11479437019748901445; Value.Integer 132682750386005392 ];
-                    Value.Tuple
-                      [ Value.Integer 14349296274686126806; Value.Integer 4777539456409894645 ];
-                    Value.Tuple
-                      [ Value.Integer 17936620343357658507; Value.Integer 15195296357367144114 ];
-                    Value.Tuple
-                      [ Value.Integer 11210387714598536567; Value.Integer 7191217214140771119 ];
-                    Value.Tuple
-                      [ Value.Integer 14012984643248170709; Value.Integer 4377335499248575995 ];
-                    Value.Tuple
-                      [ Value.Integer 17516230804060213386; Value.Integer 10083355392488107898 ];
-                    Value.Tuple
-                      [ Value.Integer 10947644252537633366; Value.Integer 10913783138732455340 ];
-                    Value.Tuple
-                      [ Value.Integer 13684555315672041708; Value.Integer 4418856886560793367 ];
-                    Value.Tuple
-                      [ Value.Integer 17105694144590052135; Value.Integer 5523571108200991709 ];
-                    Value.Tuple
-                      [ Value.Integer 10691058840368782584; Value.Integer 10369760970266701674 ];
-                    Value.Tuple
-                      [ Value.Integer 13363823550460978230; Value.Integer 12962201212833377092 ];
-                    Value.Tuple
-                      [ Value.Integer 16704779438076222788; Value.Integer 6979379479186945558 ];
-                    Value.Tuple
-                      [ Value.Integer 10440487148797639242; Value.Integer 13585484211346616781 ];
-                    Value.Tuple
-                      [ Value.Integer 13050608935997049053; Value.Integer 7758483227328495169 ];
-                    Value.Tuple
-                      [ Value.Integer 16313261169996311316; Value.Integer 14309790052588006865 ];
-                    Value.Tuple
-                      [ Value.Integer 10195788231247694572; Value.Integer 18166990819722280098 ];
-                    Value.Tuple
-                      [ Value.Integer 12744735289059618216; Value.Integer 4261994450943298507 ];
-                    Value.Tuple
-                      [ Value.Integer 15930919111324522770; Value.Integer 5327493063679123134 ];
-                    Value.Tuple
-                      [ Value.Integer 9956824444577826731; Value.Integer 7941369183226839863 ];
-                    Value.Tuple
-                      [ Value.Integer 12446030555722283414; Value.Integer 5315025460606161924 ];
-                    Value.Tuple
-                      [ Value.Integer 15557538194652854267; Value.Integer 15867153862612478214 ];
-                    Value.Tuple
-                      [ Value.Integer 9723461371658033917; Value.Integer 7611128154919104931 ];
-                    Value.Tuple
-                      [ Value.Integer 12154326714572542396; Value.Integer 14125596212076269068 ];
-                    Value.Tuple
-                      [ Value.Integer 15192908393215677995; Value.Integer 17656995265095336336 ];
-                    Value.Tuple
-                      [ Value.Integer 9495567745759798747; Value.Integer 8729779031470891258 ];
-                    Value.Tuple
-                      [ Value.Integer 11869459682199748434; Value.Integer 6300537770911226168 ];
-                    Value.Tuple
-                      [ Value.Integer 14836824602749685542; Value.Integer 17099044250493808518 ];
-                    Value.Tuple
-                      [ Value.Integer 9273015376718553464; Value.Integer 6075216638131242420 ];
-                    Value.Tuple
-                      [ Value.Integer 11591269220898191830; Value.Integer 7594020797664053025 ];
-                    Value.Tuple
-                      [ Value.Integer 14489086526122739788; Value.Integer 269153960225290473 ];
-                    Value.Tuple
-                      [ Value.Integer 18111358157653424735; Value.Integer 336442450281613091 ];
-                    Value.Tuple
-                      [ Value.Integer 11319598848533390459; Value.Integer 7127805559067090038 ];
-                    Value.Tuple
-                      [ Value.Integer 14149498560666738074; Value.Integer 4298070930406474644 ];
-                    Value.Tuple
-                      [ Value.Integer 17686873200833422592; Value.Integer 14595960699862869113 ];
-                    Value.Tuple
-                      [ Value.Integer 11054295750520889120; Value.Integer 9122475437414293195 ];
-                    Value.Tuple
-                      [ Value.Integer 13817869688151111400; Value.Integer 11403094296767866494 ];
-                    Value.Tuple
-                      [ Value.Integer 17272337110188889250; Value.Integer 14253867870959833118 ];
-                    Value.Tuple
-                      [ Value.Integer 10795210693868055781; Value.Integer 13520353437777283602 ];
-                    Value.Tuple
-                      [ Value.Integer 13494013367335069727; Value.Integer 3065383741939440791 ];
-                    Value.Tuple
-                      [ Value.Integer 16867516709168837158; Value.Integer 17666787732706464701 ];
-                    Value.Tuple
-                      [ Value.Integer 10542197943230523224; Value.Integer 6430056314514152534 ];
-                    Value.Tuple
-                      [ Value.Integer 13177747429038154030; Value.Integer 8037570393142690668 ];
-                    Value.Tuple
-                      [ Value.Integer 16472184286297692538; Value.Integer 823590954573587527 ];
-                    Value.Tuple
-                      [ Value.Integer 10295115178936057836; Value.Integer 5126430365035880108 ];
-                    Value.Tuple
-                      [ Value.Integer 12868893973670072295; Value.Integer 6408037956294850135 ];
-                    Value.Tuple
-                      [ Value.Integer 16086117467087590369; Value.Integer 3398361426941174765 ];
-                    Value.Tuple
-                      [ Value.Integer 10053823416929743980; Value.Integer 13653190937906703988 ];
-                    Value.Tuple
-                      [ Value.Integer 12567279271162179975; Value.Integer 17066488672383379985 ];
-                    Value.Tuple
-                      [ Value.Integer 15709099088952724969; Value.Integer 16721424822051837077 ];
-                    Value.Tuple
-                      [ Value.Integer 9818186930595453106; Value.Integer 3533361486141316317 ];
-                    Value.Tuple
-                      [ Value.Integer 12272733663244316382; Value.Integer 13640073894531421205 ];
-                    Value.Tuple
-                      [ Value.Integer 15340917079055395478; Value.Integer 7826720331309500698 ];
-                    Value.Tuple
-                      [ Value.Integer 9588073174409622174; Value.Integer 280014188641050032 ];
-                    Value.Tuple
-                      [ Value.Integer 11985091468012027717; Value.Integer 9573389772656088348 ];
-                    Value.Tuple
-                      [ Value.Integer 14981364335015034646; Value.Integer 16578423234247498339 ];
-                    Value.Tuple
-                      [ Value.Integer 9363352709384396654; Value.Integer 5749828502977298558 ];
-                    Value.Tuple
-                      [ Value.Integer 11704190886730495817; Value.Integer 16410657665576399005 ];
-                    Value.Tuple
-                      [ Value.Integer 14630238608413119772; Value.Integer 6678264026688335045 ];
-                    Value.Tuple
-                      [ Value.Integer 18287798260516399715; Value.Integer 8347830033360418806 ];
-                    Value.Tuple
-                      [ Value.Integer 11429873912822749822; Value.Integer 2911550761636567802 ];
-                    Value.Tuple
-                      [ Value.Integer 14287342391028437277; Value.Integer 12862810488900485560 ];
-                    Value.Tuple
-                      [ Value.Integer 17859177988785546597; Value.Integer 2243455055843443238 ];
-                    Value.Tuple
-                      [ Value.Integer 11161986242990966623; Value.Integer 3708002419115845976 ];
-                    Value.Tuple
-                      [ Value.Integer 13952482803738708279; Value.Integer 23317005467419566 ];
-                    Value.Tuple
-                      [ Value.Integer 17440603504673385348; Value.Integer 13864204312116438170 ];
-                    Value.Tuple
-                      [ Value.Integer 10900377190420865842; Value.Integer 17888499731927549664 ];
-                    Value.Tuple
-                      [ Value.Integer 13625471488026082303; Value.Integer 13137252628054661272 ];
-                    Value.Tuple
-                      [ Value.Integer 17031839360032602879; Value.Integer 11809879766640938686 ];
-                    Value.Tuple
-                      [ Value.Integer 10644899600020376799; Value.Integer 14298703881791668535 ];
-                    Value.Tuple
-                      [ Value.Integer 13306124500025470999; Value.Integer 13261693833812197764 ];
-                    Value.Tuple
-                      [ Value.Integer 16632655625031838749; Value.Integer 11965431273837859301 ];
-                    Value.Tuple
-                      [ Value.Integer 10395409765644899218; Value.Integer 9784237555362356015 ];
-                    Value.Tuple
-                      [ Value.Integer 12994262207056124023; Value.Integer 3006924907348169211 ];
-                    Value.Tuple
-                      [ Value.Integer 16242827758820155028; Value.Integer 17593714189467375226 ];
-                    Value.Tuple
-                      [ Value.Integer 10151767349262596893; Value.Integer 1772699331562333708 ];
-                    Value.Tuple
-                      [ Value.Integer 12689709186578246116; Value.Integer 6827560182880305039 ];
-                    Value.Tuple
-                      [ Value.Integer 15862136483222807645; Value.Integer 8534450228600381299 ];
-                    Value.Tuple
-                      [ Value.Integer 9913835302014254778; Value.Integer 7639874402088932264 ];
-                    Value.Tuple
-                      [ Value.Integer 12392294127517818473; Value.Integer 326470965756389522 ];
-                    Value.Tuple
-                      [ Value.Integer 15490367659397273091; Value.Integer 5019774725622874806 ];
-                    Value.Tuple
-                      [ Value.Integer 9681479787123295682; Value.Integer 831516194300602802 ];
-                    Value.Tuple
-                      [ Value.Integer 12101849733904119602; Value.Integer 10262767279730529310 ];
-                    Value.Tuple
-                      [ Value.Integer 15127312167380149503; Value.Integer 3605087062808385830 ];
-                    Value.Tuple
-                      [ Value.Integer 9454570104612593439; Value.Integer 9170708441896323000 ];
-                    Value.Tuple
-                      [ Value.Integer 11818212630765741799; Value.Integer 6851699533943015846 ];
-                    Value.Tuple
-                      [ Value.Integer 14772765788457177249; Value.Integer 3952938399001381903 ];
-                    Value.Tuple
-                      [ Value.Integer 9232978617785735780; Value.Integer 13999801545444333449 ];
-                    Value.Tuple
-                      [ Value.Integer 11541223272232169725; Value.Integer 17499751931805416812 ];
-                    Value.Tuple
-                      [ Value.Integer 14426529090290212157; Value.Integer 8039631859474607303 ];
-                    Value.Tuple
-                      [ Value.Integer 18033161362862765196; Value.Integer 14661225842770647033 ];
-                    Value.Tuple
-                      [ Value.Integer 11270725851789228247; Value.Integer 18386638188586430203 ];
-                    Value.Tuple
-                      [ Value.Integer 14088407314736535309; Value.Integer 18371611717305649850 ];
-                    Value.Tuple
-                      [ Value.Integer 17610509143420669137; Value.Integer 9129456591349898601 ];
-                    Value.Tuple
-                      [ Value.Integer 11006568214637918210; Value.Integer 17235125415662156385 ];
-                    Value.Tuple
-                      [ Value.Integer 13758210268297397763; Value.Integer 12320534732722919674 ];
-                    Value.Tuple
-                      [ Value.Integer 17197762835371747204; Value.Integer 10788982397476261688 ];
-                    Value.Tuple
-                      [ Value.Integer 10748601772107342002; Value.Integer 15966486035277439363 ];
-                    Value.Tuple
-                      [ Value.Integer 13435752215134177503; Value.Integer 10734735507242023396 ];
-                    Value.Tuple
-                      [ Value.Integer 16794690268917721879; Value.Integer 8806733365625141341 ];
-                    Value.Tuple
-                      [ Value.Integer 10496681418073576174; Value.Integer 12421737381156795194 ];
-                    Value.Tuple
-                      [ Value.Integer 13120851772591970218; Value.Integer 6303799689591218185 ];
-                    Value.Tuple
-                      [ Value.Integer 16401064715739962772; Value.Integer 17103121648843798539 ];
-                    Value.Tuple
-                      [ Value.Integer 10250665447337476733; Value.Integer 1466078993672598279 ];
-                    Value.Tuple
-                      [ Value.Integer 12813331809171845916; Value.Integer 6444284760518135752 ];
-                    Value.Tuple
-                      [ Value.Integer 16016664761464807395; Value.Integer 8055355950647669691 ];
-                    Value.Tuple
-                      [ Value.Integer 10010415475915504622; Value.Integer 2728754459941099604 ];
-                    Value.Tuple
-                      [ Value.Integer 12513019344894380777; Value.Integer 12634315111781150314 ];
-                    Value.Tuple
-                      [ Value.Integer 15641274181117975972; Value.Integer 1957835834444274180 ];
-                    Value.Tuple
-                      [ Value.Integer 9775796363198734982; Value.Integer 10447019433382447170 ];
-                    Value.Tuple
-                      [ Value.Integer 12219745453998418728; Value.Integer 3835402254873283155 ];
-                    Value.Tuple
-                      [ Value.Integer 15274681817498023410; Value.Integer 4794252818591603944 ];
-                    Value.Tuple
-                      [ Value.Integer 9546676135936264631; Value.Integer 7608094030047140369 ];
-                    Value.Tuple
-                      [ Value.Integer 11933345169920330789; Value.Integer 4898431519131537557 ];
-                    Value.Tuple
-                      [ Value.Integer 14916681462400413486; Value.Integer 10734725417341809851 ];
-                    Value.Tuple
-                      [ Value.Integer 9322925914000258429; Value.Integer 2097517367411243253 ];
-                    Value.Tuple
-                      [ Value.Integer 11653657392500323036; Value.Integer 7233582727691441970 ];
-                    Value.Tuple
-                      [ Value.Integer 14567071740625403795; Value.Integer 9041978409614302462 ];
-                    Value.Tuple
-                      [ Value.Integer 18208839675781754744; Value.Integer 6690786993590490174 ];
-                    Value.Tuple
-                      [ Value.Integer 11380524797363596715; Value.Integer 4181741870994056359 ];
-                    Value.Tuple
-                      [ Value.Integer 14225655996704495894; Value.Integer 615491320315182544 ];
-                    Value.Tuple
-                      [ Value.Integer 17782069995880619867; Value.Integer 9992736187248753989 ];
-                    Value.Tuple
-                      [ Value.Integer 11113793747425387417; Value.Integer 3939617107816777291 ];
-                    Value.Tuple
-                      [ Value.Integer 13892242184281734271; Value.Integer 9536207403198359517 ];
-                    Value.Tuple
-                      [ Value.Integer 17365302730352167839; Value.Integer 7308573235570561493 ];
-                    Value.Tuple
-                      [ Value.Integer 10853314206470104899; Value.Integer 11485387299872682789 ];
-                    Value.Tuple
-                      [ Value.Integer 13566642758087631124; Value.Integer 9745048106413465582 ];
-                    Value.Tuple
-                      [ Value.Integer 16958303447609538905; Value.Integer 12181310133016831978 ];
-                    Value.Tuple
-                      [ Value.Integer 10598939654755961816; Value.Integer 695789805494438130 ];
-                    Value.Tuple
-                      [ Value.Integer 13248674568444952270; Value.Integer 869737256868047663 ];
-                    Value.Tuple
-                      [ Value.Integer 16560843210556190337; Value.Integer 10310543607939835386 ];
-                    Value.Tuple
-                      [ Value.Integer 10350527006597618960; Value.Integer 17973304801030866876 ];
-                    Value.Tuple
-                      [ Value.Integer 12938158758247023701; Value.Integer 4019886927579031980 ];
-                    Value.Tuple
-                      [ Value.Integer 16172698447808779626; Value.Integer 9636544677901177879 ];
-                    Value.Tuple
-                      [ Value.Integer 10107936529880487266; Value.Integer 10634526442115624078 ];
-                    Value.Tuple
-                      [ Value.Integer 12634920662350609083; Value.Integer 4069786015789754290 ];
-                    Value.Tuple
-                      [ Value.Integer 15793650827938261354; Value.Integer 475546501309804958 ];
-                    Value.Tuple
-                      [ Value.Integer 9871031767461413346; Value.Integer 4908902581746016003 ];
-                    Value.Tuple
-                      [ Value.Integer 12338789709326766682; Value.Integer 15359500264037295811 ];
-                    Value.Tuple
-                      [ Value.Integer 15423487136658458353; Value.Integer 9976003293191843956 ];
-                    Value.Tuple
-                      [ Value.Integer 9639679460411536470; Value.Integer 17764217104313372233 ];
-                    Value.Tuple
-                      [ Value.Integer 12049599325514420588; Value.Integer 12981899343536939483 ];
-                    Value.Tuple
-                      [ Value.Integer 15061999156893025735; Value.Integer 16227374179421174354 ];
-                    Value.Tuple
-                      [ Value.Integer 9413749473058141084; Value.Integer 17059637889779315827 ];
-                    Value.Tuple
-                      [ Value.Integer 11767186841322676356; Value.Integer 2877803288514593168 ];
-                    Value.Tuple
-                      [ Value.Integer 14708983551653345445; Value.Integer 3597254110643241460 ];
-                    Value.Tuple
-                      [ Value.Integer 18386229439566681806; Value.Integer 9108253656731439729 ];
-                    Value.Tuple
-                      [ Value.Integer 11491393399729176129; Value.Integer 1080972517029761926 ];
-                    Value.Tuple
-                      [ Value.Integer 14364241749661470161; Value.Integer 5962901664714590312 ];
-                    Value.Tuple
-                      [ Value.Integer 17955302187076837701; Value.Integer 12065313099320625794 ];
-                    Value.Tuple
-                      [ Value.Integer 11222063866923023563; Value.Integer 9846663696289085073 ];
-                    Value.Tuple
-                      [ Value.Integer 14027579833653779454; Value.Integer 7696643601933968437 ];
-                    Value.Tuple
-                      [ Value.Integer 17534474792067224318; Value.Integer 397432465562684739 ];
-                    Value.Tuple
-                      [ Value.Integer 10959046745042015198; Value.Integer 14083453346258841674 ];
-                    Value.Tuple
-                      [ Value.Integer 13698808431302518998; Value.Integer 8380944645968776284 ];
-                    Value.Tuple
-                      [ Value.Integer 17123510539128148748; Value.Integer 1252808770606194547 ];
-                    Value.Tuple
-                      [ Value.Integer 10702194086955092967; Value.Integer 10006377518483647400 ];
-                    Value.Tuple
-                      [ Value.Integer 13377742608693866209; Value.Integer 7896285879677171346 ];
-                    Value.Tuple
-                      [ Value.Integer 16722178260867332761; Value.Integer 14482043368023852087 ];
-                    Value.Tuple
-                      [ Value.Integer 10451361413042082976; Value.Integer 2133748077373825698 ];
-                    Value.Tuple
-                      [ Value.Integer 13064201766302603720; Value.Integer 2667185096717282123 ];
-                    Value.Tuple
-                      [ Value.Integer 16330252207878254650; Value.Integer 3333981370896602653 ];
-                    Value.Tuple
-                      [ Value.Integer 10206407629923909156; Value.Integer 6695424375237764562 ];
-                    Value.Tuple
-                      [ Value.Integer 12758009537404886445; Value.Integer 8369280469047205703 ];
-                    Value.Tuple
-                      [ Value.Integer 15947511921756108056; Value.Integer 15073286604736395033 ];
-                    Value.Tuple
-                      [ Value.Integer 9967194951097567535; Value.Integer 9420804127960246895 ];
-                    Value.Tuple
-                      [ Value.Integer 12458993688871959419; Value.Integer 7164319141522920715 ];
-                    Value.Tuple
-                      [ Value.Integer 15573742111089949274; Value.Integer 4343712908476262990 ];
-                    Value.Tuple
-                      [ Value.Integer 9733588819431218296; Value.Integer 7326506586225052273 ];
-                    Value.Tuple
-                      [ Value.Integer 12166986024289022870; Value.Integer 9158133232781315341 ];
-                    Value.Tuple
-                      [ Value.Integer 15208732530361278588; Value.Integer 2224294504121868368 ];
-                    Value.Tuple
-                      [ Value.Integer 9505457831475799117; Value.Integer 10613556101930943538 ];
-                    Value.Tuple
-                      [ Value.Integer 11881822289344748896; Value.Integer 17878631145841067327 ];
-                    Value.Tuple
-                      [ Value.Integer 14852277861680936121; Value.Integer 3901544858591782542 ];
-                    Value.Tuple
-                      [ Value.Integer 9282673663550585075; Value.Integer 13967680582688333849 ];
-                    Value.Tuple
-                      [ Value.Integer 11603342079438231344; Value.Integer 12847914709933029407 ];
-                    Value.Tuple
-                      [ Value.Integer 14504177599297789180; Value.Integer 16059893387416286759 ];
-                    Value.Tuple
-                      [ Value.Integer 18130221999122236476; Value.Integer 1628122660560806833 ];
-                    Value.Tuple
-                      [ Value.Integer 11331388749451397797; Value.Integer 10240948699705280078 ];
-                    Value.Tuple
-                      [ Value.Integer 14164235936814247246; Value.Integer 17412871893058988002 ];
-                    Value.Tuple
-                      [ Value.Integer 17705294921017809058; Value.Integer 12542717829468959195 ];
-                    Value.Tuple
-                      [ Value.Integer 11065809325636130661; Value.Integer 12450884661845487401 ];
-                    Value.Tuple
-                      [ Value.Integer 13832261657045163327; Value.Integer 1728547772024695539 ];
-                    Value.Tuple
-                      [ Value.Integer 17290327071306454158; Value.Integer 15995742770313033136 ];
-                    Value.Tuple
-                      [ Value.Integer 10806454419566533849; Value.Integer 5385653213018257806 ];
-                    Value.Tuple
-                      [ Value.Integer 13508068024458167311; Value.Integer 11343752534700210161 ];
-                    Value.Tuple
-                      [ Value.Integer 16885085030572709139; Value.Integer 9568004649947874797 ];
-                    Value.Tuple
-                      [ Value.Integer 10553178144107943212; Value.Integer 3674159897003727796 ];
-                    Value.Tuple
-                      [ Value.Integer 13191472680134929015; Value.Integer 4592699871254659745 ];
-                    Value.Tuple
-                      [ Value.Integer 16489340850168661269; Value.Integer 1129188820640936778 ];
-                    Value.Tuple
-                      [ Value.Integer 10305838031355413293; Value.Integer 3011586022114279438 ];
-                    Value.Tuple
-                      [ Value.Integer 12882297539194266616; Value.Integer 8376168546070237202 ];
-                    Value.Tuple
-                      [ Value.Integer 16102871923992833270; Value.Integer 10470210682587796502 ];
-                    Value.Tuple
-                      [ Value.Integer 10064294952495520794; Value.Integer 1932195658189984910 ];
-                    Value.Tuple
-                      [ Value.Integer 12580368690619400992; Value.Integer 11638616609592256945 ];
-                    Value.Tuple
-                      [ Value.Integer 15725460863274251240; Value.Integer 14548270761990321182 ];
-                    Value.Tuple
-                      [ Value.Integer 9828413039546407025; Value.Integer 9092669226243950738 ];
-                    Value.Tuple
-                      [ Value.Integer 12285516299433008781; Value.Integer 15977522551232326327 ];
-                    Value.Tuple
-                      [ Value.Integer 15356895374291260977; Value.Integer 6136845133758244197 ];
-                    Value.Tuple
-                      [ Value.Integer 9598059608932038110; Value.Integer 15364743254667372383 ];
-                    Value.Tuple
-                      [ Value.Integer 11997574511165047638; Value.Integer 9982557031479439671 ];
-                    Value.Tuple
-                      [ Value.Integer 14996968138956309548; Value.Integer 3254824252494523781 ];
-                    Value.Tuple
-                      [ Value.Integer 9373105086847693467; Value.Integer 11257637194663853171 ];
-                    Value.Tuple
-                      [ Value.Integer 11716381358559616834; Value.Integer 9460360474902428559 ];
-                    Value.Tuple
-                      [ Value.Integer 14645476698199521043; Value.Integer 2602078556773259891 ];
-                    Value.Tuple
-                      [ Value.Integer 18306845872749401303; Value.Integer 17087656251248738576 ];
-                    Value.Tuple
-                      [ Value.Integer 11441778670468375814; Value.Integer 17597314184671543466 ];
-                    Value.Tuple
-                      [ Value.Integer 14302223338085469768; Value.Integer 12773270693984653525 ];
-                    Value.Tuple
-                      [ Value.Integer 17877779172606837210; Value.Integer 15966588367480816906 ];
-                    Value.Tuple
-                      [ Value.Integer 11173611982879273256; Value.Integer 14590803748102898470 ];
-                    Value.Tuple
-                      [ Value.Integer 13967014978599091570; Value.Integer 18238504685128623088 ];
-                    Value.Tuple
-                      [ Value.Integer 17458768723248864463; Value.Integer 13574758819556003052 ];
-                    Value.Tuple
-                      [ Value.Integer 10911730452030540289; Value.Integer 15401753289863583763 ];
-                    Value.Tuple
-                      [ Value.Integer 13639663065038175362; Value.Integer 5417133557047315992 ];
-                    Value.Tuple
-                      [ Value.Integer 17049578831297719202; Value.Integer 15994788983163920798 ];
-                    Value.Tuple
-                      [ Value.Integer 10655986769561074501; Value.Integer 14608429132904838403 ];
-                    Value.Tuple
-                      [ Value.Integer 13319983461951343127; Value.Integer 4425478360848884291 ];
-                    Value.Tuple
-                      [ Value.Integer 16649979327439178909; Value.Integer 920161932633717460 ];
-                    Value.Tuple
-                      [ Value.Integer 10406237079649486818; Value.Integer 2880944217109767365 ];
-                    Value.Tuple
-                      [ Value.Integer 13007796349561858522; Value.Integer 12824552308241985014 ];
-                    Value.Tuple
-                      [ Value.Integer 16259745436952323153; Value.Integer 6807318348447705459 ];
-                    Value.Tuple
-                      [ Value.Integer 10162340898095201970; Value.Integer 15783789013848285672 ];
-                    Value.Tuple
-                      [ Value.Integer 12702926122619002463; Value.Integer 10506364230455581282 ];
-                    Value.Tuple
-                      [ Value.Integer 15878657653273753079; Value.Integer 8521269269642088699 ];
-                    Value.Tuple
-                      [ Value.Integer 9924161033296095674; Value.Integer 12243322321167387293 ];
-                    Value.Tuple
-                      [ Value.Integer 12405201291620119593; Value.Integer 6080780864604458308 ];
-                    Value.Tuple
-                      [ Value.Integer 15506501614525149491; Value.Integer 12212662099182960789 ];
-                    Value.Tuple
-                      [ Value.Integer 9691563509078218432; Value.Integer 5327070802775656541 ];
-                    Value.Tuple
-                      [ Value.Integer 12114454386347773040; Value.Integer 6658838503469570676 ];
-                    Value.Tuple
-                      [ Value.Integer 15143067982934716300; Value.Integer 8323548129336963345 ];
-                    Value.Tuple
-                      [ Value.Integer 9464417489334197687; Value.Integer 14425589617690377899 ];
-                    Value.Tuple
-                      [ Value.Integer 11830521861667747109; Value.Integer 13420301003685584469 ];
-                    Value.Tuple
-                      [ Value.Integer 14788152327084683887; Value.Integer 2940318199324816875 ];
-                    Value.Tuple
-                      [ Value.Integer 9242595204427927429; Value.Integer 8755227902219092403 ];
-                    Value.Tuple
-                      [ Value.Integer 11553244005534909286; Value.Integer 15555720896201253407 ];
-                    Value.Tuple
-                      [ Value.Integer 14441555006918636608; Value.Integer 10221279083396790951 ];
-                    Value.Tuple
-                      [ Value.Integer 18051943758648295760; Value.Integer 12776598854245988689 ];
-                    Value.Tuple
-                      [ Value.Integer 11282464849155184850; Value.Integer 7985374283903742931 ];
-                    Value.Tuple
-                      [ Value.Integer 14103081061443981063; Value.Integer 758345818024902856 ];
-                    Value.Tuple
-                      [ Value.Integer 17628851326804976328; Value.Integer 14782990327813292282 ];
-                    Value.Tuple
-                      [ Value.Integer 11018032079253110205; Value.Integer 9239368954883307676 ];
-                    Value.Tuple
-                      [ Value.Integer 13772540099066387756; Value.Integer 16160897212031522499 ];
-                    Value.Tuple
-                      [ Value.Integer 17215675123832984696; Value.Integer 1754377441329851508 ];
-                    Value.Tuple
-                      [ Value.Integer 10759796952395615435; Value.Integer 1096485900831157192 ];
-                    Value.Tuple
-                      [ Value.Integer 13449746190494519293; Value.Integer 15205665431321110202 ];
-                    Value.Tuple
-                      [ Value.Integer 16812182738118149117; Value.Integer 5172023733869224041 ];
-                    Value.Tuple
-                      [ Value.Integer 10507614211323843198; Value.Integer 5538357842881958977 ];
-                    Value.Tuple
-                      [ Value.Integer 13134517764154803997; Value.Integer 16146319340457224530 ];
-                    Value.Tuple
-                      [ Value.Integer 16418147205193504997; Value.Integer 6347841120289366950 ];
-                    Value.Tuple
-                      [ Value.Integer 10261342003245940623; Value.Integer 6273243709394548296 ]
+                      [
+                        Value.Integer IntegerKind.U64 17218479456385750618;
+                        Value.Integer IntegerKind.U64 1242899115359157055
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10761549660241094136;
+                        Value.Integer IntegerKind.U64 5388497965526861063
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13451937075301367670;
+                        Value.Integer IntegerKind.U64 6735622456908576329
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16814921344126709587;
+                        Value.Integer IntegerKind.U64 17642900107990496220
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10509325840079193492;
+                        Value.Integer IntegerKind.U64 8720969558280366185
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13136657300098991865;
+                        Value.Integer IntegerKind.U64 10901211947850457732
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16420821625123739831;
+                        Value.Integer IntegerKind.U64 18238200953240460069
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10263013515702337394;
+                        Value.Integer IntegerKind.U64 18316404623416369399
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12828766894627921743;
+                        Value.Integer IntegerKind.U64 13672133742415685941
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16035958618284902179;
+                        Value.Integer IntegerKind.U64 12478481159592219522
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10022474136428063862;
+                        Value.Integer IntegerKind.U64 5493207715531443249
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12528092670535079827;
+                        Value.Integer IntegerKind.U64 16089881681269079869
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15660115838168849784;
+                        Value.Integer IntegerKind.U64 15500666083158961933
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9787572398855531115;
+                        Value.Integer IntegerKind.U64 9687916301974351208
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12234465498569413894;
+                        Value.Integer IntegerKind.U64 7498209359040551106
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15293081873211767368;
+                        Value.Integer IntegerKind.U64 149389661945913074
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9558176170757354605;
+                        Value.Integer IntegerKind.U64 93368538716195671
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11947720213446693256;
+                        Value.Integer IntegerKind.U64 4728396691822632493
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14934650266808366570;
+                        Value.Integer IntegerKind.U64 5910495864778290617
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9334156416755229106;
+                        Value.Integer IntegerKind.U64 8305745933913819539
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11667695520944036383;
+                        Value.Integer IntegerKind.U64 1158810380537498616
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14584619401180045478;
+                        Value.Integer IntegerKind.U64 15283571030954036982
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18230774251475056848;
+                        Value.Integer IntegerKind.U64 9881091751837770420
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11394233907171910530;
+                        Value.Integer IntegerKind.U64 6175682344898606512
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14242792383964888162;
+                        Value.Integer IntegerKind.U64 16942974967978033949
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17803490479956110203;
+                        Value.Integer IntegerKind.U64 11955346673117766628
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11127181549972568877;
+                        Value.Integer IntegerKind.U64 5166248661484910190
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13908976937465711096;
+                        Value.Integer IntegerKind.U64 11069496845283525642
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17386221171832138870;
+                        Value.Integer IntegerKind.U64 13836871056604407053
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10866388232395086794;
+                        Value.Integer IntegerKind.U64 4036358391950366504
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13582985290493858492;
+                        Value.Integer IntegerKind.U64 14268820026792733938
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16978731613117323115;
+                        Value.Integer IntegerKind.U64 17836025033490917422
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10611707258198326947;
+                        Value.Integer IntegerKind.U64 8841672636718129437
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13264634072747908684;
+                        Value.Integer IntegerKind.U64 6440404777470273892
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16580792590934885855;
+                        Value.Integer IntegerKind.U64 8050505971837842365
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10362995369334303659;
+                        Value.Integer IntegerKind.U64 11949095260039733334
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12953744211667879574;
+                        Value.Integer IntegerKind.U64 10324683056622278764
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16192180264584849468;
+                        Value.Integer IntegerKind.U64 3682481783923072647
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10120112665365530917;
+                        Value.Integer IntegerKind.U64 11524923151806696212
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12650140831706913647;
+                        Value.Integer IntegerKind.U64 571095884476206553
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15812676039633642058;
+                        Value.Integer IntegerKind.U64 14548927910877421904
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9882922524771026286;
+                        Value.Integer IntegerKind.U64 13704765962725776594
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12353653155963782858;
+                        Value.Integer IntegerKind.U64 7907585416552444934
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15442066444954728573;
+                        Value.Integer IntegerKind.U64 661109733835780360
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9651291528096705358;
+                        Value.Integer IntegerKind.U64 2719036592861056677
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12064114410120881697;
+                        Value.Integer IntegerKind.U64 12622167777931096654
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15080143012651102122;
+                        Value.Integer IntegerKind.U64 1942651667131707105
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9425089382906938826;
+                        Value.Integer IntegerKind.U64 5825843310384704845
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11781361728633673532;
+                        Value.Integer IntegerKind.U64 16505676174835656864
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14726702160792091916;
+                        Value.Integer IntegerKind.U64 2185351144835019464
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18408377700990114895;
+                        Value.Integer IntegerKind.U64 2731688931043774330
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11505236063118821809;
+                        Value.Integer IntegerKind.U64 8624834609543440812
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14381545078898527261;
+                        Value.Integer IntegerKind.U64 15392729280356688919
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17976931348623159077;
+                        Value.Integer IntegerKind.U64 5405853545163697437
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11235582092889474423;
+                        Value.Integer IntegerKind.U64 5684501474941004850
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14044477616111843029;
+                        Value.Integer IntegerKind.U64 2493940825248868159
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17555597020139803786;
+                        Value.Integer IntegerKind.U64 7729112049988473103
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10972248137587377366;
+                        Value.Integer IntegerKind.U64 9442381049670183593
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13715310171984221708;
+                        Value.Integer IntegerKind.U64 2579604275232953683
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17144137714980277135;
+                        Value.Integer IntegerKind.U64 3224505344041192104
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10715086071862673209;
+                        Value.Integer IntegerKind.U64 8932844867666826921
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13393857589828341511;
+                        Value.Integer IntegerKind.U64 15777742103010921555
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16742321987285426889;
+                        Value.Integer IntegerKind.U64 15110491610336264040
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10463951242053391806;
+                        Value.Integer IntegerKind.U64 2526528228819083169
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13079939052566739757;
+                        Value.Integer IntegerKind.U64 12381532322878629770
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16349923815708424697;
+                        Value.Integer IntegerKind.U64 1641857348316123500
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10218702384817765435;
+                        Value.Integer IntegerKind.U64 12555375888766046947
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12773377981022206794;
+                        Value.Integer IntegerKind.U64 11082533842530170780
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15966722476277758493;
+                        Value.Integer IntegerKind.U64 4629795266307937667
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9979201547673599058;
+                        Value.Integer IntegerKind.U64 5199465050656154994
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12474001934591998822;
+                        Value.Integer IntegerKind.U64 15722703350174969551
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15592502418239998528;
+                        Value.Integer IntegerKind.U64 10430007150863936130
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9745314011399999080;
+                        Value.Integer IntegerKind.U64 6518754469289960081
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12181642514249998850;
+                        Value.Integer IntegerKind.U64 8148443086612450102
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15227053142812498563;
+                        Value.Integer IntegerKind.U64 962181821410786819
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9516908214257811601;
+                        Value.Integer IntegerKind.U64 16742264702877599426
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11896135267822264502;
+                        Value.Integer IntegerKind.U64 7092772823314835570
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14870169084777830627;
+                        Value.Integer IntegerKind.U64 18089338065998320271
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9293855677986144142;
+                        Value.Integer IntegerKind.U64 8999993282035256217
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11617319597482680178;
+                        Value.Integer IntegerKind.U64 2026619565689294464
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14521649496853350222;
+                        Value.Integer IntegerKind.U64 11756646493966393888
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18152061871066687778;
+                        Value.Integer IntegerKind.U64 5472436080603216552
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11345038669416679861;
+                        Value.Integer IntegerKind.U64 8031958568804398249
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14181298336770849826;
+                        Value.Integer IntegerKind.U64 14651634229432885715
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17726622920963562283;
+                        Value.Integer IntegerKind.U64 9091170749936331336
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11079139325602226427;
+                        Value.Integer IntegerKind.U64 3376138709496513133
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13848924157002783033;
+                        Value.Integer IntegerKind.U64 18055231442152805128
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17311155196253478792;
+                        Value.Integer IntegerKind.U64 8733981247408842698
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10819471997658424245;
+                        Value.Integer IntegerKind.U64 5458738279630526686
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13524339997073030306;
+                        Value.Integer IntegerKind.U64 11435108867965546262
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16905424996341287883;
+                        Value.Integer IntegerKind.U64 5070514048102157020
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10565890622713304927;
+                        Value.Integer IntegerKind.U64 863228270850154185
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13207363278391631158;
+                        Value.Integer IntegerKind.U64 14914093393844856443
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16509204097989538948;
+                        Value.Integer IntegerKind.U64 9419244705451294746
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10318252561243461842;
+                        Value.Integer IntegerKind.U64 15110399977761835024
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12897815701554327303;
+                        Value.Integer IntegerKind.U64 9664627935347517973
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16122269626942909129;
+                        Value.Integer IntegerKind.U64 7469098900757009562
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10076418516839318205;
+                        Value.Integer IntegerKind.U64 16197401859041600736
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12595523146049147757;
+                        Value.Integer IntegerKind.U64 6411694268519837208
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15744403932561434696;
+                        Value.Integer IntegerKind.U64 12626303854077184414
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9840252457850896685;
+                        Value.Integer IntegerKind.U64 7891439908798240259
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12300315572313620856;
+                        Value.Integer IntegerKind.U64 14475985904425188227
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15375394465392026070;
+                        Value.Integer IntegerKind.U64 18094982380531485284
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9609621540870016294;
+                        Value.Integer IntegerKind.U64 6697677969404790399
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12012026926087520367;
+                        Value.Integer IntegerKind.U64 17595469498610763806
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15015033657609400459;
+                        Value.Integer IntegerKind.U64 17382650854836066854
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9384396036005875287;
+                        Value.Integer IntegerKind.U64 8558313775058847832
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11730495045007344109;
+                        Value.Integer IntegerKind.U64 6086206200396171886
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14663118806259180136;
+                        Value.Integer IntegerKind.U64 12219443768922602761
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18328898507823975170;
+                        Value.Integer IntegerKind.U64 15274304711153253452
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11455561567389984481;
+                        Value.Integer IntegerKind.U64 14158126462898171311
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14319451959237480602;
+                        Value.Integer IntegerKind.U64 3862600023340550427
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17899314949046850752;
+                        Value.Integer IntegerKind.U64 14051622066030463842
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11187071843154281720;
+                        Value.Integer IntegerKind.U64 8782263791269039901
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13983839803942852150;
+                        Value.Integer IntegerKind.U64 10977829739086299876
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17479799754928565188;
+                        Value.Integer IntegerKind.U64 4498915137003099037
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10924874846830353242;
+                        Value.Integer IntegerKind.U64 12035193997481712706
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13656093558537941553;
+                        Value.Integer IntegerKind.U64 5820620459997365075
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17070116948172426941;
+                        Value.Integer IntegerKind.U64 11887461593424094248
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10668823092607766838;
+                        Value.Integer IntegerKind.U64 9735506505103752857
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13336028865759708548;
+                        Value.Integer IntegerKind.U64 2946011094524915263
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16670036082199635685;
+                        Value.Integer IntegerKind.U64 3682513868156144079
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10418772551374772303;
+                        Value.Integer IntegerKind.U64 4607414176811284001
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13023465689218465379;
+                        Value.Integer IntegerKind.U64 1147581702586717097
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16279332111523081723;
+                        Value.Integer IntegerKind.U64 15269535183515560084
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10174582569701926077;
+                        Value.Integer IntegerKind.U64 7237616480483531100
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12718228212127407596;
+                        Value.Integer IntegerKind.U64 13658706619031801779
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15897785265159259495;
+                        Value.Integer IntegerKind.U64 17073383273789752224
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9936115790724537184;
+                        Value.Integer IntegerKind.U64 17588393573759676996
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12420144738405671481;
+                        Value.Integer IntegerKind.U64 3538747893490044629
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15525180923007089351;
+                        Value.Integer IntegerKind.U64 9035120885289943691
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9703238076879430844;
+                        Value.Integer IntegerKind.U64 12564479580947296663
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12129047596099288555;
+                        Value.Integer IntegerKind.U64 15705599476184120828
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15161309495124110694;
+                        Value.Integer IntegerKind.U64 15020313326802763131
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9475818434452569184;
+                        Value.Integer IntegerKind.U64 4776009810824339053
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11844773043065711480;
+                        Value.Integer IntegerKind.U64 5970012263530423816
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14805966303832139350;
+                        Value.Integer IntegerKind.U64 7462515329413029771
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9253728939895087094;
+                        Value.Integer IntegerKind.U64 52386062455755702
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11567161174868858867;
+                        Value.Integer IntegerKind.U64 9288854614924470436
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14458951468586073584;
+                        Value.Integer IntegerKind.U64 6999382250228200141
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18073689335732591980;
+                        Value.Integer IntegerKind.U64 8749227812785250177
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11296055834832869987;
+                        Value.Integer IntegerKind.U64 14691639419845557168
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14120069793541087484;
+                        Value.Integer IntegerKind.U64 13752863256379558556
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17650087241926359355;
+                        Value.Integer IntegerKind.U64 17191079070474448196
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11031304526203974597;
+                        Value.Integer IntegerKind.U64 8438581409832836170
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13789130657754968246;
+                        Value.Integer IntegerKind.U64 15159912780718433117
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17236413322193710308;
+                        Value.Integer IntegerKind.U64 9726518939043265588
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10772758326371068942;
+                        Value.Integer IntegerKind.U64 15302446373756816800
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13465947907963836178;
+                        Value.Integer IntegerKind.U64 9904685930341245193
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16832434884954795223;
+                        Value.Integer IntegerKind.U64 3157485376071780683
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10520271803096747014;
+                        Value.Integer IntegerKind.U64 8890957387685944783
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13150339753870933768;
+                        Value.Integer IntegerKind.U64 1890324697752655170
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16437924692338667210;
+                        Value.Integer IntegerKind.U64 2362905872190818963
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10273702932711667006;
+                        Value.Integer IntegerKind.U64 6088502188546649756
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12842128665889583757;
+                        Value.Integer IntegerKind.U64 16833999772538088003
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16052660832361979697;
+                        Value.Integer IntegerKind.U64 7207441660390446292
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10032913020226237310;
+                        Value.Integer IntegerKind.U64 16033866083812498692
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12541141275282796638;
+                        Value.Integer IntegerKind.U64 10818960567910847557
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15676426594103495798;
+                        Value.Integer IntegerKind.U64 4300328673033783639
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9797766621314684873;
+                        Value.Integer IntegerKind.U64 16522763475928278486
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12247208276643356092;
+                        Value.Integer IntegerKind.U64 6818396289628184396
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15309010345804195115;
+                        Value.Integer IntegerKind.U64 8522995362035230495
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9568131466127621947;
+                        Value.Integer IntegerKind.U64 3021029092058325107
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11960164332659527433;
+                        Value.Integer IntegerKind.U64 17611344420355070096
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14950205415824409292;
+                        Value.Integer IntegerKind.U64 8179122470161673908
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9343878384890255807;
+                        Value.Integer IntegerKind.U64 14335323580705822000
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11679847981112819759;
+                        Value.Integer IntegerKind.U64 13307468457454889596
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14599809976391024699;
+                        Value.Integer IntegerKind.U64 12022649553391224092
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18249762470488780874;
+                        Value.Integer IntegerKind.U64 10416625923311642211
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11406101544055488046;
+                        Value.Integer IntegerKind.U64 11122077220497164286
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14257626930069360058;
+                        Value.Integer IntegerKind.U64 4679224488766679549
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17822033662586700072;
+                        Value.Integer IntegerKind.U64 15072402647813125244
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11138771039116687545;
+                        Value.Integer IntegerKind.U64 9420251654883203278
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13923463798895859431;
+                        Value.Integer IntegerKind.U64 16387000587031392001
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17404329748619824289;
+                        Value.Integer IntegerKind.U64 15872064715361852097
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10877706092887390181;
+                        Value.Integer IntegerKind.U64 3002511419460075705
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13597132616109237726;
+                        Value.Integer IntegerKind.U64 8364825292752482535
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16996415770136547158;
+                        Value.Integer IntegerKind.U64 1232659579085827361
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10622759856335341973;
+                        Value.Integer IntegerKind.U64 14605470292210805812
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13278449820419177467;
+                        Value.Integer IntegerKind.U64 4421779809981343554
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16598062275523971834;
+                        Value.Integer IntegerKind.U64 915538744049291538
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10373788922202482396;
+                        Value.Integer IntegerKind.U64 5183897733458195115
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12967236152753102995;
+                        Value.Integer IntegerKind.U64 6479872166822743894
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16209045190941378744;
+                        Value.Integer IntegerKind.U64 3488154190101041964
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10130653244338361715;
+                        Value.Integer IntegerKind.U64 2180096368813151227
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12663316555422952143;
+                        Value.Integer IntegerKind.U64 16560178516298602746
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15829145694278690179;
+                        Value.Integer IntegerKind.U64 16088537126945865529
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9893216058924181362;
+                        Value.Integer IntegerKind.U64 7749492695127472003
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12366520073655226703;
+                        Value.Integer IntegerKind.U64 463493832054564196
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15458150092069033378;
+                        Value.Integer IntegerKind.U64 14414425345350368957
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9661343807543145861;
+                        Value.Integer IntegerKind.U64 13620701859271368502
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12076679759428932327;
+                        Value.Integer IntegerKind.U64 3190819268807046916
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15095849699286165408;
+                        Value.Integer IntegerKind.U64 17823582141290972357
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9434906062053853380;
+                        Value.Integer IntegerKind.U64 11139738838306857723
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11793632577567316725;
+                        Value.Integer IntegerKind.U64 13924673547883572154
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14742040721959145907;
+                        Value.Integer IntegerKind.U64 3570783879572301480
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18427550902448932383;
+                        Value.Integer IntegerKind.U64 18298537904747540562
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11517219314030582739;
+                        Value.Integer IntegerKind.U64 18354115218108294707
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14396524142538228424;
+                        Value.Integer IntegerKind.U64 18330958004207980480
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17995655178172785531;
+                        Value.Integer IntegerKind.U64 4466953431550423984
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11247284486357990957;
+                        Value.Integer IntegerKind.U64 486002885505321038
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14059105607947488696;
+                        Value.Integer IntegerKind.U64 5219189625309039202
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17573882009934360870;
+                        Value.Integer IntegerKind.U64 6523987031636299002
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10983676256208975543;
+                        Value.Integer IntegerKind.U64 17912549950054850588
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13729595320261219429;
+                        Value.Integer IntegerKind.U64 17779001419141175331
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17161994150326524287;
+                        Value.Integer IntegerKind.U64 8388693718644305452
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10726246343954077679;
+                        Value.Integer IntegerKind.U64 12160462601793772764
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13407807929942597099;
+                        Value.Integer IntegerKind.U64 10588892233814828051
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16759759912428246374;
+                        Value.Integer IntegerKind.U64 8624429273841147159
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10474849945267653984;
+                        Value.Integer IntegerKind.U64 778582277723329070
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13093562431584567480;
+                        Value.Integer IntegerKind.U64 973227847154161338
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16366953039480709350;
+                        Value.Integer IntegerKind.U64 1216534808942701673
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10229345649675443343;
+                        Value.Integer IntegerKind.U64 14595392310871352257
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12786682062094304179;
+                        Value.Integer IntegerKind.U64 13632554370161802418
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15983352577617880224;
+                        Value.Integer IntegerKind.U64 12429006944274865118
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9989595361011175140;
+                        Value.Integer IntegerKind.U64 7768129340171790699
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12486994201263968925;
+                        Value.Integer IntegerKind.U64 9710161675214738374
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15608742751579961156;
+                        Value.Integer IntegerKind.U64 16749388112445810871
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9755464219737475723;
+                        Value.Integer IntegerKind.U64 1244995533423855986
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12194330274671844653;
+                        Value.Integer IntegerKind.U64 15391302472061983695
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15242912843339805817;
+                        Value.Integer IntegerKind.U64 5404070034795315907
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9526820527087378635;
+                        Value.Integer IntegerKind.U64 14906758817815542202
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11908525658859223294;
+                        Value.Integer IntegerKind.U64 14021762503842039848
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14885657073574029118;
+                        Value.Integer IntegerKind.U64 8303831092947774002
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9303535670983768199;
+                        Value.Integer IntegerKind.U64 578208414664970847
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11629419588729710248;
+                        Value.Integer IntegerKind.U64 14557818573613377271
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14536774485912137810;
+                        Value.Integer IntegerKind.U64 18197273217016721589
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18170968107390172263;
+                        Value.Integer IntegerKind.U64 13523219484416126178
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11356855067118857664;
+                        Value.Integer IntegerKind.U64 15369541205401160717
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14196068833898572081;
+                        Value.Integer IntegerKind.U64 765182433041899281
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17745086042373215101;
+                        Value.Integer IntegerKind.U64 5568164059729762005
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11090678776483259438;
+                        Value.Integer IntegerKind.U64 5785945546544795205
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13863348470604074297;
+                        Value.Integer IntegerKind.U64 16455803970035769814
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17329185588255092872;
+                        Value.Integer IntegerKind.U64 6734696907262548556
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10830740992659433045;
+                        Value.Integer IntegerKind.U64 4209185567039092847
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13538426240824291306;
+                        Value.Integer IntegerKind.U64 9873167977226253963
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16923032801030364133;
+                        Value.Integer IntegerKind.U64 3118087934678041646
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10576895500643977583;
+                        Value.Integer IntegerKind.U64 4254647968387469981
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13221119375804971979;
+                        Value.Integer IntegerKind.U64 706623942056949572
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16526399219756214973;
+                        Value.Integer IntegerKind.U64 14718337982853350677
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10328999512347634358;
+                        Value.Integer IntegerKind.U64 11504804248497038125
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12911249390434542948;
+                        Value.Integer IntegerKind.U64 5157633273766521849
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16139061738043178685;
+                        Value.Integer IntegerKind.U64 6447041592208152311
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10086913586276986678;
+                        Value.Integer IntegerKind.U64 6335244004343789146
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12608641982846233347;
+                        Value.Integer IntegerKind.U64 17142427042284512241
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15760802478557791684;
+                        Value.Integer IntegerKind.U64 16816347784428252397
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9850501549098619803;
+                        Value.Integer IntegerKind.U64 1286845328412881940
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12313126936373274753;
+                        Value.Integer IntegerKind.U64 15443614715798266137
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15391408670466593442;
+                        Value.Integer IntegerKind.U64 5469460339465668959
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9619630419041620901;
+                        Value.Integer IntegerKind.U64 8030098730593431003
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12024538023802026126;
+                        Value.Integer IntegerKind.U64 14649309431669176658
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15030672529752532658;
+                        Value.Integer IntegerKind.U64 9088264752731695015
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9394170331095332911;
+                        Value.Integer IntegerKind.U64 10291851488884697288
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11742712913869166139;
+                        Value.Integer IntegerKind.U64 8253128342678483706
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14678391142336457674;
+                        Value.Integer IntegerKind.U64 5704724409920716729
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18347988927920572092;
+                        Value.Integer IntegerKind.U64 16354277549255671720
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11467493079950357558;
+                        Value.Integer IntegerKind.U64 998051431430019017
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14334366349937946947;
+                        Value.Integer IntegerKind.U64 10470936326142299579
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17917957937422433684;
+                        Value.Integer IntegerKind.U64 8476984389250486570
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11198723710889021052;
+                        Value.Integer IntegerKind.U64 14521487280136329914
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13998404638611276315;
+                        Value.Integer IntegerKind.U64 18151859100170412392
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17498005798264095394;
+                        Value.Integer IntegerKind.U64 18078137856785627587
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10936253623915059621;
+                        Value.Integer IntegerKind.U64 15910522178918405146
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13670317029893824527;
+                        Value.Integer IntegerKind.U64 6053094668365842720
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17087896287367280659;
+                        Value.Integer IntegerKind.U64 2954682317029915496
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10679935179604550411;
+                        Value.Integer IntegerKind.U64 17987577512639554849
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13349918974505688014;
+                        Value.Integer IntegerKind.U64 17872785872372055657
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16687398718132110018;
+                        Value.Integer IntegerKind.U64 13117610303610293764
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10429624198832568761;
+                        Value.Integer IntegerKind.U64 12810192458183821506
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13037030248540710952;
+                        Value.Integer IntegerKind.U64 2177682517447613171
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16296287810675888690;
+                        Value.Integer IntegerKind.U64 2722103146809516464
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10185179881672430431;
+                        Value.Integer IntegerKind.U64 6313000485183335694
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12731474852090538039;
+                        Value.Integer IntegerKind.U64 3279564588051781713
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15914343565113172548;
+                        Value.Integer IntegerKind.U64 17934513790346890853
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9946464728195732843;
+                        Value.Integer IntegerKind.U64 1985699082112030975
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12433080910244666053;
+                        Value.Integer IntegerKind.U64 16317181907922202431
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15541351137805832567;
+                        Value.Integer IntegerKind.U64 6561419329620589327
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9713344461128645354;
+                        Value.Integer IntegerKind.U64 11018416108653950185
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12141680576410806693;
+                        Value.Integer IntegerKind.U64 4549648098962661924
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15177100720513508366;
+                        Value.Integer IntegerKind.U64 10298746142130715309
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9485687950320942729;
+                        Value.Integer IntegerKind.U64 1825030320404309164
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11857109937901178411;
+                        Value.Integer IntegerKind.U64 6892973918932774359
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14821387422376473014;
+                        Value.Integer IntegerKind.U64 4004531380238580045
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9263367138985295633;
+                        Value.Integer IntegerKind.U64 16337890167931276240
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11579208923731619542;
+                        Value.Integer IntegerKind.U64 6587304654631931588
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14474011154664524427;
+                        Value.Integer IntegerKind.U64 17457502855144690293
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18092513943330655534;
+                        Value.Integer IntegerKind.U64 17210192550503474962
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11307821214581659709;
+                        Value.Integer IntegerKind.U64 6144684325637283947
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14134776518227074636;
+                        Value.Integer IntegerKind.U64 12292541425473992838
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17668470647783843295;
+                        Value.Integer IntegerKind.U64 15365676781842491048
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11042794154864902059;
+                        Value.Integer IntegerKind.U64 16521077016292638761
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13803492693581127574;
+                        Value.Integer IntegerKind.U64 16039660251938410547
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17254365866976409468;
+                        Value.Integer IntegerKind.U64 10826203278068237376
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10783978666860255917;
+                        Value.Integer IntegerKind.U64 15989749085647424168
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13479973333575319897;
+                        Value.Integer IntegerKind.U64 6152128301777116498
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16849966666969149871;
+                        Value.Integer IntegerKind.U64 12301846395648783526
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10531229166855718669;
+                        Value.Integer IntegerKind.U64 14606183024921571560
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13164036458569648337;
+                        Value.Integer IntegerKind.U64 4422670725869800738
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16455045573212060421;
+                        Value.Integer IntegerKind.U64 10140024425764638826
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10284403483257537763;
+                        Value.Integer IntegerKind.U64 8643358275316593218
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12855504354071922204;
+                        Value.Integer IntegerKind.U64 6192511825718353619
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16069380442589902755;
+                        Value.Integer IntegerKind.U64 7740639782147942024
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10043362776618689222;
+                        Value.Integer IntegerKind.U64 2532056854628769813
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12554203470773361527;
+                        Value.Integer IntegerKind.U64 12388443105140738074
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15692754338466701909;
+                        Value.Integer IntegerKind.U64 10873867862998534689
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9807971461541688693;
+                        Value.Integer IntegerKind.U64 9102010423587778132
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12259964326927110866;
+                        Value.Integer IntegerKind.U64 15989199047912110569
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15324955408658888583;
+                        Value.Integer IntegerKind.U64 10763126773035362404
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9578097130411805364;
+                        Value.Integer IntegerKind.U64 13644483260788183358
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11972621413014756705;
+                        Value.Integer IntegerKind.U64 17055604075985229198
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14965776766268445882;
+                        Value.Integer IntegerKind.U64 7484447039699372786
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9353610478917778676;
+                        Value.Integer IntegerKind.U64 9289465418239495895
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11692013098647223345;
+                        Value.Integer IntegerKind.U64 11611831772799369869
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14615016373309029182;
+                        Value.Integer IntegerKind.U64 679731660717048624
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18268770466636286477;
+                        Value.Integer IntegerKind.U64 10073036612751086588
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11417981541647679048;
+                        Value.Integer IntegerKind.U64 8601490892183123070
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14272476927059598810;
+                        Value.Integer IntegerKind.U64 10751863615228903838
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17840596158824498513;
+                        Value.Integer IntegerKind.U64 4216457482181353989
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11150372599265311570;
+                        Value.Integer IntegerKind.U64 14164500972431816003
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13937965749081639463;
+                        Value.Integer IntegerKind.U64 8482254178684994196
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17422457186352049329;
+                        Value.Integer IntegerKind.U64 5991131704928854841
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10889035741470030830;
+                        Value.Integer IntegerKind.U64 15273672361649004036
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13611294676837538538;
+                        Value.Integer IntegerKind.U64 9868718415206479237
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17014118346046923173;
+                        Value.Integer IntegerKind.U64 3112525982153323238
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10633823966279326983;
+                        Value.Integer IntegerKind.U64 4251171748059520976
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13292279957849158729;
+                        Value.Integer IntegerKind.U64 702278666647013315
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16615349947311448411;
+                        Value.Integer IntegerKind.U64 5489534351736154548
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10384593717069655257;
+                        Value.Integer IntegerKind.U64 1125115960621402641
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12980742146337069071;
+                        Value.Integer IntegerKind.U64 6018080969204141205
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16225927682921336339;
+                        Value.Integer IntegerKind.U64 2910915193077788602
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10141204801825835211;
+                        Value.Integer IntegerKind.U64 17960223060169475540
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12676506002282294014;
+                        Value.Integer IntegerKind.U64 17838592806784456521
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15845632502852867518;
+                        Value.Integer IntegerKind.U64 13074868971625794844
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9903520314283042199;
+                        Value.Integer IntegerKind.U64 3560107088838733873
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12379400392853802748;
+                        Value.Integer IntegerKind.U64 18285191916330581054
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15474250491067253436;
+                        Value.Integer IntegerKind.U64 4409745821703674701
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9671406556917033397;
+                        Value.Integer IntegerKind.U64 11979463175419572496
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12089258196146291747;
+                        Value.Integer IntegerKind.U64 1139270913992301908
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15111572745182864683;
+                        Value.Integer IntegerKind.U64 15259146697772541097
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9444732965739290427;
+                        Value.Integer IntegerKind.U64 7231123676894144234
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11805916207174113034;
+                        Value.Integer IntegerKind.U64 4427218577690292388
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14757395258967641292;
+                        Value.Integer IntegerKind.U64 14757395258967641293
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9223372036854775808;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11529215046068469760;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14411518807585587200;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18014398509481984000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11258999068426240000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14073748835532800000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17592186044416000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10995116277760000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13743895347200000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17179869184000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10737418240000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13421772800000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16777216000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10485760000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13107200000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16384000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10240000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12800000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16000000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10000000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12500000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15625000000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9765625000000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12207031250000000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15258789062500000000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9536743164062500000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11920928955078125000;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14901161193847656250;
+                        Value.Integer IntegerKind.U64 0
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9313225746154785156;
+                        Value.Integer IntegerKind.U64 4611686018427387904
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11641532182693481445;
+                        Value.Integer IntegerKind.U64 5764607523034234880
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14551915228366851806;
+                        Value.Integer IntegerKind.U64 11817445422220181504
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18189894035458564758;
+                        Value.Integer IntegerKind.U64 5548434740920451072
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11368683772161602973;
+                        Value.Integer IntegerKind.U64 17302829768357445632
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14210854715202003717;
+                        Value.Integer IntegerKind.U64 7793479155164643328
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17763568394002504646;
+                        Value.Integer IntegerKind.U64 14353534962383192064
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11102230246251565404;
+                        Value.Integer IntegerKind.U64 4359273333062107136
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13877787807814456755;
+                        Value.Integer IntegerKind.U64 5449091666327633920
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17347234759768070944;
+                        Value.Integer IntegerKind.U64 2199678564482154496
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10842021724855044340;
+                        Value.Integer IntegerKind.U64 1374799102801346560
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13552527156068805425;
+                        Value.Integer IntegerKind.U64 1718498878501683200
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16940658945086006781;
+                        Value.Integer IntegerKind.U64 6759809616554491904
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10587911840678754238;
+                        Value.Integer IntegerKind.U64 6530724019560251392
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13234889800848442797;
+                        Value.Integer IntegerKind.U64 17386777061305090048
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16543612251060553497;
+                        Value.Integer IntegerKind.U64 7898413271349198848
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10339757656912845935;
+                        Value.Integer IntegerKind.U64 16465723340661719040
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12924697071141057419;
+                        Value.Integer IntegerKind.U64 15970468157399760896
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16155871338926321774;
+                        Value.Integer IntegerKind.U64 15351399178322313216
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10097419586828951109;
+                        Value.Integer IntegerKind.U64 4982938468024057856
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12621774483536188886;
+                        Value.Integer IntegerKind.U64 10840359103457460224
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15777218104420236108;
+                        Value.Integer IntegerKind.U64 4327076842467049472
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9860761315262647567;
+                        Value.Integer IntegerKind.U64 11927795063396681728
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12325951644078309459;
+                        Value.Integer IntegerKind.U64 10298057810818464256
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15407439555097886824;
+                        Value.Integer IntegerKind.U64 8260886245095692416
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9629649721936179265;
+                        Value.Integer IntegerKind.U64 5163053903184807760
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12037062152420224081;
+                        Value.Integer IntegerKind.U64 11065503397408397604
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15046327690525280101;
+                        Value.Integer IntegerKind.U64 18443565265187884909
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9403954806578300063;
+                        Value.Integer IntegerKind.U64 13833071299956122020
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11754943508222875079;
+                        Value.Integer IntegerKind.U64 12679653106517764621
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14693679385278593849;
+                        Value.Integer IntegerKind.U64 11237880364719817872
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18367099231598242312;
+                        Value.Integer IntegerKind.U64 212292400617608628
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11479437019748901445;
+                        Value.Integer IntegerKind.U64 132682750386005392
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14349296274686126806;
+                        Value.Integer IntegerKind.U64 4777539456409894645
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17936620343357658507;
+                        Value.Integer IntegerKind.U64 15195296357367144114
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11210387714598536567;
+                        Value.Integer IntegerKind.U64 7191217214140771119
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14012984643248170709;
+                        Value.Integer IntegerKind.U64 4377335499248575995
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17516230804060213386;
+                        Value.Integer IntegerKind.U64 10083355392488107898
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10947644252537633366;
+                        Value.Integer IntegerKind.U64 10913783138732455340
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13684555315672041708;
+                        Value.Integer IntegerKind.U64 4418856886560793367
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17105694144590052135;
+                        Value.Integer IntegerKind.U64 5523571108200991709
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10691058840368782584;
+                        Value.Integer IntegerKind.U64 10369760970266701674
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13363823550460978230;
+                        Value.Integer IntegerKind.U64 12962201212833377092
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16704779438076222788;
+                        Value.Integer IntegerKind.U64 6979379479186945558
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10440487148797639242;
+                        Value.Integer IntegerKind.U64 13585484211346616781
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13050608935997049053;
+                        Value.Integer IntegerKind.U64 7758483227328495169
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16313261169996311316;
+                        Value.Integer IntegerKind.U64 14309790052588006865
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10195788231247694572;
+                        Value.Integer IntegerKind.U64 18166990819722280098
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12744735289059618216;
+                        Value.Integer IntegerKind.U64 4261994450943298507
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15930919111324522770;
+                        Value.Integer IntegerKind.U64 5327493063679123134
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9956824444577826731;
+                        Value.Integer IntegerKind.U64 7941369183226839863
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12446030555722283414;
+                        Value.Integer IntegerKind.U64 5315025460606161924
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15557538194652854267;
+                        Value.Integer IntegerKind.U64 15867153862612478214
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9723461371658033917;
+                        Value.Integer IntegerKind.U64 7611128154919104931
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12154326714572542396;
+                        Value.Integer IntegerKind.U64 14125596212076269068
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15192908393215677995;
+                        Value.Integer IntegerKind.U64 17656995265095336336
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9495567745759798747;
+                        Value.Integer IntegerKind.U64 8729779031470891258
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11869459682199748434;
+                        Value.Integer IntegerKind.U64 6300537770911226168
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14836824602749685542;
+                        Value.Integer IntegerKind.U64 17099044250493808518
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9273015376718553464;
+                        Value.Integer IntegerKind.U64 6075216638131242420
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11591269220898191830;
+                        Value.Integer IntegerKind.U64 7594020797664053025
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14489086526122739788;
+                        Value.Integer IntegerKind.U64 269153960225290473
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18111358157653424735;
+                        Value.Integer IntegerKind.U64 336442450281613091
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11319598848533390459;
+                        Value.Integer IntegerKind.U64 7127805559067090038
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14149498560666738074;
+                        Value.Integer IntegerKind.U64 4298070930406474644
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17686873200833422592;
+                        Value.Integer IntegerKind.U64 14595960699862869113
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11054295750520889120;
+                        Value.Integer IntegerKind.U64 9122475437414293195
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13817869688151111400;
+                        Value.Integer IntegerKind.U64 11403094296767866494
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17272337110188889250;
+                        Value.Integer IntegerKind.U64 14253867870959833118
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10795210693868055781;
+                        Value.Integer IntegerKind.U64 13520353437777283602
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13494013367335069727;
+                        Value.Integer IntegerKind.U64 3065383741939440791
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16867516709168837158;
+                        Value.Integer IntegerKind.U64 17666787732706464701
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10542197943230523224;
+                        Value.Integer IntegerKind.U64 6430056314514152534
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13177747429038154030;
+                        Value.Integer IntegerKind.U64 8037570393142690668
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16472184286297692538;
+                        Value.Integer IntegerKind.U64 823590954573587527
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10295115178936057836;
+                        Value.Integer IntegerKind.U64 5126430365035880108
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12868893973670072295;
+                        Value.Integer IntegerKind.U64 6408037956294850135
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16086117467087590369;
+                        Value.Integer IntegerKind.U64 3398361426941174765
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10053823416929743980;
+                        Value.Integer IntegerKind.U64 13653190937906703988
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12567279271162179975;
+                        Value.Integer IntegerKind.U64 17066488672383379985
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15709099088952724969;
+                        Value.Integer IntegerKind.U64 16721424822051837077
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9818186930595453106;
+                        Value.Integer IntegerKind.U64 3533361486141316317
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12272733663244316382;
+                        Value.Integer IntegerKind.U64 13640073894531421205
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15340917079055395478;
+                        Value.Integer IntegerKind.U64 7826720331309500698
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9588073174409622174;
+                        Value.Integer IntegerKind.U64 280014188641050032
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11985091468012027717;
+                        Value.Integer IntegerKind.U64 9573389772656088348
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14981364335015034646;
+                        Value.Integer IntegerKind.U64 16578423234247498339
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9363352709384396654;
+                        Value.Integer IntegerKind.U64 5749828502977298558
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11704190886730495817;
+                        Value.Integer IntegerKind.U64 16410657665576399005
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14630238608413119772;
+                        Value.Integer IntegerKind.U64 6678264026688335045
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18287798260516399715;
+                        Value.Integer IntegerKind.U64 8347830033360418806
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11429873912822749822;
+                        Value.Integer IntegerKind.U64 2911550761636567802
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14287342391028437277;
+                        Value.Integer IntegerKind.U64 12862810488900485560
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17859177988785546597;
+                        Value.Integer IntegerKind.U64 2243455055843443238
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11161986242990966623;
+                        Value.Integer IntegerKind.U64 3708002419115845976
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13952482803738708279;
+                        Value.Integer IntegerKind.U64 23317005467419566
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17440603504673385348;
+                        Value.Integer IntegerKind.U64 13864204312116438170
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10900377190420865842;
+                        Value.Integer IntegerKind.U64 17888499731927549664
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13625471488026082303;
+                        Value.Integer IntegerKind.U64 13137252628054661272
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17031839360032602879;
+                        Value.Integer IntegerKind.U64 11809879766640938686
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10644899600020376799;
+                        Value.Integer IntegerKind.U64 14298703881791668535
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13306124500025470999;
+                        Value.Integer IntegerKind.U64 13261693833812197764
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16632655625031838749;
+                        Value.Integer IntegerKind.U64 11965431273837859301
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10395409765644899218;
+                        Value.Integer IntegerKind.U64 9784237555362356015
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12994262207056124023;
+                        Value.Integer IntegerKind.U64 3006924907348169211
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16242827758820155028;
+                        Value.Integer IntegerKind.U64 17593714189467375226
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10151767349262596893;
+                        Value.Integer IntegerKind.U64 1772699331562333708
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12689709186578246116;
+                        Value.Integer IntegerKind.U64 6827560182880305039
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15862136483222807645;
+                        Value.Integer IntegerKind.U64 8534450228600381299
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9913835302014254778;
+                        Value.Integer IntegerKind.U64 7639874402088932264
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12392294127517818473;
+                        Value.Integer IntegerKind.U64 326470965756389522
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15490367659397273091;
+                        Value.Integer IntegerKind.U64 5019774725622874806
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9681479787123295682;
+                        Value.Integer IntegerKind.U64 831516194300602802
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12101849733904119602;
+                        Value.Integer IntegerKind.U64 10262767279730529310
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15127312167380149503;
+                        Value.Integer IntegerKind.U64 3605087062808385830
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9454570104612593439;
+                        Value.Integer IntegerKind.U64 9170708441896323000
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11818212630765741799;
+                        Value.Integer IntegerKind.U64 6851699533943015846
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14772765788457177249;
+                        Value.Integer IntegerKind.U64 3952938399001381903
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9232978617785735780;
+                        Value.Integer IntegerKind.U64 13999801545444333449
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11541223272232169725;
+                        Value.Integer IntegerKind.U64 17499751931805416812
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14426529090290212157;
+                        Value.Integer IntegerKind.U64 8039631859474607303
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18033161362862765196;
+                        Value.Integer IntegerKind.U64 14661225842770647033
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11270725851789228247;
+                        Value.Integer IntegerKind.U64 18386638188586430203
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14088407314736535309;
+                        Value.Integer IntegerKind.U64 18371611717305649850
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17610509143420669137;
+                        Value.Integer IntegerKind.U64 9129456591349898601
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11006568214637918210;
+                        Value.Integer IntegerKind.U64 17235125415662156385
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13758210268297397763;
+                        Value.Integer IntegerKind.U64 12320534732722919674
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17197762835371747204;
+                        Value.Integer IntegerKind.U64 10788982397476261688
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10748601772107342002;
+                        Value.Integer IntegerKind.U64 15966486035277439363
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13435752215134177503;
+                        Value.Integer IntegerKind.U64 10734735507242023396
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16794690268917721879;
+                        Value.Integer IntegerKind.U64 8806733365625141341
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10496681418073576174;
+                        Value.Integer IntegerKind.U64 12421737381156795194
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13120851772591970218;
+                        Value.Integer IntegerKind.U64 6303799689591218185
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16401064715739962772;
+                        Value.Integer IntegerKind.U64 17103121648843798539
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10250665447337476733;
+                        Value.Integer IntegerKind.U64 1466078993672598279
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12813331809171845916;
+                        Value.Integer IntegerKind.U64 6444284760518135752
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16016664761464807395;
+                        Value.Integer IntegerKind.U64 8055355950647669691
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10010415475915504622;
+                        Value.Integer IntegerKind.U64 2728754459941099604
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12513019344894380777;
+                        Value.Integer IntegerKind.U64 12634315111781150314
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15641274181117975972;
+                        Value.Integer IntegerKind.U64 1957835834444274180
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9775796363198734982;
+                        Value.Integer IntegerKind.U64 10447019433382447170
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12219745453998418728;
+                        Value.Integer IntegerKind.U64 3835402254873283155
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15274681817498023410;
+                        Value.Integer IntegerKind.U64 4794252818591603944
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9546676135936264631;
+                        Value.Integer IntegerKind.U64 7608094030047140369
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11933345169920330789;
+                        Value.Integer IntegerKind.U64 4898431519131537557
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14916681462400413486;
+                        Value.Integer IntegerKind.U64 10734725417341809851
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9322925914000258429;
+                        Value.Integer IntegerKind.U64 2097517367411243253
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11653657392500323036;
+                        Value.Integer IntegerKind.U64 7233582727691441970
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14567071740625403795;
+                        Value.Integer IntegerKind.U64 9041978409614302462
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18208839675781754744;
+                        Value.Integer IntegerKind.U64 6690786993590490174
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11380524797363596715;
+                        Value.Integer IntegerKind.U64 4181741870994056359
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14225655996704495894;
+                        Value.Integer IntegerKind.U64 615491320315182544
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17782069995880619867;
+                        Value.Integer IntegerKind.U64 9992736187248753989
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11113793747425387417;
+                        Value.Integer IntegerKind.U64 3939617107816777291
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13892242184281734271;
+                        Value.Integer IntegerKind.U64 9536207403198359517
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17365302730352167839;
+                        Value.Integer IntegerKind.U64 7308573235570561493
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10853314206470104899;
+                        Value.Integer IntegerKind.U64 11485387299872682789
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13566642758087631124;
+                        Value.Integer IntegerKind.U64 9745048106413465582
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16958303447609538905;
+                        Value.Integer IntegerKind.U64 12181310133016831978
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10598939654755961816;
+                        Value.Integer IntegerKind.U64 695789805494438130
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13248674568444952270;
+                        Value.Integer IntegerKind.U64 869737256868047663
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16560843210556190337;
+                        Value.Integer IntegerKind.U64 10310543607939835386
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10350527006597618960;
+                        Value.Integer IntegerKind.U64 17973304801030866876
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12938158758247023701;
+                        Value.Integer IntegerKind.U64 4019886927579031980
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16172698447808779626;
+                        Value.Integer IntegerKind.U64 9636544677901177879
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10107936529880487266;
+                        Value.Integer IntegerKind.U64 10634526442115624078
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12634920662350609083;
+                        Value.Integer IntegerKind.U64 4069786015789754290
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15793650827938261354;
+                        Value.Integer IntegerKind.U64 475546501309804958
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9871031767461413346;
+                        Value.Integer IntegerKind.U64 4908902581746016003
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12338789709326766682;
+                        Value.Integer IntegerKind.U64 15359500264037295811
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15423487136658458353;
+                        Value.Integer IntegerKind.U64 9976003293191843956
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9639679460411536470;
+                        Value.Integer IntegerKind.U64 17764217104313372233
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12049599325514420588;
+                        Value.Integer IntegerKind.U64 12981899343536939483
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15061999156893025735;
+                        Value.Integer IntegerKind.U64 16227374179421174354
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9413749473058141084;
+                        Value.Integer IntegerKind.U64 17059637889779315827
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11767186841322676356;
+                        Value.Integer IntegerKind.U64 2877803288514593168
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14708983551653345445;
+                        Value.Integer IntegerKind.U64 3597254110643241460
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18386229439566681806;
+                        Value.Integer IntegerKind.U64 9108253656731439729
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11491393399729176129;
+                        Value.Integer IntegerKind.U64 1080972517029761926
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14364241749661470161;
+                        Value.Integer IntegerKind.U64 5962901664714590312
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17955302187076837701;
+                        Value.Integer IntegerKind.U64 12065313099320625794
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11222063866923023563;
+                        Value.Integer IntegerKind.U64 9846663696289085073
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14027579833653779454;
+                        Value.Integer IntegerKind.U64 7696643601933968437
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17534474792067224318;
+                        Value.Integer IntegerKind.U64 397432465562684739
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10959046745042015198;
+                        Value.Integer IntegerKind.U64 14083453346258841674
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13698808431302518998;
+                        Value.Integer IntegerKind.U64 8380944645968776284
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17123510539128148748;
+                        Value.Integer IntegerKind.U64 1252808770606194547
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10702194086955092967;
+                        Value.Integer IntegerKind.U64 10006377518483647400
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13377742608693866209;
+                        Value.Integer IntegerKind.U64 7896285879677171346
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16722178260867332761;
+                        Value.Integer IntegerKind.U64 14482043368023852087
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10451361413042082976;
+                        Value.Integer IntegerKind.U64 2133748077373825698
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13064201766302603720;
+                        Value.Integer IntegerKind.U64 2667185096717282123
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16330252207878254650;
+                        Value.Integer IntegerKind.U64 3333981370896602653
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10206407629923909156;
+                        Value.Integer IntegerKind.U64 6695424375237764562
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12758009537404886445;
+                        Value.Integer IntegerKind.U64 8369280469047205703
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15947511921756108056;
+                        Value.Integer IntegerKind.U64 15073286604736395033
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9967194951097567535;
+                        Value.Integer IntegerKind.U64 9420804127960246895
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12458993688871959419;
+                        Value.Integer IntegerKind.U64 7164319141522920715
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15573742111089949274;
+                        Value.Integer IntegerKind.U64 4343712908476262990
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9733588819431218296;
+                        Value.Integer IntegerKind.U64 7326506586225052273
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12166986024289022870;
+                        Value.Integer IntegerKind.U64 9158133232781315341
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15208732530361278588;
+                        Value.Integer IntegerKind.U64 2224294504121868368
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9505457831475799117;
+                        Value.Integer IntegerKind.U64 10613556101930943538
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11881822289344748896;
+                        Value.Integer IntegerKind.U64 17878631145841067327
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14852277861680936121;
+                        Value.Integer IntegerKind.U64 3901544858591782542
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9282673663550585075;
+                        Value.Integer IntegerKind.U64 13967680582688333849
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11603342079438231344;
+                        Value.Integer IntegerKind.U64 12847914709933029407
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14504177599297789180;
+                        Value.Integer IntegerKind.U64 16059893387416286759
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18130221999122236476;
+                        Value.Integer IntegerKind.U64 1628122660560806833
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11331388749451397797;
+                        Value.Integer IntegerKind.U64 10240948699705280078
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14164235936814247246;
+                        Value.Integer IntegerKind.U64 17412871893058988002
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17705294921017809058;
+                        Value.Integer IntegerKind.U64 12542717829468959195
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11065809325636130661;
+                        Value.Integer IntegerKind.U64 12450884661845487401
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13832261657045163327;
+                        Value.Integer IntegerKind.U64 1728547772024695539
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17290327071306454158;
+                        Value.Integer IntegerKind.U64 15995742770313033136
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10806454419566533849;
+                        Value.Integer IntegerKind.U64 5385653213018257806
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13508068024458167311;
+                        Value.Integer IntegerKind.U64 11343752534700210161
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16885085030572709139;
+                        Value.Integer IntegerKind.U64 9568004649947874797
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10553178144107943212;
+                        Value.Integer IntegerKind.U64 3674159897003727796
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13191472680134929015;
+                        Value.Integer IntegerKind.U64 4592699871254659745
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16489340850168661269;
+                        Value.Integer IntegerKind.U64 1129188820640936778
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10305838031355413293;
+                        Value.Integer IntegerKind.U64 3011586022114279438
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12882297539194266616;
+                        Value.Integer IntegerKind.U64 8376168546070237202
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16102871923992833270;
+                        Value.Integer IntegerKind.U64 10470210682587796502
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10064294952495520794;
+                        Value.Integer IntegerKind.U64 1932195658189984910
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12580368690619400992;
+                        Value.Integer IntegerKind.U64 11638616609592256945
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15725460863274251240;
+                        Value.Integer IntegerKind.U64 14548270761990321182
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9828413039546407025;
+                        Value.Integer IntegerKind.U64 9092669226243950738
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12285516299433008781;
+                        Value.Integer IntegerKind.U64 15977522551232326327
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15356895374291260977;
+                        Value.Integer IntegerKind.U64 6136845133758244197
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9598059608932038110;
+                        Value.Integer IntegerKind.U64 15364743254667372383
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11997574511165047638;
+                        Value.Integer IntegerKind.U64 9982557031479439671
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14996968138956309548;
+                        Value.Integer IntegerKind.U64 3254824252494523781
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9373105086847693467;
+                        Value.Integer IntegerKind.U64 11257637194663853171
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11716381358559616834;
+                        Value.Integer IntegerKind.U64 9460360474902428559
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14645476698199521043;
+                        Value.Integer IntegerKind.U64 2602078556773259891
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18306845872749401303;
+                        Value.Integer IntegerKind.U64 17087656251248738576
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11441778670468375814;
+                        Value.Integer IntegerKind.U64 17597314184671543466
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14302223338085469768;
+                        Value.Integer IntegerKind.U64 12773270693984653525
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17877779172606837210;
+                        Value.Integer IntegerKind.U64 15966588367480816906
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11173611982879273256;
+                        Value.Integer IntegerKind.U64 14590803748102898470
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13967014978599091570;
+                        Value.Integer IntegerKind.U64 18238504685128623088
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17458768723248864463;
+                        Value.Integer IntegerKind.U64 13574758819556003052
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10911730452030540289;
+                        Value.Integer IntegerKind.U64 15401753289863583763
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13639663065038175362;
+                        Value.Integer IntegerKind.U64 5417133557047315992
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17049578831297719202;
+                        Value.Integer IntegerKind.U64 15994788983163920798
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10655986769561074501;
+                        Value.Integer IntegerKind.U64 14608429132904838403
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13319983461951343127;
+                        Value.Integer IntegerKind.U64 4425478360848884291
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16649979327439178909;
+                        Value.Integer IntegerKind.U64 920161932633717460
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10406237079649486818;
+                        Value.Integer IntegerKind.U64 2880944217109767365
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13007796349561858522;
+                        Value.Integer IntegerKind.U64 12824552308241985014
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16259745436952323153;
+                        Value.Integer IntegerKind.U64 6807318348447705459
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10162340898095201970;
+                        Value.Integer IntegerKind.U64 15783789013848285672
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12702926122619002463;
+                        Value.Integer IntegerKind.U64 10506364230455581282
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15878657653273753079;
+                        Value.Integer IntegerKind.U64 8521269269642088699
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9924161033296095674;
+                        Value.Integer IntegerKind.U64 12243322321167387293
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12405201291620119593;
+                        Value.Integer IntegerKind.U64 6080780864604458308
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15506501614525149491;
+                        Value.Integer IntegerKind.U64 12212662099182960789
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9691563509078218432;
+                        Value.Integer IntegerKind.U64 5327070802775656541
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 12114454386347773040;
+                        Value.Integer IntegerKind.U64 6658838503469570676
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 15143067982934716300;
+                        Value.Integer IntegerKind.U64 8323548129336963345
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9464417489334197687;
+                        Value.Integer IntegerKind.U64 14425589617690377899
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11830521861667747109;
+                        Value.Integer IntegerKind.U64 13420301003685584469
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14788152327084683887;
+                        Value.Integer IntegerKind.U64 2940318199324816875
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 9242595204427927429;
+                        Value.Integer IntegerKind.U64 8755227902219092403
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11553244005534909286;
+                        Value.Integer IntegerKind.U64 15555720896201253407
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14441555006918636608;
+                        Value.Integer IntegerKind.U64 10221279083396790951
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 18051943758648295760;
+                        Value.Integer IntegerKind.U64 12776598854245988689
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11282464849155184850;
+                        Value.Integer IntegerKind.U64 7985374283903742931
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 14103081061443981063;
+                        Value.Integer IntegerKind.U64 758345818024902856
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17628851326804976328;
+                        Value.Integer IntegerKind.U64 14782990327813292282
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 11018032079253110205;
+                        Value.Integer IntegerKind.U64 9239368954883307676
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13772540099066387756;
+                        Value.Integer IntegerKind.U64 16160897212031522499
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 17215675123832984696;
+                        Value.Integer IntegerKind.U64 1754377441329851508
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10759796952395615435;
+                        Value.Integer IntegerKind.U64 1096485900831157192
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13449746190494519293;
+                        Value.Integer IntegerKind.U64 15205665431321110202
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16812182738118149117;
+                        Value.Integer IntegerKind.U64 5172023733869224041
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10507614211323843198;
+                        Value.Integer IntegerKind.U64 5538357842881958977
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 13134517764154803997;
+                        Value.Integer IntegerKind.U64 16146319340457224530
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 16418147205193504997;
+                        Value.Integer IntegerKind.U64 6347841120289366950
+                      ];
+                    Value.Tuple
+                      [
+                        Value.Integer IntegerKind.U64 10261342003245940623;
+                        Value.Integer IntegerKind.U64 6273243709394548296
+                      ]
                   ]
               |)
             |))).

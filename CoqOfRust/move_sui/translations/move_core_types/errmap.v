@@ -49,7 +49,7 @@ Module errmap.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -107,7 +107,7 @@ Module errmap.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -147,13 +147,13 @@ Module errmap.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ErrorDescription" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -315,7 +315,7 @@ Module errmap.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -356,7 +356,7 @@ Module errmap.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -394,13 +394,13 @@ Module errmap.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ErrorMapping" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -587,7 +587,7 @@ Module errmap.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -628,7 +628,7 @@ Module errmap.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -711,7 +711,7 @@ Module errmap.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -790,7 +790,7 @@ Module errmap.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -858,7 +858,7 @@ Module errmap.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1020,12 +1020,16 @@ Module errmap.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            Value.Integer 0;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0;
                                                                             Value.UnicodeChar 32;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Alignment::Unknown"
                                                                               [];
-                                                                            Value.Integer 0;
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              0;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Count::Implied"
                                                                               [];
@@ -1042,12 +1046,16 @@ Module errmap.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            Value.Integer 1;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1;
                                                                             Value.UnicodeChar 32;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Alignment::Unknown"
                                                                               [];
-                                                                            Value.Integer 4;
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              4;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Count::Implied"
                                                                               [];
@@ -1122,7 +1130,7 @@ Module errmap.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_error_category :
@@ -1354,12 +1362,16 @@ Module errmap.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            Value.Integer 0;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0;
                                                                             Value.UnicodeChar 32;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Alignment::Unknown"
                                                                               [];
-                                                                            Value.Integer 0;
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              0;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Count::Implied"
                                                                               [];
@@ -1376,12 +1388,16 @@ Module errmap.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            Value.Integer 1;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1;
                                                                             Value.UnicodeChar 32;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Alignment::Unknown"
                                                                               [];
-                                                                            Value.Integer 0;
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              0;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Count::Implied"
                                                                               [];
@@ -1398,12 +1414,16 @@ Module errmap.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            Value.Integer 2;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2;
                                                                             Value.UnicodeChar 32;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Alignment::Unknown"
                                                                               [];
-                                                                            Value.Integer 4;
+                                                                            Value.Integer
+                                                                              IntegerKind.U32
+                                                                              4;
                                                                             Value.StructTuple
                                                                               "core::fmt::rt::Count::Implied"
                                                                               [];
@@ -1478,7 +1498,7 @@ Module errmap.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_module_error :
@@ -1597,7 +1617,7 @@ Module errmap.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_file : M.IsAssociatedFunction Self "from_file" from_file.
@@ -1705,7 +1725,7 @@ Module errmap.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_file : M.IsAssociatedFunction Self "to_file" to_file.
@@ -1807,51 +1827,52 @@ Module errmap.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let module_map := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let module_map := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_core_types::errmap::ErrorDescription" ]
+                                      ],
+                                    "cloned",
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_core_types::errmap::ErrorDescription" ]
-                                    ],
-                                  "cloned",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                        []
-                                        [
-                                          Ty.path "u64";
-                                          Ty.path "move_core_types::errmap::ErrorDescription";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "get",
-                                      [ Ty.path "u64" ]
-                                    |),
-                                    [ M.read (| module_map |); output_code ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                          []
+                                          [
+                                            Ty.path "u64";
+                                            Ty.path "move_core_types::errmap::ErrorDescription";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "get",
+                                        [ Ty.path "u64" ]
+                                      |),
+                                      [ M.read (| module_map |); output_code ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_explanation :

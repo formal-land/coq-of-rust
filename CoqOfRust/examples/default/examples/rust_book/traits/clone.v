@@ -23,7 +23,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "Unit" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -44,7 +44,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -113,7 +113,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "clone::Pair", 1 |) ]
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -149,7 +149,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -283,7 +283,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.I32 1 ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -294,7 +294,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer 2 ]
+                  [ Value.Integer IntegerKind.I32 2 ]
                 |)
               ]
           |) in
@@ -414,7 +414,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "clone::main" main.

@@ -22,7 +22,7 @@ Module hint.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                    (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -41,7 +41,7 @@ Module hint.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -69,7 +69,7 @@ Module hint.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (M.read (| cond |)) |)) in
+                    (let γ := M.use (M.alloc (| UnOp.not (| M.read (| cond |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -88,7 +88,7 @@ Module hint.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -125,8 +125,8 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -157,7 +157,8 @@ Module intrinsics.
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -177,7 +178,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -210,8 +211,8 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               M.call_closure (|
                                 M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                                 [ M.read (| src |); M.read (| align |) ]
@@ -227,7 +228,8 @@ Module intrinsics.
                                     M.read (| align |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -247,7 +249,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -279,11 +281,12 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [ M.read (| addr |); M.read (| align |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -303,7 +306,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -340,8 +343,8 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -375,7 +378,8 @@ Module ptr.
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -395,7 +399,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -427,11 +431,12 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [ M.read (| addr |); M.read (| align |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -451,7 +456,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -483,11 +488,12 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [ M.read (| addr |); M.read (| align |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -507,7 +513,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -539,14 +545,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
                                 M.read (| align |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -566,7 +573,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -598,11 +605,12 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [ M.read (| addr |); M.read (| align |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -622,7 +630,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -654,14 +662,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::ub_checks::is_aligned_and_not_null", [] |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
                                 M.read (| align |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -681,7 +690,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_precondition_check :
@@ -732,7 +741,7 @@ Module ub_checks.
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_check_language_ub :
@@ -747,8 +756,8 @@ Module ub_checks.
     *)
     Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (UnOp.Pure.not (Value.Bool false)))
-      | _, _, _ => M.impossible
+      | [], [], [] => ltac:(M.monadic (UnOp.not (| Value.Bool false |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ub_checks::check_language_ub::runtime" runtime.
@@ -762,7 +771,7 @@ Module ub_checks.
     Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.Bool false))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ub_checks::check_language_ub::comptime" comptime.
@@ -780,15 +789,16 @@ Module ub_checks.
         (let ptr := M.alloc (| ptr |) in
         let align := M.alloc (| align |) in
         LogicalOp.and (|
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 "is_null",
                 []
               |),
               [ M.read (| ptr |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -799,7 +809,7 @@ Module ub_checks.
               [ M.read (| ptr |); M.read (| align |) ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_aligned_and_not_null :
@@ -826,23 +836,26 @@ Module ub_checks.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| size |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.eq (| M.read (| size |), Value.Integer IntegerKind.Usize 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.get_constant (| "core::num::MAX" |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        BinOp.Wrap.div
-                          Integer.Usize
-                          (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
-                          (M.read (| size |))
+                        BinOp.Wrap.div (|
+                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                          M.read (| size |)
+                        |)
                       |)))
                 ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.le (M.read (| len |)) (M.read (| max_len |)) |)
+          M.alloc (| BinOp.le (| M.read (| len |), M.read (| max_len |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_valid_allocation_size :
@@ -924,7 +937,7 @@ Module ub_checks.
             M.get_function (| "core::ub_checks::is_nonoverlapping.runtime", [] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_nonoverlapping :
@@ -1001,11 +1014,11 @@ Module ub_checks.
                           [ M.read (| src_usize |); M.read (| dst_usize |) ]
                         |)
                       |) in
-                    M.alloc (| BinOp.Pure.ge (M.read (| diff |)) (M.read (| size |)) |)))
+                    M.alloc (| BinOp.ge (| M.read (| diff |), M.read (| size |) |) |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ub_checks::is_nonoverlapping::runtime" runtime.
@@ -1048,7 +1061,7 @@ Module ub_checks.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ub_checks::is_nonoverlapping::comptime" comptime.
@@ -1081,8 +1094,8 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -1105,7 +1118,8 @@ Module char.
                                     |)
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1125,7 +1139,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_precondition_check :
@@ -1165,8 +1179,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
@@ -1185,7 +1199,8 @@ Module slice.
                                     |),
                                     [ M.read (| size |); M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1205,7 +1220,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_precondition_check :
@@ -1239,8 +1254,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
@@ -1259,7 +1274,8 @@ Module slice.
                                     |),
                                     [ M.read (| size |); M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1279,7 +1295,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_precondition_check :

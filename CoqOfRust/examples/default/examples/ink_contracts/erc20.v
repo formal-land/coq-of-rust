@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -110,7 +110,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -136,7 +136,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -236,7 +236,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -336,7 +336,7 @@ Module Impl_erc20_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "erc20::Env", "caller" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -377,7 +377,7 @@ Module Impl_erc20_Erc20.
           M.get_associated_function (| Ty.path "erc20::Erc20", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -500,7 +500,7 @@ Module Impl_erc20_Erc20.
               ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -522,7 +522,7 @@ Module Impl_erc20_Erc20.
             "total_supply"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
@@ -565,7 +565,7 @@ Module Impl_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_balance_of_impl :
@@ -586,7 +586,7 @@ Module Impl_erc20_Erc20.
           M.get_associated_function (| Ty.path "erc20::Erc20", "balance_of_impl", [] |),
           [ M.read (| self |); owner ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
@@ -635,7 +635,7 @@ Module Impl_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_allowance_impl :
@@ -657,7 +657,7 @@ Module Impl_erc20_Erc20.
           M.get_associated_function (| Ty.path "erc20::Erc20", "allowance_impl", [] |),
           [ M.read (| self |); owner; spender ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
@@ -707,7 +707,7 @@ Module Impl_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt (M.read (| from_balance |)) (M.read (| value |))
+                              BinOp.lt (| M.read (| from_balance |), M.read (| value |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -743,7 +743,7 @@ Module Impl_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| from |) |);
-                      BinOp.Wrap.sub Integer.U128 (M.read (| from_balance |)) (M.read (| value |))
+                      BinOp.Wrap.sub (| M.read (| from_balance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
@@ -772,7 +772,7 @@ Module Impl_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| to |) |);
-                      BinOp.Wrap.add Integer.U128 (M.read (| to_balance |)) (M.read (| value |))
+                      BinOp.Wrap.add (| M.read (| to_balance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
@@ -810,7 +810,7 @@ Module Impl_erc20_Erc20.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_from_to :
@@ -851,7 +851,7 @@ Module Impl_erc20_Erc20.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -942,7 +942,7 @@ Module Impl_erc20_Erc20.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
@@ -1000,7 +1000,7 @@ Module Impl_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt (M.read (| allowance |)) (M.read (| value |))
+                              BinOp.lt (| M.read (| allowance |), M.read (| value |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1116,14 +1116,14 @@ Module Impl_erc20_Erc20.
                         "allowances"
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
-                      BinOp.Wrap.sub Integer.U128 (M.read (| allowance |)) (M.read (| value |))
+                      BinOp.Wrap.sub (| M.read (| allowance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_from :

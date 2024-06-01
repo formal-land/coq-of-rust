@@ -71,7 +71,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -126,7 +126,7 @@ Module num.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -262,7 +262,7 @@ Module num.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -306,7 +306,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -395,7 +395,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -466,7 +466,10 @@ Module num.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| v |)) (Value.Integer 1000)
+                                    BinOp.lt (|
+                                      M.read (| v |),
+                                      Value.Integer IntegerKind.U16 1000
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -481,14 +484,17 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| v |)) (Value.Integer 10)
+                                            BinOp.lt (|
+                                              M.read (| v |),
+                                              Value.Integer IntegerKind.U16 10
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      M.alloc (| Value.Integer 1 |)));
+                                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
@@ -499,17 +505,20 @@ Module num.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.lt
-                                                      (M.read (| v |))
-                                                      (Value.Integer 100)
+                                                    BinOp.lt (|
+                                                      M.read (| v |),
+                                                      Value.Integer IntegerKind.U16 100
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              M.alloc (| Value.Integer 2 |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 3 |)))
+                                              M.alloc (| Value.Integer IntegerKind.Usize 2 |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Value.Integer IntegerKind.Usize 3 |)))
                                         ]
                                       |)))
                                 ]
@@ -524,15 +533,20 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| v |)) (Value.Integer 10000)
+                                            BinOp.lt (|
+                                              M.read (| v |),
+                                              Value.Integer IntegerKind.U16 10000
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      M.alloc (| Value.Integer 4 |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
+                                      M.alloc (| Value.Integer IntegerKind.Usize 4 |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (| Value.Integer IntegerKind.Usize 5 |)))
                                 ]
                               |)))
                         ]
@@ -559,7 +573,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -612,16 +626,17 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.call_closure (|
+                            BinOp.ge (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| out |) ]
-                              |))
-                              (M.read (| len |))
+                              |),
+                              M.read (| len |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -863,23 +878,23 @@ Module num.
                                                         let~ _ :=
                                                           M.write (|
                                                             M.read (| c |),
-                                                            BinOp.Wrap.add
-                                                              Integer.U8
-                                                              (M.read (| UnsupportedLiteral |))
-                                                              (M.rust_cast
-                                                                (BinOp.Wrap.rem
-                                                                  Integer.U16
-                                                                  (M.read (| v |))
-                                                                  (Value.Integer 10)))
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| UnsupportedLiteral |),
+                                                              M.rust_cast
+                                                                (BinOp.Wrap.rem (|
+                                                                  M.read (| v |),
+                                                                  Value.Integer IntegerKind.U16 10
+                                                                |))
+                                                            |)
                                                           |) in
                                                         let~ _ :=
                                                           let β := v in
                                                           M.write (|
                                                             β,
-                                                            BinOp.Wrap.div
-                                                              Integer.U16
-                                                              (M.read (| β |))
-                                                              (Value.Integer 10)
+                                                            BinOp.Wrap.div (|
+                                                              M.read (| β |),
+                                                              Value.Integer IntegerKind.U16 10
+                                                            |)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)))
                                                   ]
@@ -955,7 +970,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
@@ -1027,7 +1042,7 @@ Module num.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1141,17 +1156,17 @@ Module num.
                                           let β := len in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (M.call_closure (|
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::num::fmt::Part",
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| part |) ]
-                                              |))
+                                              |)
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1162,7 +1177,7 @@ Module num.
                   |)) in
               len
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1200,16 +1215,16 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.call_closure (|
+                                  BinOp.lt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| out |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "len", [] |),
                                       [
                                         M.read (|
@@ -1220,7 +1235,8 @@ Module num.
                                           |)
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1489,10 +1505,10 @@ Module num.
                                               let β := written in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| β |))
-                                                  (M.read (| len |))
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  M.read (| len |)
+                                                |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)))
                                       ]
@@ -1506,7 +1522,7 @@ Module num.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.

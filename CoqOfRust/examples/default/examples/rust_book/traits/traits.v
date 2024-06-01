@@ -90,7 +90,7 @@ Module Animal.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_talk : M.IsProvidedMethod "traits::Animal" "talk" talk.
@@ -112,7 +112,7 @@ Module Impl_traits_Sheep.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "traits::Sheep", "naked" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
@@ -263,7 +263,7 @@ Module Impl_traits_Sheep.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
@@ -288,7 +288,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
         Value.StructRecord
           "traits::Sheep"
           [ ("name", M.read (| name |)); ("naked", Value.Bool false) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -304,7 +304,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "traits::Sheep", "name" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -341,7 +341,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -422,7 +422,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -486,7 +486,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "traits::main" main.

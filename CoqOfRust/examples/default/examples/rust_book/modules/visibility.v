@@ -38,7 +38,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_private_function :
@@ -79,7 +79,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
@@ -132,7 +132,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_indirect_access :
@@ -175,7 +175,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
@@ -220,7 +220,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_private_function :
@@ -279,7 +279,7 @@ Module my_mod.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_my_mod :
@@ -332,7 +332,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_nested :
@@ -385,7 +385,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_super_mod :
@@ -474,7 +474,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_call_public_function_in_my_mod :
@@ -522,7 +522,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_public_function_in_crate :
@@ -569,7 +569,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
@@ -615,7 +615,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_restricted_function :
@@ -651,7 +651,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_function : M.IsFunction "visibility::function" function.
@@ -731,7 +731,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "visibility::main" main.

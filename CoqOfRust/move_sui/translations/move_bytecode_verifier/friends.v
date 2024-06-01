@@ -36,41 +36,42 @@ Module friends.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let e := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::errors::PartialVMError",
-                                "finish",
-                                []
-                              |),
-                              [
-                                M.read (| e |);
-                                Value.StructTuple
-                                  "move_binary_format::errors::Location::Module"
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "self_id",
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
-                                    |)
-                                  ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let e := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
+                                  "finish",
+                                  []
+                                |),
+                                [
+                                  M.read (| e |);
+                                  Value.StructTuple
+                                    "move_binary_format::errors::Location::Module"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "self_id",
+                                          []
+                                        |),
+                                        [ M.read (| module |) ]
+                                      |)
+                                    ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -279,61 +280,62 @@ Module friends.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let handle := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::account_address::AccountAddress"
-                                            ],
-                                          [
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let handle := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
                                               []
                                               [
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress"
-                                              ]
-                                          ],
-                                          "ne",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::CompiledModule",
-                                                "address_identifier_at",
+                                              ],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
                                                 []
-                                              |),
-                                              [
-                                                M.read (| module |);
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| handle |),
-                                                    "move_binary_format::file_format::ModuleHandle",
-                                                    "address"
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress"
+                                                ]
+                                            ],
+                                            "ne",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "address_identifier_at",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| module |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| handle |),
+                                                      "move_binary_format::file_format::ModuleHandle",
+                                                      "address"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)
-                                          |);
-                                          self_address
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                ]
+                                              |)
+                                            |);
+                                            self_address
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -377,7 +379,7 @@ Module friends.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_impl :

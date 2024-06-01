@@ -15,10 +15,10 @@ Module str.
           (let byte := M.alloc (| byte |) in
           let width := M.alloc (| width |) in
           M.rust_cast
-            (BinOp.Pure.bit_and
+            (BinOp.bit_and
               (M.read (| byte |))
-              (BinOp.Wrap.shr (Value.Integer 127) (M.read (| width |))))))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shr (| Value.Integer IntegerKind.U8 127, M.read (| width |) |)))))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_utf8_first_byte :
@@ -35,13 +35,13 @@ Module str.
         ltac:(M.monadic
           (let ch := M.alloc (| ch |) in
           let byte := M.alloc (| byte |) in
-          BinOp.Pure.bit_or
-            (BinOp.Wrap.shl (M.read (| ch |)) (Value.Integer 6))
+          BinOp.bit_or
+            (BinOp.Wrap.shl (| M.read (| ch |), Value.Integer IntegerKind.I32 6 |))
             (M.rust_cast
-              (BinOp.Pure.bit_and
+              (BinOp.bit_and
                 (M.read (| byte |))
                 (M.read (| M.get_constant (| "core::str::validations::CONT_MASK" |) |))))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_utf8_acc_cont_byte :
@@ -57,8 +57,8 @@ Module str.
       | [], [], [ byte ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
-          BinOp.Pure.lt (M.rust_cast (M.read (| byte |))) (Value.Integer (-64))))
-      | _, _, _ => M.impossible
+          BinOp.lt (| M.rust_cast (M.read (| byte |)), Value.Integer IntegerKind.I8 (-64) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_utf8_is_cont_byte :
@@ -197,7 +197,9 @@ Module str.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.lt (M.read (| x |)) (Value.Integer 128) |)) in
+                              (M.alloc (|
+                                BinOp.lt (| M.read (| x |), Value.Integer IntegerKind.U8 128 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -218,7 +220,7 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::str::validations::utf8_first_byte", [] |),
-                      [ M.read (| x |); Value.Integer 2 ]
+                      [ M.read (| x |); Value.Integer IntegerKind.U32 2 ]
                     |)
                   |) in
                 let~ y :=
@@ -261,7 +263,9 @@ Module str.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.ge (M.read (| x |)) (Value.Integer 224) |)) in
+                              (M.alloc (|
+                                BinOp.ge (| M.read (| x |), Value.Integer IntegerKind.U8 224 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ z :=
@@ -298,7 +302,7 @@ Module str.
                                 |),
                                 [
                                   M.rust_cast
-                                    (BinOp.Pure.bit_and
+                                    (BinOp.bit_and
                                       (M.read (| y |))
                                       (M.read (|
                                         M.get_constant (| "core::str::validations::CONT_MASK" |)
@@ -310,8 +314,11 @@ Module str.
                           let~ _ :=
                             M.write (|
                               ch,
-                              BinOp.Pure.bit_or
-                                (BinOp.Wrap.shl (M.read (| init |)) (Value.Integer 12))
+                              BinOp.bit_or
+                                (BinOp.Wrap.shl (|
+                                  M.read (| init |),
+                                  Value.Integer IntegerKind.I32 12
+                                |))
                                 (M.read (| y_z |))
                             |) in
                           M.match_operator (|
@@ -322,7 +329,10 @@ Module str.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ge (M.read (| x |)) (Value.Integer 240)
+                                        BinOp.ge (|
+                                          M.read (| x |),
+                                          Value.Integer IntegerKind.U8 240
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -357,10 +367,13 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       ch,
-                                      BinOp.Pure.bit_or
-                                        (BinOp.Wrap.shl
-                                          (BinOp.Pure.bit_and (M.read (| init |)) (Value.Integer 7))
-                                          (Value.Integer 18))
+                                      BinOp.bit_or
+                                        (BinOp.Wrap.shl (|
+                                          BinOp.bit_and
+                                            (M.read (| init |))
+                                            (Value.Integer IntegerKind.U32 7),
+                                          Value.Integer IntegerKind.I32 18
+                                        |))
                                         (M.call_closure (|
                                           M.get_function (|
                                             "core::str::validations::utf8_acc_cont_byte",
@@ -379,7 +392,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_next_code_point :
@@ -516,7 +529,10 @@ Module str.
                             (let next_byte := M.copy (| γ |) in
                             let γ :=
                               M.alloc (|
-                                BinOp.Pure.lt (M.read (| next_byte |)) (Value.Integer 128)
+                                BinOp.lt (|
+                                  M.read (| next_byte |),
+                                  Value.Integer IntegerKind.U8 128
+                                |)
                               |) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -569,7 +585,7 @@ Module str.
                     ch,
                     M.call_closure (|
                       M.get_function (| "core::str::validations::utf8_first_byte", [] |),
-                      [ M.read (| z |); Value.Integer 2 ]
+                      [ M.read (| z |); Value.Integer IntegerKind.U32 2 ]
                     |)
                   |) in
                 let~ _ :=
@@ -621,7 +637,7 @@ Module str.
                               ch,
                               M.call_closure (|
                                 M.get_function (| "core::str::validations::utf8_first_byte", [] |),
-                                [ M.read (| y |); Value.Integer 3 ]
+                                [ M.read (| y |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |) in
                           let~ _ :=
@@ -679,7 +695,7 @@ Module str.
                                             "core::str::validations::utf8_first_byte",
                                             []
                                           |),
-                                          [ M.read (| x |); Value.Integer 4 ]
+                                          [ M.read (| x |); Value.Integer IntegerKind.U32 4 ]
                                         |)
                                       |) in
                                     let~ _ :=
@@ -723,7 +739,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_next_code_point_reverse :
@@ -735,7 +751,7 @@ Module str.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-              [ Value.Integer 128 ]
+              [ Value.Integer IntegerKind.U8 128 ]
             |)
           |))).
     
@@ -749,12 +765,13 @@ Module str.
       | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (| x |))
-              (M.read (| M.get_constant (| "core::str::validations::NONASCII_MASK" |) |)))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (M.read (| M.get_constant (| "core::str::validations::NONASCII_MASK" |) |)),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_contains_nonascii :
@@ -886,7 +903,7 @@ Module str.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ index := M.alloc (| Value.Integer 0 |) in
+                let~ index := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ len :=
                   M.alloc (|
                     M.call_closure (|
@@ -907,7 +924,7 @@ Module str.
                   |) in
                 let~ ascii_block_size :=
                   M.alloc (|
-                    BinOp.Wrap.mul Integer.Usize (Value.Integer 2) (M.read (| usize_bytes |))
+                    BinOp.Wrap.mul (| Value.Integer IntegerKind.Usize 2, M.read (| usize_bytes |) |)
                   |) in
                 let~ blocks_end :=
                   M.copy (|
@@ -919,20 +936,20 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge (M.read (| len |)) (M.read (| ascii_block_size |))
+                                  BinOp.ge (| M.read (| len |), M.read (| ascii_block_size |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (| len |))
-                                  (M.read (| ascii_block_size |)))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.sub (|
+                                  M.read (| len |),
+                                  M.read (| ascii_block_size |)
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                       ]
                     |)
                   |) in
@@ -968,7 +985,7 @@ Module str.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| index |)) (M.read (| len |))
+                                    BinOp.lt (| M.read (| index |), M.read (| len |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -988,7 +1005,10 @@ Module str.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge (M.read (| first |)) (Value.Integer 128)
+                                            BinOp.ge (|
+                                              M.read (| first |),
+                                              Value.Integer IntegerKind.U8 128
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1014,7 +1034,7 @@ Module str.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 2
+                                                    Value.Integer IntegerKind.Usize 2
                                                   |) in
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -1024,17 +1044,19 @@ Module str.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.ge
-                                                                (M.rust_cast
+                                                              BinOp.ge (|
+                                                                M.rust_cast
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (Value.Integer 1)
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -1047,13 +1069,14 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    BinOp.Pure.ge
-                                                                                      (M.read (|
+                                                                                    BinOp.ge (|
+                                                                                      M.read (|
                                                                                         index
-                                                                                      |))
-                                                                                      (M.read (|
+                                                                                      |),
+                                                                                      M.read (|
                                                                                         len
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -1095,8 +1118,9 @@ Module str.
                                                                       M.read (| v |),
                                                                       index
                                                                     |)
-                                                                  |)))
-                                                                (Value.Integer (-64))
+                                                                  |)),
+                                                                Value.Integer IntegerKind.I8 (-64)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -1118,7 +1142,11 @@ Module str.
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
-                                                                            [ Value.Integer 1 ])
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.U8
+                                                                                1
+                                                                            ])
                                                                       ]
                                                                   ]
                                                               |)
@@ -1135,7 +1163,7 @@ Module str.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 3
+                                                    Value.Integer IntegerKind.Usize 3
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -1148,10 +1176,10 @@ Module str.
                                                               let β := index in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| β |))
-                                                                  (Value.Integer 1)
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |) in
                                                             let~ _ :=
                                                               M.match_operator (|
@@ -1162,9 +1190,10 @@ Module str.
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
-                                                                            BinOp.Pure.ge
-                                                                              (M.read (| index |))
-                                                                              (M.read (| len |))
+                                                                            BinOp.ge (|
+                                                                              M.read (| index |),
+                                                                              M.read (| len |)
+                                                                            |)
                                                                           |)) in
                                                                       let _ :=
                                                                         M.is_constant_or_break_match (|
@@ -1230,7 +1259,9 @@ Module str.
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
                                                                       M.read (| γ0_0 |),
-                                                                      Value.Integer 224
+                                                                      Value.Integer
+                                                                        IntegerKind.U8
+                                                                        224
                                                                     |) in
                                                                   Value.Tuple []));
                                                               fun γ =>
@@ -1261,7 +1292,9 @@ Module str.
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
                                                                       M.read (| γ0_0 |),
-                                                                      Value.Integer 237
+                                                                      Value.Integer
+                                                                        IntegerKind.U8
+                                                                        237
                                                                     |) in
                                                                   Value.Tuple []));
                                                               fun γ =>
@@ -1283,8 +1316,13 @@ Module str.
                                                                 ltac:(M.monadic
                                                                   match γ with
                                                                   | [] =>
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  | _ => M.impossible (||)
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
                                                                   end))
                                                           |)));
                                                       fun γ =>
@@ -1306,7 +1344,11 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
-                                                                              [ Value.Integer 1 ])
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.U8
+                                                                                  1
+                                                                              ])
                                                                         ]
                                                                     ]
                                                                 |)
@@ -1323,17 +1365,19 @@ Module str.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.ge
-                                                                (M.rust_cast
+                                                              BinOp.ge (|
+                                                                M.rust_cast
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (Value.Integer 1)
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -1346,13 +1390,14 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    BinOp.Pure.ge
-                                                                                      (M.read (|
+                                                                                    BinOp.ge (|
+                                                                                      M.read (|
                                                                                         index
-                                                                                      |))
-                                                                                      (M.read (|
+                                                                                      |),
+                                                                                      M.read (|
                                                                                         len
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -1394,8 +1439,9 @@ Module str.
                                                                       M.read (| v |),
                                                                       index
                                                                     |)
-                                                                  |)))
-                                                                (Value.Integer (-64))
+                                                                  |)),
+                                                                Value.Integer IntegerKind.I8 (-64)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -1417,7 +1463,11 @@ Module str.
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
-                                                                            [ Value.Integer 2 ])
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.U8
+                                                                                2
+                                                                            ])
                                                                       ]
                                                                   ]
                                                               |)
@@ -1434,7 +1484,7 @@ Module str.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 4
+                                                    Value.Integer IntegerKind.Usize 4
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -1447,10 +1497,10 @@ Module str.
                                                               let β := index in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| β |))
-                                                                  (Value.Integer 1)
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |) in
                                                             let~ _ :=
                                                               M.match_operator (|
@@ -1461,9 +1511,10 @@ Module str.
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
-                                                                            BinOp.Pure.ge
-                                                                              (M.read (| index |))
-                                                                              (M.read (| len |))
+                                                                            BinOp.ge (|
+                                                                              M.read (| index |),
+                                                                              M.read (| len |)
+                                                                            |)
                                                                           |)) in
                                                                       let _ :=
                                                                         M.is_constant_or_break_match (|
@@ -1529,7 +1580,9 @@ Module str.
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
                                                                       M.read (| γ0_0 |),
-                                                                      Value.Integer 240
+                                                                      Value.Integer
+                                                                        IntegerKind.U8
+                                                                        240
                                                                     |) in
                                                                   Value.Tuple []));
                                                               fun γ =>
@@ -1560,7 +1613,9 @@ Module str.
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
                                                                       M.read (| γ0_0 |),
-                                                                      Value.Integer 244
+                                                                      Value.Integer
+                                                                        IntegerKind.U8
+                                                                        244
                                                                     |) in
                                                                   Value.Tuple []))
                                                             ],
@@ -1569,8 +1624,13 @@ Module str.
                                                                 ltac:(M.monadic
                                                                   match γ with
                                                                   | [] =>
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  | _ => M.impossible (||)
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
                                                                   end))
                                                           |)));
                                                       fun γ =>
@@ -1592,7 +1652,11 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
-                                                                              [ Value.Integer 1 ])
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.U8
+                                                                                  1
+                                                                              ])
                                                                         ]
                                                                     ]
                                                                 |)
@@ -1610,17 +1674,19 @@ Module str.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.ge
-                                                                  (M.rust_cast
+                                                                BinOp.ge (|
+                                                                  M.rust_cast
                                                                     (M.read (|
                                                                       let~ _ :=
                                                                         let β := index in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Wrap.add
-                                                                            Integer.Usize
-                                                                            (M.read (| β |))
-                                                                            (Value.Integer 1)
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
                                                                         |) in
                                                                       let~ _ :=
                                                                         M.match_operator (|
@@ -1633,13 +1699,14 @@ Module str.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.Pure.ge
-                                                                                        (M.read (|
+                                                                                      BinOp.ge (|
+                                                                                        M.read (|
                                                                                           index
-                                                                                        |))
-                                                                                        (M.read (|
+                                                                                        |),
+                                                                                        M.read (|
                                                                                           len
-                                                                                        |))
+                                                                                        |)
+                                                                                      |)
                                                                                     |)) in
                                                                                 let _ :=
                                                                                   M.is_constant_or_break_match (|
@@ -1681,8 +1748,9 @@ Module str.
                                                                         M.read (| v |),
                                                                         index
                                                                       |)
-                                                                    |)))
-                                                                  (Value.Integer (-64))
+                                                                    |)),
+                                                                  Value.Integer IntegerKind.I8 (-64)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -1706,7 +1774,11 @@ Module str.
                                                                           ("error_len",
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
-                                                                              [ Value.Integer 2 ])
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.U8
+                                                                                  2
+                                                                              ])
                                                                         ]
                                                                     ]
                                                                 |)
@@ -1726,17 +1798,19 @@ Module str.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.ge
-                                                                (M.rust_cast
+                                                              BinOp.ge (|
+                                                                M.rust_cast
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (Value.Integer 1)
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -1749,13 +1823,14 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    BinOp.Pure.ge
-                                                                                      (M.read (|
+                                                                                    BinOp.ge (|
+                                                                                      M.read (|
                                                                                         index
-                                                                                      |))
-                                                                                      (M.read (|
+                                                                                      |),
+                                                                                      M.read (|
                                                                                         len
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -1797,8 +1872,9 @@ Module str.
                                                                       M.read (| v |),
                                                                       index
                                                                     |)
-                                                                  |)))
-                                                                (Value.Integer (-64))
+                                                                  |)),
+                                                                Value.Integer IntegerKind.I8 (-64)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -1820,7 +1896,11 @@ Module str.
                                                                         ("error_len",
                                                                           Value.StructTuple
                                                                             "core::option::Option::Some"
-                                                                            [ Value.Integer 3 ])
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.U8
+                                                                                3
+                                                                            ])
                                                                       ]
                                                                   ]
                                                               |)
@@ -1849,7 +1929,8 @@ Module str.
                                                                 ("error_len",
                                                                   Value.StructTuple
                                                                     "core::option::Option::Some"
-                                                                    [ Value.Integer 1 ])
+                                                                    [ Value.Integer IntegerKind.U8 1
+                                                                    ])
                                                               ]
                                                           ]
                                                       |)
@@ -1862,10 +1943,10 @@ Module str.
                                         let β := index in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (Value.Integer 1)
+                                          BinOp.Wrap.add (|
+                                            M.read (| β |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -1879,16 +1960,16 @@ Module str.
                                                 M.use
                                                   (M.alloc (|
                                                     LogicalOp.and (|
-                                                      BinOp.Pure.ne
-                                                        (M.read (| align |))
-                                                        (M.read (|
+                                                      BinOp.ne (|
+                                                        M.read (| align |),
+                                                        M.read (|
                                                           M.get_constant (| "core::num::MAX" |)
-                                                        |)),
+                                                        |)
+                                                      |),
                                                       ltac:(M.monadic
-                                                        (BinOp.Pure.eq
-                                                          (BinOp.Wrap.rem
-                                                            Integer.Usize
-                                                            (M.call_closure (|
+                                                        (BinOp.eq (|
+                                                          BinOp.Wrap.rem (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path "usize",
                                                                 "wrapping_sub",
@@ -1898,9 +1979,11 @@ Module str.
                                                                 M.read (| align |);
                                                                 M.read (| index |)
                                                               ]
-                                                            |))
-                                                            (M.read (| usize_bytes |)))
-                                                          (Value.Integer 0)))
+                                                            |),
+                                                            M.read (| usize_bytes |)
+                                                          |),
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)))
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -1933,9 +2016,10 @@ Module str.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.lt
-                                                                    (M.read (| index |))
-                                                                    (M.read (| blocks_end |))
+                                                                  BinOp.lt (|
+                                                                    M.read (| index |),
+                                                                    M.read (| blocks_end |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1995,7 +2079,9 @@ Module str.
                                                                           |),
                                                                           [
                                                                             M.read (| block |);
-                                                                            Value.Integer 1
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
                                                                           ]
                                                                         |)
                                                                       |)
@@ -2037,10 +2123,10 @@ Module str.
                                                               let β := index in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| β |))
-                                                                  (M.read (| ascii_block_size |))
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  M.read (| ascii_block_size |)
+                                                                |)
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -2072,18 +2158,22 @@ Module str.
                                                             M.use
                                                               (M.alloc (|
                                                                 LogicalOp.and (|
-                                                                  BinOp.Pure.lt
-                                                                    (M.read (| index |))
-                                                                    (M.read (| len |)),
+                                                                  BinOp.lt (|
+                                                                    M.read (| index |),
+                                                                    M.read (| len |)
+                                                                  |),
                                                                   ltac:(M.monadic
-                                                                    (BinOp.Pure.lt
-                                                                      (M.read (|
+                                                                    (BinOp.lt (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| v |),
                                                                           index
                                                                         |)
-                                                                      |))
-                                                                      (Value.Integer 128)))
+                                                                      |),
+                                                                      Value.Integer
+                                                                        IntegerKind.U8
+                                                                        128
+                                                                    |)))
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -2095,10 +2185,10 @@ Module str.
                                                             let β := index in
                                                             M.write (|
                                                               β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| β |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             |) in
                                                           M.alloc (| Value.Tuple [] |)));
                                                       fun γ =>
@@ -2125,10 +2215,10 @@ Module str.
                                                 let β := index in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
                                         ]
@@ -2154,7 +2244,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_run_utf8_validation :
@@ -2167,262 +2257,262 @@ Module str.
             M.alloc (|
               Value.Array
                 [
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 1;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 2;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 3;
-                  Value.Integer 4;
-                  Value.Integer 4;
-                  Value.Integer 4;
-                  Value.Integer 4;
-                  Value.Integer 4;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0;
-                  Value.Integer 0
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 2;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 4;
+                  Value.Integer IntegerKind.U8 4;
+                  Value.Integer IntegerKind.U8 4;
+                  Value.Integer IntegerKind.U8 4;
+                  Value.Integer IntegerKind.U8 4;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0;
+                  Value.Integer IntegerKind.U8 0
                 ]
             |)
           |))).
@@ -2444,12 +2534,13 @@ Module str.
                 M.alloc (| M.rust_cast (M.read (| b |)) |)
               |)
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_utf8_char_width :
       M.IsFunction "core::str::validations::utf8_char_width" utf8_char_width.
     
-    Definition value_CONT_MASK : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 63 |))).
+    Definition value_CONT_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
   End validations.
 End str.

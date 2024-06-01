@@ -22,7 +22,10 @@ Module instructions.
                     (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u8" ];
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "unwrap",
@@ -33,14 +36,19 @@ Module instructions.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      [ Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ] ],
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "u8" ]
+                      ],
                       "try_into",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); Value.Integer IntegerKind.Usize 2 ]
                       |)
                     ]
                   |)
@@ -48,7 +56,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_read_i16 :
@@ -73,7 +81,10 @@ Module instructions.
                     (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u8" ];
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "unwrap",
@@ -84,14 +95,19 @@ Module instructions.
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      [ Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ] ],
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "u8" ]
+                      ],
                       "try_into",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); Value.Integer IntegerKind.Usize 2 ]
                       |)
                     ]
                   |)
@@ -99,7 +115,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_read_u16 :

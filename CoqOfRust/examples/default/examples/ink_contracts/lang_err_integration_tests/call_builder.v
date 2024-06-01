@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -73,7 +73,7 @@ Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
 Axiom Hash :
   (Ty.path "call_builder::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
@@ -132,7 +132,7 @@ Module Impl_core_default_Default_for_call_builder_CallBuilderTest.
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_builder::CallBuilderTest" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -165,7 +165,7 @@ Module Impl_call_builder_CallBuilderTest.
           |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -266,7 +266,7 @@ Module Impl_call_builder_CallBuilderTest.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -290,7 +290,7 @@ Module Impl_call_builder_CallBuilderTest.
         let address := M.alloc (| address |) in
         let selector := M.alloc (| selector |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
@@ -334,7 +334,7 @@ Module Impl_call_builder_CallBuilderTest.
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_call_instantiate :
@@ -376,7 +376,7 @@ Module Impl_call_builder_CallBuilderTest.
         let selector := M.alloc (| selector |) in
         let init_value := M.alloc (| init_value |) in
         Value.StructTuple "core::option::Option::None" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_call_instantiate_fallible :

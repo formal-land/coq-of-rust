@@ -51,7 +51,7 @@ Module Impl_polymorphic_constants_Foo_N_A.
               |));
             ("array", Value.Array [])
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_convert :
@@ -78,8 +78,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "polymorphic_constants::Foo"
               [
-                ("data", Value.Integer 42);
-                ("array", repeat (| Value.Integer 42, Value.Integer 3 |))
+                ("data", Value.Integer IntegerKind.I32 42);
+                ("array",
+                  repeat (| Value.Integer IntegerKind.I32 42, Value.Integer IntegerKind.Usize 3 |))
               ]
           |) in
         let~ bar :=
@@ -88,7 +89,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "polymorphic_constants::Foo")
-                  [ Value.Integer 3 ]
+                  [ Value.Integer IntegerKind.Usize 3 ]
                   [ Ty.path "i32" ],
                 "convert",
                 [ Ty.path "f64" ]
@@ -124,10 +125,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -188,25 +191,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 0 ]
+                                        [ Value.Integer IntegerKind.Usize 0 ]
                                         [ Ty.path "f64" ],
                                       [
                                         Ty.apply
                                           (Ty.path "array")
-                                          [ Value.Integer 0 ]
+                                          [ Value.Integer IntegerKind.Usize 0 ]
                                           [ Ty.path "f64" ]
                                       ],
                                       "eq",
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -224,11 +228,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "array")
-                                          [ Value.Integer 0 ]
+                                          [ Value.Integer IntegerKind.Usize 0 ]
                                           [ Ty.path "f64" ];
                                         Ty.apply
                                           (Ty.path "array")
-                                          [ Value.Integer 0 ]
+                                          [ Value.Integer IntegerKind.Usize 0 ]
                                           [ Ty.path "f64" ]
                                       ]
                                     |),
@@ -250,7 +254,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "polymorphic_constants::main" main.

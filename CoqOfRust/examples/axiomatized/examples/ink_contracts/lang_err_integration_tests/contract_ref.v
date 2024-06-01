@@ -46,7 +46,7 @@ Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
 Axiom Hash :
   (Ty.path "contract_ref::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {

@@ -37,7 +37,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -95,7 +95,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -184,7 +184,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -216,8 +216,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 18 |) in
-        let~ y := M.alloc (| Value.Integer 15 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 18 |) in
+        let~ y := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
         let~ single :=
           M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Borrowed" [ x ] |) in
         let~ double :=
@@ -378,7 +378,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_structs::main" main.

@@ -19,13 +19,16 @@ Module interpreter.
                 [
                   Ty.apply
                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer 32 ]
+                    [ Value.Integer IntegerKind.Usize 32 ]
                     []
                 ]);
             ("target_address", Ty.path "alloy_primitives::bits::address::Address");
             ("caller", Ty.path "alloy_primitives::bits::address::Address");
             ("call_value",
-              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [])
           ];
       } *)
     
@@ -85,7 +88,7 @@ Module interpreter.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             []
                         ],
                       [],
@@ -138,7 +141,10 @@ Module interpreter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "clone",
                       []
@@ -152,7 +158,7 @@ Module interpreter.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -244,7 +250,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -298,7 +304,7 @@ Module interpreter.
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             []
                         ],
                       [],
@@ -333,7 +339,10 @@ Module interpreter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "default",
                       []
@@ -341,7 +350,7 @@ Module interpreter.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -407,7 +416,7 @@ Module interpreter.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -524,7 +533,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_env : M.IsAssociatedFunction Self "new_env" new_env.
@@ -588,7 +597,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_with_context :
@@ -662,31 +671,32 @@ Module interpreter.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let i := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "revm_primitives::bytecode::legacy::jump_map::JumpTable",
-                                        "is_valid",
-                                        []
-                                      |),
-                                      [ M.read (| i |); M.read (| pos |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let i := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "revm_primitives::bytecode::legacy::jump_map::JumpTable",
+                                          "is_valid",
+                                          []
+                                        |),
+                                        [ M.read (| i |); M.read (| pos |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
                 Value.Bool false
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_valid_jump :

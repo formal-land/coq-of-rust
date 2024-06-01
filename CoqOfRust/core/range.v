@@ -46,7 +46,7 @@ Module range.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -93,7 +93,7 @@ Module range.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -161,7 +161,7 @@ Module range.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -194,7 +194,7 @@ Module range.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -247,7 +247,7 @@ Module range.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -530,7 +530,7 @@ Module range.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -577,7 +577,7 @@ Module range.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -609,7 +609,7 @@ Module range.
             |),
             [ M.read (| self |); M.read (| item |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contains :
@@ -627,8 +627,8 @@ Module range.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "lt", [] |),
               [
                 M.SubPointer.get_struct_record_field (|
@@ -642,8 +642,9 @@ Module range.
                   "end"
                 |)
               ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty :
@@ -675,7 +676,7 @@ Module range.
                 "start"
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -698,7 +699,7 @@ Module range.
                 "end"
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -740,7 +741,7 @@ Module range.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -765,7 +766,7 @@ Module range.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -807,7 +808,7 @@ Module range.
                   M.SubPointer.get_struct_record_field (| value, "core::range::Range", "end" |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -849,7 +850,7 @@ Module range.
                   M.SubPointer.get_struct_record_field (| value, "core::ops::range::Range", "end" |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -907,7 +908,7 @@ Module range.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -990,7 +991,7 @@ Module range.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1024,7 +1025,7 @@ Module range.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1078,7 +1079,7 @@ Module range.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1362,7 +1363,7 @@ Module range.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1404,7 +1405,7 @@ Module range.
             |),
             [ M.read (| self |); M.read (| item |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contains :
@@ -1422,8 +1423,8 @@ Module range.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "le", [] |),
               [
                 M.SubPointer.get_struct_record_field (|
@@ -1437,8 +1438,9 @@ Module range.
                   "end"
                 |)
               ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty :
@@ -1476,7 +1478,7 @@ Module range.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -1511,18 +1513,18 @@ Module range.
                   |)
                 |));
               ("end_",
-                BinOp.Wrap.add
-                  Integer.Usize
-                  (M.read (|
+                BinOp.Wrap.add (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       self,
                       "core::range::RangeInclusive",
                       "end"
                     |)
-                  |))
-                  (Value.Integer 1))
+                  |),
+                  Value.Integer IntegerKind.Usize 1
+                |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_slice_range :
@@ -1552,7 +1554,7 @@ Module range.
                 "start"
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1575,7 +1577,7 @@ Module range.
                 "end"
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1617,7 +1619,7 @@ Module range.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1642,7 +1644,7 @@ Module range.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1696,7 +1698,7 @@ Module range.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1739,15 +1741,17 @@ Module range.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (UnOp.Pure.not
-                                (M.read (|
+                            UnOp.not (|
+                              UnOp.not (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     value,
                                     "core::ops::range::RangeInclusive",
                                     "exhausted"
                                   |)
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1806,7 +1810,7 @@ Module range.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1852,7 +1856,7 @@ Module range.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1914,7 +1918,7 @@ Module range.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1947,7 +1951,7 @@ Module range.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1982,7 +1986,7 @@ Module range.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2184,7 +2188,7 @@ Module range.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2231,7 +2235,7 @@ Module range.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -2263,7 +2267,7 @@ Module range.
             |),
             [ M.read (| self |); M.read (| item |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contains :
@@ -2295,7 +2299,7 @@ Module range.
                 "start"
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2310,7 +2314,7 @@ Module range.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2352,7 +2356,7 @@ Module range.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2367,7 +2371,7 @@ Module range.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2409,7 +2413,7 @@ Module range.
                   |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2448,7 +2452,7 @@ Module range.
                   |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -258,7 +258,8 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]);
+        ("selector",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]);
         ("input",
           Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
         ("transferred_value", Ty.path "u128");

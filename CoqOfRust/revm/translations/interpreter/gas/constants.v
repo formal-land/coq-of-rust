@@ -3,119 +3,134 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module gas.
   Module constants.
-    Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+    Definition value_ZERO : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
     
-    Definition value_BASE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+    Definition value_BASE : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
     
-    Definition value_VERYLOW : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+    Definition value_VERYLOW : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
     Definition value_DATA_LOADN_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
     Definition value_CONDITION_JUMP_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
-    Definition value_RETF_GAS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+    Definition value_RETF_GAS : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
     Definition value_DATA_LOAD_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
-    Definition value_LOW : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 5 |))).
+    Definition value_LOW : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5 |))).
     
-    Definition value_MID : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
+    Definition value_MID : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
     
-    Definition value_HIGH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    Definition value_HIGH : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
     
-    Definition value_JUMPDEST : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_JUMPDEST : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     Definition value_SELFDESTRUCT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 24000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 24000 |))).
     
-    Definition value_CREATE : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 32000 |))).
+    Definition value_CREATE : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
     
     Definition value_CALLVALUE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9000 |))).
     
     Definition value_NEWACCOUNT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 25000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
     
-    Definition value_EXP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    Definition value_EXP : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
     
-    Definition value_MEMORY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+    Definition value_MEMORY : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Definition value_LOG : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 375 |))).
+    Definition value_LOG : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
     
-    Definition value_LOGDATA : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
+    Definition value_LOGDATA : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
     
-    Definition value_LOGTOPIC : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 375 |))).
+    Definition value_LOGTOPIC : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
     
-    Definition value_KECCAK256 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 30 |))).
+    Definition value_KECCAK256 : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 30 |))).
     
     Definition value_KECCAK256WORD : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 6 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6 |))).
     
-    Definition value_COPY : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+    Definition value_COPY : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Definition value_BLOCKHASH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
+    Definition value_BLOCKHASH : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20 |))).
     
     Definition value_CODEDEPOSIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 200 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
     
     Definition value_INSTANBUL_SLOAD_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 800 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
     
     Definition value_SSTORE_SET : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 20000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20000 |))).
     
     Definition value_SSTORE_RESET : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 5000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5000 |))).
     
     Definition value_REFUND_SSTORE_CLEARS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 15000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 15000 |))).
     
     Definition value_TRANSACTION_ZERO_DATA : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
     Definition value_TRANSACTION_NON_ZERO_DATA_INIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
     
     Definition value_TRANSACTION_NON_ZERO_DATA_FRONTIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 68 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |))).
     
     Definition value_EOF_CREATE_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 32000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
     
     Definition value_ACCESS_LIST_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2400 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2400 |))).
     
     Definition value_ACCESS_LIST_STORAGE_KEY : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1900 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1900 |))).
     
     Definition value_COLD_SLOAD_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2100 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2100 |))).
     
     Definition value_COLD_ACCOUNT_ACCESS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2600 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2600 |))).
     
     Definition value_WARM_STORAGE_READ_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 100 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100 |))).
     
     Definition value_WARM_SSTORE_RESET : Value.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.sub
-              Integer.U64
-              (M.read (| M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |) |))
-              (M.read (|
-                M.get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST" |)
-              |))
+            BinOp.Wrap.sub (|
+              M.read (| M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |) |),
+              M.read (| M.get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST" |) |)
+            |)
           |))).
     
     Definition value_INITCODE_WORD_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
     
     Definition value_CALL_STIPEND : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2300 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
   End constants.
 End gas.

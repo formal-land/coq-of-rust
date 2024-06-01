@@ -23,7 +23,7 @@ Definition cos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_function (| "foreign_function_interface::ccosf", [] |),
         [ M.read (| z |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_cos : M.IsFunction "foreign_function_interface::cos" cos.
@@ -159,7 +159,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "foreign_function_interface::main" main.
@@ -187,7 +187,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -232,15 +232,16 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.lt
-                          (M.read (|
+                        BinOp.lt (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "foreign_function_interface::Complex",
                               "im"
                             |)
-                          |))
-                          (M.read (| UnsupportedLiteral |))
+                          |),
+                          M.read (| UnsupportedLiteral |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -292,8 +293,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     |),
                                     [
                                       M.alloc (|
-                                        UnOp.Panic.neg (|
-                                          Integer.Usize,
+                                        UnOp.neg (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
@@ -379,7 +379,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

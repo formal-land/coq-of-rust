@@ -44,7 +44,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -87,7 +87,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -117,7 +117,7 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::fuse::Fuse"
                 [ ("iter", Value.StructTuple "core::option::Option::Some" [ M.read (| iter |) ]) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -147,7 +147,7 @@ Module iter.
                   "iter"
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_inner :
@@ -209,7 +209,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -234,7 +234,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -287,7 +287,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -336,11 +336,11 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -392,14 +392,16 @@ Module iter.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -430,7 +432,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| fold |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -492,7 +494,7 @@ Module iter.
                   |) in
                 acc
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -520,7 +522,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -589,7 +591,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -638,7 +640,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -663,7 +665,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -694,7 +696,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| fold |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -756,7 +758,7 @@ Module iter.
                   |) in
                 acc
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -784,7 +786,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -853,11 +855,11 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -910,7 +912,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -953,7 +955,7 @@ Module iter.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1063,7 +1065,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1100,29 +1102,30 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      I,
-                                      [],
-                                      "nth",
-                                      []
-                                    |),
-                                    [ M.read (| iter |); M.read (| n |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        I,
+                                        [],
+                                        "nth",
+                                        []
+                                      |),
+                                      [ M.read (| iter |); M.read (| n |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1270,7 +1273,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1310,29 +1313,30 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      I,
-                                      [],
-                                      "find",
-                                      [ P ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| predicate |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        I,
+                                        [],
+                                        "find",
+                                        [ P ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| predicate |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1371,29 +1375,30 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "next_back",
-                                      []
-                                    |),
-                                    [ M.read (| iter |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "next_back",
+                                        []
+                                      |),
+                                      [ M.read (| iter |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1433,29 +1438,30 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "nth_back",
-                                      []
-                                    |),
-                                    [ M.read (| iter |); M.read (| n |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "nth_back",
+                                        []
+                                      |),
+                                      [ M.read (| iter |); M.read (| n |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1604,7 +1610,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1645,29 +1651,30 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "rfind",
-                                      [ P ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| predicate |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "rfind",
+                                        [ P ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| predicate |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1800,7 +1807,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1911,7 +1918,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2049,7 +2056,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2163,7 +2170,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2275,7 +2282,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2389,7 +2396,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2528,7 +2535,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2643,7 +2650,7 @@ Module iter.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2717,7 +2724,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2876,7 +2883,7 @@ Module iter.
                   x
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_and_then_or_clear :

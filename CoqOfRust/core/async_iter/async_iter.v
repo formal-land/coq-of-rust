@@ -15,8 +15,10 @@ Module async_iter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
-        | _, _, _ => M.impossible
+            Value.Tuple
+              [ Value.Integer IntegerKind.Usize 0; Value.StructTuple "core::option::Option::None" []
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_size_hint :
@@ -77,7 +79,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -101,7 +103,7 @@ Module async_iter.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -156,7 +158,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -191,7 +193,7 @@ Module async_iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -234,7 +236,7 @@ Module async_iter.
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_async_gen_ready :
@@ -304,7 +306,7 @@ Module async_iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -65,7 +65,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -112,7 +112,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -159,7 +159,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -206,7 +206,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -251,7 +251,7 @@ Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
@@ -292,7 +292,7 @@ Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
@@ -325,26 +325,27 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
-                          let food := M.copy (| γ0_0 |) in
-                          Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "combinators_map::Chopped",
+                                0
+                              |) in
+                            let food := M.copy (| γ0_0 |) in
+                            Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
@@ -403,16 +404,17 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let f := M.copy (| γ |) in
-                                  Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let f := M.copy (| γ |) in
+                                    Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
@@ -421,22 +423,23 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "combinators_map::Peeled",
-                                  0
-                                |) in
-                              let f := M.copy (| γ0_0 |) in
-                              Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "combinators_map::Peeled",
+                                    0
+                                  |) in
+                                let f := M.copy (| γ0_0 |) in
+                                Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |);
@@ -445,26 +448,27 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
-                          let f := M.copy (| γ0_0 |) in
-                          Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "combinators_map::Chopped",
+                                0
+                              |) in
+                            let f := M.copy (| γ0_0 |) in
+                            Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_process : M.IsFunction "combinators_map::process" process.
@@ -558,7 +562,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
@@ -661,7 +665,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "combinators_map::main" main.

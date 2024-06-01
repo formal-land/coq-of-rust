@@ -110,16 +110,11 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [
-                  BinOp.Wrap.mul
-                    Integer.I32
-                    (M.read (| first_number |))
-                    (M.read (| second_number |))
-                ]
+                [ BinOp.Wrap.mul (| M.read (| first_number |), M.read (| second_number |) |) ]
             |)
           |)))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_multiply : M.IsFunction "early_returns::multiply" multiply.
@@ -227,7 +222,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "early_returns::print" print.
@@ -269,7 +264,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "early_returns::main" main.

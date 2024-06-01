@@ -3,11 +3,8 @@ Require Import links.M.
 Require Import CoqOfRust.lib.lib.
 
 Module Bool.
-  Global Instance IsToTy : ToTy bool := {
-    Φ := Ty.path "bool";
-  }.
-
-  Global Instance IsToValue : ToValue bool := {
-    φ := Value.Bool;
+  Global Instance IsLink : Link bool := {
+    to_ty := Ty.path "bool";
+    to_value := Value.Bool;
   }.
 End Bool.

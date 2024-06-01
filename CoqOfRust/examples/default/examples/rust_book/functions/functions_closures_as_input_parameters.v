@@ -33,7 +33,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_apply : M.IsFunction "functions_closures_as_input_parameters::apply" apply.
@@ -60,9 +60,9 @@ Definition apply_to_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           "call",
           []
         |),
-        [ f; Value.Tuple [ Value.Integer 3 ] ]
+        [ f; Value.Tuple [ Value.Integer IntegerKind.I32 3 ] ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_apply_to_3 :
@@ -123,147 +123,152 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ :=
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_v1",
+                                              []
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "I said " |);
+                                                    M.read (| Value.String ".
+" |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ]
+                                                      |),
+                                                      [ greeting ]
+                                                    |)
+                                                  ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |) in
                                 let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "std::io::stdio::_print", [] |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            []
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "I said " |);
-                                                  M.read (| Value.String ".
-" |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
-                                                      ]
-                                                    |),
-                                                    [ greeting ]
-                                                  |)
-                                                ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
+                                      M.get_associated_function (|
+                                        Ty.path "alloc::string::String",
+                                        "push_str",
+                                        []
+                                      |),
+                                      [ farewell; M.read (| Value.String "!!!" |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |) in
-                              let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "alloc::string::String",
-                                      "push_str",
-                                      []
-                                    |),
-                                    [ farewell; M.read (| Value.String "!!!" |) ]
-                                  |)
-                                |) in
-                              let~ _ :=
                                 let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "std::io::stdio::_print", [] |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_v1",
-                                            []
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "Then I screamed " |);
-                                                  M.read (| Value.String ".
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_v1",
+                                              []
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "Then I screamed " |);
+                                                    M.read (| Value.String ".
 " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ farewell ]
-                                                  |)
-                                                ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |) in
-                              let~ _ :=
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [ farewell ]
+                                                    |)
+                                                  ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |) in
                                 let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "std::io::stdio::_print", [] |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Now I can sleep. zzzzz
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_const",
+                                              []
+                                            |),
+                                            [
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String "Now I can sleep. zzzzz
 "
-                                                  |)
-                                                ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
+                                                    |)
+                                                  ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::mem::drop",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [ M.read (| farewell |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |) in
-                              let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "core::mem::drop",
-                                      [ Ty.path "alloc::string::String" ]
-                                    |),
-                                    [ M.read (| farewell |) ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                M.alloc (| Value.Tuple [] |)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -283,16 +288,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let x := M.copy (| γ |) in
-                            BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| x |))))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let x := M.copy (| γ |) in
+                              BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| x |) |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -340,7 +346,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_input_parameters::main" main.

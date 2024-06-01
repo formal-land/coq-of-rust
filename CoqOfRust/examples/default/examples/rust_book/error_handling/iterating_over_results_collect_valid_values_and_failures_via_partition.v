@@ -35,7 +35,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [
                           Ty.apply
                             (Ty.path "array")
-                            [ Value.Integer 3 ]
+                            [ Value.Integer IntegerKind.Usize 3 ]
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -152,23 +152,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "str",
-                                        "parse",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ M.read (| s |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "parse",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ M.read (| s |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
@@ -302,7 +303,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main :

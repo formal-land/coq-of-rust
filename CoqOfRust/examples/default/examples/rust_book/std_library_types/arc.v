@@ -56,7 +56,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 0); ("end_", Value.Integer 10) ]
+                      [
+                        ("start", Value.Integer IntegerKind.I32 0);
+                        ("end_", Value.Integer IntegerKind.I32 10)
+                      ]
                   ]
                 |)
               |),
@@ -126,83 +129,84 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.read (|
-                                                            let~ _ :=
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.read (|
                                                               let~ _ :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "std::io::stdio::_print",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |);
-                                                                                M.read (|
-                                                                                  Value.String "
+                                                                let~ _ :=
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_function (|
+                                                                        "std::io::stdio::_print",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
+                                                                            "new_v1",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String ""
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    Value.String "
 "
-                                                                                |)
-                                                                              ]
-                                                                          |);
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::sync::Arc")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "str"
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ]
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ apple ]
-                                                                                |)
-                                                                              ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              M.alloc (| Value.Tuple [] |) in
-                                                            M.alloc (| Value.Tuple [] |)
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                                                  |)
+                                                                                ]
+                                                                            |);
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_debug",
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::sync::Arc")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "str"
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ]
+                                                                                      ]
+                                                                                    |),
+                                                                                    [ apple ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |) in
+                                                                M.alloc (| Value.Tuple [] |) in
+                                                              M.alloc (| Value.Tuple [] |)
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |)
@@ -221,14 +225,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.U64 1 ]
                 |)
               ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "arc::main" main.

@@ -375,7 +375,7 @@ Module handler.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -454,7 +454,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| gas |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reimburse_caller :
@@ -534,7 +534,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| gas |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reward_beneficiary :
@@ -614,7 +614,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| result |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_output :
@@ -698,7 +698,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| end_output |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_end_ :
@@ -772,7 +772,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_clear :

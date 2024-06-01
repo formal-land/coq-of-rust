@@ -14,7 +14,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -34,7 +34,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -54,7 +54,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -74,7 +74,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -94,7 +94,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -112,7 +112,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -130,7 +130,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -148,7 +148,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -166,7 +166,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -184,7 +184,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -202,7 +202,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -220,7 +220,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -238,7 +238,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -256,7 +256,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -274,7 +274,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -292,7 +292,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -310,7 +310,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -328,7 +328,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -346,7 +346,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -364,7 +364,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -382,7 +382,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -400,7 +400,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -418,7 +418,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -436,7 +436,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -454,7 +454,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -472,7 +472,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -492,7 +492,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -510,7 +510,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -528,7 +528,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -546,7 +546,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -566,7 +566,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -584,7 +584,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -604,7 +604,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_panic_cold_explicit :
@@ -622,7 +622,7 @@ Module panic.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::option::Option::None" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_as_str : M.IsProvidedMethod "core::panic::PanicPayload" "as_str" as_str.

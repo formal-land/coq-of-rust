@@ -28,7 +28,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ an_integer := M.alloc (| Value.Integer 1 |) in
+        let~ an_integer := M.alloc (| Value.Integer IntegerKind.U32 1 |) in
         let~ a_boolean := M.alloc (| Value.Bool true |) in
         let~ unit_ := M.alloc (| Value.Tuple [] |) in
         let~ copied_integer := M.copy (| an_integer |) in
@@ -135,11 +135,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _unused_variable := M.alloc (| Value.Integer 3 |) in
-        let~ _noisy_unused_variable := M.alloc (| Value.Integer 2 |) in
+        let~ _unused_variable := M.alloc (| Value.Integer IntegerKind.U32 3 |) in
+        let~ _noisy_unused_variable := M.alloc (| Value.Integer IntegerKind.U32 2 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "variable_bindings::main" main.

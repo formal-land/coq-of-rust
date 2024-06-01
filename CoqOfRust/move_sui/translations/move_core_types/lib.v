@@ -557,7 +557,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fmt_list : M.IsFunction "move_core_types::fmt_list" fmt_list.

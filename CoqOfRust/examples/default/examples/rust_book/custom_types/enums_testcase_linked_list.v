@@ -42,7 +42,7 @@ Module Impl_enums_testcase_linked_list_List.
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "enums_testcase_linked_list::List::Nil" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -75,7 +75,7 @@ Module Impl_enums_testcase_linked_list_List.
               [ M.read (| self |) ]
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_prepend : M.IsAssociatedFunction Self "prepend" prepend.
@@ -123,26 +123,26 @@ Module Impl_enums_testcase_linked_list_List.
                     |) in
                   let tail := M.alloc (| γ0_1 |) in
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.U32
-                      (Value.Integer 1)
-                      (M.call_closure (|
+                    BinOp.Wrap.add (|
+                      Value.Integer IntegerKind.U32 1,
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "enums_testcase_linked_list::List",
                           "len",
                           []
                         |),
                         [ M.read (| M.read (| tail |) |) ]
-                      |))
+                      |)
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "enums_testcase_linked_list::List::Nil" |) in
-                  M.alloc (| Value.Integer 0 |)))
+                  M.alloc (| Value.Integer IntegerKind.U32 0 |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -291,7 +291,7 @@ Module Impl_enums_testcase_linked_list_List.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_stringify : M.IsAssociatedFunction Self "stringify" stringify.
@@ -333,7 +333,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer 1 ]
+              [ M.read (| list |); Value.Integer IntegerKind.U32 1 ]
             |)
           |) in
         let~ _ :=
@@ -345,7 +345,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer 2 ]
+              [ M.read (| list |); Value.Integer IntegerKind.U32 2 ]
             |)
           |) in
         let~ _ :=
@@ -357,7 +357,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer 3 ]
+              [ M.read (| list |); Value.Integer IntegerKind.U32 3 ]
             |)
           |) in
         let~ _ :=
@@ -452,7 +452,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "enums_testcase_linked_list::main" main.

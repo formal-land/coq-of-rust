@@ -36,7 +36,7 @@ Module loop_summary.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -75,7 +75,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -107,22 +107,23 @@ Module loop_summary.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.eq (|
+            M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "move_bytecode_verifier::loop_summary::NodeId",
                 0
               |)
-            |))
-            (M.read (|
+            |),
+            M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| other |),
                 "move_bytecode_verifier::loop_summary::NodeId",
                 0
               |)
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -152,7 +153,7 @@ Module loop_summary.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -195,7 +196,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -231,7 +232,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -449,14 +450,14 @@ Module loop_summary.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
-                  [ Value.Integer 0; M.read (| num_blocks |) ]
+                  [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                 |)
               |) in
             let~ descs :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
-                  [ Value.Integer 0; M.read (| num_blocks |) ]
+                  [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                 |)
               |) in
             let~ backs :=
@@ -529,7 +530,9 @@ Module loop_summary.
               |) in
             let~ next_node :=
               M.alloc (|
-                Value.StructTuple "move_bytecode_verifier::loop_summary::NodeId" [ Value.Integer 0 ]
+                Value.StructTuple
+                  "move_bytecode_verifier::loop_summary::NodeId"
+                  [ Value.Integer IntegerKind.U16 0 ]
               |) in
             let~ root_block :=
               M.alloc (|
@@ -706,21 +709,22 @@ Module loop_summary.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let succ := M.copy (| γ |) in
-                                        Value.StructRecord
-                                          "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
-                                          [
-                                            ("from_node", M.read (| root_node |));
-                                            ("to_block", M.read (| M.read (| succ |) |))
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let succ := M.copy (| γ |) in
+                                          Value.StructRecord
+                                            "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
+                                            [
+                                              ("from_node", M.read (| root_node |));
+                                              ("to_block", M.read (| M.read (| succ |) |))
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -817,13 +821,11 @@ Module loop_summary.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.U16
-                                        (M.read (| β |))
-                                        (BinOp.Wrap.add
-                                          Integer.U16
-                                          (Value.Integer 1)
-                                          (M.read (|
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.U16 1,
+                                          M.read (|
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::index::Index",
@@ -852,7 +854,9 @@ Module loop_summary.
                                                 |)
                                               ]
                                             |)
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |) in
                                   let~ _ :=
                                     M.write (|
@@ -1382,25 +1386,29 @@ Module loop_summary.
                                                           ltac:(M.monadic
                                                             match γ with
                                                             | [ α0 ] =>
-                                                              M.match_operator (|
-                                                                M.alloc (| α0 |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let succ := M.copy (| γ |) in
-                                                                      Value.StructRecord
-                                                                        "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
-                                                                        [
-                                                                          ("from_node",
-                                                                            M.read (| to_node |));
-                                                                          ("to_block",
-                                                                            M.read (|
-                                                                              M.read (| succ |)
-                                                                            |))
-                                                                        ]))
-                                                                ]
-                                                              |)
-                                                            | _ => M.impossible (||)
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let succ :=
+                                                                          M.copy (| γ |) in
+                                                                        Value.StructRecord
+                                                                          "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
+                                                                          [
+                                                                            ("from_node",
+                                                                              M.read (| to_node |));
+                                                                            ("to_block",
+                                                                              M.read (|
+                                                                                M.read (| succ |)
+                                                                              |))
+                                                                          ]))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
                                                             end))
                                                     ]
                                                   |)
@@ -1437,7 +1445,7 @@ Module loop_summary.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1482,14 +1490,13 @@ Module loop_summary.
                             |) in
                           let descendant := M.copy (| γ0_0 |) in
                           LogicalOp.and (|
-                            BinOp.Pure.le (M.read (| ancestor |)) (M.read (| descendant |)),
+                            BinOp.le (| M.read (| ancestor |), M.read (| descendant |) |),
                             ltac:(M.monadic
-                              (BinOp.Pure.le
-                                (M.read (| descendant |))
-                                (BinOp.Wrap.add
-                                  Integer.U16
-                                  (M.read (| ancestor |))
-                                  (M.read (|
+                              (BinOp.le (|
+                                M.read (| descendant |),
+                                BinOp.Wrap.add (|
+                                  M.read (| ancestor |),
+                                  M.read (|
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::Index",
@@ -1510,13 +1517,15 @@ Module loop_summary.
                                         M.rust_cast (M.read (| ancestor |))
                                       ]
                                     |)
-                                  |)))))
+                                  |)
+                                |)
+                              |)))
                           |)))
                     ]
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_descendant :
@@ -1551,7 +1560,7 @@ Module loop_summary.
               Value.StructRecord
                 "core::ops::range::Range"
                 [
-                  ("start", Value.Integer 0);
+                  ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1576,22 +1585,23 @@ Module loop_summary.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let id := M.copy (| γ |) in
-                              Value.StructTuple
-                                "move_bytecode_verifier::loop_summary::NodeId"
-                                [ M.rust_cast (M.read (| id |)) ]))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let id := M.copy (| γ |) in
+                                Value.StructTuple
+                                  "move_bytecode_verifier::loop_summary::NodeId"
+                                  [ M.rust_cast (M.read (| id |)) ]))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_preorder : M.IsAssociatedFunction Self "preorder" preorder.
@@ -1638,7 +1648,7 @@ Module loop_summary.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_block : M.IsAssociatedFunction Self "block" block.
@@ -1692,7 +1702,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_back_edges : M.IsAssociatedFunction Self "back_edges" back_edges.
@@ -1746,7 +1756,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pred_edges : M.IsAssociatedFunction Self "pred_edges" pred_edges.
@@ -1836,24 +1846,28 @@ Module loop_summary.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| num_blocks |)) ];
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| num_blocks |))
+                              ];
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let id := M.copy (| γ |) in
-                                            Value.StructTuple
-                                              "move_bytecode_verifier::loop_summary::NodeId"
-                                              [ M.rust_cast (M.read (| id |)) ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let id := M.copy (| γ |) in
+                                              Value.StructTuple
+                                                "move_bytecode_verifier::loop_summary::NodeId"
+                                                [ M.rust_cast (M.read (| id |)) ]))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1862,12 +1876,12 @@ Module loop_summary.
                   ("depths",
                     M.call_closure (|
                       M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
-                      [ Value.Integer 0; M.read (| num_blocks |) ]
+                      [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                     |))
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2163,7 +2177,7 @@ Module loop_summary.
                 parent
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_containing_loop :
@@ -2234,8 +2248,8 @@ Module loop_summary.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              UnOp.Pure.not
-                                                (M.call_closure (|
+                                              UnOp.not (|
+                                                M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
                                                     Ty.path
@@ -2248,7 +2262,8 @@ Module loop_summary.
                                                     []
                                                   |),
                                                   [ M.read (| left_val |); M.read (| right_val |) ]
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -2433,8 +2448,8 @@ Module loop_summary.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (M.call_closure (|
+                                                                        UnOp.not (|
+                                                                          M.call_closure (|
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.path
@@ -2450,7 +2465,8 @@ Module loop_summary.
                                                                               M.read (| left_val |);
                                                                               M.read (| right_val |)
                                                                             ]
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -2556,7 +2572,10 @@ Module loop_summary.
                 |)) in
             let~ _ :=
               let β := depth in
-              M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
+              |) in
             let~ _ :=
               M.write (|
                 M.call_closure (|
@@ -2571,7 +2590,7 @@ Module loop_summary.
               |) in
             depth
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_collapse_loop :
@@ -2622,7 +2641,7 @@ Module loop_summary.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parent : M.IsAssociatedFunction Self "parent" parent.
@@ -2670,7 +2689,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parent_mut : M.IsAssociatedFunction Self "parent_mut" parent_mut.
@@ -2717,7 +2736,7 @@ Module loop_summary.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_depth : M.IsAssociatedFunction Self "depth" depth.
@@ -2762,7 +2781,7 @@ Module loop_summary.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_depth_mut : M.IsAssociatedFunction Self "depth_mut" depth_mut.
@@ -2792,10 +2811,13 @@ Module loop_summary.
                   "move_bytecode_verifier::loop_summary::NodeId",
                   0
                 |) in
-              M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
+              |) in
             ret
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_bump : M.IsAssociatedFunction Self "bump" bump.
@@ -2829,7 +2851,7 @@ Module loop_summary.
                   M.rust_cast (M.read (| id |))))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

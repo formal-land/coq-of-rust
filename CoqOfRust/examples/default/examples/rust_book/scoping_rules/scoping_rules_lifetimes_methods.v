@@ -30,10 +30,10 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                 "scoping_rules_lifetimes_methods::Owner",
                 0
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_add_one : M.IsAssociatedFunction Self "add_one" add_one.
@@ -90,7 +90,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print.
@@ -111,7 +111,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ owner :=
           M.alloc (|
-            Value.StructTuple "scoping_rules_lifetimes_methods::Owner" [ Value.Integer 18 ]
+            Value.StructTuple
+              "scoping_rules_lifetimes_methods::Owner"
+              [ Value.Integer IntegerKind.I32 18 ]
           |) in
         let~ _ :=
           M.alloc (|
@@ -137,7 +139,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_methods::main" main.

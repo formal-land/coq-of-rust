@@ -37,7 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ Value.Integer IntegerKind.U32 5 ]
             |)
           |) in
         let~ _ :=
@@ -123,7 +123,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ := M.write (| M.read (| mutable_box |), Value.Integer 4 |) in
+        let~ _ := M.write (| M.read (| mutable_box |), Value.Integer IntegerKind.U32 4 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -167,7 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_mutablity::main" main.

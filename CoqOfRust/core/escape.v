@@ -17,7 +17,7 @@ Module escape.
                   [
                     Ty.apply
                       (Ty.path "array")
-                      [ Value.Integer 16 ]
+                      [ Value.Integer IntegerKind.Usize 16 ]
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                   ]
               ],
@@ -27,7 +27,7 @@ Module escape.
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ],
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 "as_ascii",
                 []
               |),
@@ -61,12 +61,18 @@ Module escape.
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 0 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+              |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" []
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 1 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+              |),
               M.read (| a |)
             |) in
           M.alloc (|
@@ -75,11 +81,14 @@ Module escape.
                 M.read (| output |);
                 Value.StructRecord
                   "core::ops::range::Range"
-                  [ ("start", Value.Integer 0); ("end_", Value.Integer 2) ]
+                  [
+                    ("start", Value.Integer IntegerKind.U8 0);
+                    ("end_", Value.Integer IntegerKind.U8 2)
+                  ]
               ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_backslash : M.IsFunction "core::escape::backslash" backslash.
@@ -131,7 +140,11 @@ Module escape.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 9
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -140,7 +153,11 @@ Module escape.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 13
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -149,7 +166,11 @@ Module escape.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 10
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -158,7 +179,11 @@ Module escape.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 92 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 92
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -167,7 +192,11 @@ Module escape.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 39 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 39
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -176,7 +205,11 @@ Module escape.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 34 |) in
+                  (let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U8 34
+                    |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::escape::backslash", [] |),
@@ -215,15 +248,16 @@ Module escape.
                           let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "u8",
                                       "is_ascii_control",
                                       []
                                     |),
                                     [ byte ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -231,7 +265,7 @@ Module escape.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 output,
-                                M.alloc (| Value.Integer 0 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                               |),
                               M.read (| c |)
                             |) in
@@ -241,7 +275,10 @@ Module escape.
                                 M.read (| output |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", Value.Integer 1) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.U8 0);
+                                    ("end_", Value.Integer IntegerKind.U8 1)
+                                  ]
                               ]
                           |)));
                       fun γ =>
@@ -251,7 +288,11 @@ Module escape.
                               M.SubPointer.get_array_field (|
                                 M.get_constant (| "core::escape::HEX_DIGITS" |),
                                 M.alloc (|
-                                  M.rust_cast (BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4))
+                                  M.rust_cast
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| byte |),
+                                      Value.Integer IntegerKind.I32 4
+                                    |))
                                 |)
                               |)
                             |) in
@@ -261,7 +302,9 @@ Module escape.
                                 M.get_constant (| "core::escape::HEX_DIGITS" |),
                                 M.alloc (|
                                   M.rust_cast
-                                    (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 15))
+                                    (BinOp.bit_and
+                                      (M.read (| byte |))
+                                      (Value.Integer IntegerKind.U8 15))
                                 |)
                               |)
                             |) in
@@ -269,7 +312,7 @@ Module escape.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 output,
-                                M.alloc (| Value.Integer 0 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                               |),
                               Value.StructTuple
                                 "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
@@ -279,7 +322,7 @@ Module escape.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 output,
-                                M.alloc (| Value.Integer 1 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                               |),
                               Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" []
                             |) in
@@ -287,7 +330,7 @@ Module escape.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 output,
-                                M.alloc (| Value.Integer 2 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 2 |)
                               |),
                               M.read (| hi |)
                             |) in
@@ -295,7 +338,7 @@ Module escape.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 output,
-                                M.alloc (| Value.Integer 3 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                               |),
                               M.read (| lo |)
                             |) in
@@ -305,7 +348,10 @@ Module escape.
                                 M.read (| output |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", Value.Integer 4) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.U8 0);
+                                    ("end_", Value.Integer IntegerKind.U8 4)
+                                  ]
                               ]
                           |)))
                     ]
@@ -313,7 +359,7 @@ Module escape.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_escape_ascii : M.IsFunction "core::escape::escape_ascii" escape_ascii.
@@ -353,17 +399,17 @@ Module escape.
           let~ c := M.alloc (| M.rust_cast (M.read (| c |)) |) in
           let~ start :=
             M.alloc (|
-              BinOp.Wrap.sub
-                Integer.Usize
-                (BinOp.Wrap.div
-                  Integer.Usize
-                  (M.rust_cast
+              BinOp.Wrap.sub (|
+                BinOp.Wrap.div (|
+                  M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
-                      [ BinOp.Pure.bit_or (M.read (| c |)) (Value.Integer 1) ]
-                    |)))
-                  (Value.Integer 4))
-                (Value.Integer 2)
+                      [ BinOp.bit_or (M.read (| c |)) (Value.Integer IntegerKind.U32 1) ]
+                    |)),
+                  Value.Integer IntegerKind.Usize 4
+                |),
+                Value.Integer IntegerKind.Usize 2
+              |)
             |) in
           let~ output :=
             M.alloc (|
@@ -371,104 +417,127 @@ Module escape.
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 3 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 20))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 20 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 4 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 4 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 16))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 16 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 5 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 5 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 12))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 12 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 6 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 6 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 8))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 8 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 7 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 7 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 4))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 4 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 8 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 8 |)
+              |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| c |)) (Value.Integer 0))
-                        (Value.Integer 15))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| c |), Value.Integer IntegerKind.I32 0 |))
+                        (Value.Integer IntegerKind.U32 15))
                   |)
                 |)
               |)
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| output, M.alloc (| Value.Integer 9 |) |),
+              M.SubPointer.get_array_field (|
+                output,
+                M.alloc (| Value.Integer IntegerKind.Usize 9 |)
+              |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" []
             |) in
           let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (|
                 output,
-                M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| start |)) (Value.Integer 0) |)
+                M.alloc (|
+                  BinOp.Wrap.add (| M.read (| start |), Value.Integer IntegerKind.Usize 0 |)
+                |)
               |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" []
             |) in
@@ -476,7 +545,9 @@ Module escape.
             M.write (|
               M.SubPointer.get_array_field (|
                 output,
-                M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| start |)) (Value.Integer 1) |)
+                M.alloc (|
+                  BinOp.Wrap.add (| M.read (| start |), Value.Integer IntegerKind.Usize 1 |)
+                |)
               |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallU" []
             |) in
@@ -484,7 +555,9 @@ Module escape.
             M.write (|
               M.SubPointer.get_array_field (|
                 output,
-                M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| start |)) (Value.Integer 2) |)
+                M.alloc (|
+                  BinOp.Wrap.add (| M.read (| start |), Value.Integer IntegerKind.Usize 2 |)
+                |)
               |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" []
             |) in
@@ -503,7 +576,7 @@ Module escape.
               ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_escape_unicode : M.IsFunction "core::escape::escape_unicode" escape_unicode.
@@ -573,7 +646,7 @@ Module escape.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -622,7 +695,7 @@ Module escape.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -673,7 +746,7 @@ Module escape.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_backslash :
@@ -715,7 +788,7 @@ Module escape.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ascii :
@@ -757,7 +830,7 @@ Module escape.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unicode :
@@ -782,9 +855,12 @@ Module escape.
               ("alive",
                 Value.StructRecord
                   "core::ops::range::Range"
-                  [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ])
+                  [
+                    ("start", Value.Integer IntegerKind.U8 0);
+                    ("end_", Value.Integer IntegerKind.U8 0)
+                  ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_empty :
@@ -869,7 +945,7 @@ Module escape.
                 ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ascii :
@@ -904,7 +980,7 @@ Module escape.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str :
@@ -931,9 +1007,8 @@ Module escape.
               []
             |),
             [
-              BinOp.Wrap.sub
-                Integer.U8
-                (M.read (|
+              BinOp.Wrap.sub (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -943,8 +1018,8 @@ Module escape.
                     "core::ops::range::Range",
                     "end"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -954,10 +1029,11 @@ Module escape.
                     "core::ops::range::Range",
                     "start"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len :
@@ -1108,7 +1184,7 @@ Module escape.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next :
@@ -1259,7 +1335,7 @@ Module escape.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_back :
@@ -1295,7 +1371,7 @@ Module escape.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_advance_by :
@@ -1336,7 +1412,7 @@ Module escape.
               M.read (| n |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_advance_back_by :

@@ -32,7 +32,7 @@ Module slice.
                     "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -68,16 +68,17 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.call_closure (|
+                                BinOp.ge (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| v |) ]
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -88,7 +89,11 @@ Module slice.
                                   "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
                                   [ T; F ]
                                 |),
-                                [ M.read (| v |); Value.Integer 1; M.read (| is_less |) ]
+                                [
+                                  M.read (| v |);
+                                  Value.Integer IntegerKind.Usize 1;
+                                  M.read (| is_less |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -96,7 +101,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -135,7 +140,7 @@ Module slice.
                     "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -173,7 +178,7 @@ Module slice.
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -215,7 +220,7 @@ Module slice.
                     "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -251,7 +256,7 @@ Module slice.
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -295,7 +300,7 @@ Module slice.
                   |),
                   []
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -334,7 +339,7 @@ Module slice.
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -384,23 +389,24 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (BinOp.Wrap.mul
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                BinOp.le (|
+                                  BinOp.Wrap.mul (|
+                                    M.call_closure (|
                                       M.get_function (| "core::mem::size_of", [ T ] |),
                                       []
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.get_constant (|
                                         "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
                                       |)
-                                    |)))
-                                  (M.read (|
+                                    |)
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -415,7 +421,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -451,23 +457,24 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (BinOp.Wrap.mul
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                BinOp.le (|
+                                  BinOp.Wrap.mul (|
+                                    M.call_closure (|
                                       M.get_function (| "core::mem::size_of", [ T ] |),
                                       []
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.get_constant (|
                                         "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
                                       |)
-                                    |)))
-                                  (M.read (|
+                                    |)
+                                  |),
+                                  M.read (|
                                     M.get_constant (|
                                       "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -498,7 +505,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -573,23 +580,24 @@ Module slice.
                                     []
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.call_closure (|
+                                    (BinOp.le (|
+                                      BinOp.Wrap.mul (|
+                                        M.call_closure (|
                                           M.get_function (| "core::mem::size_of", [ T ] |),
                                           []
-                                        |))
-                                        (M.read (|
+                                        |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
                                           |)
-                                        |)))
-                                      (M.read (|
+                                        |)
+                                      |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -607,23 +615,24 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.le
-                                          (BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.call_closure (|
+                                        BinOp.le (|
+                                          BinOp.Wrap.mul (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::size_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.get_constant (|
                                                 "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
                                               |)
-                                            |)))
-                                          (M.read (|
+                                            |)
+                                          |),
+                                          M.read (|
                                             M.get_constant (|
                                               "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -643,7 +652,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           (*
@@ -692,23 +701,24 @@ Module slice.
                                     []
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (BinOp.Wrap.mul
-                                        Integer.Usize
-                                        (M.call_closure (|
+                                    (BinOp.le (|
+                                      BinOp.Wrap.mul (|
+                                        M.call_closure (|
                                           M.get_function (| "core::mem::size_of", [ T ] |),
                                           []
-                                        |))
-                                        (M.read (|
+                                        |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
                                           |)
-                                        |)))
-                                      (M.read (|
+                                        |)
+                                      |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -734,23 +744,24 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.le
-                                          (BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.call_closure (|
+                                        BinOp.le (|
+                                          BinOp.Wrap.mul (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::size_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.get_constant (|
                                                 "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
                                               |)
-                                            |)))
-                                          (M.read (|
+                                            |)
+                                          |),
+                                          M.read (|
                                             M.get_constant (|
                                               "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -786,7 +797,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -803,27 +814,27 @@ Module slice.
         End Impl_core_slice_sort_shared_smallsort_UnstableSmallSortFreezeTypeImpl_where_core_slice_sort_shared_FreezeMarker_T_where_core_slice_sort_shared_smallsort_CopyMarker_T_for_T.
         
         Definition value_SMALL_SORT_FALLBACK_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
         
         Definition value_SMALL_SORT_GENERAL_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
         
         Definition value_SMALL_SORT_GENERAL_SCRATCH_LEN : Value.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
-                BinOp.Wrap.add
-                  Integer.Usize
-                  (M.read (|
+                BinOp.Wrap.add (|
+                  M.read (|
                     M.get_constant (|
                       "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
                     |)
-                  |))
-                  (Value.Integer 16)
+                  |),
+                  Value.Integer IntegerKind.Usize 16
+                |)
               |))).
         
         Definition value_SMALL_SORT_NETWORK_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
         
         Definition value_SMALL_SORT_NETWORK_SCRATCH_LEN : Value.t :=
           M.run
@@ -833,7 +844,7 @@ Module slice.
               |))).
         
         Definition value_MAX_STACK_ARRAY_SIZE : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 4096 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4096 |))).
         
         (*
         fn small_sort_fallback<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) {
@@ -857,16 +868,17 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ge
-                                (M.call_closure (|
+                              BinOp.ge (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| v |) ]
-                                |))
-                                (Value.Integer 2)
+                                |),
+                                Value.Integer IntegerKind.Usize 2
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -877,7 +889,11 @@ Module slice.
                                 "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
                                 [ T; F ]
                               |),
-                              [ M.read (| v |); Value.Integer 1; M.read (| is_less |) ]
+                              [
+                                M.read (| v |);
+                                Value.Integer IntegerKind.Usize 1;
+                                M.read (| is_less |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -885,7 +901,7 @@ Module slice.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_small_sort_fallback :
@@ -923,7 +939,8 @@ Module slice.
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                           []
-                          [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ T ] ],
+                          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 48 ] [ T ]
+                          ],
                         "uninit",
                         []
                       |),
@@ -944,7 +961,12 @@ Module slice.
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                 []
-                                [ Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ T ] ],
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 48 ]
+                                    [ T ]
+                                ],
                               "as_mut_ptr",
                               []
                             |),
@@ -970,7 +992,7 @@ Module slice.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_small_sort_general :
@@ -1088,7 +1110,10 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2)
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      Value.Integer IntegerKind.Usize 2
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1110,8 +1135,8 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.call_closure (|
+                                    BinOp.lt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -1126,11 +1151,12 @@ Module slice.
                                           []
                                         |),
                                         [ M.read (| scratch |) ]
-                                      |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| len |))
-                                        (Value.Integer 16))
+                                      |),
+                                      BinOp.Wrap.add (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 16
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1161,7 +1187,7 @@ Module slice.
                       |) in
                     let~ len_div_2 :=
                       M.alloc (|
-                        BinOp.Wrap.div Integer.Usize (M.read (| len |)) (Value.Integer 2)
+                        BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
                       |) in
                     let~ scratch_base :=
                       M.alloc (|
@@ -1196,7 +1222,10 @@ Module slice.
                                           |)
                                         |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.ge (M.read (| len |)) (Value.Integer 16)))
+                                          (BinOp.ge (|
+                                            M.read (| len |),
+                                            Value.Integer IntegerKind.Usize 16
+                                          |)))
                                       |)
                                     |)) in
                                 let _ :=
@@ -1258,17 +1287,17 @@ Module slice.
                                           |),
                                           [
                                             M.read (| scratch_base |);
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| len |))
-                                              (Value.Integer 8)
+                                            BinOp.Wrap.add (|
+                                              M.read (| len |),
+                                              Value.Integer IntegerKind.Usize 8
+                                            |)
                                           ]
                                         |);
                                         M.read (| is_less |)
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Integer 8 |)));
+                                M.alloc (| Value.Integer IntegerKind.Usize 8 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
@@ -1279,7 +1308,10 @@ Module slice.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.ge (M.read (| len |)) (Value.Integer 8)
+                                              BinOp.ge (|
+                                                M.read (| len |),
+                                                Value.Integer IntegerKind.Usize 8
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -1334,7 +1366,7 @@ Module slice.
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Integer 4 |)));
+                                        M.alloc (| Value.Integer IntegerKind.Usize 4 |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let~ _ :=
@@ -1348,7 +1380,7 @@ Module slice.
                                                 (* MutToConstPointer *)
                                                 M.pointer_coercion (M.read (| v_base |));
                                                 M.read (| scratch_base |);
-                                                Value.Integer 1
+                                                Value.Integer IntegerKind.Usize 1
                                               ]
                                             |)
                                           |) in
@@ -1381,11 +1413,11 @@ Module slice.
                                                     M.read (| len_div_2 |)
                                                   ]
                                                 |);
-                                                Value.Integer 1
+                                                Value.Integer IntegerKind.Usize 1
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Integer 1 |)))
+                                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)))
                                   ]
                                 |)))
                           ]
@@ -1398,12 +1430,18 @@ Module slice.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "usize" ],
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "usize" ],
                                 [],
                                 "into_iter",
                                 []
                               |),
-                              [ Value.Array [ Value.Integer 0; M.read (| len_div_2 |) ] ]
+                              [
+                                Value.Array
+                                  [ Value.Integer IntegerKind.Usize 0; M.read (| len_div_2 |) ]
+                              ]
                             |)
                           |),
                           [
@@ -1420,7 +1458,7 @@ Module slice.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::array::iter::IntoIter")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "usize" ],
                                               [],
                                               "next",
@@ -1482,9 +1520,10 @@ Module slice.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.eq
-                                                                  (M.read (| offset |))
-                                                                  (Value.Integer 0)
+                                                                BinOp.eq (|
+                                                                  M.read (| offset |),
+                                                                  Value.Integer IntegerKind.Usize 0
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -1495,10 +1534,10 @@ Module slice.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
-                                                            BinOp.Wrap.sub
-                                                              Integer.Usize
-                                                              (M.read (| len |))
-                                                              (M.read (| len_div_2 |))
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| len |),
+                                                              M.read (| len_div_2 |)
+                                                            |)
                                                           |)))
                                                     ]
                                                   |)
@@ -1614,7 +1653,9 @@ Module slice.
                                                                                   M.read (| i |)
                                                                                 ]
                                                                               |);
-                                                                              Value.Integer 1
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
                                                                             ]
                                                                           |)
                                                                         |) in
@@ -1726,7 +1767,7 @@ Module slice.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_small_sort_general_with_scratch :
@@ -1798,7 +1839,7 @@ Module slice.
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -1908,7 +1949,10 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2)
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      Value.Integer IntegerKind.Usize 2
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1930,13 +1974,14 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.gt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1961,7 +2006,12 @@ Module slice.
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
-                              [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ T ] ],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ T ]
+                              ],
                             "uninit",
                             []
                           |),
@@ -1970,10 +2020,12 @@ Module slice.
                       |) in
                     let~ len_div_2 :=
                       M.alloc (|
-                        BinOp.Wrap.div Integer.Usize (M.read (| len |)) (Value.Integer 2)
+                        BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
                       |) in
                     let~ no_merge :=
-                      M.alloc (| BinOp.Pure.lt (M.read (| len |)) (Value.Integer 18) |) in
+                      M.alloc (|
+                        BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 18 |)
+                      |) in
                     let~ v_base :=
                       M.alloc (|
                         M.call_closure (|
@@ -2023,16 +2075,17 @@ Module slice.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.call_closure (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ T ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| region |) ]
-                                              |))
-                                              (Value.Integer 13)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 13
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -2049,7 +2102,7 @@ Module slice.
                                             [ M.read (| region |); M.read (| is_less |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Integer 13 |)));
+                                      M.alloc (| Value.Integer IntegerKind.Usize 13 |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
@@ -2060,16 +2113,17 @@ Module slice.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.ge
-                                                      (M.call_closure (|
+                                                    BinOp.ge (|
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "len",
                                                           []
                                                         |),
                                                         [ M.read (| region |) ]
-                                                      |))
-                                                      (Value.Integer 9)
+                                                      |),
+                                                      Value.Integer IntegerKind.Usize 9
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -2086,8 +2140,10 @@ Module slice.
                                                     [ M.read (| region |); M.read (| is_less |) ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Integer 9 |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
+                                              M.alloc (| Value.Integer IntegerKind.Usize 9 |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Value.Integer IntegerKind.Usize 1 |)))
                                         ]
                                       |)))
                                 ]
@@ -2136,17 +2192,18 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ne
-                                            (M.call_closure (|
+                                          BinOp.ne (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "as_ptr",
                                                 []
                                               |),
                                               [ M.read (| region |) ]
-                                            |))
+                                            |),
                                             (* MutToConstPointer *)
-                                            (M.pointer_coercion (M.read (| v_base |)))
+                                            M.pointer_coercion (M.read (| v_base |))
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2171,10 +2228,7 @@ Module slice.
                                     |),
                                     [ M.read (| v_base |); M.read (| len_div_2 |) ]
                                   |);
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| len |))
-                                    (M.read (| len_div_2 |))
+                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| len_div_2 |) |)
                                 ]
                               |)
                             |) in
@@ -2188,7 +2242,12 @@ Module slice.
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                 []
-                                [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ T ] ],
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ T ]
+                                ],
                               "as_mut_ptr",
                               []
                             |),
@@ -2226,7 +2285,7 @@ Module slice.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_small_sort_network :
@@ -2361,7 +2420,7 @@ Module slice.
                       [
                         (* MutToConstPointer *) M.pointer_coercion (M.read (| left_swap |));
                         M.read (| v_a |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Usize 1
                       ]
                     |)
                   |) in
@@ -2381,13 +2440,13 @@ Module slice.
                           [ right_swap_tmp ]
                         |);
                         M.read (| v_b |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Usize 1
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_swap_if_less :
@@ -2453,16 +2512,17 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| v |) ]
-                                  |))
-                                  (Value.Integer 9)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 9
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2495,7 +2555,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 3; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2506,7 +2570,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2517,7 +2585,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 5; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2528,7 +2600,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 8; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2539,7 +2615,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2550,7 +2630,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2561,7 +2645,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 8; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2572,7 +2660,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 6; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2583,7 +2675,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 2; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 2;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2594,7 +2690,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 3; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2605,7 +2705,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 5; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2616,7 +2720,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 7; Value.Integer 8; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 7;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2627,7 +2735,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2638,7 +2750,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 6; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2649,7 +2765,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2660,7 +2780,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 1; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 1;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2671,7 +2795,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2682,7 +2810,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 5; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2693,7 +2825,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 8; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2704,7 +2840,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 3; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2715,7 +2855,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 5; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2726,7 +2870,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2737,7 +2885,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 2; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 2;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2748,7 +2900,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -2759,13 +2915,17 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 6; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_sort9_optimal :
@@ -2851,16 +3011,17 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| v |) ]
-                                  |))
-                                  (Value.Integer 13)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 13
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2893,172 +3054,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 12; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 10; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 9; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 7; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 11; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 8; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 6; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 3; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 11; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 7; Value.Integer 9; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 8; Value.Integer 10; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 4; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 2; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 6; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 7; Value.Integer 8; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 9; Value.Integer 10; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 12;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3071,42 +3071,9 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        Value.Integer 11;
-                        Value.Integer 12;
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 10;
                         M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 6; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 9; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 8; Value.Integer 11; M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3119,108 +3086,9 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        Value.Integer 10;
-                        Value.Integer 12;
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 9;
                         M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 5; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 8; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 7; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 11; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 9; Value.Integer 10; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 0; Value.Integer 1; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 5; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 9; M.read (| is_less |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (|
-                        "core::slice::sort::shared::smallsort::swap_if_less",
-                        [ T; F ]
-                      |),
-                      [ M.read (| v_base |); Value.Integer 7; Value.Integer 8; M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3233,8 +3101,8 @@ Module slice.
                       |),
                       [
                         M.read (| v_base |);
-                        Value.Integer 10;
-                        Value.Integer 11;
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 7;
                         M.read (| is_less |)
                       ]
                     |)
@@ -3246,7 +3114,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 3; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 11;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3257,7 +3129,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3268,7 +3144,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 6; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3279,7 +3159,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 9; Value.Integer 10; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3290,7 +3174,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 1; Value.Integer 2; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 11;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3301,7 +3189,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 7;
+                        Value.Integer IntegerKind.Usize 9;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3312,7 +3204,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 8;
+                        Value.Integer IntegerKind.Usize 10;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3323,7 +3219,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 8; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3334,7 +3234,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 2; Value.Integer 3; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 2;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3345,7 +3249,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 4; Value.Integer 5; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3356,7 +3264,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 6; Value.Integer 7; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 7;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3367,7 +3279,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 8; Value.Integer 9; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 9;
+                        Value.Integer IntegerKind.Usize 10;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3378,7 +3294,11 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 3; Value.Integer 4; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 11;
+                        Value.Integer IntegerKind.Usize 12;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
@@ -3389,13 +3309,422 @@ Module slice.
                         "core::slice::sort::shared::smallsort::swap_if_less",
                         [ T; F ]
                       |),
-                      [ M.read (| v_base |); Value.Integer 5; Value.Integer 6; M.read (| is_less |)
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 9;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 8;
+                        Value.Integer IntegerKind.Usize 11;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 10;
+                        Value.Integer IntegerKind.Usize 12;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 11;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 9;
+                        Value.Integer IntegerKind.Usize 10;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 0;
+                        Value.Integer IntegerKind.Usize 1;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 9;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 7;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 10;
+                        Value.Integer IntegerKind.Usize 11;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 9;
+                        Value.Integer IntegerKind.Usize 10;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 1;
+                        Value.Integer IntegerKind.Usize 2;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 8;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 2;
+                        Value.Integer IntegerKind.Usize 3;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 4;
+                        Value.Integer IntegerKind.Usize 5;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 6;
+                        Value.Integer IntegerKind.Usize 7;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 8;
+                        Value.Integer IntegerKind.Usize 9;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 3;
+                        Value.Integer IntegerKind.Usize 4;
+                        M.read (| is_less |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::slice::sort::shared::smallsort::swap_if_less",
+                        [ T; F ]
+                      |),
+                      [
+                        M.read (| v_base |);
+                        Value.Integer IntegerKind.Usize 5;
+                        Value.Integer IntegerKind.Usize 6;
+                        M.read (| is_less |)
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_sort13_optimal :
@@ -3457,7 +3786,7 @@ Module slice.
                             "sub",
                             []
                           |),
-                          [ M.read (| tail |); Value.Integer 1 ]
+                          [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
                         |)
                       |) in
                     let~ _ :=
@@ -3469,8 +3798,8 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           F,
@@ -3488,7 +3817,8 @@ Module slice.
                                           M.read (| is_less |);
                                           Value.Tuple [ M.read (| tail |); M.read (| sift |) ]
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3541,7 +3871,7 @@ Module slice.
                                 [ tmp ]
                               |));
                             ("dst", M.read (| tail |));
-                            ("len", Value.Integer 1)
+                            ("len", Value.Integer IntegerKind.Usize 1)
                           ]
                       |) in
                     M.loop (|
@@ -3559,7 +3889,7 @@ Module slice.
                                     "dst"
                                   |)
                                 |);
-                                Value.Integer 1
+                                Value.Integer IntegerKind.Usize 1
                               ]
                             |)
                           |) in
@@ -3581,7 +3911,7 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq (M.read (| sift |)) (M.read (| begin |))
+                                        BinOp.eq (| M.read (| sift |), M.read (| begin |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -3601,7 +3931,7 @@ Module slice.
                                 "sub",
                                 []
                               |),
-                              [ M.read (| sift |); Value.Integer 1 ]
+                              [ M.read (| sift |); Value.Integer IntegerKind.Usize 1 ]
                             |)
                           |) in
                         M.match_operator (|
@@ -3612,8 +3942,8 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::function::FnMut",
                                             F,
@@ -3648,7 +3978,8 @@ Module slice.
                                                 M.read (| sift |)
                                               ]
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3662,7 +3993,7 @@ Module slice.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_insert_tail :
@@ -3732,9 +4063,12 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.Pure.eq (M.read (| offset |)) (Value.Integer 0),
+                                  BinOp.eq (|
+                                    M.read (| offset |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.gt (M.read (| offset |)) (M.read (| len |))))
+                                    (BinOp.gt (| M.read (| offset |), M.read (| len |) |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3785,7 +4119,7 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne (M.read (| tail |)) (M.read (| v_end |))
+                                  BinOp.ne (| M.read (| tail |), M.read (| v_end |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3808,7 +4142,7 @@ Module slice.
                                     "add",
                                     []
                                   |),
-                                  [ M.read (| tail |); Value.Integer 1 ]
+                                  [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -3827,7 +4161,7 @@ Module slice.
                     |)))
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_insertion_sort_shift_left :
@@ -3921,7 +4255,7 @@ Module slice.
                                   "add",
                                   []
                                 |),
-                                [ M.read (| v_base |); Value.Integer 1 ]
+                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 1 ]
                               |);
                               M.read (| v_base |)
                             ]
@@ -3951,7 +4285,7 @@ Module slice.
                                   "add",
                                   []
                                 |),
-                                [ M.read (| v_base |); Value.Integer 3 ]
+                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 3 ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3959,7 +4293,7 @@ Module slice.
                                   "add",
                                   []
                                 |),
-                                [ M.read (| v_base |); Value.Integer 2 ]
+                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 2 ]
                               |)
                             ]
                         ]
@@ -3984,7 +4318,7 @@ Module slice.
                           "add",
                           []
                         |),
-                        [ M.read (| v_base |); M.rust_cast (UnOp.Pure.not (M.read (| c1 |))) ]
+                        [ M.read (| v_base |); M.rust_cast (UnOp.not (| M.read (| c1 |) |)) ]
                       |)
                     |) in
                   let~ c :=
@@ -3997,10 +4331,10 @@ Module slice.
                         |),
                         [
                           M.read (| v_base |);
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (Value.Integer 2)
-                            (M.rust_cast (M.read (| c2 |)))
+                          BinOp.Wrap.add (|
+                            Value.Integer IntegerKind.Usize 2,
+                            M.rust_cast (M.read (| c2 |))
+                          |)
                         ]
                       |)
                     |) in
@@ -4014,10 +4348,10 @@ Module slice.
                         |),
                         [
                           M.read (| v_base |);
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (Value.Integer 2)
-                            (M.rust_cast (UnOp.Pure.not (M.read (| c2 |))))
+                          BinOp.Wrap.add (|
+                            Value.Integer IntegerKind.Usize 2,
+                            M.rust_cast (UnOp.not (| M.read (| c2 |) |))
+                          |)
                         ]
                       |)
                     |) in
@@ -4156,7 +4490,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                        [ M.read (| min |); M.read (| dst |); Value.Integer 1 ]
+                        [ M.read (| min |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   let~ _ :=
@@ -4171,9 +4505,9 @@ Module slice.
                               "add",
                               []
                             |),
-                            [ M.read (| dst |); Value.Integer 1 ]
+                            [ M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
@@ -4189,9 +4523,9 @@ Module slice.
                               "add",
                               []
                             |),
-                            [ M.read (| dst |); Value.Integer 2 ]
+                            [ M.read (| dst |); Value.Integer IntegerKind.Usize 2 ]
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
@@ -4207,16 +4541,16 @@ Module slice.
                               "add",
                               []
                             |),
-                            [ M.read (| dst |); Value.Integer 3 ]
+                            [ M.read (| dst |); Value.Integer IntegerKind.Usize 3 ]
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_sort4_stable :
@@ -4249,7 +4583,7 @@ Module slice.
                     ]
                   |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Function_select :
@@ -4316,7 +4650,7 @@ Module slice.
                                 "add",
                                 []
                               |),
-                              [ M.read (| v_base |); Value.Integer 4 ]
+                              [ M.read (| v_base |); Value.Integer IntegerKind.Usize 4 ]
                             |));
                           M.call_closure (|
                             M.get_associated_function (|
@@ -4324,7 +4658,7 @@ Module slice.
                               "add",
                               []
                             |),
-                            [ M.read (| scratch_base |); Value.Integer 4 ]
+                            [ M.read (| scratch_base |); Value.Integer IntegerKind.Usize 4 ]
                           |);
                           M.read (| is_less |)
                         ]
@@ -4343,7 +4677,7 @@ Module slice.
                           M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
-                            Value.Integer 8
+                            Value.Integer IntegerKind.Usize 8
                           ]
                         |);
                         M.read (| dst |);
@@ -4353,7 +4687,7 @@ Module slice.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_sort8_stable :
@@ -4404,8 +4738,8 @@ Module slice.
                 let~ _ :=
                   let~ is_l :=
                     M.alloc (|
-                      UnOp.Pure.not
-                        (M.call_closure (|
+                      UnOp.not (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
@@ -4420,7 +4754,8 @@ Module slice.
                             M.read (| is_less |);
                             Value.Tuple [ M.read (| right_src |); M.read (| left_src |) ]
                           ]
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ src :=
                     M.copy (|
@@ -4444,7 +4779,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                        [ M.read (| src |); M.read (| dst |); Value.Integer 1 ]
+                        [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   let~ _ :=
@@ -4456,7 +4791,7 @@ Module slice.
                           "add",
                           []
                         |),
-                        [ M.read (| right_src |); M.rust_cast (UnOp.Pure.not (M.read (| is_l |))) ]
+                        [ M.read (| right_src |); M.rust_cast (UnOp.not (| M.read (| is_l |) |)) ]
                       |)
                     |) in
                   let~ _ :=
@@ -4480,7 +4815,7 @@ Module slice.
                           "add",
                           []
                         |),
-                        [ M.read (| dst |); Value.Integer 1 ]
+                        [ M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
@@ -4488,7 +4823,7 @@ Module slice.
                   Value.Tuple [ M.read (| left_src |); M.read (| right_src |); M.read (| dst |) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_merge_up :
@@ -4539,8 +4874,8 @@ Module slice.
                 let~ _ :=
                   let~ is_l :=
                     M.alloc (|
-                      UnOp.Pure.not
-                        (M.call_closure (|
+                      UnOp.not (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
@@ -4555,7 +4890,8 @@ Module slice.
                             M.read (| is_less |);
                             Value.Tuple [ M.read (| right_src |); M.read (| left_src |) ]
                           ]
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ src :=
                     M.copy (|
@@ -4579,7 +4915,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                        [ M.read (| src |); M.read (| dst |); Value.Integer 1 ]
+                        [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   let~ _ :=
@@ -4603,7 +4939,7 @@ Module slice.
                           "wrapping_sub",
                           []
                         |),
-                        [ M.read (| left_src |); M.rust_cast (UnOp.Pure.not (M.read (| is_l |))) ]
+                        [ M.read (| left_src |); M.rust_cast (UnOp.not (| M.read (| is_l |) |)) ]
                       |)
                     |) in
                   let~ _ :=
@@ -4615,7 +4951,7 @@ Module slice.
                           "sub",
                           []
                         |),
-                        [ M.read (| dst |); Value.Integer 1 ]
+                        [ M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
@@ -4623,7 +4959,7 @@ Module slice.
                   Value.Tuple [ M.read (| left_src |); M.read (| right_src |); M.read (| dst |) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_merge_down :
@@ -4744,13 +5080,15 @@ Module slice.
                     |)
                   |) in
                 let~ len_div_2 :=
-                  M.alloc (| BinOp.Wrap.div Integer.Usize (M.read (| len |)) (Value.Integer 2) |) in
+                  M.alloc (|
+                    BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
+                  |) in
                 let~ _ :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::assume", [] |),
-                        [ BinOp.Pure.ne (M.read (| len_div_2 |)) (Value.Integer 0) ]
+                        [ BinOp.ne (| M.read (| len_div_2 |), Value.Integer IntegerKind.Usize 0 |) ]
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
@@ -4777,7 +5115,10 @@ Module slice.
                       |),
                       [
                         M.read (| src |);
-                        BinOp.Wrap.sub Integer.Usize (M.read (| len_div_2 |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (|
+                          M.read (| len_div_2 |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
                       ]
                     |)
                   |) in
@@ -4791,7 +5132,7 @@ Module slice.
                       |),
                       [
                         M.read (| src |);
-                        BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                       ]
                     |)
                   |) in
@@ -4801,7 +5142,7 @@ Module slice.
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                       [
                         M.read (| dst |);
-                        BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                       ]
                     |)
                   |) in
@@ -4820,7 +5161,10 @@ Module slice.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| len_div_2 |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| len_div_2 |))
+                              ]
                           ]
                         |)
                       |),
@@ -4954,7 +5298,7 @@ Module slice.
                         "wrapping_add",
                         []
                       |),
-                      [ M.read (| left_rev |); Value.Integer 1 ]
+                      [ M.read (| left_rev |); Value.Integer IntegerKind.Usize 1 ]
                     |)
                   |) in
                 let~ right_end :=
@@ -4965,7 +5309,7 @@ Module slice.
                         "wrapping_add",
                         []
                       |),
-                      [ M.read (| right_rev |); Value.Integer 1 ]
+                      [ M.read (| right_rev |); Value.Integer IntegerKind.Usize 1 ]
                     |)
                   |) in
                 let~ _ :=
@@ -4977,19 +5321,18 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Wrap.rem
-                                    Integer.Usize
-                                    (M.read (| len |))
-                                    (Value.Integer 2))
-                                  (Value.Integer 0)
+                                BinOp.ne (|
+                                  BinOp.Wrap.rem (|
+                                    M.read (| len |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ left_nonempty :=
-                            M.alloc (|
-                              BinOp.Pure.lt (M.read (| left |)) (M.read (| left_end |))
-                            |) in
+                            M.alloc (| BinOp.lt (| M.read (| left |), M.read (| left_end |) |) |) in
                           let~ last_src :=
                             M.copy (|
                               M.match_operator (|
@@ -5012,7 +5355,11 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
-                                [ M.read (| last_src |); M.read (| dst |); Value.Integer 1 ]
+                                [
+                                  M.read (| last_src |);
+                                  M.read (| dst |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             |) in
                           let~ _ :=
@@ -5038,7 +5385,7 @@ Module slice.
                                 |),
                                 [
                                   M.read (| right |);
-                                  M.rust_cast (UnOp.Pure.not (M.read (| left_nonempty |)))
+                                  M.rust_cast (UnOp.not (| M.read (| left_nonempty |) |))
                                 ]
                               |)
                             |) in
@@ -5055,9 +5402,9 @@ Module slice.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.ne (M.read (| left |)) (M.read (| left_end |)),
+                                BinOp.ne (| M.read (| left |), M.read (| left_end |) |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.ne (M.read (| right |)) (M.read (| right_end |))))
+                                  (BinOp.ne (| M.read (| right |), M.read (| right_end |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -5077,7 +5424,7 @@ Module slice.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_bidirectional_merge :
@@ -5131,7 +5478,7 @@ Module slice.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_panic_on_ord_violation :
@@ -5153,10 +5500,11 @@ Module slice.
           match ε, τ, α with
           | [], [ T ], [] =>
             ltac:(M.monadic
-              (BinOp.Pure.le
-                (M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |))
-                (Value.Integer 8)))
-          | _, _, _ => M.impossible
+              (BinOp.le (|
+                M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |),
+                Value.Integer IntegerKind.Usize 8
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_has_efficient_in_place_swap :

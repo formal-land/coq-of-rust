@@ -38,7 +38,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -63,8 +63,8 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", M.alloc (| Value.Integer 10 |)) ]))
-    | _, _, _ => M.impossible
+          [ ("x", M.alloc (| Value.Integer IntegerKind.I32 10 |)) ]))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -134,7 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_traits::main" main.

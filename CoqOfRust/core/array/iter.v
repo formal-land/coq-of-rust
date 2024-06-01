@@ -94,7 +94,7 @@ Module array.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,7 +142,7 @@ Module array.
               |),
               [ M.read (| array |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -205,7 +205,7 @@ Module array.
                   [ ("data", M.read (| buffer |)); ("alive", M.read (| alive |)) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -245,7 +245,10 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ]
+                    [
+                      ("start", Value.Integer IntegerKind.Usize 0);
+                      ("end_", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -258,7 +261,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_empty :
@@ -334,7 +337,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -410,7 +413,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_slice :
@@ -483,54 +486,55 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ],
+                                      "assume_init_read",
                                       []
-                                      [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::array::iter::IntoIter",
-                                          "data"
-                                        |);
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::array::iter::IntoIter",
+                                            "data"
+                                          |);
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -573,7 +577,7 @@ Module array.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -641,75 +645,76 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                fold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  fold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ],
+                                                          "assume_init_read",
                                                           []
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  []
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [ M.read (| data |); M.read (| idx |) ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    []
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -739,7 +744,7 @@ Module array.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -769,7 +774,7 @@ Module array.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -822,17 +827,17 @@ Module array.
                 |) in
               let~ remaining :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| n |))
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.read (| n |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 let~ slice :=
@@ -918,7 +923,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1019,7 +1024,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1103,54 +1108,55 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ],
+                                      "assume_init_read",
                                       []
-                                      [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::array::iter::IntoIter",
-                                          "data"
-                                        |);
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::array::iter::IntoIter",
+                                            "data"
+                                          |);
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1218,75 +1224,76 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                rfold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  rfold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ],
+                                                          "assume_init_read",
                                                           []
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  []
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [ M.read (| data |); M.read (| idx |) ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    []
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1339,17 +1346,17 @@ Module array.
                 |) in
               let~ remaining :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| n |))
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.read (| n |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 let~ slice :=
@@ -1435,7 +1442,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1492,7 +1499,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1539,7 +1546,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1575,7 +1582,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1706,7 +1713,7 @@ Module array.
                             "zero_to",
                             []
                           |),
-                          [ Value.Integer 0 ]
+                          [ Value.Integer IntegerKind.Usize 0 ]
                         |))
                     ]
                 |) in
@@ -1867,9 +1874,8 @@ Module array.
                                                 []
                                               |),
                                               [
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.call_closure (|
+                                                BinOp.Wrap.add (|
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
@@ -1882,8 +1888,9 @@ Module array.
                                                         "alive"
                                                       |)
                                                     ]
-                                                  |))
-                                                  (Value.Integer 1)
+                                                  |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1896,7 +1903,7 @@ Module array.
                   |)) in
               new
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1970,7 +1977,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

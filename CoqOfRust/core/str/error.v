@@ -52,7 +52,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -86,21 +86,22 @@ Module str.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::error::Utf8Error",
                     "valid_up_to"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::str::error::Utf8Error",
                     "valid_up_to"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -124,7 +125,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -157,7 +158,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -203,7 +204,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -234,7 +235,7 @@ Module str.
                 "valid_up_to"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_valid_up_to : M.IsAssociatedFunction Self "valid_up_to" valid_up_to.
@@ -282,7 +283,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_error_len : M.IsAssociatedFunction Self "error_len" error_len.
@@ -437,7 +438,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -462,7 +463,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "invalid utf-8: corrupt contents" |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -495,7 +496,7 @@ Module str.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "ParseBoolError" |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -516,7 +517,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::str::error::ParseBoolError" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -549,7 +550,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -574,7 +575,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -607,7 +608,7 @@ Module str.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -632,7 +633,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "failed to parse bool" |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

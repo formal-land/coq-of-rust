@@ -285,7 +285,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -318,7 +318,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -368,7 +368,7 @@ Module panic.
                 Value.Tuple []
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -433,7 +433,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -467,7 +467,7 @@ Module panic.
                   []
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -547,20 +547,21 @@ Module panic.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let x := M.copy (| γ |) in
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.read (| x |),
-                                        "core::panic::unwind_safe::AssertUnwindSafe",
-                                        0
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let x := M.copy (| γ |) in
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| x |),
+                                          "core::panic::unwind_safe::AssertUnwindSafe",
+                                          0
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -572,7 +573,7 @@ Module panic.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -654,27 +655,28 @@ Module panic.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.read (| x |),
-                                      "core::panic::unwind_safe::AssertUnwindSafe",
-                                      0
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.read (| x |),
+                                        "core::panic::unwind_safe::AssertUnwindSafe",
+                                        0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -704,7 +706,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

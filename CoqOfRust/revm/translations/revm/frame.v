@@ -50,7 +50,7 @@ Module frame.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -108,7 +108,7 @@ Module frame.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -174,7 +174,7 @@ Module frame.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -232,7 +232,7 @@ Module frame.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -363,7 +363,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -473,7 +473,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_interpreter_result :
@@ -619,7 +619,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -708,7 +708,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -797,7 +797,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas_mut : M.IsAssociatedFunction Self "gas_mut" gas_mut.
@@ -874,7 +874,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_result :
@@ -952,7 +952,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_result_mut :
@@ -982,7 +982,7 @@ Module frame.
               "result"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_instruction_result :
@@ -1063,7 +1063,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create : M.IsAssociatedFunction Self "new_create" new_create.
@@ -1118,7 +1118,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call : M.IsAssociatedFunction Self "new_call" new_call.
@@ -1146,7 +1146,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -1174,7 +1174,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -1224,7 +1224,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_created_address :
@@ -1289,7 +1289,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_frame_data :
@@ -1363,7 +1363,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_frame_data : M.IsAssociatedFunction Self "frame_data" frame_data.
@@ -1436,7 +1436,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_frame_data_mut :
@@ -1460,7 +1460,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter : M.IsAssociatedFunction Self "interpreter" interpreter.
@@ -1483,7 +1483,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_mut :
@@ -1517,7 +1517,7 @@ Module frame.
                 [ M.read (| created_address |); M.read (| checkpoint |); M.read (| interpreter |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create_frame :
@@ -1581,7 +1581,7 @@ Module frame.
                   |)
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_eofcreate_frame :
@@ -1619,7 +1619,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call_frame :
@@ -1654,7 +1654,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create_result :
@@ -1695,7 +1695,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_eofcreate_result :
@@ -1732,7 +1732,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call_result :

@@ -76,7 +76,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "index",
                                     []
                                   |),
-                                  [ args; Value.Integer 0 ]
+                                  [ args; Value.Integer IntegerKind.Usize 0 ]
                                 |)
                               ]
                             |)
@@ -117,9 +117,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -132,8 +131,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [ args ]
-                                    |))
-                                    (Value.Integer 1)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)
                               ]
                             |);
@@ -178,7 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       args;
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
-                                        [ ("start", Value.Integer 1) ]
+                                        [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                     ]
                                   |)
                                 |)
@@ -194,7 +194,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "program_arguments::main" main.

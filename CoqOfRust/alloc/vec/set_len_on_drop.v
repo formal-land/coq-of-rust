@@ -31,7 +31,7 @@ Module vec.
             Value.StructRecord
               "alloc::vec::set_len_on_drop::SetLenOnDrop"
               [ ("local_len", M.read (| M.read (| len |) |)); ("len", M.read (| len |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -55,13 +55,10 @@ Module vec.
                     "alloc::vec::set_len_on_drop::SetLenOnDrop",
                     "local_len"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| increment |))
-                |) in
+                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| increment |) |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_increment_len :
@@ -84,7 +81,7 @@ Module vec.
                 "local_len"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_current_len : M.IsAssociatedFunction Self "current_len" current_len.
@@ -123,7 +120,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

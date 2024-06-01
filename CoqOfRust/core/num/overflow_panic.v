@@ -25,7 +25,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_add : M.IsFunction "core::num::overflow_panic::add" add.
@@ -52,7 +52,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_sub : M.IsFunction "core::num::overflow_panic::sub" sub.
@@ -79,7 +79,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_mul : M.IsFunction "core::num::overflow_panic::mul" mul.
@@ -106,7 +106,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_div : M.IsFunction "core::num::overflow_panic::div" div.
@@ -135,7 +135,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_rem : M.IsFunction "core::num::overflow_panic::rem" rem.
@@ -162,7 +162,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_neg : M.IsFunction "core::num::overflow_panic::neg" neg.
@@ -189,7 +189,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_shr : M.IsFunction "core::num::overflow_panic::shr" shr.
@@ -216,7 +216,7 @@ Module num.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_shl : M.IsFunction "core::num::overflow_panic::shl" shl.

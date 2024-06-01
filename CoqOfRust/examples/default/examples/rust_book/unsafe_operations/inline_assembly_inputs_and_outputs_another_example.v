@@ -23,14 +23,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ i := M.alloc (| Value.Integer 3 |) in
+        let~ i := M.alloc (| Value.Integer IntegerKind.U64 3 |) in
         let~ o := M.copy (| Value.DeclaredButUndefined |) in
         let~ _ :=
           let~ _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ o; M.alloc (| Value.Integer 8 |) ] |),
+            M.alloc (| Value.Tuple [ o; M.alloc (| Value.Integer IntegerKind.U64 8 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -46,10 +46,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -84,7 +86,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_inputs_and_outputs_another_example::main" main.

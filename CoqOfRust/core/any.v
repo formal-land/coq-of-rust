@@ -23,7 +23,7 @@ Module any.
             M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -68,7 +68,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -113,7 +113,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -163,7 +163,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -228,7 +228,7 @@ Module any.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -288,7 +288,7 @@ Module any.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -348,7 +348,7 @@ Module any.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -383,15 +383,16 @@ Module any.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -416,7 +417,7 @@ Module any.
               |) in
             M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -452,15 +453,16 @@ Module any.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -485,7 +487,7 @@ Module any.
               |) in
             M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -510,7 +512,7 @@ Module any.
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -533,7 +535,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -556,7 +558,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -580,7 +582,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -605,7 +607,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -635,7 +637,7 @@ Module any.
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -658,7 +660,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -681,7 +683,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -705,7 +707,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
@@ -730,7 +732,7 @@ Module any.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
@@ -760,7 +762,7 @@ Module any.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -801,7 +803,7 @@ Module any.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -844,7 +846,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -886,7 +888,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -932,7 +934,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -965,7 +967,9 @@ Module any.
                 M.call_closure (| M.get_function (| "core::intrinsics::type_id", [ T ] |), [] |)
               |) in
             let~ t1 :=
-              M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| t |)) (Value.Integer 64)) |) in
+              M.alloc (|
+                M.rust_cast (BinOp.Wrap.shr (| M.read (| t |), Value.Integer IntegerKind.I32 64 |))
+              |) in
             let~ t2 := M.alloc (| M.rust_cast (M.read (| t |)) |) in
             M.alloc (|
               Value.StructRecord
@@ -973,7 +977,7 @@ Module any.
                 [ ("t", Value.Tuple [ M.read (| t1 |); M.read (| t2 |) ]) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
@@ -988,9 +992,9 @@ Module any.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.bit_or
-            (BinOp.Wrap.shl
-              (M.call_closure (|
+          BinOp.bit_or
+            (BinOp.Wrap.shl (|
+              M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "u128",
@@ -1006,8 +1010,9 @@ Module any.
                     |)
                   |)
                 ]
-              |))
-              (Value.Integer 64))
+              |),
+              Value.Integer IntegerKind.I32 64
+            |))
             (M.call_closure (|
               M.get_trait_method (|
                 "core::convert::From",
@@ -1025,7 +1030,7 @@ Module any.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_u128 : M.IsAssociatedFunction Self "as_u128" as_u128.
@@ -1077,7 +1082,7 @@ Module any.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1151,12 +1156,14 @@ Module any.
                             []
                           |),
                           [
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.Usize 0;
                             Value.UnicodeChar 32;
                             Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                            Value.Integer 12;
+                            Value.Integer IntegerKind.U32 12;
                             Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                            Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 34 ]
+                            Value.StructTuple
+                              "core::fmt::rt::Count::Is"
+                              [ Value.Integer IntegerKind.Usize 34 ]
                           ]
                         |)
                       ]
@@ -1169,7 +1176,7 @@ Module any.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1190,7 +1197,7 @@ Module any.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::type_name", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
@@ -1206,7 +1213,7 @@ Module any.
       ltac:(M.monadic
         (let _val := M.alloc (| _val |) in
         M.call_closure (| M.get_function (| "core::any::type_name", [ T ] |), [] |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.

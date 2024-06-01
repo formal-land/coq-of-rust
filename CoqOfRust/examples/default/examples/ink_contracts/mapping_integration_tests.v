@@ -49,7 +49,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -167,7 +167,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -193,7 +193,7 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -241,7 +241,7 @@ Module Impl_mapping_integration_tests_Env.
             "caller"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -288,7 +288,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -353,7 +353,7 @@ Module Impl_mapping_integration_tests_Mappings.
               [ ("balances", M.read (| balances |)) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -413,7 +413,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
@@ -475,7 +475,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_insert_balance :
@@ -536,7 +536,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_size_balance : M.IsAssociatedFunction Self "size_balance" size_balance.
@@ -596,7 +596,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_contains_balance :
@@ -659,7 +659,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_remove_balance :
@@ -720,7 +720,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_take_balance : M.IsAssociatedFunction Self "take_balance" take_balance.

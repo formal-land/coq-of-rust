@@ -34,7 +34,7 @@ Module foo.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
@@ -79,7 +79,7 @@ Module foo.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
@@ -101,7 +101,7 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_f : M.IsFunction "module_duplicate::f" f.

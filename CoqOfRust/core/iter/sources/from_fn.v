@@ -18,7 +18,7 @@ Module iter.
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             Value.StructTuple "core::iter::sources::from_fn::FromFn" [ M.read (| f |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_from_fn : M.IsFunction "core::iter::sources::from_fn::from_fn" from_fn.
@@ -56,7 +56,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -103,7 +103,7 @@ Module iter.
                   Value.Tuple []
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -151,7 +151,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

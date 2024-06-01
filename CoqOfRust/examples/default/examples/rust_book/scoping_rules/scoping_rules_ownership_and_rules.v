@@ -57,7 +57,7 @@ Definition destroy_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_destroy_box :
@@ -105,7 +105,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.U32 5 |) in
         let~ y := M.copy (| x |) in
         let~ _ :=
           let~ _ :=
@@ -163,7 +163,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
         let~ _ :=
@@ -215,7 +215,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.

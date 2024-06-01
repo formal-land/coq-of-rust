@@ -12,7 +12,11 @@ Module interpreter_action.
           [
             ("caller", Ty.path "alloy_primitives::bits::address::Address");
             ("created_address", Ty.path "alloy_primitives::bits::address::Address");
-            ("value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            ("value",
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []);
             ("eof_init_code", Ty.path "revm_primitives::bytecode::eof::Eof");
             ("gas_limit", Ty.path "u64");
             ("return_memory_range",
@@ -102,7 +106,7 @@ Module interpreter_action.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -151,7 +155,10 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "default",
                       []
@@ -192,7 +199,7 @@ Module interpreter_action.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -254,7 +261,10 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "clone",
                       []
@@ -313,7 +323,7 @@ Module interpreter_action.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -402,12 +412,16 @@ Module interpreter_action.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           [
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               []
                           ],
                           "eq",
@@ -451,21 +465,22 @@ Module interpreter_action.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
                         "gas_limit"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
                         "gas_limit"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -490,7 +505,7 @@ Module interpreter_action.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -552,7 +567,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -609,7 +624,7 @@ Module interpreter_action.
                 ("gas_limit", M.read (| gas_limit |));
                 ("return_memory_range", M.read (| return_memory_range |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.

@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -71,7 +71,7 @@ End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
   (Ty.path "basic_contract_caller::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum Error
@@ -106,7 +106,7 @@ Module Impl_basic_contract_caller_OtherContract.
         Value.StructRecord
           "basic_contract_caller::OtherContract"
           [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -129,18 +129,19 @@ Module Impl_basic_contract_caller_OtherContract.
                 "basic_contract_caller::OtherContract",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "basic_contract_caller::OtherContract",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -162,7 +163,7 @@ Module Impl_basic_contract_caller_OtherContract.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -212,7 +213,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               [ ("other_contract", M.read (| other_contract |)) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -263,7 +264,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip_and_get : M.IsAssociatedFunction Self "flip_and_get" flip_and_get.

@@ -54,7 +54,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8 : M.IsFunction "core::str::converts::from_utf8" from_utf8.
@@ -110,7 +110,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_mut : M.IsFunction "core::str::converts::from_utf8_mut" from_utf8_mut.
@@ -137,7 +137,7 @@ Module str.
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_unchecked :
@@ -158,7 +158,7 @@ Module str.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_unchecked_mut :
@@ -183,7 +183,7 @@ Module str.
             |),
             [ M.read (| ptr |); M.read (| len |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_raw_parts :
@@ -208,7 +208,7 @@ Module str.
             |),
             [ M.read (| ptr |); M.read (| len |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_raw_parts_mut :

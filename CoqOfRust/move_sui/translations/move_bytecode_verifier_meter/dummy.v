@@ -22,7 +22,7 @@ Module dummy.
           let _name := M.alloc (| _name |) in
           let _scope := M.alloc (| _scope |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -39,7 +39,7 @@ Module dummy.
           let _to := M.alloc (| _to |) in
           let _factor := M.alloc (| _factor |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -55,7 +55,7 @@ Module dummy.
           let _scope := M.alloc (| _scope |) in
           let _units := M.alloc (| _units |) in
           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -57,7 +57,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -112,7 +112,7 @@ Module net.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -214,7 +214,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -251,7 +251,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -347,7 +347,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -473,7 +473,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -612,7 +612,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -664,7 +664,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -701,7 +701,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -757,23 +757,24 @@ Module net.
                 ]
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::net::socket_addr::SocketAddrV4",
                       "port"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -847,7 +848,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -933,7 +934,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -989,7 +990,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1054,7 +1055,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1098,7 +1099,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1156,57 +1157,60 @@ Module net.
                     ]
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::net::socket_addr::SocketAddrV6",
                           "port"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::net::socket_addr::SocketAddrV6",
                         "flowinfo"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::net::socket_addr::SocketAddrV6",
                       "scope_id"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1349,7 +1353,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1519,7 +1523,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1603,7 +1607,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1677,7 +1681,11 @@ Module net.
                                 "new",
                                 []
                               |),
-                              [ M.read (| a |); M.read (| port |); Value.Integer 0; Value.Integer 0
+                              [
+                                M.read (| a |);
+                                M.read (| port |);
+                                Value.Integer IntegerKind.U32 0;
+                                Value.Integer IntegerKind.U32 0
                               ]
                             |)
                           ]
@@ -1685,7 +1693,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1760,7 +1768,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -1873,7 +1881,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -1936,7 +1944,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -2000,7 +2008,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2032,7 +2040,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ipv4 : M.IsAssociatedFunction Self "is_ipv4" is_ipv4.
@@ -2064,7 +2072,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ipv6 : M.IsAssociatedFunction Self "is_ipv6" is_ipv6.
@@ -2087,7 +2095,7 @@ Module net.
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV4"
               [ ("ip", M.read (| ip |)); ("port", M.read (| port |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2107,7 +2115,7 @@ Module net.
               "core::net::socket_addr::SocketAddrV4",
               "ip"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -2135,7 +2143,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -2157,7 +2165,7 @@ Module net.
                 "port"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -2185,7 +2193,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2215,7 +2223,7 @@ Module net.
                 ("flowinfo", M.read (| flowinfo |));
                 ("scope_id", M.read (| scope_id |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2235,7 +2243,7 @@ Module net.
               "core::net::socket_addr::SocketAddrV6",
               "ip"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -2263,7 +2271,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -2285,7 +2293,7 @@ Module net.
                 "port"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -2313,7 +2321,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2335,7 +2343,7 @@ Module net.
                 "flowinfo"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_flowinfo : M.IsAssociatedFunction Self "flowinfo" flowinfo.
@@ -2363,7 +2371,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_flowinfo :
@@ -2386,7 +2394,7 @@ Module net.
                 "scope_id"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_scope_id : M.IsAssociatedFunction Self "scope_id" scope_id.
@@ -2414,7 +2422,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_scope_id :
@@ -2435,7 +2443,7 @@ Module net.
           ltac:(M.monadic
             (let sock4 := M.alloc (| sock4 |) in
             Value.StructTuple "core::net::socket_addr::SocketAddr::V4" [ M.read (| sock4 |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2460,7 +2468,7 @@ Module net.
           ltac:(M.monadic
             (let sock6 := M.alloc (| sock6 |) in
             Value.StructTuple "core::net::socket_addr::SocketAddr::V6" [ M.read (| sock6 |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2505,7 +2513,7 @@ Module net.
                 M.read (| M.SubPointer.get_tuple_field (| pieces, 1 |) |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2583,7 +2591,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2618,7 +2626,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2791,7 +2799,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer 21 ]
+                                [ Value.Integer IntegerKind.Usize 21 ]
                                 [],
                               "new",
                               []
@@ -2816,7 +2824,7 @@ Module net.
                                   "core::fmt::Write",
                                   Ty.apply
                                     (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                    [ Value.Integer 21 ]
+                                    [ Value.Integer IntegerKind.Usize 21 ]
                                     [],
                                   [],
                                   "write_fmt",
@@ -2904,7 +2912,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                  [ Value.Integer 21 ]
+                                  [ Value.Integer IntegerKind.Usize 21 ]
                                   [],
                                 "as_str",
                                 []
@@ -2917,7 +2925,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2952,7 +2960,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3069,7 +3077,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer 0
+                                  Value.Integer IntegerKind.U32 0
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
@@ -3249,7 +3257,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                [ Value.Integer 58 ]
+                                [ Value.Integer IntegerKind.Usize 58 ]
                                 [],
                               "new",
                               []
@@ -3287,7 +3295,7 @@ Module net.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer 0
+                                            Value.Integer IntegerKind.U32 0
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
@@ -3295,7 +3303,7 @@ Module net.
                                               "core::fmt::Write",
                                               Ty.apply
                                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                                [ Value.Integer 58 ]
+                                                [ Value.Integer IntegerKind.Usize 58 ]
                                                 [],
                                               [],
                                               "write_fmt",
@@ -3384,7 +3392,7 @@ Module net.
                                               "core::fmt::Write",
                                               Ty.apply
                                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                                [ Value.Integer 58 ]
+                                                [ Value.Integer IntegerKind.Usize 58 ]
                                                 [],
                                               [],
                                               "write_fmt",
@@ -3488,7 +3496,7 @@ Module net.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::net::display_buffer::DisplayBuffer")
-                                  [ Value.Integer 58 ]
+                                  [ Value.Integer IntegerKind.Usize 58 ]
                                   [],
                                 "as_str",
                                 []
@@ -3501,7 +3509,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3536,7 +3544,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

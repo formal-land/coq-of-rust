@@ -37,7 +37,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -76,7 +76,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -328,11 +328,11 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| parsed |)) ]
+                [ BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| parsed |) |) ]
             |)
           |)))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first : M.IsFunction "other_uses_of_question_mark::double_first" double_first.
@@ -451,7 +451,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "other_uses_of_question_mark::print" print.
@@ -490,7 +490,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [
                           Ty.apply
                             (Ty.path "array")
-                            [ Value.Integer 3 ]
+                            [ Value.Integer IntegerKind.Usize 3 ]
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -544,7 +544,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [
                           Ty.apply
                             (Ty.path "array")
-                            [ Value.Integer 3 ]
+                            [ Value.Integer IntegerKind.Usize 3 ]
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -604,7 +604,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "other_uses_of_question_mark::main" main.

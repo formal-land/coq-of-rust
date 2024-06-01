@@ -29,7 +29,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ optional :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
+          |) in
         M.loop (|
           ltac:(M.monadic
             (M.match_operator (|
@@ -52,7 +54,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 9) |)) in
+                                (M.alloc (|
+                                  BinOp.gt (| M.read (| i |), Value.Integer IntegerKind.I32 9 |)
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
@@ -132,7 +136,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 optional,
                                 Value.StructTuple
                                   "core::option::Option::Some"
-                                  [ BinOp.Wrap.add Integer.I32 (M.read (| i |)) (Value.Integer 1) ]
+                                  [
+                                    BinOp.Wrap.add (|
+                                      M.read (| i |),
+                                      Value.Integer IntegerKind.I32 1
+                                    |)
+                                  ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -151,7 +160,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "while_let::main" main.

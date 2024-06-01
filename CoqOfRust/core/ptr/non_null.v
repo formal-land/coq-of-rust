@@ -73,7 +73,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_dangling :
@@ -118,7 +118,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_ref :
@@ -163,7 +163,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_mut :
@@ -234,7 +234,7 @@ Module ptr.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -266,15 +266,16 @@ Module ptr.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "is_null",
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -297,7 +298,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -353,7 +354,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_raw_parts :
@@ -402,7 +403,7 @@ Module ptr.
                   ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_raw_parts :
@@ -443,7 +444,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_addr :
@@ -497,7 +498,7 @@ Module ptr.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_addr :
@@ -552,7 +553,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_addr :
@@ -578,7 +579,7 @@ Module ptr.
                   "pointer"
                 |)
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -612,7 +613,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -640,7 +641,7 @@ Module ptr.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -675,7 +676,7 @@ Module ptr.
                         [ M.read (| self |) ]
                       |))))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cast :
@@ -722,7 +723,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_offset :
@@ -768,7 +769,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_offset :
@@ -815,7 +816,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_add :
@@ -861,7 +862,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_add :
@@ -922,7 +923,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sub :
@@ -968,7 +969,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_sub :
@@ -1014,7 +1015,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_offset_from :
@@ -1062,7 +1063,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_offset_from :
@@ -1104,7 +1105,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sub_ptr :
@@ -1138,7 +1139,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read :
@@ -1177,7 +1178,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_volatile :
@@ -1216,7 +1217,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_unaligned :
@@ -1261,7 +1262,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_to :
@@ -1311,7 +1312,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_to_nonoverlapping :
@@ -1356,7 +1357,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_from :
@@ -1406,7 +1407,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_from_nonoverlapping :
@@ -1443,7 +1444,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_drop_in_place :
@@ -1480,7 +1481,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write :
@@ -1519,7 +1520,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_bytes :
@@ -1561,7 +1562,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_volatile :
@@ -1603,7 +1604,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_unaligned :
@@ -1640,7 +1641,7 @@ Module ptr.
                 M.read (| src |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_replace :
@@ -1684,7 +1685,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap :
@@ -1728,15 +1729,16 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
                                     []
                                   |),
                                   [ M.read (| align |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1785,7 +1787,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align_offset :
@@ -1822,7 +1824,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_aligned :
@@ -1863,7 +1865,7 @@ Module ptr.
                 M.read (| align |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_aligned_to :
@@ -1923,7 +1925,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_slice_from_raw_parts :
@@ -1961,7 +1963,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len :
@@ -1979,8 +1981,8 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.eq (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
@@ -1990,9 +1992,10 @@ Module ptr.
                   []
                 |),
                 [ M.read (| self |) ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.Usize 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2026,7 +2029,7 @@ Module ptr.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_non_null_ptr :
@@ -2064,7 +2067,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_ptr :
@@ -2132,7 +2135,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_slice :
@@ -2198,7 +2201,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_slice_mut :
@@ -2257,7 +2260,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_unchecked_mut :
@@ -2281,7 +2284,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2385,7 +2388,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2435,7 +2438,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2476,24 +2479,25 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.eq (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| M.read (| other |) |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2552,7 +2556,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2611,7 +2615,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2661,7 +2665,7 @@ Module ptr.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2696,7 +2700,7 @@ Module ptr.
               |),
               [ M.read (| unique |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2732,7 +2736,7 @@ Module ptr.
                   (* MutToConstPointer *)
                   M.pointer_coercion (M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2763,7 +2767,7 @@ Module ptr.
             Value.StructRecord
               "core::ptr::non_null::NonNull"
               [ ("pointer", M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -34,7 +34,7 @@ Module account_address.
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::Ord",
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
               [],
               "cmp",
               []
@@ -52,7 +52,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -76,8 +76,9 @@ Module account_address.
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
-              [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+              ],
               "partial_cmp",
               []
             |),
@@ -94,7 +95,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -124,7 +125,7 @@ Module account_address.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -160,8 +161,9 @@ Module account_address.
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
-              [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+              ],
               "eq",
               []
             |),
@@ -178,7 +180,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -202,7 +204,7 @@ Module account_address.
           M.call_closure (|
             M.get_trait_method (|
               "core::hash::Hash",
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
               [],
               "hash",
               [ __H ]
@@ -216,7 +218,7 @@ Module account_address.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -242,7 +244,7 @@ Module account_address.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -280,14 +282,15 @@ Module account_address.
           Value.StructTuple
             "move_core_types::account_address::AccountAddress"
             [ M.read (| address |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     
     (*     pub const LENGTH: usize = 32; *)
     (* Ty.path "usize" *)
-    Definition value_LENGTH : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
+    Definition value_LENGTH : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
     Axiom AssociatedConstant_value_LENGTH : M.IsAssociatedConstant Self "value_LENGTH" value_LENGTH.
     
@@ -299,7 +302,7 @@ Module account_address.
           (M.alloc (|
             Value.StructTuple
               "move_core_types::account_address::AccountAddress"
-              [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+              [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
           |))).
     
     Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
@@ -352,19 +355,22 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ addr := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+            let~ addr :=
+              M.alloc (|
+                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
+              |) in
             let~ _ :=
               M.write (|
                 M.SubPointer.get_array_field (|
                   addr,
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |))
-                      (Value.Integer 1)
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |),
+                      Value.Integer IntegerKind.Usize 1
+                    |)
                   |)
                 |),
-                Value.Integer 1
+                Value.Integer IntegerKind.U8 1
               |) in
             M.alloc (|
               Value.StructTuple
@@ -372,7 +378,7 @@ Module account_address.
                 [ M.read (| addr |) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_hex_address_one :
@@ -390,19 +396,22 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ addr := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+            let~ addr :=
+              M.alloc (|
+                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
+              |) in
             let~ _ :=
               M.write (|
                 M.SubPointer.get_array_field (|
                   addr,
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |))
-                      (Value.Integer 1)
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |),
+                      Value.Integer IntegerKind.Usize 1
+                    |)
                   |)
                 |),
-                Value.Integer 2
+                Value.Integer IntegerKind.U8 2
               |) in
             M.alloc (|
               Value.StructTuple
@@ -410,7 +419,7 @@ Module account_address.
                 [ M.read (| addr |) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_hex_address_two :
@@ -437,7 +446,12 @@ Module account_address.
                     Ty.path "rand_core::os::OsRng",
                     [],
                     "gen",
-                    [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ]
+                    ]
                   |),
                   [ rng ]
                 |)
@@ -448,7 +462,7 @@ Module account_address.
                 [ M.read (| buf |) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_random : M.IsAssociatedFunction Self "random" random.
@@ -479,7 +493,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -524,7 +538,7 @@ Module account_address.
                 |));
               ("with_prefix", M.read (| with_prefix |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -577,7 +591,11 @@ Module account_address.
                               M.call_closure (|
                                 M.get_function (|
                                   "hex::encode",
-                                  [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ]
                                   ]
                                 |),
                                 [
@@ -633,7 +651,7 @@ Module account_address.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_short_str_lossless :
@@ -663,7 +681,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_vec : M.IsAssociatedFunction Self "to_vec" to_vec.
@@ -685,7 +703,7 @@ Module account_address.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -728,15 +746,16 @@ Module account_address.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "starts_with",
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                     |),
                                     [ M.read (| literal |); M.read (| Value.String "0x" |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -760,13 +779,13 @@ Module account_address.
                   |) in
                 let~ hex_len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "len", [] |),
                         [ M.read (| literal |) ]
-                      |))
-                      (Value.Integer 2)
+                      |),
+                      Value.Integer IntegerKind.Usize 2
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -776,14 +795,15 @@ Module account_address.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| hex_len |))
-                                (BinOp.Wrap.mul
-                                  Integer.Usize
-                                  (M.read (|
+                              BinOp.lt (|
+                                M.read (| hex_len |),
+                                BinOp.Wrap.mul (|
+                                  M.read (|
                                     M.get_constant (| "move_core_types::account_address::LENGTH" |)
-                                  |))
-                                  (Value.Integer 2))
+                                  |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -796,12 +816,12 @@ Module account_address.
                                 []
                               |),
                               [
-                                BinOp.Wrap.mul
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.mul (|
+                                  M.read (|
                                     M.get_constant (| "move_core_types::account_address::LENGTH" |)
-                                  |))
-                                  (Value.Integer 2)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |)
                               ]
                             |)
                           |) in
@@ -824,19 +844,19 @@ Module account_address.
                                     Value.StructRecord
                                       "core::ops::range::Range"
                                       [
-                                        ("start", Value.Integer 0);
+                                        ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (|
+                                          BinOp.Wrap.sub (|
+                                            BinOp.Wrap.mul (|
+                                              M.read (|
                                                 M.get_constant (|
                                                   "move_core_types::account_address::LENGTH"
                                                 |)
-                                              |))
-                                              (Value.Integer 2))
-                                            (M.read (| hex_len |)))
+                                              |),
+                                              Value.Integer IntegerKind.Usize 2
+                                            |),
+                                            M.read (| hex_len |)
+                                          |))
                                       ]
                                   ]
                                 |)
@@ -928,7 +948,7 @@ Module account_address.
                                     M.read (| literal |);
                                     Value.StructRecord
                                       "core::ops::range::RangeFrom"
-                                      [ ("start", Value.Integer 2) ]
+                                      [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                   ]
                                 |)
                               ]
@@ -971,7 +991,7 @@ Module account_address.
                                   M.read (| literal |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer 2) ]
+                                    [ ("start", Value.Integer IntegerKind.Usize 2) ]
                                 ]
                               |)
                             ]
@@ -981,7 +1001,7 @@ Module account_address.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_hex_literal :
@@ -1048,7 +1068,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_hex_literal :
@@ -1072,7 +1092,10 @@ Module account_address.
                 (Ty.path "core::result::Result")
                 []
                 [
-                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [ Ty.path "u8" ];
                   Ty.path "move_core_types::account_address::AccountAddressParseError"
                 ],
               "map",
@@ -1100,7 +1123,10 @@ Module account_address.
                     (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "hex::error::FromHexError"
                     ],
                   "map_err",
@@ -1115,7 +1141,10 @@ Module account_address.
                   M.call_closure (|
                     M.get_trait_method (|
                       "hex::FromHex",
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       [],
                       "from_hex",
                       [ T ]
@@ -1127,24 +1156,25 @@ Module account_address.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (Value.StructTuple
-                                    "move_core_types::account_address::AccountAddressParseError"
-                                    []))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (Value.StructTuple
+                                      "move_core_types::account_address::AccountAddressParseError"
+                                      []))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
               M.constructor_as_closure "move_core_types::account_address::AccountAddress"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_hex : M.IsAssociatedFunction Self "from_hex" from_hex.
@@ -1206,7 +1236,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_hex : M.IsAssociatedFunction Self "to_hex" to_hex.
@@ -1229,7 +1259,10 @@ Module account_address.
                 (Ty.path "core::result::Result")
                 []
                 [
-                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [ Ty.path "u8" ];
                   Ty.path "move_core_types::account_address::AccountAddressParseError"
                 ],
               "map",
@@ -1257,7 +1290,10 @@ Module account_address.
                     (Ty.path "core::result::Result")
                     []
                     [
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "map_err",
@@ -1272,7 +1308,10 @@ Module account_address.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryFrom",
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ],
                       "try_from",
@@ -1296,24 +1335,25 @@ Module account_address.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (Value.StructTuple
-                                    "move_core_types::account_address::AccountAddressParseError"
-                                    []))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (Value.StructTuple
+                                      "move_core_types::account_address::AccountAddressParseError"
+                                      []))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
               M.constructor_as_closure "move_core_types::account_address::AccountAddress"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_bytes : M.IsAssociatedFunction Self "from_bytes" from_bytes.
@@ -1346,7 +1386,7 @@ Module account_address.
                 (M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -1371,7 +1411,7 @@ Module account_address.
             "move_core_types::account_address::AccountAddress",
             0
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1410,7 +1450,7 @@ Module account_address.
             "move_core_types::account_address::AccountAddress",
             0
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1466,7 +1506,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1521,7 +1561,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1682,7 +1722,12 @@ Module account_address.
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -1803,18 +1848,26 @@ Module account_address.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.Integer 0;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0;
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
                                                                         [];
-                                                                      Value.Integer 8;
+                                                                      Value.Integer
+                                                                        IntegerKind.U32
+                                                                        8;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Is"
-                                                                        [ Value.Integer 2 ]
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        ]
                                                                     ]
                                                                   |)
                                                                 ]
@@ -1899,7 +1952,7 @@ Module account_address.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2060,7 +2113,12 @@ Module account_address.
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -2181,18 +2239,26 @@ Module account_address.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.Integer 0;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0;
                                                                       Value.UnicodeChar 32;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Alignment::Unknown"
                                                                         [];
-                                                                      Value.Integer 8;
+                                                                      Value.Integer
+                                                                        IntegerKind.U32
+                                                                        8;
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Implied"
                                                                         [];
                                                                       Value.StructTuple
                                                                         "core::fmt::rt::Count::Is"
-                                                                        [ Value.Integer 2 ]
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        ]
                                                                     ]
                                                                   |)
                                                                 ]
@@ -2277,7 +2343,7 @@ Module account_address.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2309,7 +2375,7 @@ Module account_address.
             |),
             [ M.read (| bytes |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2355,7 +2421,7 @@ Module account_address.
             |),
             [ M.read (| bytes |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2398,7 +2464,7 @@ Module account_address.
             |),
             [ M.read (| bytes |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2442,7 +2508,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2482,7 +2548,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2522,7 +2588,7 @@ Module account_address.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2559,7 +2625,7 @@ Module account_address.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2605,7 +2671,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2645,7 +2711,7 @@ Module account_address.
             |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2716,7 +2782,7 @@ Module account_address.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3041,7 +3107,7 @@ Module account_address.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3128,7 +3194,12 @@ Module account_address.
                           S,
                           [],
                           "serialize_newtype_struct",
-                          [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          ]
                         |),
                         [
                           M.read (| serializer |);
@@ -3144,7 +3215,7 @@ Module account_address.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3173,7 +3244,7 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3209,7 +3280,7 @@ Module account_address.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "AccountAddressParseError" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3272,7 +3343,7 @@ Module account_address.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

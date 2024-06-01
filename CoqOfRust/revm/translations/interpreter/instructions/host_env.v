@@ -28,8 +28,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -42,7 +42,8 @@ Module instructions.
                                         "revm_primitives::specification::SpecId::ISTANBUL"
                                         []
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -76,8 +77,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -95,7 +96,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -139,7 +141,10 @@ Module instructions.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               "from",
                               [ Ty.path "u64" ]
@@ -210,7 +215,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_chainid :
@@ -240,8 +245,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -259,7 +264,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -369,7 +375,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_coinbase :
@@ -399,8 +405,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -418,7 +424,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -521,7 +528,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_timestamp :
@@ -551,8 +558,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -570,7 +577,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -673,7 +681,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_block_number :
@@ -707,8 +715,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -726,7 +734,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -799,7 +808,7 @@ Module instructions.
                                         [
                                           Ty.apply
                                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             []
                                         ],
                                       "unwrap",
@@ -951,7 +960,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_difficulty :
@@ -981,8 +990,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1000,7 +1009,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1103,7 +1113,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_gaslimit :
@@ -1133,8 +1143,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1152,7 +1162,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1254,7 +1265,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_gasprice :
@@ -1285,8 +1296,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -1299,7 +1310,8 @@ Module instructions.
                                         "revm_primitives::specification::SpecId::LONDON"
                                         []
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1333,8 +1345,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1352,7 +1364,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1455,7 +1468,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_basefee :
@@ -1485,8 +1498,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1504,7 +1517,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1614,7 +1628,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_origin : M.IsFunction "revm_interpreter::instructions::host_env::origin" origin.
@@ -1649,8 +1663,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -1663,7 +1677,8 @@ Module instructions.
                                         "revm_primitives::specification::SpecId::CANCUN"
                                         []
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1697,8 +1712,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1716,7 +1731,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1750,8 +1766,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                                       "len",
@@ -1764,8 +1780,9 @@ Module instructions.
                                         "stack"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1835,7 +1852,10 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [],
                                       "as_limbs",
                                       []
@@ -1853,33 +1873,42 @@ Module instructions.
                                           (M.alloc (|
                                             LogicalOp.and (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.eq
-                                                  (M.read (|
+                                                BinOp.eq (|
+                                                  M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| x |),
-                                                      M.alloc (| Value.Integer 1 |)
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |)
-                                                  |))
-                                                  (Value.Integer 0),
+                                                  |),
+                                                  Value.Integer IntegerKind.U64 0
+                                                |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.eq
-                                                    (M.read (|
+                                                  (BinOp.eq (|
+                                                    M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.read (| x |),
-                                                        M.alloc (| Value.Integer 2 |)
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 2
+                                                        |)
                                                       |)
-                                                    |))
-                                                    (Value.Integer 0)))
+                                                    |),
+                                                    Value.Integer IntegerKind.U64 0
+                                                  |)))
                                               |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.eq
-                                                  (M.read (|
+                                                (BinOp.eq (|
+                                                  M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| x |),
-                                                      M.alloc (| Value.Integer 3 |)
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 3
+                                                      |)
                                                     |)
-                                                  |))
-                                                  (Value.Integer 0)))
+                                                  |),
+                                                  Value.Integer IntegerKind.U64 0
+                                                |)))
                                             |)
                                           |)) in
                                       let _ :=
@@ -1889,7 +1918,7 @@ Module instructions.
                                         |) in
                                       M.SubPointer.get_array_field (|
                                         M.read (| x |),
-                                        M.alloc (| Value.Integer 0 |)
+                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                       |)));
                                   fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
                                 ]
@@ -1915,7 +1944,7 @@ Module instructions.
                                 [
                                   Ty.apply
                                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ Value.Integer 32 ]
+                                    [ Value.Integer IntegerKind.Usize 32 ]
                                     []
                                 ],
                               "get",
@@ -1931,7 +1960,7 @@ Module instructions.
                                     [
                                       Ty.apply
                                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                        [ Value.Integer 32 ]
+                                        [ Value.Integer IntegerKind.Usize 32 ]
                                         [];
                                       Ty.path "alloc::alloc::Global"
                                     ],
@@ -1979,7 +2008,10 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [],
                                     "from_be_bytes",
                                     []
@@ -2006,7 +2038,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_blob_hash :
@@ -2040,8 +2072,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -2054,7 +2086,8 @@ Module instructions.
                                         "revm_primitives::specification::SpecId::CANCUN"
                                         []
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2088,8 +2121,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2107,7 +2140,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2151,7 +2185,10 @@ Module instructions.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               "from",
                               [ Ty.path "u128" ]
@@ -2234,7 +2271,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_blob_basefee :

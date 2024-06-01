@@ -58,7 +58,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ reference := M.alloc (| M.alloc (| Value.Integer 4 |) |) in
+        let~ reference := M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 4 |) |) in
         let~ _ :=
           M.match_operator (|
             reference,
@@ -156,15 +156,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _not_a_reference := M.alloc (| Value.Integer 3 |) in
+        let~ _not_a_reference := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         M.match_operator (|
-          M.alloc (| Value.Integer 3 |),
+          M.alloc (| Value.Integer IntegerKind.I32 3 |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let _is_a_reference := M.alloc (| γ |) in
-                let~ value := M.alloc (| Value.Integer 5 |) in
-                let~ mut_value := M.alloc (| Value.Integer 6 |) in
+                let~ value := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
+                let~ mut_value := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
                 let~ _ :=
                   M.match_operator (|
                     value,
@@ -225,7 +225,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           let β := M.read (| m |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 10)
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 10 |)
                           |) in
                         let~ _ :=
                           let~ _ :=
@@ -273,7 +273,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_pointers_ref::main" main.

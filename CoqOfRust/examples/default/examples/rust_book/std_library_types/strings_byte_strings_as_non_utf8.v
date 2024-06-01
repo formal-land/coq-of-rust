@@ -74,7 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 21 ]
+                                        [ Value.Integer IntegerKind.Usize 21 ]
                                         [ Ty.path "u8" ]
                                     ]
                                 ]
@@ -121,7 +121,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 13 ]
+                                        [ Value.Integer IntegerKind.Usize 13 ]
                                         [ Ty.path "u8" ]
                                     ]
                                 ]
@@ -164,7 +164,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 28 ]
+                                        [ Value.Integer IntegerKind.Usize 28 ]
                                         [ Ty.path "u8" ]
                                     ]
                                 ]
@@ -342,7 +342,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "strings_byte_strings_as_non_utf8::main" main.

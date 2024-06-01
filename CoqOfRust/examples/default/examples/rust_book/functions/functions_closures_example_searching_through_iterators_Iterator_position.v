@@ -37,7 +37,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         (Ty.path "alloc::boxed::Box")
                         []
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ Ty.path "i32" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
@@ -47,12 +50,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.alloc (|
                         Value.Array
                           [
-                            Value.Integer 1;
-                            Value.Integer 9;
-                            Value.Integer 3;
-                            Value.Integer 3;
-                            Value.Integer 13;
-                            Value.Integer 2
+                            Value.Integer IntegerKind.I32 1;
+                            Value.Integer IntegerKind.I32 9;
+                            Value.Integer IntegerKind.I32 3;
+                            Value.Integer IntegerKind.I32 3;
+                            Value.Integer IntegerKind.I32 13;
+                            Value.Integer IntegerKind.I32 2
                           ]
                       |)
                     ]
@@ -105,19 +108,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let x := M.copy (| γ |) in
-                                BinOp.Pure.eq
-                                  (BinOp.Wrap.rem Integer.I32 (M.read (| x |)) (Value.Integer 2))
-                                  (Value.Integer 0)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let x := M.copy (| γ |) in
+                                  BinOp.eq (|
+                                    BinOp.Wrap.rem (|
+                                      M.read (| x |),
+                                      Value.Integer IntegerKind.I32 2
+                                    |),
+                                    Value.Integer IntegerKind.I32 0
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -128,7 +136,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Tuple
                 [
                   index_of_first_even_number;
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ Value.Integer IntegerKind.Usize 5 ]
+                  |)
                 ]
             |),
             [
@@ -146,8 +158,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -164,7 +176,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -240,16 +253,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                BinOp.Pure.lt (M.read (| x |)) (Value.Integer 0)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  BinOp.lt (| M.read (| x |), Value.Integer IntegerKind.I32 0 |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -278,8 +292,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -296,7 +310,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -340,7 +355,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main :

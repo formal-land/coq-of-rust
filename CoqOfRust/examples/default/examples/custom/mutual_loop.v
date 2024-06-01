@@ -20,7 +20,7 @@ Module Impl_mutual_loop_LoopA.
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "mutual_loop::LoopA" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -39,7 +39,7 @@ Module Impl_mutual_loop_LoopA.
           M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
@@ -84,7 +84,7 @@ Module Impl_mutual_loop_LoopB.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
@@ -118,7 +118,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.

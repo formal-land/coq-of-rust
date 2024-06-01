@@ -48,7 +48,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
@@ -100,7 +100,7 @@ Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
@@ -170,7 +170,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  BinOp.Wrap.add Integer.U32 (Value.Integer 1) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    Value.Integer IntegerKind.U32 1,
+                                    Value.Integer IntegerKind.U32 1
+                                  |)
                                 |)
                               ]
                             |)
@@ -218,18 +221,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [ Ty.path "u32" ]
                               |),
                               [
-                                let~ x := M.alloc (| Value.Integer 1 |) in
+                                let~ x := M.alloc (| Value.Integer IntegerKind.U32 1 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.U32
-                                    (BinOp.Wrap.add
-                                      Integer.U32
-                                      (BinOp.Wrap.mul Integer.U32 (M.read (| x |)) (M.read (| x |)))
-                                      (BinOp.Wrap.mul
-                                        Integer.U32
-                                        (Value.Integer 2)
-                                        (M.read (| x |))))
-                                    (Value.Integer 1)
+                                  BinOp.Wrap.sub (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |),
+                                      BinOp.Wrap.mul (|
+                                        Value.Integer IntegerKind.U32 2,
+                                        M.read (| x |)
+                                      |)
+                                    |),
+                                    Value.Integer IntegerKind.U32 1
+                                  |)
                                 |)
                               ]
                             |)
@@ -243,7 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.

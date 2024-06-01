@@ -74,7 +74,7 @@ Module bytecode.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -126,7 +126,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -182,21 +182,22 @@ Module bytecode.
                   ]
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
                         "original_len"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
                         "original_len"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -221,7 +222,7 @@ Module bytecode.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -265,7 +266,7 @@ Module bytecode.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -348,7 +349,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -385,9 +386,9 @@ Module bytecode.
                       "from_static",
                       []
                     |),
-                    [ M.alloc (| Value.Array [ Value.Integer 0 ] |) ]
+                    [ M.alloc (| Value.Array [ Value.Integer IntegerKind.U8 0 ] |) ]
                   |));
-                ("original_len", Value.Integer 0);
+                ("original_len", Value.Integer IntegerKind.Usize 0);
                 ("jump_table",
                   Value.StructTuple
                     "revm_primitives::bytecode::legacy::jump_map::JumpTable"
@@ -427,7 +428,7 @@ Module bytecode.
                                     [
                                       Ty.apply
                                         (Ty.path "array")
-                                        [ Value.Integer 1 ]
+                                        [ Value.Integer IntegerKind.Usize 1 ]
                                         [ Ty.path "u8" ];
                                       Ty.path "bitvec::order::Lsb0"
                                     ],
@@ -450,7 +451,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 1 ]
+                                              [ Value.Integer IntegerKind.Usize 1 ]
                                               [ Ty.path "u8" ];
                                             Ty.path "bitvec::order::Lsb0"
                                           ],
@@ -507,7 +508,7 @@ Module bytecode.
                       |)
                     ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -544,7 +545,7 @@ Module bytecode.
                 ("original_len", M.read (| original_len |));
                 ("jump_table", M.read (| jump_table |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -564,7 +565,7 @@ Module bytecode.
               "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
               "bytecode"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -586,7 +587,7 @@ Module bytecode.
                 "original_len"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_original_len :
@@ -628,7 +629,7 @@ Module bytecode.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_original_bytes :
@@ -694,7 +695,7 @@ Module bytecode.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_original_byte_slice :
@@ -715,7 +716,7 @@ Module bytecode.
               "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
               "jump_table"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_jump_table : M.IsAssociatedFunction Self "jump_table" jump_table.

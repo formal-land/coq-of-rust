@@ -59,21 +59,23 @@ Module f16.
     
     (*     pub const RADIX: u32 = 2; *)
     (* Ty.path "u32" *)
-    Definition value_RADIX : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+    Definition value_RADIX : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
     Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
     
     (*     pub const MANTISSA_DIGITS: u32 = 11; *)
     (* Ty.path "u32" *)
     Definition value_MANTISSA_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 11 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 11 |))).
     
     Axiom AssociatedConstant_value_MANTISSA_DIGITS :
       M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
     
     (*     pub const DIGITS: u32 = 3; *)
     (* Ty.path "u32" *)
-    Definition value_DIGITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+    Definition value_DIGITS : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
     
     Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
     
@@ -106,14 +108,15 @@ Module f16.
     (*     pub const MIN_EXP: i32 = -13; *)
     (* Ty.path "i32" *)
     Definition value_MIN_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer (-13) |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-13) |))).
     
     Axiom AssociatedConstant_value_MIN_EXP :
       M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
     
     (*     pub const MAX_EXP: i32 = 16; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_EXP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+    Definition value_MAX_EXP : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 16 |))).
     
     Axiom AssociatedConstant_value_MAX_EXP :
       M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
@@ -121,14 +124,15 @@ Module f16.
     (*     pub const MIN_10_EXP: i32 = -4; *)
     (* Ty.path "i32" *)
     Definition value_MIN_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer (-4) |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-4) |))).
     
     Axiom AssociatedConstant_value_MIN_10_EXP :
       M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
     
     (*     pub const MAX_10_EXP: i32 = 4; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_10_EXP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+    Definition value_MAX_10_EXP : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 4 |))).
     
     Axiom AssociatedConstant_value_MAX_10_EXP :
       M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
@@ -139,10 +143,7 @@ Module f16.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
@@ -153,10 +154,7 @@ Module f16.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_INFINITY :
@@ -168,10 +166,7 @@ Module f16.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
@@ -180,7 +175,7 @@ Module f16.
     (*     pub(crate) const SIGN_MASK: u16 = 0x8000; *)
     (* Ty.path "u16" *)
     Definition value_SIGN_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 32768 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 32768 |))).
     
     Axiom AssociatedConstant_value_SIGN_MASK :
       M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
@@ -188,7 +183,7 @@ Module f16.
     (*     pub(crate) const EXP_MASK: u16 = 0x7c00; *)
     (* Ty.path "u16" *)
     Definition value_EXP_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 31744 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 31744 |))).
     
     Axiom AssociatedConstant_value_EXP_MASK :
       M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
@@ -196,14 +191,15 @@ Module f16.
     (*     pub(crate) const MAN_MASK: u16 = 0x03ff; *)
     (* Ty.path "u16" *)
     Definition value_MAN_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1023 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 1023 |))).
     
     Axiom AssociatedConstant_value_MAN_MASK :
       M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
     
     (*     const TINY_BITS: u16 = 0x1; *)
     (* Ty.path "u16" *)
-    Definition value_TINY_BITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    Definition value_TINY_BITS : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 1 |))).
     
     Axiom AssociatedConstant_value_TINY_BITS :
       M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
@@ -214,7 +210,7 @@ Module f16.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Pure.bit_or
+            BinOp.bit_or
               (M.read (| M.get_constant (| "core::f16::TINY_BITS" |) |))
               (M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |))
           |))).
@@ -232,8 +228,8 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne (M.read (| self |)) (M.read (| self |))))
-      | _, _, _ => M.impossible
+          BinOp.ne (| M.read (| self |), M.read (| self |) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
@@ -252,7 +248,7 @@ Module f16.
           M.call_closure (|
             M.get_function (| "core::intrinsics::transmute", [ Ty.path "u16"; Ty.path "f16" ] |),
             [
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
@@ -260,10 +256,10 @@ Module f16.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (UnOp.Pure.not (M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |)))
+                (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
@@ -278,14 +274,16 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.bit_or
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f16::INFINITY" |) |)))
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f16::NEG_INFINITY" |) |)))))
-      | _, _, _ => M.impossible
+          BinOp.bit_or
+            (BinOp.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f16::INFINITY" |) |)
+            |))
+            (BinOp.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f16::NEG_INFINITY" |) |)
+            |))))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
@@ -302,13 +300,14 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.lt
-            (M.call_closure (|
+          BinOp.lt (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f16", "abs_private", [] |),
               [ M.read (| self |) ]
-            |))
-            (M.read (| M.get_constant (| "core::f16::INFINITY" |) |))))
-      | _, _, _ => M.impossible
+            |),
+            M.read (| M.get_constant (| "core::f16::INFINITY" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
@@ -340,7 +339,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
@@ -372,7 +371,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
@@ -470,10 +469,10 @@ Module f16.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    BinOp.Pure.bit_and
+                                    BinOp.bit_and
                                       (M.read (| b |))
                                       (M.read (| M.get_constant (| "core::f16::MAN_MASK" |) |));
-                                    BinOp.Pure.bit_and
+                                    BinOp.bit_and
                                       (M.read (| b |))
                                       (M.read (| M.get_constant (| "core::f16::EXP_MASK" |) |))
                                   ]
@@ -486,12 +485,12 @@ Module f16.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.U16 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_1 |),
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.U16 0
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple "core::num::FpCategory::Zero" []
@@ -503,7 +502,7 @@ Module f16.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_1 |),
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.U16 0
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple "core::num::FpCategory::Subnormal" []
@@ -520,7 +519,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
@@ -535,12 +534,13 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f16", "is_sign_negative", [] |),
               [ M.read (| self |) ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sign_positive :
@@ -559,15 +559,19 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.call_closure (|
                 M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
                 [ M.read (| self |) ]
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 15)))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U16 1,
+                Value.Integer IntegerKind.I32 15
+              |)),
+            Value.Integer IntegerKind.U16 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sign_negative :
@@ -624,16 +628,17 @@ Module f16.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f16",
                                           "to_bits",
                                           []
                                         |),
                                         [ M.read (| M.get_constant (| "core::f16::INFINITY" |) |) ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -646,9 +651,9 @@ Module f16.
                   |) in
                 let~ abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
+                    BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.Pure.not (M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |)))
+                      (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -660,7 +665,7 @@ Module f16.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| abs |), Value.Integer IntegerKind.U16 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -675,7 +680,7 @@ Module f16.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -683,18 +688,18 @@ Module f16.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.U16
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U16 1
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.sub
-                                        Integer.U16
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U16 1
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -709,7 +714,7 @@ Module f16.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
@@ -765,9 +770,9 @@ Module f16.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f16",
                                           "to_bits",
@@ -778,7 +783,8 @@ Module f16.
                                             M.get_constant (| "core::f16::NEG_INFINITY" |)
                                           |)
                                         ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -791,9 +797,9 @@ Module f16.
                   |) in
                 let~ abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
+                    BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.Pure.not (M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |)))
+                      (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -805,7 +811,7 @@ Module f16.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| abs |), Value.Integer IntegerKind.U16 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -820,7 +826,7 @@ Module f16.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -828,18 +834,18 @@ Module f16.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Wrap.sub
-                                        Integer.U16
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U16 1
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.U16
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U16 1
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -854,7 +860,7 @@ Module f16.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
@@ -869,8 +875,8 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.div Integer.Usize (M.read (| UnsupportedLiteral |)) (M.read (| self |))))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| self |) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
@@ -887,11 +893,11 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.mul
-            Integer.Usize
-            (M.read (| self |))
-            (M.read (| M.get_constant (| "core::f16::to_degrees::PIS_IN_180" |) |))))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.mul (|
+            M.read (| self |),
+            M.read (| M.get_constant (| "core::f16::to_degrees::PIS_IN_180" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
@@ -908,11 +914,11 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.mul
-            Integer.Usize
-            (M.read (| self |))
-            (M.read (| M.get_constant (| "core::f16::to_radians::RADS_PER_DEG" |) |))))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.mul (|
+            M.read (| self |),
+            M.read (| M.get_constant (| "core::f16::to_radians::RADS_PER_DEG" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
@@ -932,7 +938,7 @@ Module f16.
             M.get_function (| "core::intrinsics::maxnumf16", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
@@ -952,7 +958,7 @@ Module f16.
             M.get_function (| "core::intrinsics::minnumf16", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
@@ -983,8 +989,7 @@ Module f16.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| other |)) |)) in
+                      M.use (M.alloc (| BinOp.gt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
@@ -997,7 +1002,7 @@ Module f16.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.gt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1012,7 +1017,7 @@ Module f16.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1059,10 +1064,7 @@ Module f16.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| self |))
-                                        (M.read (| other |))
+                                      BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)
                                     |)))
                               ]
                             |)))
@@ -1071,7 +1073,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
@@ -1103,8 +1105,7 @@ Module f16.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| other |)) |)) in
+                      M.use (M.alloc (| BinOp.lt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
@@ -1117,7 +1118,7 @@ Module f16.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.lt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1132,7 +1133,7 @@ Module f16.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1179,10 +1180,7 @@ Module f16.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| self |))
-                                        (M.read (| other |))
+                                      BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)
                                     |)))
                               ]
                             |)))
@@ -1191,7 +1189,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
@@ -1259,24 +1257,24 @@ Module f16.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.le
-                                      (M.read (| abs_a |))
-                                      (M.read (| M.get_constant (| "core::f16::midpoint::HI" |) |)),
+                                    BinOp.le (|
+                                      M.read (| abs_a |),
+                                      M.read (| M.get_constant (| "core::f16::midpoint::HI" |) |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.le
-                                        (M.read (| abs_b |))
-                                        (M.read (|
-                                          M.get_constant (| "core::f16::midpoint::HI" |)
-                                        |))))
+                                      (BinOp.le (|
+                                        M.read (| abs_b |),
+                                        M.read (| M.get_constant (| "core::f16::midpoint::HI" |) |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Wrap.div
-                                Integer.Usize
-                                (BinOp.Wrap.add Integer.Usize (M.read (| a |)) (M.read (| b |)))
-                                (M.read (| UnsupportedLiteral |))
+                              BinOp.Wrap.div (|
+                                BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |),
+                                M.read (| UnsupportedLiteral |)
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1288,11 +1286,12 @@ Module f16.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (| abs_a |))
-                                            (M.read (|
+                                          BinOp.lt (|
+                                            M.read (| abs_a |),
+                                            M.read (|
                                               M.get_constant (| "core::f16::midpoint::LO" |)
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1300,13 +1299,13 @@ Module f16.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| a |))
-                                        (BinOp.Wrap.div
-                                          Integer.Usize
-                                          (M.read (| b |))
-                                          (M.read (| UnsupportedLiteral |)))
+                                      BinOp.Wrap.add (|
+                                        M.read (| a |),
+                                        BinOp.Wrap.div (|
+                                          M.read (| b |),
+                                          M.read (| UnsupportedLiteral |)
+                                        |)
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1318,11 +1317,12 @@ Module f16.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.lt
-                                                    (M.read (| abs_b |))
-                                                    (M.read (|
+                                                  BinOp.lt (|
+                                                    M.read (| abs_b |),
+                                                    M.read (|
                                                       M.get_constant (| "core::f16::midpoint::LO" |)
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1330,27 +1330,27 @@ Module f16.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| a |))
-                                                  (M.read (| UnsupportedLiteral |)))
-                                                (M.read (| b |))
+                                              BinOp.Wrap.add (|
+                                                BinOp.Wrap.div (|
+                                                  M.read (| a |),
+                                                  M.read (| UnsupportedLiteral |)
+                                                |),
+                                                M.read (| b |)
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| a |))
-                                                  (M.read (| UnsupportedLiteral |)))
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| b |))
-                                                  (M.read (| UnsupportedLiteral |)))
+                                              BinOp.Wrap.add (|
+                                                BinOp.Wrap.div (|
+                                                  M.read (| a |),
+                                                  M.read (| UnsupportedLiteral |)
+                                                |),
+                                                BinOp.Wrap.div (|
+                                                  M.read (| b |),
+                                                  M.read (| UnsupportedLiteral |)
+                                                |)
+                                              |)
                                             |)))
                                       ]
                                     |)))
@@ -1361,7 +1361,7 @@ Module f16.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -1391,7 +1391,7 @@ Module f16.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_int_unchecked :
@@ -1412,7 +1412,7 @@ Module f16.
             M.get_function (| "core::intrinsics::transmute", [ Ty.path "f16"; Ty.path "u16" ] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
@@ -1433,7 +1433,7 @@ Module f16.
             M.get_function (| "core::intrinsics::transmute", [ Ty.path "u16"; Ty.path "f16" ] |),
             [ M.read (| v |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
@@ -1457,7 +1457,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
@@ -1481,7 +1481,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
@@ -1505,7 +1505,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
@@ -1529,7 +1529,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_be_bytes :
@@ -1554,7 +1554,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_le_bytes :
@@ -1579,7 +1579,7 @@ Module f16.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_ne_bytes :
@@ -1645,23 +1645,27 @@ Module f16.
               let β := left in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Wrap.shr
-                      (M.rust_cast (BinOp.Wrap.shr (M.read (| left |)) (Value.Integer 15)))
-                      (Value.Integer 1)))
+                    (BinOp.Wrap.shr (|
+                      M.rust_cast
+                        (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 15 |)),
+                      Value.Integer IntegerKind.I32 1
+                    |)))
               |) in
             let~ _ :=
               let β := right in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Wrap.shr
-                      (M.rust_cast (BinOp.Wrap.shr (M.read (| right |)) (Value.Integer 15)))
-                      (Value.Integer 1)))
+                    (BinOp.Wrap.shr (|
+                      M.rust_cast
+                        (BinOp.Wrap.shr (| M.read (| right |), Value.Integer IntegerKind.I32 15 |)),
+                      Value.Integer IntegerKind.I32 1
+                    |)))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1670,7 +1674,7 @@ Module f16.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
@@ -1704,7 +1708,7 @@ Module f16.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not (BinOp.Pure.le (M.read (| min |)) (M.read (| max |)))
+                            UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1765,8 +1769,7 @@ Module f16.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| min |)) |)) in
+                        M.use (M.alloc (| BinOp.lt (| M.read (| self |), M.read (| min |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ := M.write (| self, M.read (| min |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1780,8 +1783,7 @@ Module f16.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| max |)) |)) in
+                        M.use (M.alloc (| BinOp.gt (| M.read (| self |), M.read (| max |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ := M.write (| self, M.read (| max |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1790,7 +1792,7 @@ Module f16.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.

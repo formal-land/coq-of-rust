@@ -65,7 +65,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -103,7 +103,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -155,7 +155,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -215,7 +215,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -255,7 +255,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -295,7 +295,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -335,7 +335,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -375,7 +375,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -434,7 +434,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -468,7 +468,7 @@ Module cell.
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -507,7 +507,7 @@ Module cell.
                   [ M.read (| value |) ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -538,7 +538,7 @@ Module cell.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "set" (set T).
@@ -616,15 +616,16 @@ Module cell.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Self,
                                       "is_nonoverlapping.swap",
                                       []
                                     |),
                                     [ M.read (| self |); M.read (| other |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -697,7 +698,7 @@ Module cell.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_swap :
@@ -738,7 +739,7 @@ Module cell.
               M.read (| val |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace :
@@ -768,7 +769,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -803,7 +804,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
@@ -864,7 +865,7 @@ Module cell.
               |) in
             new
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_update :
@@ -895,7 +896,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -927,7 +928,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -947,7 +948,7 @@ Module cell.
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| t |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_mut :
@@ -978,7 +979,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take :
@@ -1035,7 +1036,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_slice_of_cells :
@@ -1066,7 +1067,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_array_of_cells :
@@ -1136,7 +1137,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1165,7 +1166,7 @@ Module cell.
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
             [ M.read (| Value.String "already mutably borrowed" |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1226,7 +1227,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1255,7 +1256,7 @@ Module cell.
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
             [ M.read (| Value.String "already borrowed" |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1300,7 +1301,7 @@ Module cell.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_already_borrowed :
@@ -1346,7 +1347,7 @@ Module cell.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_panic_already_mutably_borrowed :
@@ -1354,7 +1355,8 @@ Module cell.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
-  Definition value_UNUSED : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+  Definition value_UNUSED : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {
@@ -1366,8 +1368,8 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.Pure.lt (M.read (| x |)) (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))))
-    | _, _, _ => M.impossible
+        BinOp.lt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_writing : M.IsFunction "core::cell::is_writing" is_writing.
@@ -1382,8 +1384,8 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.Pure.gt (M.read (| x |)) (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))))
-    | _, _, _ => M.impossible
+        BinOp.gt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_reading : M.IsFunction "core::cell::is_reading" is_reading.
@@ -1429,7 +1431,7 @@ Module cell.
                   [ M.read (| M.get_constant (| "core::cell::UNUSED" |) |) ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -1459,7 +1461,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -1505,7 +1507,7 @@ Module cell.
               M.read (| t |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace :
@@ -1571,7 +1573,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace_with :
@@ -1637,7 +1639,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_swap :
@@ -1692,7 +1694,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_borrow :
@@ -1801,7 +1803,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_borrow :
@@ -1857,7 +1859,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_borrow_mut :
@@ -1971,7 +1973,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_borrow_mut :
@@ -2003,7 +2005,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -2035,7 +2037,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -2084,7 +2086,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_undo_leak :
@@ -2130,8 +2132,8 @@ Module cell.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::cell::is_writing", [] |),
                               [
                                 M.call_closure (|
@@ -2149,7 +2151,8 @@ Module cell.
                                   ]
                                 |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2182,7 +2185,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_borrow_unguarded :
@@ -2213,7 +2216,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take :
@@ -2296,7 +2299,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2345,7 +2348,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2387,7 +2390,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2461,7 +2464,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2543,7 +2546,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2605,7 +2608,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2667,7 +2670,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2729,7 +2732,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2791,7 +2794,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2872,7 +2875,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2906,7 +2909,7 @@ Module cell.
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2990,7 +2993,7 @@ Module cell.
                       |),
                       [ M.read (| borrow |) ]
                     |);
-                    Value.Integer 1
+                    Value.Integer IntegerKind.Isize 1
                   ]
                 |)
               |) in
@@ -3002,11 +3005,12 @@ Module cell.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::cell::is_reading", [] |),
                               [ M.read (| b |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3035,7 +3039,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3093,11 +3097,12 @@ Module cell.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_reading", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3139,13 +3144,13 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
+                    BinOp.Wrap.sub (| M.read (| borrow |), Value.Integer IntegerKind.Isize 1 |)
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3214,11 +3219,12 @@ Module cell.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_reading", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3253,10 +3259,12 @@ Module cell.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| borrow |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| borrow |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3290,7 +3298,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
+                    BinOp.Wrap.add (| M.read (| borrow |), Value.Integer IntegerKind.Isize 1 |)
                   ]
                 |)
               |) in
@@ -3309,7 +3317,7 @@ Module cell.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3364,7 +3372,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3432,7 +3440,7 @@ Module cell.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clone :
@@ -3499,7 +3507,7 @@ Module cell.
                   M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -3599,7 +3607,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_filter_map :
@@ -3728,7 +3736,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_split :
@@ -3775,7 +3783,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_leak :
@@ -3826,7 +3834,7 @@ Module cell.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3914,7 +3922,7 @@ Module cell.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -4021,7 +4029,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_filter_map :
@@ -4144,7 +4152,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_split :
@@ -4196,7 +4204,7 @@ Module cell.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_leak :
@@ -4271,11 +4279,12 @@ Module cell.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_writing", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4317,13 +4326,13 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
+                    BinOp.Wrap.add (| M.read (| borrow |), Value.Integer IntegerKind.Isize 1 |)
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4372,7 +4381,11 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Isize 0
+                      |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
@@ -4383,10 +4396,10 @@ Module cell.
                           |),
                           [
                             M.read (| borrow |);
-                            BinOp.Wrap.sub
-                              Integer.Isize
-                              (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
+                              Value.Integer IntegerKind.Isize 1
+                            |)
                           ]
                         |)
                       |) in
@@ -4404,7 +4417,7 @@ Module cell.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4461,11 +4474,12 @@ Module cell.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_writing", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4500,10 +4514,12 @@ Module cell.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| borrow |))
-                                (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| borrow |),
+                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4537,7 +4553,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
+                    BinOp.Wrap.sub (| M.read (| borrow |), Value.Integer IntegerKind.Isize 1 |)
                   ]
                 |)
               |) in
@@ -4556,7 +4572,7 @@ Module cell.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clone : M.IsAssociatedFunction Self "clone" clone.
@@ -4611,7 +4627,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4653,7 +4669,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4720,7 +4736,7 @@ Module cell.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4767,7 +4783,7 @@ Module cell.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -4786,7 +4802,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -4805,7 +4821,7 @@ Module cell.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| value |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_mut :
@@ -4827,7 +4843,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
@@ -4848,7 +4864,7 @@ Module cell.
             "core::cell::UnsafeCell",
             "value"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -4870,7 +4886,7 @@ Module cell.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.rust_cast (M.rust_cast (M.read (| this |)))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_raw_get :
@@ -4905,7 +4921,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4939,7 +4955,7 @@ Module cell.
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4993,7 +5009,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5016,7 +5032,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5039,7 +5055,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5062,7 +5078,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5085,7 +5101,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5108,7 +5124,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5131,7 +5147,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5154,7 +5170,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5177,7 +5193,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5200,7 +5216,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5230,7 +5246,7 @@ Module cell.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_primitive_into_inner :
@@ -5278,7 +5294,7 @@ Module cell.
               ("value",
                 Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -5310,7 +5326,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -5341,7 +5357,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
@@ -5371,7 +5387,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -5393,7 +5409,7 @@ Module cell.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.rust_cast (M.rust_cast (M.read (| this |)))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_raw_get :
@@ -5428,7 +5444,7 @@ Module cell.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5462,7 +5478,7 @@ Module cell.
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5548,7 +5564,7 @@ Module cell.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_assert_coerce_unsized :

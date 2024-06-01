@@ -12,7 +12,7 @@ Definition id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (| x |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_id : M.IsFunction "example01::id" id.
@@ -26,7 +26,7 @@ Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let b := M.alloc (| b |) in
       let c := M.alloc (| c |) in
       Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_tri : M.IsFunction "example01::tri" tri.
@@ -47,13 +47,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |)
+            M.call_closure (|
+              M.get_function (| "example01::id", [] |),
+              [ Value.Integer IntegerKind.U64 0 ]
+            |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "example01::id", [] |),
-              [ M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 0 ] |) ]
+              [
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer IntegerKind.U64 0 ]
+                |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -66,7 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_function (| "example01::id", [] |),
-                      [ Value.Integer 0 ]
+                      [ Value.Integer IntegerKind.U64 0 ]
                     |)
                   ]
                 |)
@@ -86,7 +94,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_function (| "example01::id", [] |),
-                          [ Value.Integer 0 ]
+                          [ Value.Integer IntegerKind.U64 0 ]
                         |)
                       ]
                     |)
@@ -100,15 +108,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (| "example01::tri", [] |),
               [
-                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 1 ] |);
-                M.call_closure (| M.get_function (| "example01::id", [] |), [ Value.Integer 2 ] |);
-                Value.Integer 3
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer IntegerKind.U64 1 ]
+                |);
+                M.call_closure (|
+                  M.get_function (| "example01::id", [] |),
+                  [ Value.Integer IntegerKind.U64 2 ]
+                |);
+                Value.Integer IntegerKind.U64 3
               ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "example01::main" main.
