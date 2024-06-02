@@ -97,7 +97,10 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
-                        match γ with | [ value ] => value | _ => M.impossible (||) end))
+                        match γ with
+                        | [ value ] => ltac:(M.monadic value)
+                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        end))
                 |)));
             fun γ =>
               ltac:(M.monadic

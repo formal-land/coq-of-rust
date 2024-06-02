@@ -23,7 +23,7 @@ Module Clone.
         }}
     }.
 
-  Record RunImpl (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
+  Record Run (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
     clone : Run_clone Self Self_ty;
     (* TODO: add [clone_from] *)
   }.

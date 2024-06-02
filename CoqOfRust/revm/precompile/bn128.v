@@ -34,58 +34,60 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_add",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_add",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -112,58 +114,60 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_add",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_add",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -202,58 +206,60 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_mul",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_mul",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -280,58 +286,60 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_mul",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_mul",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -373,63 +381,65 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_pair",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_pair",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
-                                                    |)
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
+                                                      |)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -459,63 +469,65 @@ Module bn128.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let input := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let gas_limit := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "revm_precompile::bn128::run_pair",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| input |) ]
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let input := M.copy (| γ |) in
+                                        M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let gas_limit := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "revm_precompile::bn128::run_pair",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| input |) ]
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
-                                                    |)
-                                                  |);
-                                                  M.read (|
-                                                    M.get_constant (|
-                                                      "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
-                                                    |)
-                                                  |);
-                                                  M.read (| gas_limit |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                    |);
+                                                    M.read (|
+                                                      M.get_constant (|
+                                                        "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
+                                                      |)
+                                                    |);
+                                                    M.read (| gas_limit |)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end)))
                   ]
               ]
@@ -584,17 +596,18 @@ Module bn128.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (Value.StructTuple
-                              "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
-                              []))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (Value.StructTuple
+                                "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
+                                []))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -968,17 +981,18 @@ Module bn128.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (Value.StructTuple
-                                          "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
-                                          []))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (Value.StructTuple
+                                            "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
+                                            []))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -2148,236 +2162,246 @@ Module bn128.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let n := M.copy (| γ |) in
-                                                                        M.read (|
-                                                                          let~ _ :=
-                                                                            M.match_operator (|
-                                                                              M.alloc (|
-                                                                                Value.Tuple []
-                                                                              |),
-                                                                              [
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (let γ :=
-                                                                                      M.use
-                                                                                        (M.alloc (|
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let n :=
+                                                                            M.copy (| γ |) in
+                                                                          M.read (|
+                                                                            let~ _ :=
+                                                                              M.match_operator (|
+                                                                                M.alloc (|
+                                                                                  Value.Tuple []
+                                                                                |),
+                                                                                [
+                                                                                  fun γ =>
+                                                                                    ltac:(M.monadic
+                                                                                      (let γ :=
+                                                                                        M.use
+                                                                                          (M.alloc (|
+                                                                                            Value.Bool
+                                                                                              true
+                                                                                          |)) in
+                                                                                      let _ :=
+                                                                                        M.is_constant_or_break_match (|
+                                                                                          M.read (|
+                                                                                            γ
+                                                                                          |),
                                                                                           Value.Bool
                                                                                             true
-                                                                                        |)) in
-                                                                                    let _ :=
-                                                                                      M.is_constant_or_break_match (|
-                                                                                        M.read (|
-                                                                                          γ
-                                                                                        |),
-                                                                                        Value.Bool
-                                                                                          true
-                                                                                      |) in
-                                                                                    let~ _ :=
-                                                                                      M.match_operator (|
-                                                                                        M.alloc (|
-                                                                                          Value.Tuple
-                                                                                            []
-                                                                                        |),
-                                                                                        [
-                                                                                          fun γ =>
-                                                                                            ltac:(M.monadic
-                                                                                              (let
-                                                                                                    γ :=
-                                                                                                M.use
-                                                                                                  (M.alloc (|
-                                                                                                    UnOp.Pure.not
-                                                                                                      (BinOp.Pure.lt
-                                                                                                        (M.read (|
-                                                                                                          n
-                                                                                                        |))
-                                                                                                        (BinOp.Wrap.div
-                                                                                                          Integer.Usize
+                                                                                        |) in
+                                                                                      let~ _ :=
+                                                                                        M.match_operator (|
+                                                                                          M.alloc (|
+                                                                                            Value.Tuple
+                                                                                              []
+                                                                                          |),
+                                                                                          [
+                                                                                            fun γ =>
+                                                                                              ltac:(M.monadic
+                                                                                                (let
+                                                                                                      γ :=
+                                                                                                  M.use
+                                                                                                    (M.alloc (|
+                                                                                                      UnOp.Pure.not
+                                                                                                        (BinOp.Pure.lt
                                                                                                           (M.read (|
-                                                                                                            M.get_constant (|
-                                                                                                              "revm_precompile::bn128::PAIR_ELEMENT_LEN"
-                                                                                                            |)
+                                                                                                            n
                                                                                                           |))
-                                                                                                          (Value.Integer
-                                                                                                            32)))
-                                                                                                  |)) in
-                                                                                              let
-                                                                                                    _ :=
-                                                                                                M.is_constant_or_break_match (|
-                                                                                                  M.read (|
-                                                                                                    γ
-                                                                                                  |),
-                                                                                                  Value.Bool
-                                                                                                    true
-                                                                                                |) in
-                                                                                              M.alloc (|
-                                                                                                M.never_to_any (|
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_function (|
-                                                                                                      "core::panicking::panic",
-                                                                                                      []
+                                                                                                          (BinOp.Wrap.div
+                                                                                                            Integer.Usize
+                                                                                                            (M.read (|
+                                                                                                              M.get_constant (|
+                                                                                                                "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                                                                                              |)
+                                                                                                            |))
+                                                                                                            (Value.Integer
+                                                                                                              32)))
+                                                                                                    |)) in
+                                                                                                let
+                                                                                                      _ :=
+                                                                                                  M.is_constant_or_break_match (|
+                                                                                                    M.read (|
+                                                                                                      γ
                                                                                                     |),
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        Value.String
-                                                                                                          "assertion failed: n < PAIR_ELEMENT_LEN / 32"
-                                                                                                      |)
-                                                                                                    ]
+                                                                                                    Value.Bool
+                                                                                                      true
+                                                                                                  |) in
+                                                                                                M.alloc (|
+                                                                                                  M.never_to_any (|
+                                                                                                    M.call_closure (|
+                                                                                                      M.get_function (|
+                                                                                                        "core::panicking::panic",
+                                                                                                        []
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          Value.String
+                                                                                                            "assertion failed: n < PAIR_ELEMENT_LEN / 32"
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
                                                                                                   |)
-                                                                                                |)
-                                                                                              |)));
-                                                                                          fun γ =>
-                                                                                            ltac:(M.monadic
-                                                                                              (M.alloc (|
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |)))
-                                                                                        ]
-                                                                                      |) in
-                                                                                    M.alloc (|
-                                                                                      Value.Tuple []
-                                                                                    |)));
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (M.alloc (|
-                                                                                      Value.Tuple []
+                                                                                                |)));
+                                                                                            fun γ =>
+                                                                                              ltac:(M.monadic
+                                                                                                (M.alloc (|
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |)))
+                                                                                          ]
+                                                                                        |) in
+                                                                                      M.alloc (|
+                                                                                        Value.Tuple
+                                                                                          []
+                                                                                      |)));
+                                                                                  fun γ =>
+                                                                                    ltac:(M.monadic
+                                                                                      (M.alloc (|
+                                                                                        Value.Tuple
+                                                                                          []
+                                                                                      |)))
+                                                                                ]
+                                                                              |) in
+                                                                            let~ start :=
+                                                                              M.alloc (|
+                                                                                BinOp.Wrap.add
+                                                                                  Integer.Usize
+                                                                                  (BinOp.Wrap.mul
+                                                                                    Integer.Usize
+                                                                                    (M.read (|
+                                                                                      idx
+                                                                                    |))
+                                                                                    (M.read (|
+                                                                                      M.get_constant (|
+                                                                                        "revm_precompile::bn128::PAIR_ELEMENT_LEN"
+                                                                                      |)
                                                                                     |)))
-                                                                              ]
-                                                                            |) in
-                                                                          let~ start :=
-                                                                            M.alloc (|
-                                                                              BinOp.Wrap.add
-                                                                                Integer.Usize
-                                                                                (BinOp.Wrap.mul
-                                                                                  Integer.Usize
-                                                                                  (M.read (| idx |))
-                                                                                  (M.read (|
-                                                                                    M.get_constant (|
-                                                                                      "revm_precompile::bn128::PAIR_ELEMENT_LEN"
-                                                                                    |)
-                                                                                  |)))
-                                                                                (BinOp.Wrap.mul
-                                                                                  Integer.Usize
-                                                                                  (M.read (| n |))
-                                                                                  (Value.Integer
-                                                                                    32))
-                                                                            |) in
-                                                                          let~ slice :=
+                                                                                  (BinOp.Wrap.mul
+                                                                                    Integer.Usize
+                                                                                    (M.read (| n |))
+                                                                                    (Value.Integer
+                                                                                      32))
+                                                                              |) in
+                                                                            let~ slice :=
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      [ Ty.path "u8"
+                                                                                      ],
+                                                                                    "get_unchecked",
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::ops::range::Range")
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                    ]
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      input
+                                                                                    |);
+                                                                                    Value.StructRecord
+                                                                                      "core::ops::range::Range"
+                                                                                      [
+                                                                                        ("start",
+                                                                                          M.read (|
+                                                                                            start
+                                                                                          |));
+                                                                                        ("end_",
+                                                                                          BinOp.Wrap.add
+                                                                                            Integer.Usize
+                                                                                            (M.read (|
+                                                                                              start
+                                                                                            |))
+                                                                                            (Value.Integer
+                                                                                              32))
+                                                                                      ]
+                                                                                  ]
+                                                                                |)
+                                                                              |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
-                                                                                      "slice")
-                                                                                    [ Ty.path "u8"
+                                                                                      "core::result::Result")
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "substrate_bn::Fq";
+                                                                                      Ty.path
+                                                                                        "substrate_bn::FieldError"
                                                                                     ],
-                                                                                  "get_unchecked",
+                                                                                  "map_err",
                                                                                   [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::ops::range::Range")
+                                                                                    Ty.path
+                                                                                      "revm_primitives::precompile::PrecompileError";
+                                                                                    Ty.function
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "usize"
+                                                                                        Ty.tuple
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "substrate_bn::FieldError"
+                                                                                          ]
                                                                                       ]
+                                                                                      (Ty.path
+                                                                                        "revm_primitives::precompile::PrecompileError")
                                                                                   ]
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    input
-                                                                                  |);
-                                                                                  Value.StructRecord
-                                                                                    "core::ops::range::Range"
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "substrate_bn::Fq",
+                                                                                      "from_slice",
+                                                                                      []
+                                                                                    |),
                                                                                     [
-                                                                                      ("start",
-                                                                                        M.read (|
-                                                                                          start
-                                                                                        |));
-                                                                                      ("end_",
-                                                                                        BinOp.Wrap.add
-                                                                                          Integer.Usize
-                                                                                          (M.read (|
-                                                                                            start
-                                                                                          |))
-                                                                                          (Value.Integer
-                                                                                            32))
+                                                                                      M.read (|
+                                                                                        slice
+                                                                                      |)
                                                                                     ]
+                                                                                  |);
+                                                                                  M.closure
+                                                                                    (fun γ =>
+                                                                                      ltac:(M.monadic
+                                                                                        match γ with
+                                                                                        | [ α0 ] =>
+                                                                                          ltac:(M.monadic
+                                                                                            (M.match_operator (|
+                                                                                              M.alloc (|
+                                                                                                α0
+                                                                                              |),
+                                                                                              [
+                                                                                                fun
+                                                                                                    γ =>
+                                                                                                  ltac:(M.monadic
+                                                                                                    (Value.StructTuple
+                                                                                                      "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
+                                                                                                      []))
+                                                                                              ]
+                                                                                            |)))
+                                                                                        | _ =>
+                                                                                          ltac:(M.monadic
+                                                                                            (M.impossible (||)))
+                                                                                        end))
                                                                                 ]
                                                                               |)
-                                                                            |) in
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "substrate_bn::Fq";
-                                                                                    Ty.path
-                                                                                      "substrate_bn::FieldError"
-                                                                                  ],
-                                                                                "map_err",
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError";
-                                                                                  Ty.function
-                                                                                    [
-                                                                                      Ty.tuple
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "substrate_bn::FieldError"
-                                                                                        ]
-                                                                                    ]
-                                                                                    (Ty.path
-                                                                                      "revm_primitives::precompile::PrecompileError")
-                                                                                ]
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "substrate_bn::Fq",
-                                                                                    "from_slice",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      slice
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.closure
-                                                                                  (fun γ =>
-                                                                                    ltac:(M.monadic
-                                                                                      match γ with
-                                                                                      | [ α0 ] =>
-                                                                                        M.match_operator (|
-                                                                                          M.alloc (|
-                                                                                            α0
-                                                                                          |),
-                                                                                          [
-                                                                                            fun γ =>
-                                                                                              ltac:(M.monadic
-                                                                                                (Value.StructTuple
-                                                                                                  "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
-                                                                                                  []))
-                                                                                          ]
-                                                                                        |)
-                                                                                      | _ =>
-                                                                                        M.impossible (||)
-                                                                                      end))
-                                                                              ]
                                                                             |)
-                                                                          |)
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                ltac:(M.monadic (M.impossible (||)))
                                                               end))
                                                       |) in
                                                     let~ ax :=
@@ -3290,21 +3314,23 @@ Module bn128.
                                                                                           with
                                                                                           | [ α0
                                                                                               ] =>
-                                                                                            M.match_operator (|
-                                                                                              M.alloc (|
-                                                                                                α0
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (Value.StructTuple
-                                                                                                      "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
-                                                                                                      []))
-                                                                                              ]
-                                                                                            |)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.match_operator (|
+                                                                                                M.alloc (|
+                                                                                                  α0
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (Value.StructTuple
+                                                                                                        "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
+                                                                                                        []))
+                                                                                                ]
+                                                                                              |)))
                                                                                           | _ =>
-                                                                                            M.impossible (||)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.impossible (||)))
                                                                                           end))
                                                                                   ]
                                                                                 |)

@@ -700,37 +700,38 @@ Module char.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::char::EscapeDefault",
-                                      "backslash",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                          "unwrap",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "char",
-                                              "as_ascii",
-                                              []
-                                            |),
-                                            [ self ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::char::EscapeDefault",
+                                        "backslash",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                            "unwrap",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "char",
+                                                "as_ascii",
+                                                []
+                                              |),
+                                              [ self ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ =>
@@ -918,8 +919,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ =>
@@ -1069,8 +1070,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ =>
@@ -1546,8 +1547,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1897,8 +1898,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1944,8 +1945,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))

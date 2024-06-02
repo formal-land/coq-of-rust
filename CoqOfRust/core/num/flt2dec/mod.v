@@ -68,19 +68,20 @@ Module num.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let c := M.copy (| γ |) in
-                                    BinOp.Pure.ne
-                                      (M.read (| c |))
-                                      (M.read (| UnsupportedLiteral |))))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.read (| γ |) in
+                                      let c := M.copy (| γ |) in
+                                      BinOp.Pure.ne
+                                        (M.read (| c |))
+                                        (M.read (| UnsupportedLiteral |))))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)

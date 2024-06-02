@@ -491,52 +491,53 @@ Module iter.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0; α1 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let acc := M.copy (| γ |) in
-                                                      M.match_operator (|
-                                                        M.alloc (| α1 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let x := M.copy (| γ |) in
-                                                              M.read (|
-                                                                let~ _ :=
-                                                                  M.write (|
-                                                                    is_empty,
-                                                                    Value.Bool false
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::function::FnMut",
-                                                                      F,
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [ Acc; Ty.associated ]
-                                                                      ],
-                                                                      "call_mut",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      f;
-                                                                      Value.Tuple
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let acc := M.copy (| γ |) in
+                                                        M.match_operator (|
+                                                          M.alloc (| α1 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let x := M.copy (| γ |) in
+                                                                M.read (|
+                                                                  let~ _ :=
+                                                                    M.write (|
+                                                                      is_empty,
+                                                                      Value.Bool false
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::function::FnMut",
+                                                                        F,
                                                                         [
-                                                                          M.read (| acc |);
-                                                                          M.read (| x |)
-                                                                        ]
-                                                                    ]
+                                                                          Ty.tuple
+                                                                            [ Acc; Ty.associated ]
+                                                                        ],
+                                                                        "call_mut",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        f;
+                                                                        Value.Tuple
+                                                                          [
+                                                                            M.read (| acc |);
+                                                                            M.read (| x |)
+                                                                          ]
+                                                                      ]
+                                                                    |)
                                                                   |)
-                                                                |)
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |)

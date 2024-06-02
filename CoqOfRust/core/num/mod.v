@@ -34457,8 +34457,8 @@ Module num.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -34793,8 +34793,8 @@ Module num.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -34840,8 +34840,8 @@ Module num.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -58108,63 +58108,64 @@ Module num.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let γ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                          "is_empty",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::index::Index",
-                                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeFrom")
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "index",
-                                              []
-                                            |),
-                                            [
-                                              M.read (| src |);
-                                              Value.StructRecord
-                                                "core::ops::range::RangeFrom"
-                                                [ ("start", Value.Integer 1) ]
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          Value.StructTuple
-                                            "core::result::Result::Err"
-                                            [
-                                              Value.StructRecord
-                                                "core::num::error::ParseIntError"
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                            "is_empty",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::Index",
+                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                 [
-                                                  ("kind",
-                                                    Value.StructTuple
-                                                      "core::num::error::IntErrorKind::InvalidDigit"
-                                                      [])
-                                                ]
-                                            ]
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeFrom")
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index",
+                                                []
+                                              |),
+                                              [
+                                                M.read (| src |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeFrom"
+                                                  [ ("start", Value.Integer 1) ]
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              [
+                                                Value.StructRecord
+                                                  "core::num::error::ParseIntError"
+                                                  [
+                                                    ("kind",
+                                                      Value.StructTuple
+                                                        "core::num::error::IntErrorKind::InvalidDigit"
+                                                        [])
+                                                  ]
+                                              ]
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -59064,26 +59065,28 @@ Module num.
                                                                                           with
                                                                                           | [ α0
                                                                                               ] =>
-                                                                                            M.match_operator (|
-                                                                                              M.alloc (|
-                                                                                                α0
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (Value.StructRecord
-                                                                                                      "core::num::error::ParseIntError"
-                                                                                                      [
-                                                                                                        ("kind",
-                                                                                                          Value.StructTuple
-                                                                                                            "core::num::error::IntErrorKind::PosOverflow"
-                                                                                                            [])
-                                                                                                      ]))
-                                                                                              ]
-                                                                                            |)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.match_operator (|
+                                                                                                M.alloc (|
+                                                                                                  α0
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (Value.StructRecord
+                                                                                                        "core::num::error::ParseIntError"
+                                                                                                        [
+                                                                                                          ("kind",
+                                                                                                            Value.StructTuple
+                                                                                                              "core::num::error::IntErrorKind::PosOverflow"
+                                                                                                              [])
+                                                                                                        ]))
+                                                                                                ]
+                                                                                              |)))
                                                                                           | _ =>
-                                                                                            M.impossible (||)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.impossible (||)))
                                                                                           end))
                                                                                   ]
                                                                                 |)
@@ -59223,26 +59226,28 @@ Module num.
                                                                                           with
                                                                                           | [ α0
                                                                                               ] =>
-                                                                                            M.match_operator (|
-                                                                                              M.alloc (|
-                                                                                                α0
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (Value.StructRecord
-                                                                                                      "core::num::error::ParseIntError"
-                                                                                                      [
-                                                                                                        ("kind",
-                                                                                                          Value.StructTuple
-                                                                                                            "core::num::error::IntErrorKind::PosOverflow"
-                                                                                                            [])
-                                                                                                      ]))
-                                                                                              ]
-                                                                                            |)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.match_operator (|
+                                                                                                M.alloc (|
+                                                                                                  α0
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (Value.StructRecord
+                                                                                                        "core::num::error::ParseIntError"
+                                                                                                        [
+                                                                                                          ("kind",
+                                                                                                            Value.StructTuple
+                                                                                                              "core::num::error::IntErrorKind::PosOverflow"
+                                                                                                              [])
+                                                                                                        ]))
+                                                                                                ]
+                                                                                              |)))
                                                                                           | _ =>
-                                                                                            M.impossible (||)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.impossible (||)))
                                                                                           end))
                                                                                   ]
                                                                                 |)
@@ -59584,26 +59589,28 @@ Module num.
                                                                                           with
                                                                                           | [ α0
                                                                                               ] =>
-                                                                                            M.match_operator (|
-                                                                                              M.alloc (|
-                                                                                                α0
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (Value.StructRecord
-                                                                                                      "core::num::error::ParseIntError"
-                                                                                                      [
-                                                                                                        ("kind",
-                                                                                                          Value.StructTuple
-                                                                                                            "core::num::error::IntErrorKind::NegOverflow"
-                                                                                                            [])
-                                                                                                      ]))
-                                                                                              ]
-                                                                                            |)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.match_operator (|
+                                                                                                M.alloc (|
+                                                                                                  α0
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (Value.StructRecord
+                                                                                                        "core::num::error::ParseIntError"
+                                                                                                        [
+                                                                                                          ("kind",
+                                                                                                            Value.StructTuple
+                                                                                                              "core::num::error::IntErrorKind::NegOverflow"
+                                                                                                              [])
+                                                                                                        ]))
+                                                                                                ]
+                                                                                              |)))
                                                                                           | _ =>
-                                                                                            M.impossible (||)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.impossible (||)))
                                                                                           end))
                                                                                   ]
                                                                                 |)
@@ -59743,26 +59750,28 @@ Module num.
                                                                                           with
                                                                                           | [ α0
                                                                                               ] =>
-                                                                                            M.match_operator (|
-                                                                                              M.alloc (|
-                                                                                                α0
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (Value.StructRecord
-                                                                                                      "core::num::error::ParseIntError"
-                                                                                                      [
-                                                                                                        ("kind",
-                                                                                                          Value.StructTuple
-                                                                                                            "core::num::error::IntErrorKind::NegOverflow"
-                                                                                                            [])
-                                                                                                      ]))
-                                                                                              ]
-                                                                                            |)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.match_operator (|
+                                                                                                M.alloc (|
+                                                                                                  α0
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (Value.StructRecord
+                                                                                                        "core::num::error::ParseIntError"
+                                                                                                        [
+                                                                                                          ("kind",
+                                                                                                            Value.StructTuple
+                                                                                                              "core::num::error::IntErrorKind::NegOverflow"
+                                                                                                              [])
+                                                                                                        ]))
+                                                                                                ]
+                                                                                              |)))
                                                                                           | _ =>
-                                                                                            M.impossible (||)
+                                                                                            ltac:(M.monadic
+                                                                                              (M.impossible (||)))
                                                                                           end))
                                                                                   ]
                                                                                 |)

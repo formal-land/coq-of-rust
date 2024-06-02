@@ -943,61 +943,62 @@ Module context.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let instruction_result := M.copy (| γ |) in
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::frame::FrameOrResult",
-                                              "new_call_result",
-                                              []
-                                            |),
-                                            [
-                                              Value.StructRecord
-                                                "revm_interpreter::interpreter::InterpreterResult"
-                                                [
-                                                  ("result", M.read (| instruction_result |));
-                                                  ("gas", M.read (| gas |));
-                                                  ("output",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        "new",
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let instruction_result := M.copy (| γ |) in
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "revm::frame::FrameOrResult",
+                                                "new_call_result",
+                                                []
+                                              |),
+                                              [
+                                                Value.StructRecord
+                                                  "revm_interpreter::interpreter::InterpreterResult"
+                                                  [
+                                                    ("result", M.read (| instruction_result |));
+                                                    ("gas", M.read (| gas |));
+                                                    ("output",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                                          "new",
+                                                          []
+                                                        |),
                                                         []
-                                                      |),
-                                                      []
-                                                    |))
-                                                ];
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::clone::Clone",
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    [ Ty.path "usize" ],
-                                                  [],
-                                                  "clone",
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| inputs |),
-                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                                    "return_memory_offset"
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                      |))
+                                                  ];
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::clone::Clone",
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      [ Ty.path "usize" ],
+                                                    [],
+                                                    "clone",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| inputs |),
+                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                                      "return_memory_offset"
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |) in
                   let~ _ :=
@@ -1820,8 +1821,11 @@ Module context.
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [] =>
-                                                                  M.alloc (| Value.Bool true |)
-                                                                | _ => M.impossible (||)
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Bool true |)))
+                                                                | _ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.impossible (||)))
                                                                 end))
                                                         |)));
                                                     fun γ =>

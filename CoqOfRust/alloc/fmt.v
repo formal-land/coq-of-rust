@@ -39,18 +39,19 @@ Module fmt.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.call_closure (|
-                              M.get_function (| "alloc::fmt::format.format_inner", [] |),
-                              [ M.read (| args |) ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                M.get_function (| "alloc::fmt::format.format_inner", [] |),
+                                [ M.read (| args |) ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end));
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
           ]

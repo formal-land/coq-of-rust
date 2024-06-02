@@ -765,20 +765,21 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let info := M.copy (| γ |) in
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| info |),
-                                              "revm_primitives::state::AccountInfo",
-                                              "code_hash"
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let info := M.copy (| γ |) in
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| info |),
+                                                "revm_primitives::state::AccountInfo",
+                                                "code_hash"
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -835,20 +836,21 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let info := M.copy (| γ |) in
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| info |),
-                                              "revm_primitives::state::AccountInfo",
-                                              "code_hash"
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let info := M.copy (| γ |) in
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| info |),
+                                                "revm_primitives::state::AccountInfo",
+                                                "code_hash"
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -969,50 +971,28 @@ Module db.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let info := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "core::option::Option")
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    [
-                                                                      Ty.path
-                                                                        "revm_primitives::bytecode::Bytecode"
-                                                                    ]
-                                                                ],
-                                                              "map",
-                                                              [
-                                                                Ty.tuple
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let info := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
                                                                   [
-                                                                    Ty.path
-                                                                      "alloy_primitives::bits::fixed::FixedBytes";
                                                                     Ty.apply
                                                                       (Ty.path "&")
                                                                       [
                                                                         Ty.path
                                                                           "revm_primitives::bytecode::Bytecode"
                                                                       ]
-                                                                  ];
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          [
-                                                                            Ty.path
-                                                                              "revm_primitives::bytecode::Bytecode"
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.tuple
+                                                                  ],
+                                                                "map",
+                                                                [
+                                                                  Ty.tuple
                                                                     [
                                                                       Ty.path
                                                                         "alloy_primitives::bits::fixed::FixedBytes";
@@ -1022,63 +1002,92 @@ Module db.
                                                                           Ty.path
                                                                             "revm_primitives::bytecode::Bytecode"
                                                                         ]
-                                                                    ])
-                                                              ]
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
+                                                                    ];
+                                                                  Ty.function
                                                                     [
-                                                                      Ty.path
-                                                                        "revm_primitives::bytecode::Bytecode"
-                                                                    ],
-                                                                  "as_ref",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| info |),
-                                                                    "revm_primitives::state::AccountInfo",
-                                                                    "code"
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
+                                                                      Ty.tuple
                                                                         [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let c :=
-                                                                                M.copy (| γ |) in
-                                                                              Value.Tuple
-                                                                                [
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.read (|
-                                                                                        info
-                                                                                      |),
-                                                                                      "revm_primitives::state::AccountInfo",
-                                                                                      "code_hash"
-                                                                                    |)
-                                                                                  |);
-                                                                                  M.read (| c |)
-                                                                                ]))
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_primitives::bytecode::Bytecode"
+                                                                            ]
                                                                         ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
-                                                                    end))
-                                                            ]
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                                    ]
+                                                                    (Ty.tuple
+                                                                      [
+                                                                        Ty.path
+                                                                          "alloy_primitives::bits::fixed::FixedBytes";
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_primitives::bytecode::Bytecode"
+                                                                          ]
+                                                                      ])
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      [
+                                                                        Ty.path
+                                                                          "revm_primitives::bytecode::Bytecode"
+                                                                      ],
+                                                                    "as_ref",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| info |),
+                                                                      "revm_primitives::state::AccountInfo",
+                                                                      "code"
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.closure
+                                                                  (fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      match γ with
+                                                                      | [ α0 ] =>
+                                                                        ltac:(M.monadic
+                                                                          (M.match_operator (|
+                                                                            M.alloc (| α0 |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let c :=
+                                                                                    M.copy (|
+                                                                                      γ
+                                                                                    |) in
+                                                                                  Value.Tuple
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.read (|
+                                                                                            info
+                                                                                          |),
+                                                                                          "revm_primitives::state::AccountInfo",
+                                                                                          "code_hash"
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.read (| c |)
+                                                                                    ]))
+                                                                            ]
+                                                                          |)))
+                                                                      | _ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.impossible (||)))
+                                                                      end))
+                                                              ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         ]
                                       |)
@@ -1161,22 +1170,23 @@ Module db.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let info := M.copy (| γ |) in
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| info |),
-                                          "revm_primitives::state::AccountInfo",
-                                          "balance"
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let info := M.copy (| γ |) in
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| info |),
+                                            "revm_primitives::state::AccountInfo",
+                                            "balance"
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -1251,22 +1261,23 @@ Module db.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let info := M.copy (| γ |) in
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| info |),
-                                          "revm_primitives::state::AccountInfo",
-                                          "balance"
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let info := M.copy (| γ |) in
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| info |),
+                                            "revm_primitives::state::AccountInfo",
+                                            "balance"
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -1591,8 +1602,8 @@ Module db.
                                         (fun γ =>
                                           ltac:(M.monadic
                                             match γ with
-                                            | [] => M.alloc (| Value.Bool true |)
-                                            | _ => M.impossible (||)
+                                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))

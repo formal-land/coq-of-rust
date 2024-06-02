@@ -237,53 +237,54 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let item := M.copy (| γ |) in
-                                    M.read (|
-                                      let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let item := M.copy (| γ |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                impl_FnMut__T_,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [ f; Value.Tuple [ item ] ]
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
-                                              impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              impl_FnMut_Acc__T__arrow_Acc,
+                                              [ Ty.tuple [ Acc; T ] ],
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ item ] ]
+                                            [
+                                              fold;
+                                              Value.Tuple [ M.read (| acc |); M.read (| item |) ]
+                                            ]
                                           |)
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_Acc__T__arrow_Acc,
-                                            [ Ty.tuple [ Acc; T ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [
-                                            fold;
-                                            Value.Tuple [ M.read (| acc |); M.read (| item |) ]
-                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))))
         | _, _ => M.impossible
         end.
@@ -317,53 +318,54 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let item := M.copy (| γ |) in
-                                    M.read (|
-                                      let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let item := M.copy (| γ |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                impl_FnMut__T_,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [ M.read (| f |); Value.Tuple [ item ] ]
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
-                                              impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              impl_FnMut_Acc__T__arrow_R__plus__'a,
+                                              [ Ty.tuple [ Acc; T ] ],
                                               "call_mut",
                                               []
                                             |),
-                                            [ M.read (| f |); Value.Tuple [ item ] ]
+                                            [
+                                              fold;
+                                              Value.Tuple [ M.read (| acc |); M.read (| item |) ]
+                                            ]
                                           |)
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_Acc__T__arrow_R__plus__'a,
-                                            [ Ty.tuple [ Acc; T ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [
-                                            fold;
-                                            Value.Tuple [ M.read (| acc |); M.read (| item |) ]
-                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))))
         | _, _ => M.impossible
         end.

@@ -236,17 +236,18 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -318,17 +319,18 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

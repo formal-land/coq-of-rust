@@ -1970,25 +1970,26 @@ Module Impl_multisig_Multisig.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "multisig::AccountId",
-                                      [ Ty.path "multisig::AccountId" ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ M.read (| x |); M.read (| owner |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.path "multisig::AccountId",
+                                        [ Ty.path "multisig::AccountId" ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ M.read (| x |); M.read (| owner |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -3269,25 +3270,26 @@ Module Impl_multisig_Multisig.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let t := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::cmp::PartialEq",
-                                                    Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
-                                                    "eq",
-                                                    []
-                                                  |),
-                                                  [ t; M.alloc (| trans_id |) ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let t := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::cmp::PartialEq",
+                                                      Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                                      [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                                      "eq",
+                                                      []
+                                                    |),
+                                                    [ t; M.alloc (| trans_id |) ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |);
@@ -4051,15 +4053,18 @@ Module Impl_multisig_Multisig.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (Value.StructTuple "core::option::Option::None" []))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (Value.StructTuple
+                                                    "core::option::Option::None"
+                                                    []))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |))

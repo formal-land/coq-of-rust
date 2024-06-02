@@ -751,24 +751,25 @@ Module Impl_payment_channel_PaymentChannel.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [ M.read (| Value.String "recover failed: {err:?}" |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let err := M.copy (| γ |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "std::panicking::begin_panic",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [ M.read (| Value.String "recover failed: {err:?}" |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -1113,17 +1114,18 @@ Module Impl_payment_channel_PaymentChannel.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -1912,17 +1914,18 @@ Module Impl_payment_channel_PaymentChannel.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)

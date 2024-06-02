@@ -442,47 +442,50 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |));
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        [ T ],
+                                      "assume_init_read",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::array::iter::IntoIter",
+                                              "data"
+                                            |));
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -584,70 +587,72 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                fold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  fold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            [ T ],
+                                                          "assume_init_read",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.read (| data |));
+                                                              M.read (| idx |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -1001,47 +1006,50 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |));
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        [ T ],
+                                      "assume_init_read",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::array::iter::IntoIter",
+                                              "data"
+                                            |));
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -1106,70 +1114,72 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                rfold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  rfold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            [ T ],
+                                                          "assume_init_read",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.read (| data |));
+                                                              M.read (| idx |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)

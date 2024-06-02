@@ -555,22 +555,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let s := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| s |),
-                                            "revm_primitives::state::StorageSlot",
-                                            "present_value"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let s := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| s |),
+                                              "revm_primitives::state::StorageSlot",
+                                              "present_value"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -822,22 +823,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| a |),
-                                            "revm_primitives::state::AccountInfo",
-                                            "code_hash"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| a |),
+                                              "revm_primitives::state::AccountInfo",
+                                              "code_hash"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -886,22 +888,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| a |),
-                                            "revm_primitives::state::AccountInfo",
-                                            "code_hash"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| a |),
+                                              "revm_primitives::state::AccountInfo",
+                                              "code_hash"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -1142,41 +1145,43 @@ Module db.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        0
-                                                                      |) in
-                                                                    let γ0_1 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        1
-                                                                      |) in
-                                                                    let v := M.copy (| γ0_1 |) in
-                                                                    M.read (|
-                                                                      let~ _ :=
-                                                                        M.write (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| v |),
-                                                                            "revm_primitives::state::StorageSlot",
-                                                                            "present_value"
-                                                                          |),
-                                                                          M.read (|
-                                                                            M.get_constant (|
-                                                                              "ruint::ZERO"
-                                                                            |)
-                                                                          |)
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          0
                                                                         |) in
-                                                                      M.alloc (| Value.Tuple [] |)
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                      let γ0_1 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          1
+                                                                        |) in
+                                                                      let v := M.copy (| γ0_1 |) in
+                                                                      M.read (|
+                                                                        let~ _ :=
+                                                                          M.write (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| v |),
+                                                                              "revm_primitives::state::StorageSlot",
+                                                                              "present_value"
+                                                                            |),
+                                                                            M.read (|
+                                                                              M.get_constant (|
+                                                                                "ruint::ZERO"
+                                                                              |)
+                                                                            |)
+                                                                          |) in
+                                                                        M.alloc (| Value.Tuple [] |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
                                                           end))
                                                   ]
                                                 |)
@@ -1685,171 +1690,179 @@ Module db.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let this_storage := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let storage_update := M.copy (| γ |) in
-                                            M.read (|
-                                              M.use
-                                                (M.match_operator (|
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::iter::traits::collect::IntoIterator",
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "std::collections::hash::map::HashMap")
-                                                          [
-                                                            Ty.path "ruint::Uint";
-                                                            Ty.path
-                                                              "revm_primitives::state::StorageSlot";
-                                                            Ty.path "std::hash::random::RandomState"
-                                                          ],
-                                                        [],
-                                                        "into_iter",
-                                                        []
-                                                      |),
-                                                      [ M.read (| storage_update |) ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let iter := M.copy (| γ |) in
-                                                        M.loop (|
-                                                          ltac:(M.monadic
-                                                            (let~ _ :=
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::iter::traits::iterator::Iterator",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "std::collections::hash::map::IntoIter")
-                                                                        [
-                                                                          Ty.path "ruint::Uint";
-                                                                          Ty.path
-                                                                            "revm_primitives::state::StorageSlot"
-                                                                        ],
-                                                                      [],
-                                                                      "next",
-                                                                      []
-                                                                    |),
-                                                                    [ iter ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let _ :=
-                                                                        M.is_struct_tuple (|
-                                                                          γ,
-                                                                          "core::option::Option::None"
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (| M.break (||) |)
-                                                                        |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::option::Option::Some",
-                                                                          0
-                                                                        |) in
-                                                                      let γ1_0 :=
-                                                                        M.SubPointer.get_tuple_field (|
-                                                                          γ0_0,
-                                                                          0
-                                                                        |) in
-                                                                      let γ1_1 :=
-                                                                        M.SubPointer.get_tuple_field (|
-                                                                          γ0_0,
-                                                                          1
-                                                                        |) in
-                                                                      let key :=
-                                                                        M.copy (| γ1_0 |) in
-                                                                      let value :=
-                                                                        M.copy (| γ1_1 |) in
-                                                                      let~ _ :=
-                                                                        M.write (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "std::collections::hash::map::Entry")
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
-                                                                                    Ty.path
-                                                                                      "revm_primitives::state::StorageSlot"
-                                                                                  ],
-                                                                                "or_insert",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "std::collections::hash::map::HashMap")
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
-                                                                                        Ty.path
-                                                                                          "revm_primitives::state::StorageSlot";
-                                                                                        Ty.path
-                                                                                          "std::hash::random::RandomState"
-                                                                                      ],
-                                                                                    "entry",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      this_storage
-                                                                                    |);
-                                                                                    M.read (| key |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.read (| value |)
-                                                                              ]
-                                                                            |),
-                                                                            "revm_primitives::state::StorageSlot",
-                                                                            "present_value"
-                                                                          |),
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              value,
-                                                                              "revm_primitives::state::StorageSlot",
-                                                                              "present_value"
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let this_storage := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let storage_update := M.copy (| γ |) in
+                                              M.read (|
+                                                M.use
+                                                  (M.match_operator (|
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::iter::traits::collect::IntoIterator",
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "std::collections::hash::map::HashMap")
+                                                            [
+                                                              Ty.path "ruint::Uint";
+                                                              Ty.path
+                                                                "revm_primitives::state::StorageSlot";
+                                                              Ty.path
+                                                                "std::hash::random::RandomState"
+                                                            ],
+                                                          [],
+                                                          "into_iter",
+                                                          []
+                                                        |),
+                                                        [ M.read (| storage_update |) ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let iter := M.copy (| γ |) in
+                                                          M.loop (|
+                                                            ltac:(M.monadic
+                                                              (let~ _ :=
+                                                                M.match_operator (|
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::iter::traits::iterator::Iterator",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "std::collections::hash::map::IntoIter")
+                                                                          [
+                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.path
+                                                                              "revm_primitives::state::StorageSlot"
+                                                                          ],
+                                                                        [],
+                                                                        "next",
+                                                                        []
+                                                                      |),
+                                                                      [ iter ]
+                                                                    |)
+                                                                  |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let _ :=
+                                                                          M.is_struct_tuple (|
+                                                                            γ,
+                                                                            "core::option::Option::None"
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.break (||)
                                                                             |)
                                                                           |)
-                                                                        |) in
-                                                                      M.alloc (| Value.Tuple [] |)))
-                                                                ]
-                                                              |) in
-                                                            M.alloc (| Value.Tuple [] |)))
-                                                        |)))
-                                                  ]
-                                                |))
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::option::Option::Some",
+                                                                            0
+                                                                          |) in
+                                                                        let γ1_0 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ0_0,
+                                                                            0
+                                                                          |) in
+                                                                        let γ1_1 :=
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            γ0_0,
+                                                                            1
+                                                                          |) in
+                                                                        let key :=
+                                                                          M.copy (| γ1_0 |) in
+                                                                        let value :=
+                                                                          M.copy (| γ1_1 |) in
+                                                                        let~ _ :=
+                                                                          M.write (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "std::collections::hash::map::Entry")
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "ruint::Uint";
+                                                                                      Ty.path
+                                                                                        "revm_primitives::state::StorageSlot"
+                                                                                    ],
+                                                                                  "or_insert",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "std::collections::hash::map::HashMap")
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "ruint::Uint";
+                                                                                          Ty.path
+                                                                                            "revm_primitives::state::StorageSlot";
+                                                                                          Ty.path
+                                                                                            "std::hash::random::RandomState"
+                                                                                        ],
+                                                                                      "entry",
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        this_storage
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        key
+                                                                                      |)
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.read (| value |)
+                                                                                ]
+                                                                              |),
+                                                                              "revm_primitives::state::StorageSlot",
+                                                                              "present_value"
+                                                                            |),
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                value,
+                                                                                "revm_primitives::state::StorageSlot",
+                                                                                "present_value"
+                                                                              |)
+                                                                            |)
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
+                                                                        |)))
+                                                                  ]
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)))
+                                                          |)))
+                                                    ]
+                                                  |))
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |) in
                 let~ previous_storage_from_update :=
@@ -1859,131 +1872,51 @@ Module db.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let updated_storage := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::iter::adapters::map::Map")
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::filter::Filter")
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "std::collections::hash::map::Iter")
-                                                  [
-                                                    Ty.path "ruint::Uint";
-                                                    Ty.path "revm_primitives::state::StorageSlot"
-                                                  ];
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  [ Ty.path "ruint::Uint" ];
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  [
-                                                                    Ty.path
-                                                                      "revm_primitives::state::StorageSlot"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "bool")
-                                              ];
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          [ Ty.path "ruint::Uint" ];
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          [
-                                                            Ty.path
-                                                              "revm_primitives::state::StorageSlot"
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.tuple
-                                                [
-                                                  Ty.path "ruint::Uint";
-                                                  Ty.path "revm::db::states::reverts::RevertToSlot"
-                                                ])
-                                          ],
-                                        [],
-                                        "collect",
-                                        [
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let updated_storage := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
                                           Ty.apply
-                                            (Ty.path "std::collections::hash::map::HashMap")
+                                            (Ty.path "core::iter::adapters::map::Map")
                                             [
-                                              Ty.path "ruint::Uint";
-                                              Ty.path "revm::db::states::reverts::RevertToSlot";
-                                              Ty.path "std::hash::random::RandomState"
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::filter::Filter")
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "std::collections::hash::map::Iter")
-                                                  [
-                                                    Ty.path "ruint::Uint";
-                                                    Ty.path "revm_primitives::state::StorageSlot"
-                                                  ];
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  [ Ty.path "ruint::Uint" ];
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  [
-                                                                    Ty.path
-                                                                      "revm_primitives::state::StorageSlot"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "bool")
-                                              ],
-                                            [],
-                                            "map",
-                                            [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "core::iter::adapters::filter::Filter")
                                                 [
-                                                  Ty.path "ruint::Uint";
-                                                  Ty.path "revm::db::states::reverts::RevertToSlot"
+                                                  Ty.apply
+                                                    (Ty.path "std::collections::hash::map::Iter")
+                                                    [
+                                                      Ty.path "ruint::Uint";
+                                                      Ty.path "revm_primitives::state::StorageSlot"
+                                                    ];
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    [ Ty.path "ruint::Uint" ];
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_primitives::state::StorageSlot"
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                    (Ty.path "bool")
                                                 ];
                                               Ty.function
                                                 [
@@ -2009,21 +1942,32 @@ Module db.
                                                     Ty.path
                                                       "revm::db::states::reverts::RevertToSlot"
                                                   ])
-                                            ]
-                                          |),
+                                            ],
+                                          [],
+                                          "collect",
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "std::collections::hash::map::Iter")
-                                                  [
-                                                    Ty.path "ruint::Uint";
-                                                    Ty.path "revm_primitives::state::StorageSlot"
-                                                  ],
-                                                [],
-                                                "filter",
+                                            Ty.apply
+                                              (Ty.path "std::collections::hash::map::HashMap")
+                                              [
+                                                Ty.path "ruint::Uint";
+                                                Ty.path "revm::db::states::reverts::RevertToSlot";
+                                                Ty.path "std::hash::random::RandomState"
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
+                                              Ty.apply
+                                                (Ty.path "core::iter::adapters::filter::Filter")
                                                 [
+                                                  Ty.apply
+                                                    (Ty.path "std::collections::hash::map::Iter")
+                                                    [
+                                                      Ty.path "ruint::Uint";
+                                                      Ty.path "revm_primitives::state::StorageSlot"
+                                                    ];
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -2047,106 +1991,180 @@ Module db.
                                                         ]
                                                     ]
                                                     (Ty.path "bool")
-                                                ]
-                                              |),
+                                                ],
+                                              [],
+                                              "map",
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "std::collections::hash::map::HashMap")
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "ruint::Uint";
+                                                    Ty.path
+                                                      "revm::db::states::reverts::RevertToSlot"
+                                                  ];
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
                                                       [
-                                                        Ty.path "ruint::Uint";
-                                                        Ty.path
-                                                          "revm_primitives::state::StorageSlot";
-                                                        Ty.path "std::hash::random::RandomState"
-                                                      ],
-                                                    "iter",
-                                                    []
-                                                  |),
-                                                  [ M.read (| updated_storage |) ]
-                                                |);
-                                                M.closure
-                                                  (fun γ =>
-                                                    ltac:(M.monadic
-                                                      match γ with
-                                                      | [ α0 ] =>
-                                                        M.match_operator (|
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              [ Ty.path "ruint::Uint" ];
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              [
+                                                                Ty.path
+                                                                  "revm_primitives::state::StorageSlot"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                  ]
+                                                  (Ty.tuple
+                                                    [
+                                                      Ty.path "ruint::Uint";
+                                                      Ty.path
+                                                        "revm::db::states::reverts::RevertToSlot"
+                                                    ])
+                                              ]
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
+                                                  Ty.apply
+                                                    (Ty.path "std::collections::hash::map::Iter")
+                                                    [
+                                                      Ty.path "ruint::Uint";
+                                                      Ty.path "revm_primitives::state::StorageSlot"
+                                                    ],
+                                                  [],
+                                                  "filter",
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      [ Ty.path "ruint::Uint" ];
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      [
+                                                                        Ty.path
+                                                                          "revm_primitives::state::StorageSlot"
+                                                                      ]
+                                                                  ]
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path "bool")
+                                                  ]
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "std::collections::hash::map::HashMap")
+                                                        [
+                                                          Ty.path "ruint::Uint";
+                                                          Ty.path
+                                                            "revm_primitives::state::StorageSlot";
+                                                          Ty.path "std::hash::random::RandomState"
+                                                        ],
+                                                      "iter",
+                                                      []
+                                                    |),
+                                                    [ M.read (| updated_storage |) ]
+                                                  |);
+                                                  M.closure
+                                                    (fun γ =>
+                                                      ltac:(M.monadic
+                                                        match γ with
+                                                        | [ α0 ] =>
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let s := M.copy (| γ |) in
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "revm_primitives::state::StorageSlot",
+                                                                        "is_changed",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_tuple_field (|
+                                                                            M.read (| s |),
+                                                                            1
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                                        end))
+                                                ]
+                                              |);
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (let s := M.copy (| γ |) in
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "revm_primitives::state::StorageSlot",
-                                                                    "is_changed",
-                                                                    []
-                                                                  |),
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    0
+                                                                  |) in
+                                                                let γ0_1 :=
+                                                                  M.SubPointer.get_tuple_field (|
+                                                                    γ,
+                                                                    1
+                                                                  |) in
+                                                                let key := M.copy (| γ0_0 |) in
+                                                                let value := M.copy (| γ0_1 |) in
+                                                                Value.Tuple
                                                                   [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        M.read (| s |),
-                                                                        1
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)))
+                                                                    M.read (| M.read (| key |) |);
+                                                                    Value.StructTuple
+                                                                      "revm::db::states::reverts::RevertToSlot::Some"
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| value |),
+                                                                            "revm_primitives::state::StorageSlot",
+                                                                            "previous_or_original_value"
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                  ]))
                                                           ]
-                                                        |)
-                                                      | _ => M.impossible (||)
-                                                      end))
-                                              ]
-                                            |);
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_tuple_field (|
-                                                                γ,
-                                                                0
-                                                              |) in
-                                                            let γ0_1 :=
-                                                              M.SubPointer.get_tuple_field (|
-                                                                γ,
-                                                                1
-                                                              |) in
-                                                            let key := M.copy (| γ0_0 |) in
-                                                            let value := M.copy (| γ0_1 |) in
-                                                            Value.Tuple
-                                                              [
-                                                                M.read (| M.read (| key |) |);
-                                                                Value.StructTuple
-                                                                  "revm::db::states::reverts::RevertToSlot::Some"
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| value |),
-                                                                        "revm_primitives::state::StorageSlot",
-                                                                        "previous_or_original_value"
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                              ]))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
-                                                  end))
-                                          ]
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                        |)))
+                                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                                    end))
+                                            ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |) in
                 let~ info_revert :=
@@ -2328,12 +2346,43 @@ Module db.
                                             ltac:(M.monadic
                                               match γ with
                                               | [] =>
-                                                let~ _ :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::Fn",
-                                                        Ty.function
+                                                ltac:(M.monadic
+                                                  (let~ _ :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::Fn",
+                                                          Ty.function
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "std::collections::hash::map::HashMap")
+                                                                        [
+                                                                          Ty.path "ruint::Uint";
+                                                                          Ty.path
+                                                                            "revm_primitives::state::StorageSlot";
+                                                                          Ty.path
+                                                                            "std::hash::random::RandomState"
+                                                                        ]
+                                                                    ];
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "std::collections::hash::map::HashMap")
+                                                                    [
+                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.path
+                                                                        "revm_primitives::state::StorageSlot";
+                                                                      Ty.path
+                                                                        "std::hash::random::RandomState"
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                            (Ty.tuple []),
                                                           [
                                                             Ty.tuple
                                                               [
@@ -2362,56 +2411,26 @@ Module db.
                                                                       "std::hash::random::RandomState"
                                                                   ]
                                                               ]
-                                                          ]
-                                                          (Ty.tuple []),
+                                                          ],
+                                                          "call",
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.tuple
+                                                          extend_storage;
+                                                          Value.Tuple
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "std::collections::hash::map::HashMap")
-                                                                    [
-                                                                      Ty.path "ruint::Uint";
-                                                                      Ty.path
-                                                                        "revm_primitives::state::StorageSlot";
-                                                                      Ty.path
-                                                                        "std::hash::random::RandomState"
-                                                                    ]
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "std::collections::hash::map::HashMap")
-                                                                [
-                                                                  Ty.path "ruint::Uint";
-                                                                  Ty.path
-                                                                    "revm_primitives::state::StorageSlot";
-                                                                  Ty.path
-                                                                    "std::hash::random::RandomState"
-                                                                ]
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "revm::db::states::bundle_account::BundleAccount",
+                                                                "storage"
+                                                              |);
+                                                              M.read (| updated_storage |)
                                                             ]
-                                                        ],
-                                                        "call",
-                                                        []
-                                                      |),
-                                                      [
-                                                        extend_storage;
-                                                        Value.Tuple
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "revm::db::states::bundle_account::BundleAccount",
-                                                              "storage"
-                                                            |);
-                                                            M.read (| updated_storage |)
-                                                          ]
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)
-                                              | _ => M.impossible (||)
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
                                               end))
                                       |)));
                                   fun γ =>
@@ -2613,12 +2632,43 @@ Module db.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [] =>
-                                                  let~ _ :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::Fn",
-                                                          Ty.function
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::Fn",
+                                                            Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "std::collections::hash::map::HashMap")
+                                                                          [
+                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.path
+                                                                              "revm_primitives::state::StorageSlot";
+                                                                            Ty.path
+                                                                              "std::hash::random::RandomState"
+                                                                          ]
+                                                                      ];
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "std::collections::hash::map::HashMap")
+                                                                      [
+                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.path
+                                                                          "revm_primitives::state::StorageSlot";
+                                                                        Ty.path
+                                                                          "std::hash::random::RandomState"
+                                                                      ]
+                                                                  ]
+                                                              ]
+                                                              (Ty.tuple []),
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -2647,56 +2697,26 @@ Module db.
                                                                         "std::hash::random::RandomState"
                                                                     ]
                                                                 ]
-                                                            ]
-                                                            (Ty.tuple []),
+                                                            ],
+                                                            "call",
+                                                            []
+                                                          |),
                                                           [
-                                                            Ty.tuple
+                                                            extend_storage;
+                                                            Value.Tuple
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path "&mut")
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "std::collections::hash::map::HashMap")
-                                                                      [
-                                                                        Ty.path "ruint::Uint";
-                                                                        Ty.path
-                                                                          "revm_primitives::state::StorageSlot";
-                                                                        Ty.path
-                                                                          "std::hash::random::RandomState"
-                                                                      ]
-                                                                  ];
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "std::collections::hash::map::HashMap")
-                                                                  [
-                                                                    Ty.path "ruint::Uint";
-                                                                    Ty.path
-                                                                      "revm_primitives::state::StorageSlot";
-                                                                    Ty.path
-                                                                      "std::hash::random::RandomState"
-                                                                  ]
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "revm::db::states::bundle_account::BundleAccount",
+                                                                  "storage"
+                                                                |);
+                                                                M.read (| updated_storage |)
                                                               ]
-                                                          ],
-                                                          "call",
-                                                          []
-                                                        |),
-                                                        [
-                                                          extend_storage;
-                                                          Value.Tuple
-                                                            [
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "revm::db::states::bundle_account::BundleAccount",
-                                                                "storage"
-                                                              |);
-                                                              M.read (| updated_storage |)
-                                                            ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  info_revert
-                                                | _ => M.impossible (||)
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    info_revert))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         |)));
                                     fun γ =>
@@ -2870,10 +2890,11 @@ Module db.
                                   ltac:(M.monadic
                                     match γ with
                                     | [] =>
-                                      M.alloc (|
-                                        Value.StructTuple "core::option::Option::None" []
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             |)));
                         fun γ =>
@@ -2982,32 +3003,33 @@ Module db.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [] =>
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "revm::db::states::reverts::AccountRevert",
-                                                            "new_selfdestructed",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "revm::db::states::bundle_account::BundleAccount",
-                                                                "status"
-                                                              |)
-                                                            |);
-                                                            M.read (| info_revert |);
-                                                            M.read (| this_storage |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "revm::db::states::reverts::AccountRevert",
+                                                              "new_selfdestructed",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "revm::db::states::bundle_account::BundleAccount",
+                                                                  "status"
+                                                                |)
+                                                              |);
+                                                              M.read (| info_revert |);
+                                                              M.read (| this_storage |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         |)));
                                     fun γ =>
@@ -3273,22 +3295,54 @@ Module db.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [] =>
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::Some"
-                                                              [
-                                                                Value.StructRecord
-                                                                  "revm::db::states::reverts::AccountRevert"
-                                                                  [
-                                                                    ("account",
-                                                                      Value.StructTuple
-                                                                        "revm::db::states::reverts::AccountInfoRevert::DeleteIt"
-                                                                        []);
-                                                                    ("storage",
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::function::Fn",
-                                                                          Ty.function
+                                                          ltac:(M.monadic
+                                                            (M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::Some"
+                                                                [
+                                                                  Value.StructRecord
+                                                                    "revm::db::states::reverts::AccountRevert"
+                                                                    [
+                                                                      ("account",
+                                                                        Value.StructTuple
+                                                                          "revm::db::states::reverts::AccountInfoRevert::DeleteIt"
+                                                                          []);
+                                                                      ("storage",
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::function::Fn",
+                                                                            Ty.function
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "std::collections::hash::map::HashMap")
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "ruint::Uint";
+                                                                                            Ty.path
+                                                                                              "revm_primitives::state::StorageSlot";
+                                                                                            Ty.path
+                                                                                              "std::hash::random::RandomState"
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                              ]
+                                                                              (Ty.apply
+                                                                                (Ty.path
+                                                                                  "std::collections::hash::map::HashMap")
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "ruint::Uint";
+                                                                                  Ty.path
+                                                                                    "revm::db::states::reverts::RevertToSlot";
+                                                                                  Ty.path
+                                                                                    "std::hash::random::RandomState"
+                                                                                ]),
                                                                             [
                                                                               Ty.tuple
                                                                                 [
@@ -3308,61 +3362,30 @@ Module db.
                                                                                         ]
                                                                                     ]
                                                                                 ]
-                                                                            ]
-                                                                            (Ty.apply
-                                                                              (Ty.path
-                                                                                "std::collections::hash::map::HashMap")
-                                                                              [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
-                                                                                Ty.path
-                                                                                  "revm::db::states::reverts::RevertToSlot";
-                                                                                Ty.path
-                                                                                  "std::hash::random::RandomState"
-                                                                              ]),
+                                                                            ],
+                                                                            "call",
+                                                                            []
+                                                                          |),
                                                                           [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "std::collections::hash::map::HashMap")
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
-                                                                                        Ty.path
-                                                                                          "revm_primitives::state::StorageSlot";
-                                                                                        Ty.path
-                                                                                          "std::hash::random::RandomState"
-                                                                                      ]
-                                                                                  ]
-                                                                              ]
-                                                                          ],
-                                                                          "call",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          previous_storage_from_update;
-                                                                          Value.Tuple
-                                                                            [ updated_storage ]
-                                                                        ]
-                                                                      |));
-                                                                    ("previous_status",
-                                                                      M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
-                                                                          "revm::db::states::bundle_account::BundleAccount",
-                                                                          "status"
-                                                                        |)
-                                                                      |));
-                                                                    ("wipe_storage",
-                                                                      Value.Bool false)
-                                                                  ]
-                                                              ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                                            previous_storage_from_update;
+                                                                            Value.Tuple
+                                                                              [ updated_storage ]
+                                                                          ]
+                                                                        |));
+                                                                      ("previous_status",
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "revm::db::states::bundle_account::BundleAccount",
+                                                                            "status"
+                                                                          |)
+                                                                        |));
+                                                                      ("wipe_storage",
+                                                                        Value.Bool false)
+                                                                    ]
+                                                                ]
+                                                            |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                                         end))
                                                 |)));
                                             fun γ =>
@@ -3538,42 +3561,46 @@ Module db.
                                                                             ltac:(M.monadic
                                                                               match γ with
                                                                               | [ α0 ] =>
-                                                                                M.match_operator (|
-                                                                                  M.alloc (| α0 |),
-                                                                                  [
-                                                                                    fun γ =>
-                                                                                      ltac:(M.monadic
-                                                                                        (let t :=
-                                                                                          M.copy (|
-                                                                                            γ
-                                                                                          |) in
-                                                                                        Value.Tuple
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              M.SubPointer.get_tuple_field (|
-                                                                                                t,
-                                                                                                0
-                                                                                              |)
-                                                                                            |);
-                                                                                            Value.StructTuple
-                                                                                              "revm::db::states::reverts::RevertToSlot::Some"
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.SubPointer.get_tuple_field (|
-                                                                                                      t,
-                                                                                                      1
-                                                                                                    |),
-                                                                                                    "revm_primitives::state::StorageSlot",
-                                                                                                    "present_value"
-                                                                                                  |)
+                                                                                ltac:(M.monadic
+                                                                                  (M.match_operator (|
+                                                                                    M.alloc (|
+                                                                                      α0
+                                                                                    |),
+                                                                                    [
+                                                                                      fun γ =>
+                                                                                        ltac:(M.monadic
+                                                                                          (let t :=
+                                                                                            M.copy (|
+                                                                                              γ
+                                                                                            |) in
+                                                                                          Value.Tuple
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                M.SubPointer.get_tuple_field (|
+                                                                                                  t,
+                                                                                                  0
                                                                                                 |)
-                                                                                              ]
-                                                                                          ]))
-                                                                                  ]
-                                                                                |)
+                                                                                              |);
+                                                                                              Value.StructTuple
+                                                                                                "revm::db::states::reverts::RevertToSlot::Some"
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      M.SubPointer.get_tuple_field (|
+                                                                                                        t,
+                                                                                                        1
+                                                                                                      |),
+                                                                                                      "revm_primitives::state::StorageSlot",
+                                                                                                      "present_value"
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                            ]))
+                                                                                    ]
+                                                                                  |)))
                                                                               | _ =>
-                                                                                M.impossible (||)
+                                                                                ltac:(M.monadic
+                                                                                  (M.impossible (||)))
                                                                               end))
                                                                       ]
                                                                     |)
@@ -4155,12 +4182,13 @@ Module db.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [] =>
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::None"
-                                                              []
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                          ltac:(M.monadic
+                                                            (M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                                         end))
                                                 |)));
                                             fun γ =>
@@ -4432,52 +4460,55 @@ Module db.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let acc := M.copy (| γ |) in
-                                      M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "revm::db::states::reverts::AccountRevert",
-                                                          "is_empty",
-                                                          []
-                                                        |),
-                                                        [ acc ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  Value.StructTuple "core::option::Option::None" []
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.alloc (|
-                                                  Value.StructTuple
-                                                    "core::option::Option::Some"
-                                                    [ M.read (| acc |) ]
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let acc := M.copy (| γ |) in
+                                        M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "revm::db::states::reverts::AccountRevert",
+                                                            "is_empty",
+                                                            []
+                                                          |),
+                                                          [ acc ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::option::Option::None"
+                                                      []
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::option::Option::Some"
+                                                      [ M.read (| acc |) ]
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)

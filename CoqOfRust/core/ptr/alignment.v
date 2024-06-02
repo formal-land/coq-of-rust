@@ -185,12 +185,7 @@ Module ptr.
       (* Ty.path "core::ptr::alignment::Alignment" *)
       Definition value_MIN : Value.t :=
         M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "core::ptr::alignment::Alignment"
-                [ Value.StructTuple "core::ptr::alignment::AlignmentEnum64::_Align1Shl0" [] ]
-            |))).
+          ltac:(M.monadic (* thir failed to compile: Any { .. } *) (M.alloc (| Value.Tuple [] |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       

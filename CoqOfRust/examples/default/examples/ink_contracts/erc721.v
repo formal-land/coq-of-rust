@@ -1876,21 +1876,23 @@ Module Impl_erc721_Erc721.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let c := M.copy (| γ |) in
-                                                          BinOp.Wrap.sub
-                                                            Integer.U32
-                                                            (M.read (| c |))
-                                                            (M.read (|
-                                                              M.use (M.alloc (| Value.Integer 1 |))
-                                                            |))))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let c := M.copy (| γ |) in
+                                                            BinOp.Wrap.sub
+                                                              Integer.U32
+                                                              (M.read (| c |))
+                                                              (M.read (|
+                                                                M.use
+                                                                  (M.alloc (| Value.Integer 1 |))
+                                                              |))))
+                                                      ]
+                                                    |)))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         ]
                                       |);

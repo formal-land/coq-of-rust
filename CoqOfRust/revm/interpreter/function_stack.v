@@ -627,33 +627,34 @@ Module function_stack.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let frame := M.copy (| γ |) in
-                              M.read (|
-                                let~ _ :=
-                                  M.write (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::function_stack::FunctionStack",
-                                      "current_code_idx"
-                                    |),
-                                    M.read (|
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let frame := M.copy (| γ |) in
+                                M.read (|
+                                  let~ _ :=
+                                    M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        frame,
-                                        "revm_interpreter::function_stack::FunctionReturnFrame",
-                                        "idx"
+                                        M.read (| self |),
+                                        "revm_interpreter::function_stack::FunctionStack",
+                                        "current_code_idx"
+                                      |),
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          frame,
+                                          "revm_interpreter::function_stack::FunctionReturnFrame",
+                                          "idx"
+                                        |)
                                       |)
-                                    |)
-                                  |) in
-                                frame
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                    |) in
+                                  frame
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

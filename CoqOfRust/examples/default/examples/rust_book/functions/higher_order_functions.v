@@ -340,19 +340,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let n := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U32
-                                              (M.read (| n |))
-                                              (M.read (| n |))))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let n := M.copy (| γ |) in
+                                              BinOp.Wrap.mul
+                                                Integer.U32
+                                                (M.read (| n |))
+                                                (M.read (| n |))))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |);
@@ -361,19 +362,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let n_squared := M.copy (| γ |) in
-                                        BinOp.Pure.lt
-                                          (M.read (| n_squared |))
-                                          (M.read (| upper |))))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.read (| γ |) in
+                                          let n_squared := M.copy (| γ |) in
+                                          BinOp.Pure.lt
+                                            (M.read (| n_squared |))
+                                            (M.read (| upper |))))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |);
@@ -382,20 +384,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let n_squared := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_function (| "higher_order_functions::is_odd", [] |),
-                                      [ M.read (| n_squared |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.read (| γ |) in
+                                      let n_squared := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_function (| "higher_order_functions::is_odd", [] |),
+                                        [ M.read (| n_squared |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)

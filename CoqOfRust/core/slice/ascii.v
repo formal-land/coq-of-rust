@@ -182,26 +182,27 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let a := M.copy (| γ0_0 |) in
-                                    let b := M.copy (| γ0_1 |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "u8",
-                                        "eq_ignore_ascii_case",
-                                        []
-                                      |),
-                                      [ M.read (| a |); M.read (| b |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                      let a := M.copy (| γ0_0 |) in
+                                      let b := M.copy (| γ0_1 |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "u8",
+                                          "eq_ignore_ascii_case",
+                                          []
+                                        |),
+                                        [ M.read (| a |); M.read (| b |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)))
@@ -1038,25 +1039,26 @@ Module slice.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let b := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::fmt::Write",
-                                    Ty.path "core::fmt::Formatter",
-                                    [],
-                                    "write_char",
-                                    []
-                                  |),
-                                  [ M.read (| f |); M.rust_cast (M.read (| b |)) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let b := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::fmt::Write",
+                                      Ty.path "core::fmt::Formatter",
+                                      [],
+                                      "write_char",
+                                      []
+                                    |),
+                                    [ M.read (| f |); M.rust_cast (M.read (| b |)) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -1794,10 +1796,13 @@ Module slice.
                                                                           ltac:(M.monadic
                                                                             match γ with
                                                                             | [] =>
-                                                                              M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)
-                                                                            | _ => M.impossible (||)
+                                                                              ltac:(M.monadic
+                                                                                (M.alloc (|
+                                                                                  Value.Bool true
+                                                                                |)))
+                                                                            | _ =>
+                                                                              ltac:(M.monadic
+                                                                                (M.impossible (||)))
                                                                             end))
                                                                     |)));
                                                                 fun γ =>

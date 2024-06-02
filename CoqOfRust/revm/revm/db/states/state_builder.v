@@ -1150,30 +1150,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "revm::db::states::cache::CacheState",
-                                                "new",
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "revm::db::states::state_builder::StateBuilder",
-                                                    "with_state_clear"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "revm::db::states::cache::CacheState",
+                                                  "new",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "revm::db::states::state_builder::StateBuilder",
+                                                      "with_state_clear"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |));

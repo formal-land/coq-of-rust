@@ -564,40 +564,42 @@ Module collections.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let elem := M.copy (| γ |) in
-                                                                    M.read (|
-                                                                      let~ _ :=
-                                                                        let β :=
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            guard,
-                                                                            "alloc::collections::vec_deque::into_iter::try_fold::Guard",
-                                                                            "consumed"
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let elem := M.copy (| γ |) in
+                                                                      M.read (|
+                                                                        let~ _ :=
+                                                                          let β :=
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              guard,
+                                                                              "alloc::collections::vec_deque::into_iter::try_fold::Guard",
+                                                                              "consumed"
+                                                                            |) in
+                                                                          M.write (|
+                                                                            β,
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (| β |))
+                                                                              (Value.Integer 1)
                                                                           |) in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Wrap.add
-                                                                            Integer.Usize
-                                                                            (M.read (| β |))
-                                                                            (Value.Integer 1)
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_function (|
-                                                                            "core::ptr::read",
-                                                                            [ T ]
-                                                                          |),
-                                                                          [ M.read (| elem |) ]
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_function (|
+                                                                              "core::ptr::read",
+                                                                              [ T ]
+                                                                            |),
+                                                                            [ M.read (| elem |) ]
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
                                                           end))
                                                   ]
                                                 |)
@@ -694,40 +696,41 @@ Module collections.
                                             ltac:(M.monadic
                                               match γ with
                                               | [ α0 ] =>
-                                                M.match_operator (|
-                                                  M.alloc (| α0 |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let elem := M.copy (| γ |) in
-                                                        M.read (|
-                                                          let~ _ :=
-                                                            let β :=
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                guard,
-                                                                "alloc::collections::vec_deque::into_iter::try_fold::Guard",
-                                                                "consumed"
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let elem := M.copy (| γ |) in
+                                                          M.read (|
+                                                            let~ _ :=
+                                                              let β :=
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "alloc::collections::vec_deque::into_iter::try_fold::Guard",
+                                                                  "consumed"
+                                                                |) in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (M.read (| β |))
+                                                                  (Value.Integer 1)
                                                               |) in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (Value.Integer 1)
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::ptr::read",
-                                                                [ T ]
-                                                              |),
-                                                              [ M.read (| elem |) ]
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::ptr::read",
+                                                                  [ T ]
+                                                                |),
+                                                                [ M.read (| elem |) ]
+                                                              |)
                                                             |)
-                                                          |)
-                                                        |)))
-                                                  ]
-                                                |)
-                                              | _ => M.impossible (||)
+                                                          |)))
+                                                    ]
+                                                  |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
                                               end))
                                       ]
                                     |)
@@ -790,41 +793,42 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let b := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let item := M.copy (| γ |) in
-                                                Value.StructTuple
-                                                  "core::result::Result::Ok"
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::FnMut",
-                                                        F,
-                                                        [ Ty.tuple [ B; T ] ],
-                                                        "call_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        f;
-                                                        Value.Tuple
-                                                          [ M.read (| b |); M.read (| item |) ]
-                                                      ]
-                                                    |)
-                                                  ]))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let b := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let item := M.copy (| γ |) in
+                                                  Value.StructTuple
+                                                    "core::result::Result::Ok"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          F,
+                                                          [ Ty.tuple [ B; T ] ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          f;
+                                                          Value.Tuple
+                                                            [ M.read (| b |); M.read (| item |) ]
+                                                        ]
+                                                      |)
+                                                    ]))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -1811,40 +1815,42 @@ Module collections.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let elem := M.copy (| γ |) in
-                                                                    M.read (|
-                                                                      let~ _ :=
-                                                                        let β :=
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            guard,
-                                                                            "alloc::collections::vec_deque::into_iter::try_rfold::Guard",
-                                                                            "consumed"
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let elem := M.copy (| γ |) in
+                                                                      M.read (|
+                                                                        let~ _ :=
+                                                                          let β :=
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              guard,
+                                                                              "alloc::collections::vec_deque::into_iter::try_rfold::Guard",
+                                                                              "consumed"
+                                                                            |) in
+                                                                          M.write (|
+                                                                            β,
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (| β |))
+                                                                              (Value.Integer 1)
                                                                           |) in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Wrap.add
-                                                                            Integer.Usize
-                                                                            (M.read (| β |))
-                                                                            (Value.Integer 1)
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_function (|
-                                                                            "core::ptr::read",
-                                                                            [ T ]
-                                                                          |),
-                                                                          [ M.read (| elem |) ]
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_function (|
+                                                                              "core::ptr::read",
+                                                                              [ T ]
+                                                                            |),
+                                                                            [ M.read (| elem |) ]
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
                                                           end))
                                                   ]
                                                 |)
@@ -1941,40 +1947,41 @@ Module collections.
                                             ltac:(M.monadic
                                               match γ with
                                               | [ α0 ] =>
-                                                M.match_operator (|
-                                                  M.alloc (| α0 |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let elem := M.copy (| γ |) in
-                                                        M.read (|
-                                                          let~ _ :=
-                                                            let β :=
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                guard,
-                                                                "alloc::collections::vec_deque::into_iter::try_rfold::Guard",
-                                                                "consumed"
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let elem := M.copy (| γ |) in
+                                                          M.read (|
+                                                            let~ _ :=
+                                                              let β :=
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  guard,
+                                                                  "alloc::collections::vec_deque::into_iter::try_rfold::Guard",
+                                                                  "consumed"
+                                                                |) in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (M.read (| β |))
+                                                                  (Value.Integer 1)
                                                               |) in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (Value.Integer 1)
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "core::ptr::read",
-                                                                [ T ]
-                                                              |),
-                                                              [ M.read (| elem |) ]
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::ptr::read",
+                                                                  [ T ]
+                                                                |),
+                                                                [ M.read (| elem |) ]
+                                                              |)
                                                             |)
-                                                          |)
-                                                        |)))
-                                                  ]
-                                                |)
-                                              | _ => M.impossible (||)
+                                                          |)))
+                                                    ]
+                                                  |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
                                               end))
                                       ]
                                     |)
@@ -2037,41 +2044,42 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let b := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let item := M.copy (| γ |) in
-                                                Value.StructTuple
-                                                  "core::result::Result::Ok"
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::FnMut",
-                                                        F,
-                                                        [ Ty.tuple [ B; T ] ],
-                                                        "call_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        f;
-                                                        Value.Tuple
-                                                          [ M.read (| b |); M.read (| item |) ]
-                                                      ]
-                                                    |)
-                                                  ]))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let b := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let item := M.copy (| γ |) in
+                                                  Value.StructTuple
+                                                    "core::result::Result::Ok"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          F,
+                                                          [ Ty.tuple [ B; T ] ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          f;
+                                                          Value.Tuple
+                                                            [ M.read (| b |); M.read (| item |) ]
+                                                        ]
+                                                      |)
+                                                    ]))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)

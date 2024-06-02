@@ -6342,19 +6342,24 @@ Module fmt.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (| Ty.path "str", "len", [] |),
-                                          [ M.read (| M.read (| x |) |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let x := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "len",
+                                              []
+                                            |),
+                                            [ M.read (| M.read (| x |) |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)

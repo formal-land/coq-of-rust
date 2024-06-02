@@ -720,76 +720,77 @@ Module slice.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let acc := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let t := M.copy (| γ |) in
-                                          M.read (|
-                                            M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnMut",
-                                                              F,
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply (Ty.path "&") [ T ];
-                                                                    Ty.apply (Ty.path "&") [ T ]
-                                                                  ]
-                                                              ],
-                                                              "call_mut",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| is_less |);
-                                                              Value.Tuple
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let acc := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let t := M.copy (| γ |) in
+                                            M.read (|
+                                              M.match_operator (|
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnMut",
+                                                                F,
                                                                 [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      t,
-                                                                      1
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply (Ty.path "&") [ T ];
+                                                                      Ty.apply (Ty.path "&") [ T ]
+                                                                    ]
+                                                                ],
+                                                                "call_mut",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| is_less |);
+                                                                Value.Tuple
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        t,
+                                                                        1
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        acc,
+                                                                        1
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (|
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      acc,
-                                                                      1
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                            ]
-                                                          |)
-                                                        |)) in
-                                                    let _ :=
-                                                      M.is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    t));
-                                                fun γ => ltac:(M.monadic acc)
-                                              ]
-                                            |)
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      t));
+                                                  fun γ => ltac:(M.monadic acc)
+                                                ]
+                                              |)
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -798,18 +799,19 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let i := M.copy (| γ0_0 |) in
-                              M.read (| i |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let i := M.copy (| γ0_0 |) in
+                                M.read (| i |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -892,76 +894,77 @@ Module slice.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let acc := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let t := M.copy (| γ |) in
-                                          M.read (|
-                                            M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnMut",
-                                                              F,
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply (Ty.path "&") [ T ];
-                                                                    Ty.apply (Ty.path "&") [ T ]
-                                                                  ]
-                                                              ],
-                                                              "call_mut",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| is_less |);
-                                                              Value.Tuple
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let acc := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let t := M.copy (| γ |) in
+                                            M.read (|
+                                              M.match_operator (|
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnMut",
+                                                                F,
                                                                 [
-                                                                  M.read (|
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      acc,
-                                                                      1
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply (Ty.path "&") [ T ];
+                                                                      Ty.apply (Ty.path "&") [ T ]
+                                                                    ]
+                                                                ],
+                                                                "call_mut",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| is_less |);
+                                                                Value.Tuple
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        acc,
+                                                                        1
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        t,
+                                                                        1
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (|
-                                                                    M.SubPointer.get_tuple_field (|
-                                                                      t,
-                                                                      1
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                            ]
-                                                          |)
-                                                        |)) in
-                                                    let _ :=
-                                                      M.is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    t));
-                                                fun γ => ltac:(M.monadic acc)
-                                              ]
-                                            |)
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      t));
+                                                  fun γ => ltac:(M.monadic acc)
+                                                ]
+                                              |)
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -970,18 +973,19 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let i := M.copy (| γ0_0 |) in
-                              M.read (| i |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let i := M.copy (| γ0_0 |) in
+                                M.read (| i |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

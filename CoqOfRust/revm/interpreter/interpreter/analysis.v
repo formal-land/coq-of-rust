@@ -1711,100 +1711,103 @@ Module interpreter.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let i := M.copy (| γ |) in
-                                                      M.read (|
-                                                        M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.use
-                                                                    (M.alloc (|
-                                                                      UnOp.Pure.not
-                                                                        (M.read (|
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::index::Index",
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                [
-                                                                                  Ty.path "bool";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              [ Ty.path "usize" ],
-                                                                              "index",
-                                                                              []
-                                                                            |),
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let i := M.copy (| γ |) in
+                                                        M.read (|
+                                                          M.match_operator (|
+                                                            M.alloc (| Value.Tuple [] |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.use
+                                                                      (M.alloc (|
+                                                                        UnOp.Pure.not
+                                                                          (M.read (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::index::Index",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  [
+                                                                                    Ty.path "bool";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [ Ty.path "usize" ],
+                                                                                "index",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                queued_codes;
+                                                                                M.read (| i |)
+                                                                              ]
+                                                                            |)
+                                                                          |))
+                                                                      |)) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  let~ _ :=
+                                                                    M.write (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::index::IndexMut",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
                                                                             [
-                                                                              queued_codes;
-                                                                              M.read (| i |)
-                                                                            ]
-                                                                          |)
-                                                                        |))
-                                                                    |)) in
-                                                                let _ :=
-                                                                  M.is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                let~ _ :=
-                                                                  M.write (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::index::IndexMut",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
-                                                                          [
-                                                                            Ty.path "bool";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        [ Ty.path "usize" ],
-                                                                        "index_mut",
-                                                                        []
+                                                                              Ty.path "bool";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [ Ty.path "usize" ],
+                                                                          "index_mut",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          queued_codes;
+                                                                          M.read (| i |)
+                                                                        ]
                                                                       |),
-                                                                      [ queued_codes; M.read (| i |)
-                                                                      ]
-                                                                    |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                let~ _ :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
-                                                                          [
-                                                                            Ty.path "usize";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        "push",
-                                                                        []
-                                                                      |),
-                                                                      [ queue; M.read (| i |) ]
-                                                                    |)
-                                                                  |) in
-                                                                M.alloc (| Value.Tuple [] |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
-                                                          ]
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  let~ _ :=
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            [
+                                                                              Ty.path "usize";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "push",
+                                                                          []
+                                                                        |),
+                                                                        [ queue; M.read (| i |) ]
+                                                                      |)
+                                                                    |) in
+                                                                  M.alloc (| Value.Tuple [] |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                            ]
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |)
@@ -1865,16 +1868,17 @@ Module interpreter.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    UnOp.Pure.not (M.read (| x |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      UnOp.Pure.not (M.read (| x |))))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |)
@@ -4434,100 +4438,103 @@ Module interpreter.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [] =>
-                                                          let~ offset :=
-                                                            M.alloc (|
-                                                              M.rust_cast
-                                                                (M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "revm_interpreter::instructions::utility::read_i16",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "*const")
-                                                                          [ Ty.path "u8" ],
-                                                                        "add",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
-                                                                              [ Ty.path "u8" ],
-                                                                            "as_ptr",
-                                                                            []
-                                                                          |),
-                                                                          [ M.read (| code |) ]
-                                                                        |);
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| i |))
-                                                                          (Value.Integer 1)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |))
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.write (|
-                                                              absolute_jumpdest,
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    [ Ty.path "isize" ],
-                                                                  "into_vec",
-                                                                  [ Ty.path "alloc::alloc::Global" ]
-                                                                |),
-                                                                [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (|
+                                                          ltac:(M.monadic
+                                                            (let~ offset :=
+                                                              M.alloc (|
+                                                                M.rust_cast
+                                                                  (M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "revm_interpreter::instructions::utility::read_i16",
+                                                                      []
+                                                                    |),
+                                                                    [
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::boxed::Box")
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "array")
-                                                                                [ Ty.path "isize" ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          "new",
+                                                                            (Ty.path "*const")
+                                                                            [ Ty.path "u8" ],
+                                                                          "add",
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                BinOp.Wrap.add
-                                                                                  Integer.Isize
-                                                                                  (BinOp.Wrap.add
-                                                                                    Integer.Isize
-                                                                                    (M.read (|
-                                                                                      offset
-                                                                                    |))
-                                                                                    (Value.Integer
-                                                                                      3))
-                                                                                  (M.rust_cast
-                                                                                    (M.read (|
-                                                                                      i
-                                                                                    |)))
-                                                                              ]
-                                                                          |)
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                [ Ty.path "u8" ],
+                                                                              "as_ptr",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| code |) ]
+                                                                          |);
+                                                                          BinOp.Wrap.add
+                                                                            Integer.Usize
+                                                                            (M.read (| i |))
+                                                                            (Value.Integer 1)
                                                                         ]
                                                                       |)
-                                                                    |))
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)
-                                                        | _ => M.impossible (||)
+                                                                    ]
+                                                                  |))
+                                                              |) in
+                                                            let~ _ :=
+                                                              M.write (|
+                                                                absolute_jumpdest,
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      [ Ty.path "isize" ],
+                                                                    "into_vec",
+                                                                    [ Ty.path "alloc::alloc::Global"
+                                                                    ]
+                                                                  |),
+                                                                  [
+                                                                    (* Unsize *)
+                                                                    M.pointer_coercion
+                                                                      (M.read (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::boxed::Box")
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [ Ty.path "isize"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ],
+                                                                            "new",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  BinOp.Wrap.add
+                                                                                    Integer.Isize
+                                                                                    (BinOp.Wrap.add
+                                                                                      Integer.Isize
+                                                                                      (M.read (|
+                                                                                        offset
+                                                                                      |))
+                                                                                      (Value.Integer
+                                                                                        3))
+                                                                                    (M.rust_cast
+                                                                                      (M.read (|
+                                                                                        i
+                                                                                      |)))
+                                                                                ]
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |))
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            M.alloc (| Value.Tuple [] |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                                         end))
                                                 |)));
                                             fun γ =>

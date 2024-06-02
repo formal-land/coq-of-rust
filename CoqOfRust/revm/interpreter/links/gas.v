@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
+Require core.links.cmp.
 Require core.links.default.
 Require Import revm.interpreter.gas.
 
@@ -89,7 +90,7 @@ Module Impl_Clone.
     }
   Defined.
 
-  Definition run_impl : clone.Clone.RunImpl Gas.t (Φ Gas.t).
+  Definition run : clone.Clone.Run Gas.t (Φ Gas.t).
   Proof.
     constructor.
     { (* clone *)
@@ -137,7 +138,7 @@ Module Impl_Default.
     }
   Defined.
 
-  Definition run_impl : default.Default.RunImpl Gas.t (Φ Gas.t).
+  Definition run : default.Default.Run Gas.t (Φ Gas.t).
   Proof.
     constructor.
     { (* default *)
@@ -348,4 +349,45 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros; run_symbolic.
   Defined.
+
+  (*
+      pub fn set_final_refund(&mut self, is_london: bool) {
+          let max_refund_quotient = if is_london { 5 } else { 2 };
+          self.refunded = (self.refunded() as u64).min(self.spent() / max_refund_quotient) as i64;
+      }
+  *)
+  Definition run_set_final_refund (self : Ref.t Self) (is_london : bool) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [φ self; φ is_london] ⇓
+      fun (v : unit) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    eapply Run.Let with (output_to_value' := fun (v : Ref.t Z) => inl (φ v)). {
+      run_symbolic.
+      destruct value; cbn.
+      { eapply Run.CallPrimitiveStateAlloc with (A := Z); [reflexivity |]; intros.
+        run_symbolic.
+      }
+      { eapply Run.CallPrimitiveStateAlloc with (A := Z); [reflexivity |]; intros.
+        run_symbolic.
+      }
+    }
+    intros.
+    eapply Run.Let. {
+      run_symbolic.
+      run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+
+    }
+    intros; run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
 End Impl_revm_interpreter_gas_Gas.

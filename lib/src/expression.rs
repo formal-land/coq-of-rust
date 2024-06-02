@@ -500,11 +500,14 @@ impl Expr {
                                         .map(|(name, _)| coq::Expression::name_pattern(name))
                                         .collect(),
                                 }],
-                                body.to_coq(),
+                                coq::Expression::monadic(&body.to_coq()),
                             ),
                             (
                                 vec![coq::Expression::Wild],
-                                coq::Expression::just_name("M.impossible").monadic_apply_empty(),
+                                coq::Expression::monadic(
+                                    &coq::Expression::just_name("M.impossible")
+                                        .monadic_apply_empty(),
+                                ),
                             ),
                         ],
                     })),

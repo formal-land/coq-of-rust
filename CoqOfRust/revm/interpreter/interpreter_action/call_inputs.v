@@ -1108,25 +1108,26 @@ Module interpreter_action.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    Ty.path "ruint::Uint",
-                                    [ Ty.path "ruint::Uint" ],
-                                    "gt",
-                                    []
-                                  |),
-                                  [ x; M.get_constant (| "ruint::ZERO" |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialOrd",
+                                      Ty.path "ruint::Uint",
+                                      [ Ty.path "ruint::Uint" ],
+                                      "gt",
+                                      []
+                                    |),
+                                    [ x; M.get_constant (| "ruint::ZERO" |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -2070,7 +2071,10 @@ Module interpreter_action.
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
-                              match γ with | [ value ] => value | _ => M.impossible (||) end))
+                              match γ with
+                              | [ value ] => ltac:(M.monadic value)
+                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              end))
                       |)))
                 ]
               |)

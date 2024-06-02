@@ -2644,8 +2644,8 @@ Module net.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -5456,70 +5456,71 @@ Module net.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                let ab := M.copy (| γ0_6 |) in
-                                let cd := M.copy (| γ0_7 |) in
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "u16",
-                                        "to_be_bytes",
-                                        []
-                                      |),
-                                      [ M.read (| ab |) ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
-                                        let a := M.copy (| γ0_0 |) in
-                                        let b := M.copy (| γ0_1 |) in
-                                        M.match_operator (|
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "u16",
-                                                "to_be_bytes",
-                                                []
-                                              |),
-                                              [ M.read (| cd |) ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_slice_index (| γ, 0 |) in
-                                                let γ0_1 :=
-                                                  M.SubPointer.get_slice_index (| γ, 1 |) in
-                                                let c := M.copy (| γ0_0 |) in
-                                                let d := M.copy (| γ0_1 |) in
-                                                M.alloc (|
-                                                  Value.StructTuple
-                                                    "core::option::Option::Some"
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (| a |);
-                                                          M.read (| b |);
-                                                          M.read (| c |);
-                                                          M.read (| d |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (let ab := M.copy (| γ0_6 |) in
+                                  let cd := M.copy (| γ0_7 |) in
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "u16",
+                                          "to_be_bytes",
+                                          []
+                                        |),
+                                        [ M.read (| ab |) ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                          let a := M.copy (| γ0_0 |) in
+                                          let b := M.copy (| γ0_1 |) in
+                                          M.match_operator (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "u16",
+                                                  "to_be_bytes",
+                                                  []
+                                                |),
+                                                [ M.read (| cd |) ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_slice_index (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_slice_index (| γ, 1 |) in
+                                                  let c := M.copy (| γ0_0 |) in
+                                                  let d := M.copy (| γ0_1 |) in
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "core::option::Option::Some"
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                                                            "new",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| a |);
+                                                            M.read (| b |);
+                                                            M.read (| c |);
+                                                            M.read (| d |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       |)));
                   fun γ =>

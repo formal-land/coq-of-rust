@@ -55,56 +55,58 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let first := M.copy (| γ |) in
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                              "map",
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let first := M.copy (| γ |) in
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                                "map",
+                                [
+                                  Ty.path "i32";
+                                  Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
+                                ]
+                              |),
                               [
-                                Ty.path "i32";
-                                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "parse",
+                                    [ Ty.path "i32" ]
+                                  |),
+                                  [ M.read (| M.read (| first |) |) ]
+                                |);
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let n := M.copy (| γ |) in
+                                                  BinOp.Wrap.mul
+                                                    Integer.I32
+                                                    (Value.Integer 2)
+                                                    (M.read (| n |))))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      end))
                               ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "str",
-                                  "parse",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.read (| M.read (| first |) |) ]
-                              |);
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let n := M.copy (| γ |) in
-                                              BinOp.Wrap.mul
-                                                Integer.I32
-                                                (Value.Integer 2)
-                                                (M.read (| n |))))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
-                                    end))
-                            ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                            |)))
+                      ]
+                    |)))
+                | _ => ltac:(M.monadic (M.impossible (||)))
                 end))
         ]
       |)))

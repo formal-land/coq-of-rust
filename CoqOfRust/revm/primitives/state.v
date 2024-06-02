@@ -1234,26 +1234,27 @@ Module state.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let slot := M.alloc (| γ1_1 |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm_primitives::state::StorageSlot",
-                                  "is_changed",
-                                  []
-                                |),
-                                [ M.read (| M.read (| slot |) |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let slot := M.alloc (| γ1_1 |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "revm_primitives::state::StorageSlot",
+                                    "is_changed",
+                                    []
+                                  |),
+                                  [ M.read (| M.read (| slot |) |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

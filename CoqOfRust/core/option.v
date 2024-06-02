@@ -4629,18 +4629,19 @@ Module option.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::null_mut", [ T ] |),
-                                  []
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_function (| "core::ptr::null_mut", [ T ] |),
+                                    []
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |))
@@ -4678,18 +4679,19 @@ Module option.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::null_mut", [ T ] |),
-                                  []
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_function (| "core::ptr::null_mut", [ T ] |),
+                                    []
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |))))
@@ -4737,16 +4739,17 @@ Module option.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.rust_cast (M.read (| x |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.rust_cast (M.read (| x |))))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |))
@@ -4767,16 +4770,17 @@ Module option.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.rust_cast (M.read (| x |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.rust_cast (M.read (| x |))))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |))))
@@ -5839,32 +5843,33 @@ Module option.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::GenericShunt")
-                                    [
-                                      Ty.associated;
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        [ Ty.path "core::convert::Infallible" ]
-                                    ],
-                                  [],
-                                  "collect",
-                                  [ V ]
-                                |),
-                                [ M.read (| i |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::GenericShunt")
+                                      [
+                                        Ty.associated;
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          [ Ty.path "core::convert::Infallible" ]
+                                      ],
+                                    [],
+                                    "collect",
+                                    [ V ]
+                                  |),
+                                  [ M.read (| i |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

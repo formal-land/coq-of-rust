@@ -941,43 +941,44 @@ Module fmt.
                     ltac:(M.monadic
                       match γ with
                       | [ α0; α1 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let ptr := M.copy (| γ |) in
-                                M.match_operator (|
-                                  M.alloc (| α1 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.read (|
-                                          let~ _v :=
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let ptr := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.read (|
+                                            let~ _v :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "core::ptr::read_volatile",
+                                                    [ Ty.path "usize" ]
+                                                  |),
+                                                  [ M.read (| ptr |) ]
+                                                |)
+                                              |) in
                                             M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::ptr::read_volatile",
-                                                  [ Ty.path "usize" ]
-                                                |),
-                                                [ M.read (| ptr |) ]
-                                              |)
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.loop (|
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.loop (|
+                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  |)
                                                 |)
                                               |)
                                             |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end)))
             |)
           |))).

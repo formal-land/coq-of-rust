@@ -2950,8 +2950,10 @@ Module instructions.
                                                   (fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
-                                                      | [] => M.get_constant (| "ruint::ZERO" |)
-                                                      | _ => M.impossible (||)
+                                                      | [] =>
+                                                        ltac:(M.monadic
+                                                          (M.get_constant (| "ruint::ZERO" |)))
+                                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                                       end))
                                               |)));
                                           fun γ =>
@@ -3025,20 +3027,21 @@ Module instructions.
                                                     ltac:(M.monadic
                                                       match γ with
                                                       | [] =>
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "ruint::Uint",
-                                                              "wrapping_shr",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| M.read (| op2 |) |);
-                                                              M.read (| shift |)
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      | _ => M.impossible (||)
+                                                        ltac:(M.monadic
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "ruint::Uint",
+                                                                "wrapping_shr",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| M.read (| op2 |) |);
+                                                                M.read (| shift |)
+                                                              ]
+                                                            |)
+                                                          |)))
+                                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                                       end))
                                               |)));
                                           fun γ =>

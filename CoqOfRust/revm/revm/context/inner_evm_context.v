@@ -1025,33 +1025,34 @@ Module context.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let acc := M.copy (| γ0_0 |) in
-                                let is_cold := M.copy (| γ0_1 |) in
-                                Value.Tuple
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let acc := M.copy (| γ0_0 |) in
+                                  let is_cold := M.copy (| γ0_1 |) in
+                                  Value.Tuple
+                                    [
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| acc |),
-                                          "revm_primitives::state::Account",
-                                          "info"
-                                        |),
-                                        "revm_primitives::state::AccountInfo",
-                                        "balance"
-                                      |)
-                                    |);
-                                    M.read (| is_cold |)
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| acc |),
+                                            "revm_primitives::state::Account",
+                                            "info"
+                                          |),
+                                          "revm_primitives::state::AccountInfo",
+                                          "balance"
+                                        |)
+                                      |);
+                                      M.read (| is_cold |)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -1133,55 +1134,56 @@ Module context.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let a := M.copy (| γ0_0 |) in
-                                let is_cold := M.copy (| γ0_1 |) in
-                                Value.Tuple
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          [ Ty.path "revm_primitives::bytecode::Bytecode" ],
-                                        "unwrap",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              [ Ty.path "revm_primitives::bytecode::Bytecode" ],
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let a := M.copy (| γ0_0 |) in
+                                  let is_cold := M.copy (| γ0_1 |) in
+                                  Value.Tuple
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            [ Ty.path "revm_primitives::bytecode::Bytecode" ],
+                                          "unwrap",
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::clone::Clone",
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                [ Ty.path "revm_primitives::bytecode::Bytecode" ],
+                                              [],
+                                              "clone",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| a |),
-                                                "revm_primitives::state::Account",
-                                                "info"
-                                              |),
-                                              "revm_primitives::state::AccountInfo",
-                                              "code"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |);
-                                    M.read (| is_cold |)
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| a |),
+                                                  "revm_primitives::state::Account",
+                                                  "info"
+                                                |),
+                                                "revm_primitives::state::AccountInfo",
+                                                "code"
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| is_cold |)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -1714,84 +1716,85 @@ Module context.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let e := M.copy (| γ |) in
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::frame::FrameOrResult",
-                                              "new_eofcreate_result",
-                                              []
-                                            |),
-                                            [
-                                              Value.StructRecord
-                                                "revm_interpreter::interpreter::InterpreterResult"
-                                                [
-                                                  ("result", M.read (| e |));
-                                                  ("gas",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "revm_interpreter::gas::Gas",
-                                                        "new",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| inputs |),
-                                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                            "gas_limit"
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let e := M.copy (| γ |) in
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "revm::frame::FrameOrResult",
+                                                "new_eofcreate_result",
+                                                []
+                                              |),
+                                              [
+                                                Value.StructRecord
+                                                  "revm_interpreter::interpreter::InterpreterResult"
+                                                  [
+                                                    ("result", M.read (| e |));
+                                                    ("gas",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "revm_interpreter::gas::Gas",
+                                                          "new",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| inputs |),
+                                                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                                              "gas_limit"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |));
-                                                  ("output",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        "new",
+                                                        ]
+                                                      |));
+                                                    ("output",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                                          "new",
+                                                          []
+                                                        |),
                                                         []
-                                                      |),
-                                                      []
-                                                    |))
-                                                ];
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| inputs |),
-                                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                  "created_address"
-                                                |)
-                                              |);
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::clone::Clone",
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    [ Ty.path "usize" ],
-                                                  [],
-                                                  "clone",
-                                                  []
-                                                |),
-                                                [
+                                                      |))
+                                                  ];
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| inputs |),
                                                     "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                    "return_memory_range"
+                                                    "created_address"
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                |);
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::clone::Clone",
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      [ Ty.path "usize" ],
+                                                    [],
+                                                    "clone",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| inputs |),
+                                                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                                      "return_memory_range"
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |) in
                   let~ _ :=
@@ -2844,44 +2847,45 @@ Module context.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let e := M.copy (| γ |) in
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::frame::FrameOrResult",
-                                              "new_create_result",
-                                              []
-                                            |),
-                                            [
-                                              Value.StructRecord
-                                                "revm_interpreter::interpreter::InterpreterResult"
-                                                [
-                                                  ("result", M.read (| e |));
-                                                  ("gas", M.read (| gas |));
-                                                  ("output",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        "new",
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let e := M.copy (| γ |) in
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "revm::frame::FrameOrResult",
+                                                "new_create_result",
+                                                []
+                                              |),
+                                              [
+                                                Value.StructRecord
+                                                  "revm_interpreter::interpreter::InterpreterResult"
+                                                  [
+                                                    ("result", M.read (| e |));
+                                                    ("gas", M.read (| gas |));
+                                                    ("output",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                                          "new",
+                                                          []
+                                                        |),
                                                         []
-                                                      |),
-                                                      []
-                                                    |))
-                                                ];
-                                              Value.StructTuple "core::option::Option::None" []
-                                            ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                      |))
+                                                  ];
+                                                Value.StructTuple "core::option::Option::None" []
+                                              ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |) in
                   let~ _ :=
@@ -3751,8 +3755,8 @@ Module context.
                                       (fun γ =>
                                         ltac:(M.monadic
                                           match γ with
-                                          | [] => M.alloc (| Value.Bool true |)
-                                          | _ => M.impossible (||)
+                                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -3958,8 +3962,10 @@ Module context.
                                                   (fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
-                                                      | [] => M.alloc (| Value.Bool true |)
-                                                      | _ => M.impossible (||)
+                                                      | [] =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Bool true |)))
+                                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                                       end))
                                               |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))

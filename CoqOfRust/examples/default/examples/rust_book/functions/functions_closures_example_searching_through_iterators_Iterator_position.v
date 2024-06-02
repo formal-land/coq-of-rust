@@ -105,19 +105,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let x := M.copy (| γ |) in
-                                BinOp.Pure.eq
-                                  (BinOp.Wrap.rem Integer.I32 (M.read (| x |)) (Value.Integer 2))
-                                  (Value.Integer 0)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let x := M.copy (| γ |) in
+                                  BinOp.Pure.eq
+                                    (BinOp.Wrap.rem Integer.I32 (M.read (| x |)) (Value.Integer 2))
+                                    (Value.Integer 0)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)
@@ -232,16 +233,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                BinOp.Pure.lt (M.read (| x |)) (Value.Integer 0)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  BinOp.Pure.lt (M.read (| x |)) (Value.Integer 0)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)

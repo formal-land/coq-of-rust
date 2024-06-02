@@ -1271,8 +1271,13 @@ Module str.
                                                                 ltac:(M.monadic
                                                                   match γ with
                                                                   | [] =>
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  | _ => M.impossible (||)
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                  | _ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.impossible (||)))
                                                                   end))
                                                           |)));
                                                       fun γ =>
@@ -1557,8 +1562,13 @@ Module str.
                                                                 ltac:(M.monadic
                                                                   match γ with
                                                                   | [] =>
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  | _ => M.impossible (||)
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                  | _ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.impossible (||)))
                                                                   end))
                                                           |)));
                                                       fun γ =>

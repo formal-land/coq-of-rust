@@ -1030,25 +1030,26 @@ Module str.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
-                                  let γ := M.read (| γ |) in
-                                  let byte := M.copy (| γ |) in
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
-                                      M.get_function (|
-                                        "core::str::validations::utf8_is_cont_byte",
-                                        []
-                                      |),
-                                      [ M.read (| byte |) ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ := M.read (| γ |) in
+                                    let γ := M.read (| γ |) in
+                                    let byte := M.copy (| γ |) in
+                                    UnOp.Pure.not
+                                      (M.call_closure (|
+                                        M.get_function (|
+                                          "core::str::validations::utf8_is_cont_byte",
+                                          []
+                                        |),
+                                        [ M.read (| byte |) ]
+                                      |))))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)

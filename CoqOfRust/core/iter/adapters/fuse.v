@@ -1066,25 +1066,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      I,
-                                      [],
-                                      "nth",
-                                      []
-                                    |),
-                                    [ M.read (| iter |); M.read (| n |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        I,
+                                        [],
+                                        "nth",
+                                        []
+                                      |),
+                                      [ M.read (| iter |); M.read (| n |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1276,25 +1277,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      I,
-                                      [],
-                                      "find",
-                                      [ P ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| predicate |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        I,
+                                        [],
+                                        "find",
+                                        [ P ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| predicate |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1337,25 +1339,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "next_back",
-                                      []
-                                    |),
-                                    [ M.read (| iter |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "next_back",
+                                        []
+                                      |),
+                                      [ M.read (| iter |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1399,25 +1402,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "nth_back",
-                                      []
-                                    |),
-                                    [ M.read (| iter |); M.read (| n |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "nth_back",
+                                        []
+                                      |),
+                                      [ M.read (| iter |); M.read (| n |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1611,25 +1615,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "rfind",
-                                      [ P ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| predicate |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        "rfind",
+                                        [ P ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| predicate |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))

@@ -566,23 +566,24 @@ Module iter.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let n := M.copy (| γ |) in
-                                                  BinOp.Wrap.div
-                                                    Integer.Usize
-                                                    (M.read (| n |))
-                                                    (M.read (|
-                                                      M.get_constant (|
-                                                        "core::iter::adapters::array_chunks::N"
-                                                      |)
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let n := M.copy (| γ |) in
+                                                    BinOp.Wrap.div
+                                                      Integer.Usize
+                                                      (M.read (| n |))
+                                                      (M.read (|
+                                                        M.get_constant (|
+                                                          "core::iter::adapters::array_chunks::N"
+                                                        |)
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -917,25 +918,26 @@ Module iter.
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
-                                              Value.StructTuple
-                                                "core::ops::control_flow::ControlFlow::Break"
-                                                [ M.read (| x |) ]))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α1 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let x := M.copy (| γ |) in
+                                                Value.StructTuple
+                                                  "core::ops::control_flow::ControlFlow::Break"
+                                                  [ M.read (| x |) ]))
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -1526,43 +1528,44 @@ Module iter.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let local := M.copy (| γ |) in
-                                                      M.read (|
-                                                        let~ idx :=
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let local := M.copy (| γ |) in
+                                                        M.read (|
+                                                          let~ idx :=
+                                                            M.alloc (|
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (M.read (| local |))
+                                                            |) in
                                                           M.alloc (|
-                                                            BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| i |))
-                                                              (M.read (| local |))
-                                                          |) in
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::iter::traits::iterator::Iterator",
-                                                              I,
-                                                              [],
-                                                              "__iterator_get_unchecked",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                self,
-                                                                "core::iter::adapters::array_chunks::ArrayChunks",
-                                                                "iter"
-                                                              |);
-                                                              M.read (| idx |)
-                                                            ]
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::iter::traits::iterator::Iterator",
+                                                                I,
+                                                                [],
+                                                                "__iterator_get_unchecked",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  self,
+                                                                  "core::iter::adapters::array_chunks::ArrayChunks",
+                                                                  "iter"
+                                                                |);
+                                                                M.read (| idx |)
+                                                              ]
+                                                            |)
                                                           |)
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |)

@@ -406,8 +406,8 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -476,8 +476,8 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -566,8 +566,8 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -622,8 +622,8 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -705,12 +705,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -769,12 +770,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::InMemoryChange"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::InMemoryChange"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)))
                   ]
@@ -865,12 +867,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::Destroyed"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::Destroyed"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -902,12 +905,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedAgain"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedAgain"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -939,58 +943,59 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_v1",
-                                              []
-                                            |),
-                                            [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: Wrong state transition, touch empty is not possible from "
-                                                      |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              [
-                                                                Ty.path
-                                                                  "revm::db::states::account_status::AccountStatus"
-                                                              ]
-                                                          ]
-                                                        |),
-                                                        [ self ]
-                                                      |)
-                                                    ]
-                                                |))
-                                            ]
-                                          |)
-                                        ]
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.call_closure (|
+                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "internal error: entered unreachable code: Wrong state transition, touch empty is not possible from "
+                                                        |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                [
+                                                                  Ty.path
+                                                                    "revm::db::states::account_status::AccountStatus"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [ self ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)))
                   ]
@@ -1106,16 +1111,17 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        Value.StructTuple
-                                          "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                          []
-                                      ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          Value.StructTuple
+                                            "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                            []
+                                        ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -1147,16 +1153,17 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        Value.StructTuple
-                                          "revm::db::states::account_status::AccountStatus::InMemoryChange"
-                                          []
-                                      ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          Value.StructTuple
+                                            "revm::db::states::account_status::AccountStatus::InMemoryChange"
+                                            []
+                                        ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -1188,58 +1195,59 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_v1",
-                                              []
-                                            |),
-                                            [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: Wrong state transition, touch crate is not possible from "
-                                                      |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              [
-                                                                Ty.path
-                                                                  "revm::db::states::account_status::AccountStatus"
-                                                              ]
-                                                          ]
-                                                        |),
-                                                        [ self ]
-                                                      |)
-                                                    ]
-                                                |))
-                                            ]
-                                          |)
-                                        ]
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.call_closure (|
+                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "internal error: entered unreachable code: Wrong state transition, touch crate is not possible from "
+                                                        |)
+                                                      ]
+                                                  |));
+                                                (* Unsize *)
+                                                M.pointer_coercion
+                                                  (M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                [
+                                                                  Ty.path
+                                                                    "revm::db::states::account_status::AccountStatus"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [ self ]
+                                                        |)
+                                                      ]
+                                                  |))
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)))
                   ]
@@ -1423,12 +1431,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)))
                   ]
@@ -1516,12 +1525,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedAgain"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedAgain"
+                                        []
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>

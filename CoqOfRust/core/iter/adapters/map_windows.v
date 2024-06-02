@@ -727,33 +727,34 @@ Module iter.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let hi := M.copy (| γ |) in
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path "usize",
-                                                                      "saturating_sub",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (| hi |);
-                                                                      BinOp.Wrap.sub
-                                                                        Integer.Usize
-                                                                        (M.read (|
-                                                                          M.get_constant (|
-                                                                            "core::iter::adapters::map_windows::N"
-                                                                          |)
-                                                                        |))
-                                                                        (Value.Integer 1)
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let hi := M.copy (| γ |) in
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path "usize",
+                                                                        "saturating_sub",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| hi |);
+                                                                        BinOp.Wrap.sub
+                                                                          Integer.Usize
+                                                                          (M.read (|
+                                                                            M.get_constant (|
+                                                                              "core::iter::adapters::map_windows::N"
+                                                                            |)
+                                                                          |))
+                                                                          (Value.Integer 1)
+                                                                      ]
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                                         end))
                                                 ]
                                               |)

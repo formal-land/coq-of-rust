@@ -932,42 +932,43 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let b := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::cmp::Ord",
-                                                    K,
-                                                    [],
-                                                    "cmp",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_tuple_field (|
-                                                      M.read (| a |),
-                                                      0
-                                                    |);
-                                                    M.SubPointer.get_tuple_field (|
-                                                      M.read (| b |),
-                                                      0
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let b := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::cmp::Ord",
+                                                      K,
+                                                      [],
+                                                      "cmp",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.read (| a |),
+                                                        0
+                                                      |);
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.read (| b |),
+                                                        0
+                                                      |)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)

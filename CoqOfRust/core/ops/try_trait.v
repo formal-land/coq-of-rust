@@ -71,29 +71,30 @@ Module ops.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            Value.StructTuple
-                              "core::ops::try_trait::NeverShortCircuit"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnMut",
-                                    impl_FnMut_A__arrow_T,
-                                    [ Ty.tuple [ A ] ],
-                                    "call_mut",
-                                    []
-                                  |),
-                                  [ f; Value.Tuple [ M.read (| a |) ] ]
-                                |)
-                              ]))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              Value.StructTuple
+                                "core::ops::try_trait::NeverShortCircuit"
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::FnMut",
+                                      impl_FnMut_A__arrow_T,
+                                      [ Ty.tuple [ A ] ],
+                                      "call_mut",
+                                      []
+                                    |),
+                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                                  |)
+                                ]))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))))
         | _, _ => M.impossible
         end.
@@ -118,37 +119,38 @@ Module ops.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    Value.StructTuple
-                                      "core::ops::try_trait::NeverShortCircuit"
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_A__B__arrow_T,
-                                            [ Ty.tuple [ A; B ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                                        |)
-                                      ]))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      Value.StructTuple
+                                        "core::ops::try_trait::NeverShortCircuit"
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              impl_FnMut_A__B__arrow_T,
+                                              [ Ty.tuple [ A; B ] ],
+                                              "call_mut",
+                                              []
+                                            |),
+                                            [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                          |)
+                                        ]))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))))
         | _, _ => M.impossible
         end.

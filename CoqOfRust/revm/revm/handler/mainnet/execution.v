@@ -174,30 +174,31 @@ Module handler.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "erase_cost",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| remaining |) ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "record_refund",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| refunded |) ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "erase_cost",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| remaining |) ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "record_refund",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| refunded |) ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ =>
@@ -235,19 +236,20 @@ Module handler.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::gas::Gas",
-                                          "erase_cost",
-                                          []
-                                        |),
-                                        [ M.read (| gas |); M.read (| remaining |) ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "erase_cost",
+                                            []
+                                          |),
+                                          [ M.read (| gas |); M.read (| remaining |) ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))

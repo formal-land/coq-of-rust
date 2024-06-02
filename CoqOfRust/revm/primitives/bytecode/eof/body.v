@@ -907,36 +907,37 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.rust_cast
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| x |) ]
-                                                        |)
-                                                      ]
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.rust_cast
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "bytes::bytes::Bytes",
+                                                          "len",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              "deref",
+                                                              []
+                                                            |),
+                                                            [ M.read (| x |) ]
+                                                          |)
+                                                        ]
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -1032,36 +1033,37 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.rust_cast
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| x |) ]
-                                                        |)
-                                                      ]
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.rust_cast
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "bytes::bytes::Bytes",
+                                                          "len",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              "deref",
+                                                              []
+                                                            |),
+                                                            [ M.read (| x |) ]
+                                                          |)
+                                                        ]
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -1180,34 +1182,36 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| x |) ]
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| x |) ]
+                                                        |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -1299,34 +1303,36 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| x |) ]
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| x |) ]
+                                                        |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -2367,16 +2373,17 @@ Module bytecode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.rust_cast (M.read (| M.read (| x |) |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.rust_cast (M.read (| M.read (| x |) |))))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |)
@@ -2563,16 +2570,17 @@ Module bytecode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.rust_cast (M.read (| M.read (| x |) |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.rust_cast (M.read (| M.read (| x |) |))))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |)

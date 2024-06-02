@@ -850,78 +850,81 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::default::Default",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "default",
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::default::Default",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "default",
+                                        []
+                                      |),
                                       []
-                                    |),
-                                    []
-                                  |)
-                                |) in
-                              let~ _ :=
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::secp256k1::ECRECOVER"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::hash::SHA256" |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::hash::RIPEMD160"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::identity::FUN" |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
                                         [
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::secp256k1::ECRECOVER"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::hash::SHA256" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::hash::RIPEMD160" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::identity::FUN" |)
-                                          |)
-                                        ]
-                                    ]
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -973,93 +976,94 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "homestead",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "homestead",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::add::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::mul::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::pair::BYZANTIUM"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::modexp::BYZANTIUM"
+                                              |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
                                         [
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::add::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::mul::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::pair::BYZANTIUM"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::modexp::BYZANTIUM"
-                                            |)
-                                          |)
-                                        ]
-                                    ]
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -1110,91 +1114,92 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "byzantium",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "byzantium",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::blake2::FUN" |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::add::ISTANBUL"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::mul::ISTANBUL"
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (|
+                                                "revm_precompile::bn128::pair::ISTANBUL"
+                                              |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
                                         [
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::blake2::FUN" |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::add::ISTANBUL"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::mul::ISTANBUL"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.get_constant (|
-                                              "revm_precompile::bn128::pair::ISTANBUL"
-                                            |)
-                                          |)
-                                        ]
-                                    ]
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -1241,76 +1246,77 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "istanbul",
-                                          []
-                                        |),
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
                                         []
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              let~ _ :=
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "istanbul",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [
+                                        precompiles;
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::modexp::BERLIN" |)
+                                            |)
+                                          ]
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "revm_precompile::Precompiles",
-                                      "extend",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                      ]
-                                    |),
-                                    [
-                                      precompiles;
-                                      Value.Array
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
                                         [
-                                          M.read (|
-                                            M.get_constant (| "revm_precompile::modexp::BERLIN" |)
-                                          |)
-                                        ]
-                                    ]
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -1365,83 +1371,84 @@ Module Impl_revm_precompile_Precompiles.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ precompiles :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "berlin",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ precompiles :=
+                                  M.copy (|
+                                    let~ precompiles := M.copy (| precompiles |) in
+                                    let~ _ :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "extend",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                            ]
+                                          |),
+                                          [
+                                            precompiles;
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
+                                                  |)
+                                                |)
+                                              ]
+                                          ]
+                                        |)
+                                      |) in
+                                    precompiles
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_precompile::Precompiles",
-                                      [],
-                                      "clone",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
                                       []
                                     |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "berlin",
-                                          []
-                                        |),
-                                        []
-                                      |)
-                                    ]
+                                    [ M.read (| precompiles |) ]
                                   |)
-                                |) in
-                              let~ precompiles :=
-                                M.copy (|
-                                  let~ precompiles := M.copy (| precompiles |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_precompile::Precompiles",
-                                          "extend",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                          ]
-                                        |),
-                                        [
-                                          precompiles;
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                M.get_constant (|
-                                                  "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
-                                                |)
-                                              |)
-                                            ]
-                                        ]
-                                      |)
-                                    |) in
-                                  precompiles
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.path "revm_precompile::Precompiles";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [ M.read (| precompiles |) ]
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -2493,10 +2500,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::HOMESTEAD" []
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>
@@ -2534,10 +2542,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::BYZANTIUM" []
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>
@@ -2567,10 +2576,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::ISTANBUL" []
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>
@@ -2632,10 +2642,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" []
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>
@@ -2665,10 +2676,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" []
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" []
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>

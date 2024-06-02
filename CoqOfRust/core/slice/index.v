@@ -4203,23 +4203,24 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.never_to_any (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::slice::index::slice_start_index_overflow_fail",
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.never_to_any (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::index::slice_start_index_overflow_fail",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)
@@ -4275,23 +4276,24 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.never_to_any (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::slice::index::slice_end_index_overflow_fail",
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.never_to_any (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::index::slice_end_index_overflow_fail",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)
@@ -4853,23 +4855,24 @@ Module slice.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.never_to_any (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::slice::index::slice_start_index_overflow_fail",
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::slice::index::slice_start_index_overflow_fail",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |)
@@ -4917,23 +4920,24 @@ Module slice.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.never_to_any (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::slice::index::slice_end_index_overflow_fail",
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::slice::index::slice_end_index_overflow_fail",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |)

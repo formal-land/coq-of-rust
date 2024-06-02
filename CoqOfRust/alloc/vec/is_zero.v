@@ -34,16 +34,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -88,16 +89,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -142,16 +144,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -196,16 +199,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -250,16 +254,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -304,16 +309,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -358,16 +364,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -412,16 +419,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -466,16 +474,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -520,16 +529,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -574,16 +584,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -628,16 +639,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -682,16 +694,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Bool false)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.Bool false)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -736,16 +749,17 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.UnicodeChar 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq (M.read (| x |)) (Value.UnicodeChar 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -790,21 +804,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
-                                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
-                                      [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "f32",
+                                          "to_bits",
+                                          []
+                                        |),
+                                        [ M.read (| x |) ]
+                                      |))
+                                      (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
@@ -849,21 +868,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
-                                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
-                                      [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.Pure.eq
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "f64",
+                                          "to_bits",
+                                          []
+                                        |),
+                                        [ M.read (| x |) ]
+                                      |))
+                                      (Value.Integer 0)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]

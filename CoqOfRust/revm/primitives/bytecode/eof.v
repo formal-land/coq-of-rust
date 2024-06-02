@@ -721,51 +721,52 @@ Module bytecode.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let bytes := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                        "get",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            [ Ty.path "usize" ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| bytes |);
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let bytes := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          "get",
                                           [
-                                            ("end_",
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::cmp::min",
-                                                  [ Ty.path "usize" ]
-                                                |),
-                                                [
-                                                  M.read (| len |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [ M.read (| bytes |) ]
-                                                  |)
-                                                ]
-                                              |))
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeTo")
+                                              [ Ty.path "usize" ]
                                           ]
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        |),
+                                        [
+                                          M.read (| bytes |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [
+                                              ("end_",
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "core::cmp::min",
+                                                    [ Ty.path "usize" ]
+                                                  |),
+                                                  [
+                                                    M.read (| len |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [ M.read (| bytes |) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |);

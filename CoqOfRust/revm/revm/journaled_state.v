@@ -3118,32 +3118,33 @@ Module journaled_state.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let slot := M.copy (| γ0_1 |) in
-                                        M.read (|
-                                          M.write (|
-                                            M.read (| slot |),
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::clone::Clone",
-                                                Ty.path "revm_primitives::state::StorageSlot",
-                                                [],
-                                                "clone",
-                                                []
-                                              |),
-                                              [ empty ]
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                          let slot := M.copy (| γ0_1 |) in
+                                          M.read (|
+                                            M.write (|
+                                              M.read (| slot |),
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::clone::Clone",
+                                                  Ty.path "revm_primitives::state::StorageSlot",
+                                                  [],
+                                                  "clone",
+                                                  []
+                                                |),
+                                                [ empty ]
+                                              |)
                                             |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -5001,41 +5002,42 @@ Module journaled_state.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let cs := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "revm::journaled_state::JournaledState",
-                                        "journal_revert",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| state |);
-                                        M.read (| transient_storage |);
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::mem::take",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                [
-                                                  Ty.path "revm::journaled_state::JournalEntry";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [ M.read (| cs |) ]
-                                        |);
-                                        M.read (| is_spurious_dragon_enabled |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let cs := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "revm::journaled_state::JournaledState",
+                                          "journal_revert",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| state |);
+                                          M.read (| transient_storage |);
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::mem::take",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  [
+                                                    Ty.path "revm::journaled_state::JournalEntry";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ]
+                                            |),
+                                            [ M.read (| cs |) ]
+                                          |);
+                                          M.read (| is_spurious_dragon_enabled |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -6120,29 +6122,30 @@ Module journaled_state.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let i := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::convert::Into",
-                                                              Ty.path
-                                                                "revm_primitives::state::AccountInfo",
-                                                              [
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let i := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::Into",
                                                                 Ty.path
-                                                                  "revm_primitives::state::Account"
-                                                              ],
-                                                              "into",
-                                                              []
-                                                            |),
-                                                            [ M.read (| i |) ]
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                                  "revm_primitives::state::AccountInfo",
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_primitives::state::Account"
+                                                                ],
+                                                                "into",
+                                                                []
+                                                              |),
+                                                              [ M.read (| i |) ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         ]
                                       |);

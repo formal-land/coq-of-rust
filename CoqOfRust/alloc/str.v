@@ -269,131 +269,137 @@ Module str.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let n := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              Ty.apply
-                                                (Ty.path "core::iter::adapters::map::Map")
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::slice::iter::Iter")
-                                                    [ S ];
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
-                                                    (Ty.path "usize")
-                                                ],
-                                              [],
-                                              "try_fold",
-                                              [
-                                                Ty.path "usize";
-                                                Ty.function
-                                                  [ Ty.path "usize"; Ty.path "usize" ]
-                                                  (Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    [ Ty.path "usize" ]);
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let n := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  [ Ty.path "usize" ]
-                                              ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::iterator::Iterator",
+                                                  (Ty.path "core::iter::adapters::map::Map")
+                                                  [
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
-                                                      [ S ],
-                                                    [],
-                                                    "map",
+                                                      [ S ];
+                                                    Ty.function
+                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ] ]
+                                                      (Ty.path "usize")
+                                                  ],
+                                                [],
+                                                "try_fold",
+                                                [
+                                                  Ty.path "usize";
+                                                  Ty.function
+                                                    [ Ty.path "usize"; Ty.path "usize" ]
+                                                    (Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      [ Ty.path "usize" ]);
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    [ Ty.path "usize" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::iterator::Iterator",
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        [ S ],
+                                                      [],
+                                                      "map",
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [ Ty.apply (Ty.path "&") [ S ] ]
+                                                          ]
+                                                          (Ty.path "usize")
+                                                      ]
+                                                    |),
                                                     [
-                                                      Ty.path "usize";
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ S ] ]
-                                                        ]
-                                                        (Ty.path "usize")
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ S ],
-                                                        "iter",
-                                                        []
-                                                      |),
-                                                      [ M.read (| slice |) ]
-                                                    |);
-                                                    M.closure
-                                                      (fun γ =>
-                                                        ltac:(M.monadic
-                                                          match γ with
-                                                          | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let s := M.copy (| γ |) in
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "slice")
-                                                                          [ T ],
-                                                                        "len",
-                                                                        []
-                                                                      |),
-                                                                      [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [ S ],
+                                                          "iter",
+                                                          []
+                                                        |),
+                                                        [ M.read (| slice |) ]
+                                                      |);
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0 ] =>
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  M.alloc (| α0 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let s := M.copy (| γ |) in
                                                                         M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::convert::AsRef",
-                                                                            B,
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                [ T ]
-                                                                            ],
-                                                                            "as_ref",
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              [ T ],
+                                                                            "len",
                                                                             []
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
                                                                               M.get_trait_method (|
-                                                                                "core::borrow::Borrow",
-                                                                                S,
-                                                                                [ B ],
-                                                                                "borrow",
+                                                                                "core::convert::AsRef",
+                                                                                B,
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    [ T ]
+                                                                                ],
+                                                                                "as_ref",
                                                                                 []
                                                                               |),
-                                                                              [ M.read (| s |) ]
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::borrow::Borrow",
+                                                                                    S,
+                                                                                    [ B ],
+                                                                                    "borrow",
+                                                                                    []
+                                                                                  |),
+                                                                                  [ M.read (| s |) ]
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           ]
-                                                                        |)
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
-                                                          end))
-                                                  ]
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            | _ =>
+                                                              ltac:(M.monadic (M.impossible (||)))
+                                                            end))
+                                                    ]
+                                                  |)
+                                                |);
+                                                M.read (| n |);
+                                                M.get_associated_function (|
+                                                  Ty.path "usize",
+                                                  "checked_add",
+                                                  []
                                                 |)
-                                              |);
-                                              M.read (| n |);
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "checked_add",
-                                                []
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |);
@@ -615,85 +621,87 @@ Module str.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let it := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ it :=
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let it := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ it :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::AsRef",
+                                                    B,
+                                                    [ Ty.apply (Ty.path "slice") [ T ] ],
+                                                    "as_ref",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::borrow::Borrow",
+                                                        S,
+                                                        [ B ],
+                                                        "borrow",
+                                                        []
+                                                      |),
+                                                      [ M.read (| it |) ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
                                             M.alloc (|
                                               M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::AsRef",
-                                                  B,
-                                                  [ Ty.apply (Ty.path "slice") [ T ] ],
-                                                  "as_ref",
-                                                  []
+                                                M.get_function (|
+                                                  "core::slice::raw::from_raw_parts",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      [ T ]
+                                                  ]
                                                 |),
                                                 [
                                                   M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::borrow::Borrow",
-                                                      S,
-                                                      [ B ],
-                                                      "borrow",
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*const") [ T ],
+                                                      "cast",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          [ T ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [ T ],
+                                                          "as_ptr",
+                                                          []
+                                                        |),
+                                                        [ M.read (| it |) ]
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [ T ],
+                                                      "len",
                                                       []
                                                     |),
                                                     [ M.read (| it |) ]
                                                   |)
                                                 ]
                                               |)
-                                            |) in
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (|
-                                                "core::slice::raw::from_raw_parts",
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                    [ T ]
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ T ],
-                                                    "cast",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                        [ T ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ T ],
-                                                        "as_ptr",
-                                                        []
-                                                      |),
-                                                      [ M.read (| it |) ]
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [ T ],
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [ M.read (| it |) ]
-                                                |)
-                                              ]
                                             |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)

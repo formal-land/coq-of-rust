@@ -2238,82 +2238,83 @@ Module collections.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let parent := M.copy (| γ |) in
-                                          Value.StructRecord
-                                            "alloc::collections::btree::node::Handle"
-                                            [
-                                              ("node",
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::NodeRef")
-                                                      [
-                                                        BorrowType;
-                                                        K;
-                                                        V;
-                                                        Ty.path
-                                                          "alloc::collections::btree::node::marker::Internal"
-                                                      ],
-                                                    "from_internal",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| M.read (| parent |) |);
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          self,
-                                                          "alloc::collections::btree::node::NodeRef",
-                                                          "height"
-                                                        |)
-                                                      |))
-                                                      (Value.Integer 1)
-                                                  ]
-                                                |));
-                                              ("idx",
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::convert::From",
-                                                    Ty.path "usize",
-                                                    [ Ty.path "u16" ],
-                                                    "from",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                          [ Ty.path "u16" ],
-                                                        "assume_init",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let parent := M.copy (| γ |) in
+                                            Value.StructRecord
+                                              "alloc::collections::btree::node::Handle"
+                                              [
+                                                ("node",
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::node::NodeRef")
+                                                        [
+                                                          BorrowType;
+                                                          K;
+                                                          V;
+                                                          Ty.path
+                                                            "alloc::collections::btree::node::marker::Internal"
+                                                        ],
+                                                      "from_internal",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.read (| M.read (| parent |) |);
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| leaf_ptr |),
-                                                            "alloc::collections::btree::node::LeafNode",
-                                                            "parent_idx"
+                                                            self,
+                                                            "alloc::collections::btree::node::NodeRef",
+                                                            "height"
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |));
-                                              ("_marker",
-                                                Value.StructTuple "core::marker::PhantomData" [])
-                                            ]))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                                        |))
+                                                        (Value.Integer 1)
+                                                    ]
+                                                  |));
+                                                ("idx",
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::convert::From",
+                                                      Ty.path "usize",
+                                                      [ Ty.path "u16" ],
+                                                      "from",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            [ Ty.path "u16" ],
+                                                          "assume_init",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| leaf_ptr |),
+                                                              "alloc::collections::btree::node::LeafNode",
+                                                              "parent_idx"
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |));
+                                                ("_marker",
+                                                  Value.StructTuple "core::marker::PhantomData" [])
+                                              ]))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |);
@@ -4532,51 +4533,52 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let old_root := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::node::NodeRef")
-                                              [
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Owned";
-                                                K;
-                                                V;
-                                                Ty.path
-                                                  "alloc::collections::btree::node::marker::Internal"
-                                              ],
-                                            "forget_type",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::btree::node::NodeRef")
-                                                  [
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Owned";
-                                                    K;
-                                                    V;
-                                                    Ty.path
-                                                      "alloc::collections::btree::node::marker::Internal"
-                                                  ],
-                                                "new_internal",
-                                                [ A ]
-                                              |),
-                                              [ M.read (| old_root |); M.read (| alloc |) ]
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let old_root := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                [
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Owned";
+                                                  K;
+                                                  V;
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Internal"
+                                                ],
+                                              "forget_type",
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    [
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Owned";
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Internal"
+                                                    ],
+                                                  "new_internal",
+                                                  [ A ]
+                                                |),
+                                                [ M.read (| old_root |); M.read (| alloc |) ]
+                                              |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -12832,24 +12834,25 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let parent := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _child := M.copy (| γ |) in
-                                          M.read (| parent |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let parent := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _child := M.copy (| γ |) in
+                                            M.read (| parent |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.read (| alloc |)
                 ]
@@ -12929,24 +12932,25 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _parent := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let child := M.copy (| γ |) in
-                                          M.read (| child |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _parent := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let child := M.copy (| γ |) in
+                                            M.read (| child |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.read (| alloc |)
                 ]

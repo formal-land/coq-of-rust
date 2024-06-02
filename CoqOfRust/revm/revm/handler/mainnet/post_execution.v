@@ -1222,74 +1222,75 @@ Module handler.
                                             ltac:(M.monadic
                                               match γ with
                                               | [] =>
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::panicking::panic_fmt",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_v1",
-                                                            []
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "Encountered unexpected internal return flag: "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        " with instruction result: "
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    M.never_to_any (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::panicking::panic_fmt",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Encountered unexpected internal return flag: "
+                                                                      |);
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          " with instruction result: "
+                                                                      |)
+                                                                    ]
+                                                                |));
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "revm_interpreter::instruction_result::SuccessOrHalt"
-                                                                        ]
-                                                                      |),
-                                                                      [ flag ]
-                                                                    |);
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::instruction_result::SuccessOrHalt"
+                                                                          ]
+                                                                        |),
+                                                                        [ flag ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "revm_interpreter::interpreter::InterpreterResult"
-                                                                        ]
-                                                                      |),
-                                                                      [ instruction_result ]
-                                                                    |)
-                                                                  ]
-                                                              |))
-                                                          ]
-                                                        |)
-                                                      ]
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::interpreter::InterpreterResult"
+                                                                          ]
+                                                                        |),
+                                                                        [ instruction_result ]
+                                                                      |)
+                                                                    ]
+                                                                |))
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
-                                                  |)
-                                                |)
-                                              | _ => M.impossible (||)
+                                                  |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
                                               end))
                                       |)))
                                 ]

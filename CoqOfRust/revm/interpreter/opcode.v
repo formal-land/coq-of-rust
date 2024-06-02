@@ -449,57 +449,58 @@ Module opcode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.read (|
-                                                      let~ instruction :=
-                                                        M.alloc (|
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  [
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          [
-                                                                            Ty.path
-                                                                              "revm_interpreter::interpreter::Interpreter"
-                                                                          ];
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          [ H ]
-                                                                      ]
-                                                                      (Ty.tuple []);
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
-                                                                "new",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.SubPointer.get_array_field (|
-                                                                    M.read (| table |),
-                                                                    i
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let i := M.copy (| γ |) in
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.read (|
+                                                        let~ instruction :=
+                                                          M.alloc (|
+                                                            (* Unsize *)
+                                                            M.pointer_coercion
+                                                              (M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::boxed::Box")
+                                                                    [
+                                                                      Ty.function
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_interpreter::interpreter::Interpreter"
+                                                                            ];
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            [ H ]
+                                                                        ]
+                                                                        (Ty.tuple []);
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  "new",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_array_field (|
+                                                                      M.read (| table |),
+                                                                      i
+                                                                    |)
                                                                   |)
-                                                                |)
-                                                              ]
-                                                            |))
-                                                        |) in
-                                                      instruction
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                                                ]
+                                                              |))
+                                                          |) in
+                                                        instruction
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |)
@@ -723,42 +724,43 @@ Module opcode.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::function::FnMut",
-                                FN,
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnMut",
+                                  FN,
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.function
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              [ Ty.path "revm_interpreter::interpreter::Interpreter"
+                                              ];
+                                            Ty.apply (Ty.path "&mut") [ H ]
+                                          ]
+                                          (Ty.tuple [])
+                                      ]
+                                  ],
+                                  "call_mut",
+                                  []
+                                |),
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.function
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            [ Ty.path "revm_interpreter::interpreter::Interpreter"
-                                            ];
-                                          Ty.apply (Ty.path "&mut") [ H ]
-                                        ]
-                                        (Ty.tuple [])
-                                    ]
-                                ],
-                                "call_mut",
-                                []
-                              |),
-                              [
-                                outer;
-                                Value.Tuple
-                                  [ M.read (| M.SubPointer.get_array_field (| table, i |) |) ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                  outer;
+                                  Value.Tuple
+                                    [ M.read (| M.SubPointer.get_array_field (| table, i |) |) ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))

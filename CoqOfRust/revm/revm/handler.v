@@ -280,19 +280,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::FrontierSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::FrontierSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>
@@ -322,19 +324,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::HomesteadSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::HomesteadSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>
@@ -421,19 +425,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::PetersburgSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::PetersburgSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>
@@ -463,19 +469,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::IstanbulSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::IstanbulSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>
@@ -529,19 +537,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::LondonSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::LondonSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>

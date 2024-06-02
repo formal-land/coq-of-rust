@@ -2832,18 +2832,19 @@ Module gas.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let v := M.copy (| γ |) in
-                                          BinOp.Pure.eq
-                                            (M.read (| M.read (| M.read (| v |) |) |))
-                                            (Value.Integer 0)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let v := M.copy (| γ |) in
+                                            BinOp.Pure.eq
+                                              (M.read (| M.read (| M.read (| v |) |) |))
+                                              (Value.Integer 0)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -3016,20 +3017,24 @@ Module gas.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let v := M.copy (| γ |) in
-                                                                    BinOp.Pure.eq
-                                                                      (M.read (|
-                                                                        M.read (| M.read (| v |) |)
-                                                                      |))
-                                                                      (Value.Integer 0)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let v := M.copy (| γ |) in
+                                                                      BinOp.Pure.eq
+                                                                        (M.read (|
+                                                                          M.read (|
+                                                                            M.read (| v |)
+                                                                          |)
+                                                                        |))
+                                                                        (Value.Integer 0)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
                                                           end))
                                                   ]
                                                 |)
@@ -3235,45 +3240,46 @@ Module gas.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0; α1 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let slot_count := M.copy (| γ |) in
-                                              M.match_operator (|
-                                                M.alloc (| α1 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ := M.read (| γ |) in
-                                                      let γ1_0 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                      let γ1_1 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let slots := M.alloc (| γ1_1 |) in
-                                                      BinOp.Wrap.add
-                                                        Integer.U64
-                                                        (M.read (| slot_count |))
-                                                        (M.rust_cast
-                                                          (M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
-                                                                [
-                                                                  Ty.path "ruint::Uint";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              "len",
-                                                              []
-                                                            |),
-                                                            [ M.read (| slots |) ]
-                                                          |)))))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let slot_count := M.copy (| γ |) in
+                                                M.match_operator (|
+                                                  M.alloc (| α1 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ1_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                        let slots := M.alloc (| γ1_1 |) in
+                                                        BinOp.Wrap.add
+                                                          Integer.U64
+                                                          (M.read (| slot_count |))
+                                                          (M.rust_cast
+                                                            (M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  [
+                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                "len",
+                                                                []
+                                                              |),
+                                                              [ M.read (| slots |) ]
+                                                            |)))))
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)

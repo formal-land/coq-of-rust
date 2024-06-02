@@ -60,7 +60,7 @@ Module mem.
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
+        (M.read (| (* thir failed to compile: Any { .. } *) M.alloc (| Value.Tuple [] |) |)))
     | _, _ => M.impossible
     end.
   

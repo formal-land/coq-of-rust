@@ -1714,7 +1714,10 @@ Module result.
                       M.closure
                         (fun γ =>
                           ltac:(M.monadic
-                            match γ with | [ gas_used ] => gas_used | _ => M.impossible (||) end))
+                            match γ with
+                            | [ gas_used ] => ltac:(M.monadic gas_used)
+                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            end))
                     |)))
               ]
             |)

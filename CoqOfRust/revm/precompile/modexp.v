@@ -103,51 +103,52 @@ Module modexp.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1; α2; α3 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α2 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let c := M.copy (| γ |) in
-                                            M.match_operator (|
-                                              M.alloc (| α3 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let d := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "revm_precompile::modexp::byzantium_gas_calc",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| a |);
-                                                        M.read (| b |);
-                                                        M.read (| c |);
-                                                        M.read (| d |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α2 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let c := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α3 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let d := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "revm_precompile::modexp::byzantium_gas_calc",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| a |);
+                                                          M.read (| b |);
+                                                          M.read (| c |);
+                                                          M.read (| d |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))
@@ -216,51 +217,52 @@ Module modexp.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1; α2; α3 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α2 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let c := M.copy (| γ |) in
-                                            M.match_operator (|
-                                              M.alloc (| α3 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let d := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "revm_precompile::modexp::berlin_gas_calc",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| a |);
-                                                        M.read (| b |);
-                                                        M.read (| c |);
-                                                        M.read (| d |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α2 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let c := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α3 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let d := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "revm_precompile::modexp::berlin_gas_calc",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| a |);
+                                                          M.read (| b |);
+                                                          M.read (| c |);
+                                                          M.read (| d |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           ]
         |)))

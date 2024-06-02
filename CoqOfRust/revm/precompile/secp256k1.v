@@ -527,19 +527,20 @@ Module secp256k1.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ := M.read (| γ |) in
-                                                      let b := M.copy (| γ |) in
-                                                      BinOp.Pure.eq
-                                                        (M.read (| b |))
-                                                        (Value.Integer 0)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let b := M.copy (| γ |) in
+                                                        BinOp.Pure.eq
+                                                          (M.read (| b |))
+                                                          (Value.Integer 0)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |),
@@ -588,8 +589,10 @@ Module secp256k1.
                                                   (fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
-                                                      | [] => M.alloc (| Value.Bool true |)
-                                                      | _ => M.impossible (||)
+                                                      | [] =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Bool true |)))
+                                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                                       end))
                                               |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -812,50 +815,51 @@ Module secp256k1.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let o := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::Into",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                              "into",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                                  "to_vec",
-                                                  []
-                                                |),
-                                                [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.path
-                                                          "alloy_primitives::bits::fixed::FixedBytes",
-                                                        [],
-                                                        "deref",
-                                                        []
-                                                      |),
-                                                      [ o ]
-                                                    |))
-                                                ]
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let o := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::convert::Into",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                                "into",
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                    "to_vec",
+                                                    []
+                                                  |),
+                                                  [
+                                                    (* Unsize *)
+                                                    M.pointer_coercion
+                                                      (M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.path
+                                                            "alloy_primitives::bits::fixed::FixedBytes",
+                                                          [],
+                                                          "deref",
+                                                          []
+                                                        |),
+                                                        [ o ]
+                                                      |))
+                                                  ]
+                                                |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)

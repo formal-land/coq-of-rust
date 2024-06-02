@@ -794,28 +794,29 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      Ty.path "alloc::alloc::Global",
-                                      [],
-                                      "allocate",
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
-                                      M.read (| layout |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        Ty.path "alloc::alloc::Global",
+                                        [],
+                                        "allocate",
+                                        []
+                                      |),
+                                      [
+                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.read (| layout |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -910,28 +911,29 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      Ty.path "alloc::alloc::Global",
-                                      [],
-                                      "allocate_zeroed",
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
-                                      M.read (| layout |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        Ty.path "alloc::alloc::Global",
+                                        [],
+                                        "allocate_zeroed",
+                                        []
+                                      |),
+                                      [
+                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.read (| layout |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -1257,32 +1259,33 @@ Module rc.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let layout := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::alloc::Allocator",
-                                                        Ty.path "alloc::alloc::Global",
-                                                        [],
-                                                        "allocate",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "alloc::alloc::Global"
-                                                            []
-                                                        |);
-                                                        M.read (| layout |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let layout := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::alloc::Allocator",
+                                                          Ty.path "alloc::alloc::Global",
+                                                          [],
+                                                          "allocate",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.StructTuple
+                                                              "alloc::alloc::Global"
+                                                              []
+                                                          |);
+                                                          M.read (| layout |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end));
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -1485,32 +1488,33 @@ Module rc.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let layout := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::alloc::Allocator",
-                                                        Ty.path "alloc::alloc::Global",
-                                                        [],
-                                                        "allocate_zeroed",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "alloc::alloc::Global"
-                                                            []
-                                                        |);
-                                                        M.read (| layout |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let layout := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::alloc::Allocator",
+                                                          Ty.path "alloc::alloc::Global",
+                                                          [],
+                                                          "allocate_zeroed",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.StructTuple
+                                                              "alloc::alloc::Global"
+                                                              []
+                                                          |);
+                                                          M.read (| layout |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end));
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -1779,20 +1783,21 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
-                                      [ M.read (| layout |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                                        [ M.read (| layout |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -2395,25 +2400,26 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      A,
-                                      [],
-                                      "allocate",
-                                      []
-                                    |),
-                                    [ alloc; M.read (| layout |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        A,
+                                        [],
+                                        "allocate",
+                                        []
+                                      |),
+                                      [ alloc; M.read (| layout |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -2510,25 +2516,26 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      A,
-                                      [],
-                                      "allocate_zeroed",
-                                      []
-                                    |),
-                                    [ alloc; M.read (| layout |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        A,
+                                        [],
+                                        "allocate_zeroed",
+                                        []
+                                      |),
+                                      [ alloc; M.read (| layout |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -2864,25 +2871,26 @@ Module rc.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let layout := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::alloc::Allocator",
-                                                        A,
-                                                        [],
-                                                        "allocate",
-                                                        []
-                                                      |),
-                                                      [ alloc; M.read (| layout |) ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let layout := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::alloc::Allocator",
+                                                          A,
+                                                          [],
+                                                          "allocate",
+                                                          []
+                                                        |),
+                                                        [ alloc; M.read (| layout |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end));
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -3087,25 +3095,26 @@ Module rc.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let layout := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::alloc::Allocator",
-                                                        A,
-                                                        [],
-                                                        "allocate_zeroed",
-                                                        []
-                                                      |),
-                                                      [ alloc; M.read (| layout |) ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let layout := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::alloc::Allocator",
+                                                          A,
+                                                          [],
+                                                          "allocate_zeroed",
+                                                          []
+                                                        |),
+                                                        [ alloc; M.read (| layout |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end));
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
@@ -4494,30 +4503,31 @@ Module rc.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let rc := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [ rc ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let rc := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ rc ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -4580,48 +4590,50 @@ Module rc.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let layout := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::alloc::Allocator",
-                                  A,
-                                  [],
-                                  "allocate",
-                                  []
-                                |),
-                                [ M.read (| alloc |); M.read (| layout |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let layout := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::alloc::Allocator",
+                                    A,
+                                    [],
+                                    "allocate",
+                                    []
+                                  |),
+                                  [ M.read (| alloc |); M.read (| layout |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end));
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let mem := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                  "with_metadata_of",
-                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
-                                |),
-                                [ M.read (| mem |); M.rust_cast (M.read (| ptr |)) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let mem := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                    "with_metadata_of",
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                  |),
+                                  [ M.read (| mem |); M.rust_cast (M.read (| ptr |)) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -4938,61 +4950,63 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      Ty.path "alloc::alloc::Global",
-                                      [],
-                                      "allocate_zeroed",
-                                      []
-                                    |),
-                                    [
-                                      M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
-                                      M.read (| layout |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        Ty.path "alloc::alloc::Global",
+                                        [],
+                                        "allocate_zeroed",
+                                        []
+                                      |),
+                                      [
+                                        M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                        M.read (| layout |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let mem := M.copy (| γ |) in
-                                  M.rust_cast
-                                    (M.call_closure (|
-                                      M.get_function (|
-                                        "core::ptr::slice_from_raw_parts_mut",
-                                        [ T ]
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                            "cast",
-                                            [ T ]
-                                          |),
-                                          [ M.read (| mem |) ]
-                                        |);
-                                        M.read (| len |)
-                                      ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let mem := M.copy (| γ |) in
+                                    M.rust_cast
+                                      (M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::slice_from_raw_parts_mut",
+                                          [ T ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                              "cast",
+                                              [ T ]
+                                            |),
+                                            [ M.read (| mem |) ]
+                                          |);
+                                          M.read (| len |)
+                                        ]
+                                      |))))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5073,58 +5087,63 @@ Module rc.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let layout := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::alloc::Allocator",
-                                  Ty.path "alloc::alloc::Global",
-                                  [],
-                                  "allocate",
-                                  []
-                                |),
-                                [
-                                  M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
-                                  M.read (| layout |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let layout := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::alloc::Allocator",
+                                    Ty.path "alloc::alloc::Global",
+                                    [],
+                                    "allocate",
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |);
+                                    M.read (| layout |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end));
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let mem := M.copy (| γ |) in
-                              M.rust_cast
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                        "cast",
-                                        [ T ]
-                                      |),
-                                      [ M.read (| mem |) ]
-                                    |);
-                                    M.read (| len |)
-                                  ]
-                                |))))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let mem := M.copy (| γ |) in
+                                M.rust_cast
+                                  (M.call_closure (|
+                                    M.get_function (|
+                                      "core::ptr::slice_from_raw_parts_mut",
+                                      [ T ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                          "cast",
+                                          [ T ]
+                                        |),
+                                        [ M.read (| mem |) ]
+                                      |);
+                                      M.read (| len |)
+                                    ]
+                                  |))))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -5629,58 +5648,60 @@ Module rc.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let layout := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::alloc::Allocator",
-                                      A,
-                                      [],
-                                      "allocate_zeroed",
-                                      []
-                                    |),
-                                    [ alloc; M.read (| layout |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let layout := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::alloc::Allocator",
+                                        A,
+                                        [],
+                                        "allocate_zeroed",
+                                        []
+                                      |),
+                                      [ alloc; M.read (| layout |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end));
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let mem := M.copy (| γ |) in
-                                  M.rust_cast
-                                    (M.call_closure (|
-                                      M.get_function (|
-                                        "core::ptr::slice_from_raw_parts_mut",
-                                        [ T ]
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                            "cast",
-                                            [ T ]
-                                          |),
-                                          [ M.read (| mem |) ]
-                                        |);
-                                        M.read (| len |)
-                                      ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let mem := M.copy (| γ |) in
+                                    M.rust_cast
+                                      (M.call_closure (|
+                                        M.get_function (|
+                                          "core::ptr::slice_from_raw_parts_mut",
+                                          [ T ]
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                              "cast",
+                                              [ T ]
+                                            |),
+                                            [ M.read (| mem |) ]
+                                          |);
+                                          M.read (| len |)
+                                        ]
+                                      |))))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -5763,55 +5784,60 @@ Module rc.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let layout := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::alloc::Allocator",
-                                  A,
-                                  [],
-                                  "allocate",
-                                  []
-                                |),
-                                [ M.read (| alloc |); M.read (| layout |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let layout := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::alloc::Allocator",
+                                    A,
+                                    [],
+                                    "allocate",
+                                    []
+                                  |),
+                                  [ M.read (| alloc |); M.read (| layout |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end));
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let mem := M.copy (| γ |) in
-                              M.rust_cast
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
-                                        "cast",
-                                        [ T ]
-                                      |),
-                                      [ M.read (| mem |) ]
-                                    |);
-                                    M.read (| len |)
-                                  ]
-                                |))))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let mem := M.copy (| γ |) in
+                                M.rust_cast
+                                  (M.call_closure (|
+                                    M.get_function (|
+                                      "core::ptr::slice_from_raw_parts_mut",
+                                      [ T ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                          "cast",
+                                          [ T ]
+                                        |),
+                                        [ M.read (| mem |) ]
+                                      |);
+                                      M.read (| len |)
+                                    ]
+                                  |))))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

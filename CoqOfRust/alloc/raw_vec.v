@@ -2647,24 +2647,27 @@ Module raw_vec.
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                    M.alloc (| α0 |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (Value.StructRecord
-                                                                            "alloc::collections::TryReserveErrorKind::AllocError"
-                                                                            [
-                                                                              ("layout",
-                                                                                M.read (|
-                                                                                  new_layout
-                                                                                |));
-                                                                              ("non_exhaustive",
-                                                                                Value.Tuple [])
-                                                                            ]))
-                                                                    ]
-                                                                  |)
-                                                                | _ => M.impossible (||)
+                                                                  ltac:(M.monadic
+                                                                    (M.match_operator (|
+                                                                      M.alloc (| α0 |),
+                                                                      [
+                                                                        fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            (Value.StructRecord
+                                                                              "alloc::collections::TryReserveErrorKind::AllocError"
+                                                                              [
+                                                                                ("layout",
+                                                                                  M.read (|
+                                                                                    new_layout
+                                                                                  |));
+                                                                                ("non_exhaustive",
+                                                                                  Value.Tuple [])
+                                                                              ]))
+                                                                      ]
+                                                                    |)))
+                                                                | _ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.impossible (||)))
                                                                 end))
                                                         ]
                                                       |)
@@ -2845,17 +2848,18 @@ Module raw_vec.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (Value.StructTuple
-                                                "alloc::collections::TryReserveErrorKind::CapacityOverflow"
-                                                []))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (Value.StructTuple
+                                                  "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                                                  []))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)
@@ -3204,31 +3208,32 @@ Module raw_vec.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.path "alloc::collections::TryReserveErrorKind",
-                                        [ Ty.path "alloc::collections::TryReserveError" ],
-                                        "into",
-                                        []
-                                      |),
-                                      [
-                                        Value.StructRecord
-                                          "alloc::collections::TryReserveErrorKind::AllocError"
-                                          [
-                                            ("layout", M.read (| new_layout |));
-                                            ("non_exhaustive", Value.Tuple [])
-                                          ]
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "alloc::collections::TryReserveErrorKind",
+                                          [ Ty.path "alloc::collections::TryReserveError" ],
+                                          "into",
+                                          []
+                                        |),
+                                        [
+                                          Value.StructRecord
+                                            "alloc::collections::TryReserveErrorKind::AllocError"
+                                            [
+                                              ("layout", M.read (| new_layout |));
+                                              ("non_exhaustive", Value.Tuple [])
+                                            ]
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -3350,23 +3355,24 @@ Module raw_vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "alloc::collections::TryReserveError",
-                                      "kind",
-                                      []
-                                    |),
-                                    [ e ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "alloc::collections::TryReserveError",
+                                        "kind",
+                                        []
+                                      |),
+                                      [ e ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)

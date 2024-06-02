@@ -180,112 +180,115 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.read (|
-                                                                    let~ _ :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              [
-                                                                                Ty.tuple [];
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "std::sync::mpsc::SendError")
-                                                                                  [ Ty.path "i32" ]
-                                                                              ],
-                                                                            "unwrap",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "std::sync::mpsc::Sender")
-                                                                                  [ Ty.path "i32" ],
-                                                                                "send",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                thread_tx;
-                                                                                M.read (| id |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    let~ _ :=
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.read (|
                                                                       let~ _ :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "std::io::stdio::_print",
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "std::sync::mpsc::SendError")
+                                                                                    [ Ty.path "i32"
+                                                                                    ]
+                                                                                ],
+                                                                              "unwrap",
                                                                               []
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
                                                                                 M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::Arguments",
-                                                                                  "new_v1",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "std::sync::mpsc::Sender")
+                                                                                    [ Ty.path "i32"
+                                                                                    ],
+                                                                                  "send",
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "thread "
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              " finished
-"
-                                                                                          |)
-                                                                                        ]
-                                                                                    |));
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::rt::Argument",
-                                                                                              "new_display",
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "i32"
-                                                                                              ]
-                                                                                            |),
-                                                                                            [ id ]
-                                                                                          |)
-                                                                                        ]
-                                                                                    |))
+                                                                                  thread_tx;
+                                                                                  M.read (| id |)
                                                                                 ]
                                                                               |)
                                                                             ]
                                                                           |)
                                                                         |) in
-                                                                      M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |) in
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                                      let~ _ :=
+                                                                        let~ _ :=
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "std::io::stdio::_print",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    (* Unsize *)
+                                                                                    M.pointer_coercion
+                                                                                      (M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "thread "
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                " finished
+"
+                                                                                            |)
+                                                                                          ]
+                                                                                      |));
+                                                                                    (* Unsize *)
+                                                                                    M.pointer_coercion
+                                                                                      (M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_display",
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "i32"
+                                                                                                ]
+                                                                                              |),
+                                                                                              [ id ]
+                                                                                            |)
+                                                                                          ]
+                                                                                      |))
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
+                                                                        |) in
+                                                                      M.alloc (| Value.Tuple [] |)
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                                         end))
                                                 ]
                                               |)

@@ -374,29 +374,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let k := M.copy (| γ0_0 |) in
-                                            let v := M.copy (| γ0_1 |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| M.read (| k |) |);
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| v |),
-                                                    "revm_primitives::state::StorageSlot",
-                                                    "present_value"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let k := M.copy (| γ0_0 |) in
+                                              let v := M.copy (| γ0_1 |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| M.read (| k |) |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| v |),
+                                                      "revm_primitives::state::StorageSlot",
+                                                      "present_value"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -432,21 +434,22 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let info := M.copy (| γ |) in
-                                        Value.StructRecord
-                                          "revm::db::states::plain_account::PlainAccount"
-                                          [
-                                            ("info", M.read (| info |));
-                                            ("storage", M.read (| storage |))
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let info := M.copy (| γ |) in
+                                          Value.StructRecord
+                                            "revm::db::states::plain_account::PlainAccount"
+                                            [
+                                              ("info", M.read (| info |));
+                                              ("storage", M.read (| storage |))
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -754,8 +757,8 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -826,47 +829,48 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ] ],
-                                      "cloned",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "std::collections::hash::map::HashMap")
-                                            [
-                                              Ty.path "ruint::Uint";
-                                              Ty.path "ruint::Uint";
-                                              Ty.path "std::hash::random::RandomState"
-                                            ],
-                                          "get",
-                                          [ Ty.path "ruint::Uint" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| a |),
-                                            "revm::db::states::plain_account::PlainAccount",
-                                            "storage"
-                                          |);
-                                          slot
-                                        ]
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ] ],
+                                        "cloned",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "std::collections::hash::map::HashMap")
+                                              [
+                                                Ty.path "ruint::Uint";
+                                                Ty.path "ruint::Uint";
+                                                Ty.path "std::hash::random::RandomState"
+                                              ],
+                                            "get",
+                                            [ Ty.path "ruint::Uint" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| a |),
+                                              "revm::db::states::plain_account::PlainAccount",
+                                              "storage"
+                                            |);
+                                            slot
+                                          ]
+                                        |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -932,31 +936,32 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "revm_primitives::state::AccountInfo",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| a |),
-                                        "revm::db::states::plain_account::PlainAccount",
-                                        "info"
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_primitives::state::AccountInfo",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| a |),
+                                          "revm::db::states::plain_account::PlainAccount",
+                                          "info"
+                                        |)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1024,23 +1029,24 @@ Module db.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let a := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm::db::states::plain_account::PlainAccount",
-                                          "into_components",
-                                          []
-                                        |),
-                                        [ M.read (| a |) ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let a := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm::db::states::plain_account::PlainAccount",
+                                            "into_components",
+                                            []
+                                          |),
+                                          [ M.read (| a |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |);
@@ -1162,29 +1168,30 @@ Module db.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let a := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "revm_primitives::state::AccountInfo",
-                                                    "is_empty",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| a |),
-                                                      "revm::db::states::plain_account::PlainAccount",
-                                                      "info"
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let a := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "revm_primitives::state::AccountInfo",
+                                                      "is_empty",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| a |),
+                                                        "revm::db::states::plain_account::PlainAccount",
+                                                        "info"
+                                                      |)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1372,31 +1379,32 @@ Module db.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                let γ0_1 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                let k := M.copy (| γ0_0 |) in
-                                                let v := M.copy (| γ0_1 |) in
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| M.read (| k |) |);
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| v |),
-                                                        "revm_primitives::state::StorageSlot",
-                                                        "present_value"
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                  let k := M.copy (| γ0_0 |) in
+                                                  let v := M.copy (| γ0_1 |) in
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| M.read (| k |) |);
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| v |),
+                                                          "revm_primitives::state::StorageSlot",
+                                                          "present_value"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                    ]))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1443,22 +1451,23 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let a := M.copy (| γ |) in
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                a,
-                                                "revm::db::states::plain_account::PlainAccount",
-                                                "info"
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let a := M.copy (| γ |) in
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  a,
+                                                  "revm::db::states::plain_account::PlainAccount",
+                                                  "info"
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -1608,22 +1617,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let acc := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            acc,
-                                            "revm::db::states::plain_account::PlainAccount",
-                                            "info"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let acc := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              acc,
+                                              "revm::db::states::plain_account::PlainAccount",
+                                              "info"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -1694,8 +1704,8 @@ Module db.
                                         (fun γ =>
                                           ltac:(M.monadic
                                             match γ with
-                                            | [] => M.alloc (| Value.Bool true |)
-                                            | _ => M.impossible (||)
+                                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1819,22 +1829,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            a,
-                                            "revm::db::states::plain_account::PlainAccount",
-                                            "info"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              a,
+                                              "revm::db::states::plain_account::PlainAccount",
+                                              "info"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -2029,22 +2040,23 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            a,
-                                            "revm::db::states::plain_account::PlainAccount",
-                                            "info"
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              a,
+                                              "revm::db::states::plain_account::PlainAccount",
+                                              "info"
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -2136,29 +2148,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let k := M.copy (| γ0_0 |) in
-                                            let s := M.copy (| γ0_1 |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| M.read (| k |) |);
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| s |),
-                                                    "revm_primitives::state::StorageSlot",
-                                                    "present_value"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let k := M.copy (| γ0_0 |) in
+                                              let s := M.copy (| γ0_1 |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| M.read (| k |) |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| s |),
+                                                      "revm_primitives::state::StorageSlot",
+                                                      "present_value"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -2322,50 +2336,51 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let info := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| info |),
-                                                    "revm_primitives::state::AccountInfo",
-                                                    "balance"
-                                                  |),
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "ruint::Uint",
-                                                      "saturating_add",
-                                                      []
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let info := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| info |),
+                                                      "revm_primitives::state::AccountInfo",
+                                                      "balance"
                                                     |),
-                                                    [
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| info |),
-                                                          "revm_primitives::state::AccountInfo",
-                                                          "balance"
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "ruint::Uint",
+                                                        "saturating_add",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| info |),
+                                                            "revm_primitives::state::AccountInfo",
+                                                            "balance"
+                                                          |)
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "ruint::Uint",
+                                                            "from",
+                                                            [ Ty.path "u128" ]
+                                                          |),
+                                                          [ M.read (| balance |) ]
                                                         |)
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "ruint::Uint",
-                                                          "from",
-                                                          [ Ty.path "u128" ]
-                                                        |),
-                                                        [ M.read (| balance |) ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.alloc (| Value.Tuple [] |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                      ]
+                                                    |)
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -2681,62 +2696,63 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let info := M.copy (| γ |) in
-                                  M.read (|
-                                    let~ output :=
-                                      M.copy (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| info |),
-                                          "revm_primitives::state::AccountInfo",
-                                          "balance"
-                                        |)
-                                      |) in
-                                    let~ _ :=
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| info |),
-                                          "revm_primitives::state::AccountInfo",
-                                          "balance"
-                                        |),
-                                        M.read (| M.get_constant (| "ruint::ZERO" |) |)
-                                      |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            [
-                                              Ty.path "u128";
-                                              Ty.apply
-                                                (Ty.path "ruint::from::FromUintError")
-                                                [ Ty.path "u128" ]
-                                            ],
-                                          "unwrap",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::TryInto",
-                                              Ty.path "ruint::Uint",
-                                              [ Ty.path "u128" ],
-                                              "try_into",
-                                              []
-                                            |),
-                                            [ M.read (| output |) ]
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let info := M.copy (| γ |) in
+                                    M.read (|
+                                      let~ output :=
+                                        M.copy (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| info |),
+                                            "revm_primitives::state::AccountInfo",
+                                            "balance"
                                           |)
-                                        ]
+                                        |) in
+                                      let~ _ :=
+                                        M.write (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| info |),
+                                            "revm_primitives::state::AccountInfo",
+                                            "balance"
+                                          |),
+                                          M.read (| M.get_constant (| "ruint::ZERO" |) |)
+                                        |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [
+                                                Ty.path "u128";
+                                                Ty.apply
+                                                  (Ty.path "ruint::from::FromUintError")
+                                                  [ Ty.path "u128" ]
+                                              ],
+                                            "unwrap",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::convert::TryInto",
+                                                Ty.path "ruint::Uint",
+                                                [ Ty.path "u128" ],
+                                                "try_into",
+                                                []
+                                              |),
+                                              [ M.read (| output |) ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -2847,31 +2863,32 @@ Module db.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            Ty.path "revm_primitives::state::AccountInfo",
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| a |),
-                                              "revm::db::states::plain_account::PlainAccount",
-                                              "info"
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::clone::Clone",
+                                              Ty.path "revm_primitives::state::AccountInfo",
+                                              [],
+                                              "clone",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| a |),
+                                                "revm::db::states::plain_account::PlainAccount",
+                                                "info"
+                                              |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -2945,22 +2962,23 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let acc := M.copy (| γ |) in
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                acc,
-                                                "revm::db::states::plain_account::PlainAccount",
-                                                "storage"
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let acc := M.copy (| γ |) in
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  acc,
+                                                  "revm::db::states::plain_account::PlainAccount",
+                                                  "storage"
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -3057,29 +3075,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let k := M.copy (| γ0_0 |) in
-                                            let s := M.copy (| γ0_1 |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| M.read (| k |) |);
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| s |),
-                                                    "revm_primitives::state::StorageSlot",
-                                                    "present_value"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let k := M.copy (| γ0_0 |) in
+                                              let s := M.copy (| γ0_1 |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| M.read (| k |) |);
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| s |),
+                                                      "revm_primitives::state::StorageSlot",
+                                                      "present_value"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -3226,31 +3246,32 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let a := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::clone::Clone",
-                                                Ty.path "revm_primitives::state::AccountInfo",
-                                                [],
-                                                "clone",
-                                                []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| a |),
-                                                  "revm::db::states::plain_account::PlainAccount",
-                                                  "info"
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let a := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::clone::Clone",
+                                                  Ty.path "revm_primitives::state::AccountInfo",
+                                                  [],
+                                                  "clone",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| a |),
+                                                    "revm::db::states::plain_account::PlainAccount",
+                                                    "info"
+                                                  |)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |));

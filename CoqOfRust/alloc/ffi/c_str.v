@@ -1765,46 +1765,47 @@ Module ffi.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                Value.StructRecord
-                                  "alloc::ffi::c_str::IntoStringError"
-                                  [
-                                    ("error",
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "alloc::string::FromUtf8Error",
-                                          "utf8_error",
-                                          []
-                                        |),
-                                        [ e ]
-                                      |));
-                                    ("inner",
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "alloc::ffi::c_str::CString",
-                                          "_from_vec_unchecked",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "alloc::string::FromUtf8Error",
-                                              "into_bytes",
-                                              []
-                                            |),
-                                            [ M.read (| e |) ]
-                                          |)
-                                        ]
-                                      |))
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  Value.StructRecord
+                                    "alloc::ffi::c_str::IntoStringError"
+                                    [
+                                      ("error",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "alloc::string::FromUtf8Error",
+                                            "utf8_error",
+                                            []
+                                          |),
+                                          [ e ]
+                                        |));
+                                      ("inner",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "alloc::ffi::c_str::CString",
+                                            "_from_vec_unchecked",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "alloc::string::FromUtf8Error",
+                                                "into_bytes",
+                                                []
+                                              |),
+                                              [ M.read (| e |) ]
+                                            |)
+                                          ]
+                                        |))
+                                    ]))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

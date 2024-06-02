@@ -5296,27 +5296,29 @@ Module instructions.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let limit :=
-                                                                          M.copy (| γ |) in
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path "usize",
-                                                                            "saturating_mul",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (| limit |);
-                                                                            Value.Integer 2
-                                                                          ]
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let limit :=
+                                                                            M.copy (| γ |) in
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path "usize",
+                                                                              "saturating_mul",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (| limit |);
+                                                                              Value.Integer 2
+                                                                            ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                ltac:(M.monadic (M.impossible (||)))
                                                               end))
                                                       ]
                                                     |);

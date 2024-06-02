@@ -307,117 +307,120 @@ Module iter.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.read (|
-                                              M.match_operator (|
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::Try",
-                                                      Ty.associated,
-                                                      [],
-                                                      "branch",
-                                                      []
-                                                    |),
-                                                    [ M.read (| x |) ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                          0
-                                                        |) in
-                                                      let x := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::ops::control_flow::ControlFlow")
-                                                              [ T; Ty.associated ],
-                                                            "from_try",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::FnMut",
-                                                                F,
-                                                                [ Ty.tuple [ B; Ty.associated ] ],
-                                                                "call_mut",
-                                                                []
-                                                              |),
-                                                              [
-                                                                f;
-                                                                Value.Tuple
-                                                                  [ M.read (| acc |); M.read (| x |)
-                                                                  ]
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                          0
-                                                        |) in
-                                                      let r := M.copy (| γ0_0 |) in
-                                                      let~ _ :=
-                                                        M.write (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::iter::adapters::GenericShunt",
-                                                              "residual"
-                                                            |)
-                                                          |),
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.read (|
+                                                M.match_operator (|
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::Try",
+                                                        Ty.associated,
+                                                        [],
+                                                        "branch",
+                                                        []
+                                                      |),
+                                                      [ M.read (| x |) ]
+                                                    |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                            0
+                                                          |) in
+                                                        let x := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                [ T; Ty.associated ],
+                                                              "from_try",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnMut",
+                                                                  F,
+                                                                  [ Ty.tuple [ B; Ty.associated ] ],
+                                                                  "call_mut",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  f;
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.read (| acc |);
+                                                                      M.read (| x |)
+                                                                    ]
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                            0
+                                                          |) in
+                                                        let r := M.copy (| γ0_0 |) in
+                                                        let~ _ :=
+                                                          M.write (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::iter::adapters::GenericShunt",
+                                                                "residual"
+                                                              |)
+                                                            |),
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [ M.read (| r |) ]
+                                                          |) in
+                                                        M.alloc (|
                                                           Value.StructTuple
-                                                            "core::option::Option::Some"
-                                                            [ M.read (| r |) ]
-                                                        |) in
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "core::ops::control_flow::ControlFlow::Break"
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::try_trait::Try",
-                                                                T,
-                                                                [],
-                                                                "from_output",
-                                                                []
-                                                              |),
-                                                              [ M.read (| acc |) ]
-                                                            |)
-                                                          ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                            "core::ops::control_flow::ControlFlow::Break"
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::Try",
+                                                                  T,
+                                                                  [],
+                                                                  "from_output",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| acc |) ]
+                                                              |)
+                                                            ]
+                                                        |)))
+                                                  ]
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)

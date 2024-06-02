@@ -995,17 +995,18 @@ Module kzg.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (Value.StructTuple
-                                                  "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
-                                                  []))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (Value.StructTuple
+                                                    "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
+                                                    []))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1249,17 +1250,18 @@ Module kzg.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (Value.StructTuple
-                                                  "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
-                                                  []))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (Value.StructTuple
+                                                    "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
+                                                    []))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1691,17 +1693,19 @@ Module kzg.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (Value.StructTuple
-                                                                          "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
-                                                                          []))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (Value.StructTuple
+                                                                            "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
+                                                                            []))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                ltac:(M.monadic (M.impossible (||)))
                                                               end))
                                                       ]
                                                     |)
@@ -2070,17 +2074,19 @@ Module kzg.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (Value.StructTuple
-                                                                          "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
-                                                                          []))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (Value.StructTuple
+                                                                            "revm_primitives::kzg::trusted_setup_points::KzgErrors::ParseError"
+                                                                            []))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                ltac:(M.monadic (M.impossible (||)))
                                                               end))
                                                       ]
                                                     |)

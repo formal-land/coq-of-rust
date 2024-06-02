@@ -327,22 +327,23 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
-                          let food := M.copy (| γ0_0 |) in
-                          Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "combinators_map::Chopped",
+                                0
+                              |) in
+                            let food := M.copy (| γ0_0 |) in
+                            Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
+                      ]
+                    |)))
+                | _ => ltac:(M.monadic (M.impossible (||)))
                 end))
         ]
       |)))
@@ -405,16 +406,17 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let f := M.copy (| γ |) in
-                                  Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let f := M.copy (| γ |) in
+                                    Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -423,22 +425,23 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "combinators_map::Peeled",
-                                  0
-                                |) in
-                              let f := M.copy (| γ0_0 |) in
-                              Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "combinators_map::Peeled",
+                                    0
+                                  |) in
+                                let f := M.copy (| γ0_0 |) in
+                                Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |);
@@ -447,22 +450,23 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "combinators_map::Chopped",
-                              0
-                            |) in
-                          let f := M.copy (| γ0_0 |) in
-                          Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "combinators_map::Chopped",
+                                0
+                              |) in
+                            let f := M.copy (| γ0_0 |) in
+                            Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
+                      ]
+                    |)))
+                | _ => ltac:(M.monadic (M.impossible (||)))
                 end))
         ]
       |)))

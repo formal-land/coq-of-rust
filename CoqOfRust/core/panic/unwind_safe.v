@@ -538,20 +538,21 @@ Module panic.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let x := M.copy (| γ |) in
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.read (| x |),
-                                        "core::panic::unwind_safe::AssertUnwindSafe",
-                                        0
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let x := M.copy (| γ |) in
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| x |),
+                                          "core::panic::unwind_safe::AssertUnwindSafe",
+                                          0
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -640,20 +641,21 @@ Module panic.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.read (| x |),
-                                      "core::panic::unwind_safe::AssertUnwindSafe",
-                                      0
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.read (| x |),
+                                        "core::panic::unwind_safe::AssertUnwindSafe",
+                                        0
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |);

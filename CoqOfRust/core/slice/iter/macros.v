@@ -2641,43 +2641,44 @@ Module slice.
                     ltac:(M.monadic
                       match γ with
                       | [ α0; α1 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let a := M.copy (| γ |) in
-                                M.match_operator (|
-                                  M.alloc (| α1 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let b := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            F,
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "&") [ T ] ];
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "&") [ T ] ]
-                                                ]
-                                            ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [ compare; Value.Tuple [ a; b ] ]
-                                        |)))
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let a := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let b := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      [ Ty.apply (Ty.path "&") [ T ] ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      [ Ty.apply (Ty.path "&") [ T ] ]
+                                                  ]
+                                              ],
+                                              "call_mut",
+                                              []
+                                            |),
+                                            [ compare; Value.Tuple [ a; b ] ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

@@ -1216,91 +1216,92 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let item := M.copy (| γ |) in
-                                M.read (|
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::binary_heap::BinaryHeap")
-                                                          [ T; A ],
-                                                        "is_empty",
-                                                        []
-                                                      |),
-                                                      [ M.read (| self |) ]
-                                                    |))
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            let~ _ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "core::mem::swap", [ T ] |),
-                                                  [
-                                                    item;
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::index::IndexMut",
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          [ T; A ],
-                                                        [ Ty.path "usize" ],
-                                                        "index_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "alloc::collections::binary_heap::BinaryHeap",
-                                                          "data"
-                                                        |);
-                                                        Value.Integer 0
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            let~ _ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::binary_heap::BinaryHeap")
-                                                      [ T; A ],
-                                                    "sift_down_to_bottom",
-                                                    []
-                                                  |),
-                                                  [ M.read (| self |); Value.Integer 0 ]
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |) in
-                                  item
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let item := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ _ :=
+                                      M.match_operator (|
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    UnOp.Pure.not
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::binary_heap::BinaryHeap")
+                                                            [ T; A ],
+                                                          "is_empty",
+                                                          []
+                                                        |),
+                                                        [ M.read (| self |) ]
+                                                      |))
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_function (| "core::mem::swap", [ T ] |),
+                                                    [
+                                                      item;
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::index::IndexMut",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            [ T; A ],
+                                                          [ Ty.path "usize" ],
+                                                          "index_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "alloc::collections::binary_heap::BinaryHeap",
+                                                            "data"
+                                                          |);
+                                                          Value.Integer 0
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::binary_heap::BinaryHeap")
+                                                        [ T; A ],
+                                                      "sift_down_to_bottom",
+                                                      []
+                                                    |),
+                                                    [ M.read (| self |); Value.Integer 0 ]
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |) in
+                                    item
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -3081,82 +3082,83 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let e := M.copy (| γ |) in
-                                      M.read (|
-                                        let~ keep :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| e |) ] ]
-                                            |)
-                                          |) in
-                                        let~ _ :=
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        LogicalOp.and (|
-                                                          UnOp.Pure.not (M.read (| keep |)),
-                                                          ltac:(M.monadic
-                                                            (BinOp.Pure.lt
-                                                              (M.read (| i |))
-                                                              (M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  guard,
-                                                                  "alloc::collections::binary_heap::RebuildOnDrop",
-                                                                  "rebuild_from"
-                                                                |)
-                                                              |))))
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        guard,
-                                                        "alloc::collections::binary_heap::RebuildOnDrop",
-                                                        "rebuild_from"
-                                                      |),
-                                                      M.read (| i |)
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        let~ _ :=
-                                          let β := i in
-                                          M.write (|
-                                            β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
-                                          |) in
-                                        keep
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let e := M.copy (| γ |) in
+                                        M.read (|
+                                          let~ keep :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ f; Value.Tuple [ M.read (| e |) ] ]
+                                              |)
+                                            |) in
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          LogicalOp.and (|
+                                                            UnOp.Pure.not (M.read (| keep |)),
+                                                            ltac:(M.monadic
+                                                              (BinOp.Pure.lt
+                                                                (M.read (| i |))
+                                                                (M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    guard,
+                                                                    "alloc::collections::binary_heap::RebuildOnDrop",
+                                                                    "rebuild_from"
+                                                                  |)
+                                                                |))))
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          guard,
+                                                          "alloc::collections::binary_heap::RebuildOnDrop",
+                                                          "rebuild_from"
+                                                        |),
+                                                        M.read (| i |)
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          let~ _ :=
+                                            let β := i in
+                                            M.write (|
+                                              β,
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
+                                            |) in
+                                          keep
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)

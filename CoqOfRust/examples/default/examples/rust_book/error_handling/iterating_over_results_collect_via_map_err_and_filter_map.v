@@ -187,23 +187,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let s := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "parse",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [ M.read (| s |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let s := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "parse",
+                                              [ Ty.path "u8" ]
+                                            |),
+                                            [ M.read (| s |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |);
@@ -212,78 +213,81 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let r := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          [ Ty.path "u8"; Ty.tuple [] ],
-                                        "ok",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              [
-                                                Ty.path "u8";
-                                                Ty.path "core::num::error::ParseIntError"
-                                              ],
-                                            "map_err",
-                                            [
-                                              Ty.tuple [];
-                                              Ty.function
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let r := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            [ Ty.path "u8"; Ty.tuple [] ],
+                                          "ok",
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
                                                 [
-                                                  Ty.tuple
-                                                    [ Ty.path "core::num::error::ParseIntError" ]
-                                                ]
-                                                (Ty.tuple [])
+                                                  Ty.path "u8";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
+                                              "map_err",
+                                              [
+                                                Ty.tuple [];
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [ Ty.path "core::num::error::ParseIntError" ]
+                                                  ]
+                                                  (Ty.tuple [])
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| r |);
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let e := M.copy (| γ |) in
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::num::error::ParseIntError";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "push",
+                                                                    []
+                                                                  |),
+                                                                  [ errors; M.read (| e |) ]
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                                    end))
                                             ]
-                                          |),
-                                          [
-                                            M.read (| r |);
-                                            M.closure
-                                              (fun γ =>
-                                                ltac:(M.monadic
-                                                  match γ with
-                                                  | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let e := M.copy (| γ |) in
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::num::error::ParseIntError";
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
-                                                                "push",
-                                                                []
-                                                              |),
-                                                              [ errors; M.read (| e |) ]
-                                                            |)))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
-                                                  end))
-                                          ]
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)

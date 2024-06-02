@@ -10694,23 +10694,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -10783,23 +10784,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -10872,23 +10874,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -10961,23 +10964,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11050,23 +11054,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11139,23 +11144,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11228,23 +11234,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11317,23 +11324,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11406,23 +11414,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11495,23 +11504,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11584,23 +11594,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11673,23 +11684,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11762,23 +11774,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11851,23 +11864,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -11940,23 +11954,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12029,23 +12044,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12118,23 +12134,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12207,23 +12224,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12296,23 +12314,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12385,23 +12404,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12474,23 +12494,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12563,23 +12584,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12652,23 +12674,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12741,23 +12764,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12830,23 +12854,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -12919,23 +12944,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13008,23 +13034,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13097,23 +13124,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13186,23 +13214,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13275,23 +13304,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13364,23 +13394,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13453,23 +13484,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13542,23 +13574,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13631,23 +13664,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13720,23 +13754,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13809,23 +13844,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13898,23 +13934,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -13987,23 +14024,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14076,23 +14114,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14165,23 +14204,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14254,23 +14294,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14343,23 +14384,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14432,23 +14474,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14521,23 +14564,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14610,23 +14654,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroU128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroU128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14699,23 +14744,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14788,23 +14834,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14877,23 +14924,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -14966,23 +15014,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15055,23 +15104,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15144,23 +15194,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15233,23 +15284,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15322,23 +15374,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15411,23 +15464,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15500,23 +15554,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15589,23 +15644,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15678,23 +15734,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15767,23 +15824,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15856,23 +15914,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -15945,23 +16004,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16034,23 +16094,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16123,23 +16184,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16212,23 +16274,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16301,23 +16364,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16390,23 +16454,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI8",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI8",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16479,23 +16544,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16568,23 +16634,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16657,23 +16724,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16746,23 +16814,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16835,23 +16904,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -16924,23 +16994,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17013,23 +17084,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17102,23 +17174,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17191,23 +17264,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI16",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI16",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17280,23 +17354,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17369,23 +17444,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17458,23 +17534,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17547,23 +17624,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17636,23 +17714,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17725,23 +17804,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17814,23 +17894,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI32",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI32",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17903,23 +17984,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -17992,23 +18074,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18081,23 +18164,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18170,23 +18254,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18259,23 +18344,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI64",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI64",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18348,23 +18434,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18437,23 +18524,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18526,23 +18614,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroI128",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroI128",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18615,23 +18704,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18704,23 +18794,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18793,23 +18884,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18882,23 +18974,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -18971,23 +19064,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -19060,23 +19154,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -19149,23 +19244,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -19238,23 +19334,24 @@ Module convert.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let v := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroIsize",
-                                    "new_unchecked",
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let v := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::nonzero::NonZeroIsize",
+                                      "new_unchecked",
+                                      []
+                                    |),
+                                    [ M.read (| v |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

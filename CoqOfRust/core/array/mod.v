@@ -4517,39 +4517,40 @@ Module array.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let iter := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::array::try_from_trusted_iterator",
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let iter := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "core::array::try_from_trusted_iterator",
+                                    [
+                                      Ty.associated;
+                                      R;
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map::Map")
+                                        [ Ty.apply (Ty.path "core::array::drain::Drain") [ T ]; F ]
+                                    ]
+                                  |),
                                   [
-                                    Ty.associated;
-                                    R;
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::map::Map")
-                                      [ Ty.apply (Ty.path "core::array::drain::Drain") [ T ]; F ]
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply (Ty.path "core::array::drain::Drain") [ T ],
+                                        [],
+                                        "map",
+                                        [ R; F ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| f |) ]
+                                    |)
                                   ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::array::drain::Drain") [ T ],
-                                      [],
-                                      "map",
-                                      [ R; F ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| f |) ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -4971,24 +4972,25 @@ Module array.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                              impl_UncheckedIterator_Item___T_,
-                              [],
-                              "next_unchecked",
-                              []
-                            |),
-                            [ iter ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                                impl_UncheckedIterator_Item___T_,
+                                [],
+                                "next_unchecked",
+                                []
+                              |),
+                              [ iter ]
+                            |)))
+                      ]
+                    |)))
+                | _ => ltac:(M.monadic (M.impossible (||)))
                 end))))
       | _, _ => M.impossible
       end.

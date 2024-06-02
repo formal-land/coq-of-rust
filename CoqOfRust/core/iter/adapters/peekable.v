@@ -207,24 +207,25 @@ Module iter.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              I,
-                                              [],
-                                              "next",
-                                              []
-                                            |),
-                                            [ M.read (| iter |) ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                I,
+                                                [],
+                                                "next",
+                                                []
+                                              |),
+                                              [ M.read (| iter |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -291,24 +292,25 @@ Module iter.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              I,
-                                              [],
-                                              "next",
-                                              []
-                                            |),
-                                            [ M.read (| iter |) ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                I,
+                                                [],
+                                                "next",
+                                                []
+                                              |),
+                                              [ M.read (| iter |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -492,25 +494,26 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let next := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "&") [ Ty.associated ],
-                                      [ Ty.apply (Ty.path "&") [ T ] ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ next; expected ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let next := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply (Ty.path "&") [ Ty.associated ],
+                                        [ Ty.apply (Ty.path "&") [ T ] ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ next; expected ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))
@@ -1517,24 +1520,25 @@ Module iter.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    [ Ty.associated ],
-                                                  "take",
-                                                  []
-                                                |),
-                                                [ M.read (| v |) ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      [ Ty.associated ],
+                                                    "take",
+                                                    []
+                                                  |),
+                                                  [ M.read (| v |) ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)

@@ -1425,31 +1425,32 @@ Module task.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ T ],
-                                    "map",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::option::Option") [ T ],
+                                      "map",
+                                      [
+                                        Ty.apply (Ty.path "core::result::Result") [ T; E ];
+                                        Ty.function
+                                          [ T ]
+                                          (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                                      ]
+                                    |),
                                     [
-                                      Ty.apply (Ty.path "core::result::Result") [ T; E ];
-                                      Ty.function
-                                        [ T ]
-                                        (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                                      M.read (| x |);
+                                      M.constructor_as_closure "core::result::Result::Ok"
                                     ]
-                                  |),
-                                  [
-                                    M.read (| x |);
-                                    M.constructor_as_closure "core::result::Result::Ok"
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

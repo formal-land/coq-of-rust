@@ -274,40 +274,41 @@ Module num.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let digit := M.copy (| γ |) in
-                                      M.read (|
-                                        let~ _ :=
-                                          M.write (|
-                                            x,
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "u64",
-                                                "wrapping_add",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "u64",
-                                                    "wrapping_mul",
-                                                    []
-                                                  |),
-                                                  [ M.read (| x |); Value.Integer 10 ]
-                                                |);
-                                                M.rust_cast (M.read (| digit |))
-                                              ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let digit := M.copy (| γ |) in
+                                        M.read (|
+                                          let~ _ :=
+                                            M.write (|
+                                              x,
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "u64",
+                                                  "wrapping_add",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "u64",
+                                                      "wrapping_mul",
+                                                      []
+                                                    |),
+                                                    [ M.read (| x |); Value.Integer 10 ]
+                                                  |);
+                                                  M.rust_cast (M.read (| digit |))
+                                                ]
+                                              |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -632,51 +633,52 @@ Module num.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let digit := M.copy (| γ |) in
-                                              M.read (|
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              BinOp.Pure.lt
-                                                                (M.read (| exponent |))
-                                                                (Value.Integer 65536)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        let~ _ :=
-                                                          M.write (|
-                                                            exponent,
-                                                            BinOp.Wrap.add
-                                                              Integer.I64
-                                                              (BinOp.Wrap.mul
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let digit := M.copy (| γ |) in
+                                                M.read (|
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                BinOp.Pure.lt
+                                                                  (M.read (| exponent |))
+                                                                  (Value.Integer 65536)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.write (|
+                                                              exponent,
+                                                              BinOp.Wrap.add
                                                                 Integer.I64
-                                                                (Value.Integer 10)
-                                                                (M.read (| exponent |)))
-                                                              (M.rust_cast (M.read (| digit |)))
-                                                          |) in
-                                                        M.alloc (| Value.Tuple [] |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
-                                                  ]
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                                (BinOp.Wrap.mul
+                                                                  Integer.I64
+                                                                  (Value.Integer 10)
+                                                                  (M.read (| exponent |)))
+                                                                (M.rust_cast (M.read (| digit |)))
+                                                            |) in
+                                                          M.alloc (| Value.Tuple [] |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)

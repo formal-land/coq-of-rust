@@ -345,13 +345,7 @@ Module slice.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (|
-              "core::ptr::metadata::metadata",
-              [ Ty.apply (Ty.path "slice") [ T ] ]
-            |),
-            [ M.read (| self |) ]
-          |)))
+          M.read (| (* thir failed to compile: Any { .. } *) M.alloc (| Value.Tuple [] |) |)))
       | _, _ => M.impossible
       end.
     
@@ -5711,19 +5705,20 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let p := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                [ M.read (| p |); M.read (| x |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let p := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                  [ M.read (| p |); M.read (| x |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -6090,33 +6085,34 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let k := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnMut",
-                                        F,
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                        "call_mut",
-                                        []
-                                      |),
-                                      [ f; Value.Tuple [ M.read (| k |) ] ]
-                                    |)
-                                  |);
-                                  M.read (| b |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let k := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                                  [
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnMut",
+                                          F,
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                          "call_mut",
+                                          []
+                                        |),
+                                        [ f; Value.Tuple [ M.read (| k |) ] ]
+                                      |)
+                                    |);
+                                    M.read (| b |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -6204,58 +6200,60 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let a := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let b := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::cmp::PartialEq",
-                                                Ty.path "core::cmp::Ordering",
-                                                [ Ty.path "core::cmp::Ordering" ],
-                                                "eq",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let a := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let b := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.path "core::cmp::Ordering",
+                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply (Ty.path "&") [ T ];
+                                                              Ty.apply (Ty.path "&") [ T ]
+                                                            ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply (Ty.path "&") [ T ];
-                                                            Ty.apply (Ty.path "&") [ T ]
-                                                          ]
-                                                      ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      compare;
-                                                      Value.Tuple [ M.read (| a |); M.read (| b |) ]
-                                                    ]
+                                                        compare;
+                                                        Value.Tuple
+                                                          [ M.read (| a |); M.read (| b |) ]
+                                                      ]
+                                                    |)
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.StructTuple "core::cmp::Ordering::Less" []
                                                   |)
-                                                |);
-                                                M.alloc (|
-                                                  Value.StructTuple "core::cmp::Ordering::Less" []
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -6305,58 +6303,61 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let a := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let b := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::cmp::PartialOrd",
-                                                K,
-                                                [ K ],
-                                                "lt",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let a := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let b := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialOrd",
+                                                  K,
+                                                  [ K ],
+                                                  "lt",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ f; Value.Tuple [ M.read (| a |) ] ]
+                                                    |)
+                                                  |);
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ f; Value.Tuple [ M.read (| b |) ] ]
+                                                    |)
                                                   |)
-                                                |);
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ f; Value.Tuple [ M.read (| b |) ] ]
-                                                  |)
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -6446,58 +6447,59 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.path "core::cmp::Ordering",
-                                          [ Ty.path "core::cmp::Ordering" ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.path "core::cmp::Ordering",
+                                            [ Ty.path "core::cmp::Ordering" ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply (Ty.path "&") [ T ];
+                                                        Ty.apply (Ty.path "&") [ T ]
+                                                      ]
+                                                  ],
+                                                  "call_mut",
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [ T ];
-                                                      Ty.apply (Ty.path "&") [ T ]
-                                                    ]
-                                                ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                compare;
-                                                Value.Tuple [ M.read (| a |); M.read (| b |) ]
-                                              ]
+                                                  compare;
+                                                  Value.Tuple [ M.read (| a |); M.read (| b |) ]
+                                                ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              Value.StructTuple "core::cmp::Ordering::Less" []
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            Value.StructTuple "core::cmp::Ordering::Less" []
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -6547,58 +6549,59 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          K,
-                                          [ K ],
-                                          "lt",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| a |) ] ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
+                                            K,
+                                            [ K ],
+                                            "lt",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ f; Value.Tuple [ M.read (| a |) ] ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ f; Value.Tuple [ M.read (| b |) ] ]
+                                              |)
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| b |) ] ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -6640,33 +6643,34 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply (Ty.path "&mut") [ T ],
-                                          [ Ty.apply (Ty.path "&mut") [ T ] ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [ a; b ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.apply (Ty.path "&mut") [ T ],
+                                            [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [ a; b ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -7062,58 +7066,59 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          K,
-                                          [ K ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ key; Value.Tuple [ M.read (| a |) ] ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            K,
+                                            [ K ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ key; Value.Tuple [ M.read (| a |) ] ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ key; Value.Tuple [ M.read (| b |) ] ]
+                                              |)
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ key; Value.Tuple [ M.read (| b |) ] ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -8795,33 +8800,34 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          T,
-                                          [ T ],
-                                          "partial_cmp",
-                                          []
-                                        |),
-                                        [ M.read (| a |); M.read (| b |) ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
+                                            T,
+                                            [ T ],
+                                            "partial_cmp",
+                                            []
+                                          |),
+                                          [ M.read (| a |); M.read (| b |) ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -8875,55 +8881,56 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                              let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
-                              let a := M.alloc (| γ1_0 |) in
-                              let b := M.alloc (| γ1_1 |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    [ Ty.path "core::cmp::Ordering" ],
-                                  "map_or",
-                                  [
-                                    Ty.path "bool";
-                                    Ty.function [ Ty.path "core::cmp::Ordering" ] (Ty.path "bool")
-                                  ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::FnMut",
-                                      F,
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&") [ T ];
-                                            Ty.apply (Ty.path "&") [ T ]
-                                          ]
-                                      ],
-                                      "call_mut",
-                                      []
-                                    |),
-                                    [ compare; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                                  |);
-                                  Value.Bool false;
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                let a := M.alloc (| γ1_0 |) in
+                                let b := M.alloc (| γ1_1 |) in
+                                M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::cmp::Ordering",
-                                    "is_le",
-                                    []
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.path "core::cmp::Ordering" ],
+                                    "map_or",
+                                    [
+                                      Ty.path "bool";
+                                      Ty.function [ Ty.path "core::cmp::Ordering" ] (Ty.path "bool")
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::function::FnMut",
+                                        F,
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [ T ];
+                                              Ty.apply (Ty.path "&") [ T ]
+                                            ]
+                                        ],
+                                        "call_mut",
+                                        []
+                                      |),
+                                      [ compare; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                    |);
+                                    Value.Bool false;
+                                    M.get_associated_function (|
+                                      Ty.path "core::cmp::Ordering",
+                                      "is_le",
+                                      []
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -9012,51 +9019,53 @@ Module slice.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  M.read (|
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ pred; Value.Tuple [ M.read (| x |) ] ]
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Less" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Greater" []
-                                            |)))
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    M.read (|
+                                      M.match_operator (|
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ pred; Value.Tuple [ M.read (| x |) ] ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                Value.StructTuple "core::cmp::Ordering::Less" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (|
+                                                Value.StructTuple "core::cmp::Ordering::Greater" []
+                                              |)))
+                                        ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |);
@@ -9065,16 +9074,17 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.read (| i |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.read (| i |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

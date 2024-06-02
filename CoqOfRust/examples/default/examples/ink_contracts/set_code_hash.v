@@ -219,29 +219,30 @@ Module Impl_set_code_hash_Incrementer.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let err := M.copy (| γ |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "std::panicking::begin_panic",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          |)
+                                        ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)

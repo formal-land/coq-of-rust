@@ -640,138 +640,145 @@ Module collections.
                                             ltac:(M.monadic
                                               match γ with
                                               | [ s ] =>
-                                                M.find_or_pattern (|
-                                                  γ0_1,
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::range::Bound::Included",
-                                                            0
-                                                          |) in
-                                                        let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::range::Bound::Excluded",
-                                                            0
-                                                          |) in
-                                                        let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]))
-                                                  ],
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ e ] =>
-                                                          let γ :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::cmp::PartialOrd",
-                                                                  Ty.apply (Ty.path "&") [ Q ],
-                                                                  [ Ty.apply (Ty.path "&") [ Q ] ],
-                                                                  "gt",
-                                                                  []
-                                                                |),
-                                                                [ s; M.alloc (| M.read (| e |) |) ]
-                                                              |)
+                                                ltac:(M.monadic
+                                                  (M.find_or_pattern (|
+                                                    γ0_1,
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::range::Bound::Included",
+                                                              0
                                                             |) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
+                                                          let e := M.copy (| γ0_0 |) in
+                                                          Value.Tuple [ e ]));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::range::Bound::Excluded",
+                                                              0
                                                             |) in
-                                                          M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ := M.use is_set in
-                                                                  let _ :=
-                                                                    M.is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.call_closure (|
-                                                                        M.get_function (|
-                                                                          "core::panicking::panic_fmt",
-                                                                          []
-                                                                        |),
-                                                                        [
+                                                          let e := M.copy (| γ0_0 |) in
+                                                          Value.Tuple [ e ]))
+                                                    ],
+                                                    M.closure
+                                                      (fun γ =>
+                                                        ltac:(M.monadic
+                                                          match γ with
+                                                          | [ e ] =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::cmp::PartialOrd",
+                                                                      Ty.apply (Ty.path "&") [ Q ],
+                                                                      [ Ty.apply (Ty.path "&") [ Q ]
+                                                                      ],
+                                                                      "gt",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      s;
+                                                                      M.alloc (| M.read (| e |) |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              M.match_operator (|
+                                                                M.alloc (| Value.Tuple [] |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ := M.use is_set in
+                                                                      let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
                                                                           M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              "new_const",
+                                                                            M.get_function (|
+                                                                              "core::panicking::panic_fmt",
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeSet"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_const",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  (* Unsize *)
+                                                                                  M.pointer_coercion
+                                                                                    (M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "range start is greater than range end in BTreeSet"
+                                                                                          |)
+                                                                                        ]
+                                                                                    |))
+                                                                                ]
+                                                                              |)
                                                                             ]
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.call_closure (|
-                                                                        M.get_function (|
-                                                                          "core::panicking::panic_fmt",
-                                                                          []
-                                                                        |),
-                                                                        [
+                                                                        |)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        M.never_to_any (|
                                                                           M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              "new_const",
+                                                                            M.get_function (|
+                                                                              "core::panicking::panic_fmt",
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeMap"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_const",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  (* Unsize *)
+                                                                                  M.pointer_coercion
+                                                                                    (M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "range start is greater than range end in BTreeMap"
+                                                                                          |)
+                                                                                        ]
+                                                                                    |))
+                                                                                ]
+                                                                              |)
                                                                             ]
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
-                                                        end))
-                                                |)
-                                              | _ => M.impossible (||)
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
+                                                          end))
+                                                  |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
                                               end))
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))

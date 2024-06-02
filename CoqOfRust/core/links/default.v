@@ -20,7 +20,7 @@ Module Default.
       }}
     }.
 
-  Record RunImpl (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
+  Record Run (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
     default : Run_default Self Self_ty;
   }.
 End Default.
@@ -41,7 +41,7 @@ Module Impl_Default_for_unit.
     }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -64,7 +64,7 @@ Module Impl_Default_for_bool.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -91,7 +91,7 @@ Module Impl_Default_for_usize.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -114,7 +114,7 @@ Module Impl_Default_for_u8.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -137,7 +137,7 @@ Module Impl_Default_for_u16.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -160,7 +160,7 @@ Module Impl_Default_for_u32.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -183,7 +183,7 @@ Module Impl_Default_for_u64.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -206,7 +206,7 @@ Module Impl_Default_for_u128.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -229,7 +229,7 @@ Module Impl_Default_for_isize.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -252,7 +252,7 @@ Module Impl_Default_for_i8.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -275,7 +275,7 @@ Module Impl_Default_for_i16.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -298,7 +298,7 @@ Module Impl_Default_for_i32.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -321,7 +321,7 @@ Module Impl_Default_for_i64.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)
@@ -344,7 +344,7 @@ Module Impl_Default_for_i128.
     { run_symbolic. }
   Defined.
 
-  Definition run_impl : Default.RunImpl Self Self_ty.
+  Definition run : Default.Run Self Self_ty.
   Proof.
     constructor.
     { (* default *)

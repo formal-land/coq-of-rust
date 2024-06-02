@@ -384,24 +384,25 @@ Module iter.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          Ty.associated,
-                                          [],
-                                          "clone",
-                                          []
-                                        |),
-                                        [ separator ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            Ty.associated,
+                                            [],
+                                            "clone",
+                                            []
+                                          |),
+                                          [ separator ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end));
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1019,36 +1020,37 @@ Module iter.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let hi := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "usize",
-                                                    "checked_add",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "usize",
-                                                        "saturating_sub",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| hi |);
-                                                        M.rust_cast (M.read (| next_is_elem |))
-                                                      ]
-                                                    |);
-                                                    M.read (| hi |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let hi := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "usize",
+                                                      "checked_add",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "usize",
+                                                          "saturating_sub",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| hi |);
+                                                          M.rust_cast (M.read (| next_is_elem |))
+                                                        ]
+                                                      |);
+                                                      M.read (| hi |)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1187,74 +1189,75 @@ Module iter.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let accum := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let x := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [
-                                                              M.read (| accum |);
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::function::FnMut",
-                                                                  G,
-                                                                  [ Ty.tuple [] ],
-                                                                  "call_mut",
-                                                                  []
-                                                                |),
-                                                                [ separator; Value.Tuple [] ]
-                                                              |)
-                                                            ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [ M.read (| accum |); M.read (| x |) ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  accum
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let accum := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let x := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        accum,
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::FnMut",
+                                                            F,
+                                                            [ Ty.tuple [ B; Ty.associated ] ],
+                                                            "call_mut",
+                                                            []
+                                                          |),
+                                                          [
+                                                            f;
+                                                            Value.Tuple
+                                                              [
+                                                                M.read (| accum |);
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::function::FnMut",
+                                                                    G,
+                                                                    [ Ty.tuple [] ],
+                                                                    "call_mut",
+                                                                    []
+                                                                  |),
+                                                                  [ separator; Value.Tuple [] ]
+                                                                |)
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        accum,
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::FnMut",
+                                                            F,
+                                                            [ Ty.tuple [ B; Ty.associated ] ],
+                                                            "call_mut",
+                                                            []
+                                                          |),
+                                                          [
+                                                            f;
+                                                            Value.Tuple
+                                                              [ M.read (| accum |); M.read (| x |) ]
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    accum
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)

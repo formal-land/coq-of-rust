@@ -872,18 +872,19 @@ Module slice.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let elt := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| M.read (| elt |) |))
-                                                            (M.read (| x |))))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let elt := M.copy (| γ |) in
+                                                            BinOp.Pure.eq
+                                                              (M.read (| M.read (| elt |) |))
+                                                              (M.read (| x |))))
+                                                      ]
+                                                    |)))
+                                                | _ => ltac:(M.monadic (M.impossible (||)))
                                                 end))
                                         ]
                                       |)
@@ -1118,18 +1119,19 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let elt := M.copy (| γ |) in
-                                              BinOp.Pure.eq
-                                                (M.read (| M.read (| elt |) |))
-                                                (M.read (| x |))))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let elt := M.copy (| γ |) in
+                                                BinOp.Pure.eq
+                                                  (M.read (| M.read (| elt |) |))
+                                                  (M.read (| x |))))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)

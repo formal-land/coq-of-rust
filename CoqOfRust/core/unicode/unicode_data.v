@@ -427,25 +427,26 @@ Module unicode.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let header := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::bit::Shl",
-                                            Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                                            [ Ty.path "i32" ],
-                                            "shl",
-                                            []
-                                          |),
-                                          [ M.read (| header |); Value.Integer 11 ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let header := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::bit::Shl",
+                                              Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                              [ Ty.path "i32" ],
+                                              "shl",
+                                              []
+                                            |),
+                                            [ M.read (| header |); Value.Integer 11 ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -573,29 +574,30 @@ Module unicode.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let prev := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::unicode::unicode_data::decode_prefix_sum",
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
-                                                M.read (| short_offset_runs |),
-                                                prev
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let prev := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::unicode::unicode_data::decode_prefix_sum",
+                                              []
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_array_field (|
+                                                  M.read (| short_offset_runs |),
+                                                  prev
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |);
@@ -6646,30 +6648,31 @@ Module unicode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ := M.read (| γ |) in
-                                                    let γ1_0 :=
-                                                      M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                    let γ1_1 :=
-                                                      M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                    let key := M.copy (| γ1_0 |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::cmp::Ord",
-                                                        Ty.path "char",
-                                                        [],
-                                                        "cmp",
-                                                        []
-                                                      |),
-                                                      [ key; c ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ := M.read (| γ |) in
+                                                      let γ1_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ1_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let key := M.copy (| γ1_0 |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::cmp::Ord",
+                                                          Ty.path "char",
+                                                          [],
+                                                          "cmp",
+                                                          []
+                                                        |),
+                                                        [ key; c ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |);
@@ -6678,158 +6681,173 @@ Module unicode.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let i := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ u :=
-                                                    M.copy (|
-                                                      M.SubPointer.get_tuple_field (|
-                                                        M.SubPointer.get_array_field (|
-                                                          M.read (|
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let i := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ u :=
+                                                      M.copy (|
+                                                        M.SubPointer.get_tuple_field (|
+                                                          M.SubPointer.get_array_field (|
                                                             M.read (|
-                                                              M.get_constant (|
-                                                                "core::unicode::unicode_data::conversions::LOWERCASE_TABLE"
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "core::unicode::unicode_data::conversions::LOWERCASE_TABLE"
+                                                                |)
                                                               |)
-                                                            |)
+                                                            |),
+                                                            i
                                                           |),
-                                                          i
-                                                        |),
-                                                        1
-                                                      |)
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "char" ]
-                                                          ],
-                                                        "unwrap_or_else",
-                                                        [
-                                                          Ty.function
-                                                            [ Ty.tuple [] ]
-                                                            (Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "char" ])
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              [ Ty.path "char" ],
-                                                            "map",
+                                                          1
+                                                        |)
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
-                                                                [ Ty.path "char" ];
-                                                              Ty.function
-                                                                [ Ty.tuple [ Ty.path "char" ] ]
-                                                                (Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [ Ty.path "char" ])
-                                                            ]
-                                                          |),
+                                                                [ Ty.path "char" ]
+                                                            ],
+                                                          "unwrap_or_else",
                                                           [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "char",
-                                                                "from_u32",
-                                                                []
-                                                              |),
-                                                              [ M.read (| u |) ]
-                                                            |);
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [ α0 ] =>
-                                                                    M.match_operator (|
+                                                            Ty.function
+                                                              [ Ty.tuple [] ]
+                                                              (Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Ty.path "char" ])
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                [ Ty.path "char" ],
+                                                              "map",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Ty.path "char" ];
+                                                                Ty.function
+                                                                  [ Ty.tuple [ Ty.path "char" ] ]
+                                                                  (Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [ Ty.path "char" ])
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "char",
+                                                                  "from_u32",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| u |) ]
+                                                              |);
+                                                              M.closure
+                                                                (fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    match γ with
+                                                                    | [ α0 ] =>
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let c :=
+                                                                                  M.copy (| γ |) in
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (| c |);
+                                                                                    Value.UnicodeChar
+                                                                                      0;
+                                                                                    Value.UnicodeChar
+                                                                                      0
+                                                                                  ]))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.impossible (||)))
+                                                                    end))
+                                                            ]
+                                                          |);
+                                                          M.closure
+                                                            (fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [ α0 ] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.match_operator (|
                                                                       M.alloc (| α0 |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
-                                                                              M.copy (| γ |) in
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (| c |);
-                                                                                Value.UnicodeChar 0;
-                                                                                Value.UnicodeChar 0
-                                                                              ]))
-                                                                      ]
-                                                                    |)
-                                                                  | _ => M.impossible (||)
-                                                                  end))
-                                                          ]
-                                                        |);
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (M.read (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                [
+                                                                            (M.read (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
-                                                                                      "array")
-                                                                                    [ Ty.path "char"
-                                                                                    ]
-                                                                                ],
-                                                                              "get_unchecked",
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.read (|
-                                                                                  M.get_constant (|
-                                                                                    "core::unicode::unicode_data::conversions::LOWERCASE_TABLE_MULTI"
-                                                                                  |)
-                                                                                |)
-                                                                              |);
-                                                                              M.rust_cast
-                                                                                (BinOp.Pure.bit_and
-                                                                                  (M.read (| u |))
-                                                                                  (BinOp.Wrap.sub
-                                                                                    Integer.U32
-                                                                                    (M.read (|
+                                                                                      "slice")
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "array")
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "char"
+                                                                                        ]
+                                                                                    ],
+                                                                                  "get_unchecked",
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    M.read (|
                                                                                       M.get_constant (|
-                                                                                        "core::unicode::unicode_data::conversions::INDEX_MASK"
+                                                                                        "core::unicode::unicode_data::conversions::LOWERCASE_TABLE_MULTI"
                                                                                       |)
-                                                                                    |))
-                                                                                    (Value.Integer
-                                                                                      1)))
-                                                                            ]
-                                                                          |)
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
-                                                              end))
-                                                      ]
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.rust_cast
+                                                                                    (BinOp.Pure.bit_and
+                                                                                      (M.read (|
+                                                                                        u
+                                                                                      |))
+                                                                                      (BinOp.Wrap.sub
+                                                                                        Integer.U32
+                                                                                        (M.read (|
+                                                                                          M.get_constant (|
+                                                                                            "core::unicode::unicode_data::conversions::INDEX_MASK"
+                                                                                          |)
+                                                                                        |))
+                                                                                        (Value.Integer
+                                                                                          1)))
+                                                                                ]
+                                                                              |)
+                                                                            |)))
+                                                                      ]
+                                                                    |)))
+                                                                | _ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.impossible (||)))
+                                                                end))
+                                                        ]
+                                                      |)
                                                     |)
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |);
@@ -6958,30 +6976,31 @@ Module unicode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ := M.read (| γ |) in
-                                                    let γ1_0 :=
-                                                      M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                    let γ1_1 :=
-                                                      M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                    let key := M.copy (| γ1_0 |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::cmp::Ord",
-                                                        Ty.path "char",
-                                                        [],
-                                                        "cmp",
-                                                        []
-                                                      |),
-                                                      [ key; c ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ := M.read (| γ |) in
+                                                      let γ1_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ1_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let key := M.copy (| γ1_0 |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::cmp::Ord",
+                                                          Ty.path "char",
+                                                          [],
+                                                          "cmp",
+                                                          []
+                                                        |),
+                                                        [ key; c ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |);
@@ -6990,158 +7009,173 @@ Module unicode.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let i := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ u :=
-                                                    M.copy (|
-                                                      M.SubPointer.get_tuple_field (|
-                                                        M.SubPointer.get_array_field (|
-                                                          M.read (|
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let i := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ u :=
+                                                      M.copy (|
+                                                        M.SubPointer.get_tuple_field (|
+                                                          M.SubPointer.get_array_field (|
                                                             M.read (|
-                                                              M.get_constant (|
-                                                                "core::unicode::unicode_data::conversions::UPPERCASE_TABLE"
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "core::unicode::unicode_data::conversions::UPPERCASE_TABLE"
+                                                                |)
                                                               |)
-                                                            |)
+                                                            |),
+                                                            i
                                                           |),
-                                                          i
-                                                        |),
-                                                        1
-                                                      |)
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "char" ]
-                                                          ],
-                                                        "unwrap_or_else",
-                                                        [
-                                                          Ty.function
-                                                            [ Ty.tuple [] ]
-                                                            (Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "char" ])
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              [ Ty.path "char" ],
-                                                            "map",
+                                                          1
+                                                        |)
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
-                                                                [ Ty.path "char" ];
-                                                              Ty.function
-                                                                [ Ty.tuple [ Ty.path "char" ] ]
-                                                                (Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [ Ty.path "char" ])
-                                                            ]
-                                                          |),
+                                                                [ Ty.path "char" ]
+                                                            ],
+                                                          "unwrap_or_else",
                                                           [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "char",
-                                                                "from_u32",
-                                                                []
-                                                              |),
-                                                              [ M.read (| u |) ]
-                                                            |);
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [ α0 ] =>
-                                                                    M.match_operator (|
+                                                            Ty.function
+                                                              [ Ty.tuple [] ]
+                                                              (Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Ty.path "char" ])
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                [ Ty.path "char" ],
+                                                              "map",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Ty.path "char" ];
+                                                                Ty.function
+                                                                  [ Ty.tuple [ Ty.path "char" ] ]
+                                                                  (Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [ Ty.path "char" ])
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "char",
+                                                                  "from_u32",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| u |) ]
+                                                              |);
+                                                              M.closure
+                                                                (fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    match γ with
+                                                                    | [ α0 ] =>
+                                                                      ltac:(M.monadic
+                                                                        (M.match_operator (|
+                                                                          M.alloc (| α0 |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let c :=
+                                                                                  M.copy (| γ |) in
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (| c |);
+                                                                                    Value.UnicodeChar
+                                                                                      0;
+                                                                                    Value.UnicodeChar
+                                                                                      0
+                                                                                  ]))
+                                                                          ]
+                                                                        |)))
+                                                                    | _ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.impossible (||)))
+                                                                    end))
+                                                            ]
+                                                          |);
+                                                          M.closure
+                                                            (fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [ α0 ] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.match_operator (|
                                                                       M.alloc (| α0 |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
-                                                                              M.copy (| γ |) in
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (| c |);
-                                                                                Value.UnicodeChar 0;
-                                                                                Value.UnicodeChar 0
-                                                                              ]))
-                                                                      ]
-                                                                    |)
-                                                                  | _ => M.impossible (||)
-                                                                  end))
-                                                          ]
-                                                        |);
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (M.read (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                [
+                                                                            (M.read (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
-                                                                                      "array")
-                                                                                    [ Ty.path "char"
-                                                                                    ]
-                                                                                ],
-                                                                              "get_unchecked",
-                                                                              [ Ty.path "usize" ]
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
-                                                                                M.read (|
-                                                                                  M.get_constant (|
-                                                                                    "core::unicode::unicode_data::conversions::UPPERCASE_TABLE_MULTI"
-                                                                                  |)
-                                                                                |)
-                                                                              |);
-                                                                              M.rust_cast
-                                                                                (BinOp.Pure.bit_and
-                                                                                  (M.read (| u |))
-                                                                                  (BinOp.Wrap.sub
-                                                                                    Integer.U32
-                                                                                    (M.read (|
+                                                                                      "slice")
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "array")
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "char"
+                                                                                        ]
+                                                                                    ],
+                                                                                  "get_unchecked",
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    M.read (|
                                                                                       M.get_constant (|
-                                                                                        "core::unicode::unicode_data::conversions::INDEX_MASK"
+                                                                                        "core::unicode::unicode_data::conversions::UPPERCASE_TABLE_MULTI"
                                                                                       |)
-                                                                                    |))
-                                                                                    (Value.Integer
-                                                                                      1)))
-                                                                            ]
-                                                                          |)
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
-                                                              end))
-                                                      ]
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.rust_cast
+                                                                                    (BinOp.Pure.bit_and
+                                                                                      (M.read (|
+                                                                                        u
+                                                                                      |))
+                                                                                      (BinOp.Wrap.sub
+                                                                                        Integer.U32
+                                                                                        (M.read (|
+                                                                                          M.get_constant (|
+                                                                                            "core::unicode::unicode_data::conversions::INDEX_MASK"
+                                                                                          |)
+                                                                                        |))
+                                                                                        (Value.Integer
+                                                                                          1)))
+                                                                                ]
+                                                                              |)
+                                                                            |)))
+                                                                      ]
+                                                                    |)))
+                                                                | _ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.impossible (||)))
+                                                                end))
+                                                        ]
+                                                      |)
                                                     |)
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |);

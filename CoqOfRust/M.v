@@ -9,6 +9,7 @@ From Hammer Require Export Tactics.
 Import List.ListNotations.
 
 Local Open Scope list.
+Local Open Scope string.
 
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
@@ -621,6 +622,7 @@ Arguments call_primitive /.
 
 Definition alloc (v : Value.t) : M :=
   call_primitive (Primitive.StateAlloc v).
+Arguments alloc /.
 
 Definition read (r : Value.t) : M :=
   match r with
@@ -637,6 +639,7 @@ Definition write (r : Value.t) (update : Value.t) : M :=
 Definition copy (r : Value.t) : M :=
   let* v := read r in
   alloc v.
+Arguments copy /.
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
     access in an array, we do a [break_match]. *)
@@ -804,6 +807,7 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
     break_match.
 
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  let* value := read value in
   match value with
   | Value.StructTuple current_constructor _ =>
     if String.eqb current_constructor constructor then
@@ -830,3 +834,50 @@ Definition constructor_as_closure (constructor : string) : Value.t :=
 Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
 
 Parameter yield : Value.t -> M.
+
+(** There is an automatic instanciation of the function traits for closures and functions. *)
+Module FunctionTraitAutomaticImpl.
+  Axiom FunctionImplementsFn :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::Fn"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          let* self := M.read self in
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+
+  Axiom FunctionImplementsFnMut :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::FnMut"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call_mut", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          let* self := M.read self in
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+
+  Axiom FunctionImplementsFnOnce :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::FnOnce"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call_once", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+End FunctionTraitAutomaticImpl.

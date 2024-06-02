@@ -105,56 +105,57 @@ Module num.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let n := M.copy (| γ |) in
-                                      M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (| n |))
-                                                        (M.read (|
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let n := M.copy (| γ |) in
+                                        M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        BinOp.Pure.lt
+                                                          (M.read (| n |))
+                                                          (M.read (|
+                                                            M.get_constant (|
+                                                              "core::num::dec2flt::slow::parse_long_mantissa::NUM_POWERS"
+                                                            |)
+                                                          |))
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.rust_cast
+                                                      (M.read (|
+                                                        M.SubPointer.get_array_field (|
                                                           M.get_constant (|
-                                                            "core::num::dec2flt::slow::parse_long_mantissa::NUM_POWERS"
-                                                          |)
-                                                        |))
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.alloc (|
-                                                  M.rust_cast
-                                                    (M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.get_constant (|
-                                                          "core::num::dec2flt::slow::parse_long_mantissa::POWERS"
-                                                        |),
-                                                        n
-                                                      |)
-                                                    |))
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.get_constant (|
-                                                  "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                            "core::num::dec2flt::slow::parse_long_mantissa::POWERS"
+                                                          |),
+                                                          n
+                                                        |)
+                                                      |))
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.get_constant (|
+                                                    "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |) in
                   let~ fp_zero :=
@@ -496,8 +497,11 @@ Module num.
                                                         (fun γ =>
                                                           ltac:(M.monadic
                                                             match γ with
-                                                            | [] => M.alloc (| Value.Integer 2 |)
-                                                            | _ => M.impossible (||)
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (| Value.Integer 2 |)))
+                                                            | _ =>
+                                                              ltac:(M.monadic (M.impossible (||)))
                                                             end))
                                                     |)));
                                                 fun γ =>

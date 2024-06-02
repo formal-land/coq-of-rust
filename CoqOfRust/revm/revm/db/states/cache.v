@@ -559,52 +559,31 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let address := M.copy (| γ0_0 |) in
-                                  let account := M.copy (| γ0_1 |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [
-                                              Ty.path
-                                                "revm::db::states::plain_account::PlainAccount"
-                                            ]
-                                        ],
-                                      "map",
-                                      [
-                                        Ty.tuple
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let address := M.copy (| γ0_0 |) in
+                                    let account := M.copy (| γ0_1 |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
                                           [
-                                            Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.apply
                                               (Ty.path "&")
                                               [
                                                 Ty.path
                                                   "revm::db::states::plain_account::PlainAccount"
                                               ]
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.path
-                                                      "revm::db::states::plain_account::PlainAccount"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple
+                                          ],
+                                        "map",
+                                        [
+                                          Ty.tuple
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.apply
@@ -613,54 +592,77 @@ Module db.
                                                   Ty.path
                                                     "revm::db::states::plain_account::PlainAccount"
                                                 ]
-                                            ])
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
+                                            ];
+                                          Ty.function
                                             [
-                                              Ty.path
-                                                "revm::db::states::plain_account::PlainAccount"
-                                            ],
-                                          "as_ref",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account |),
-                                            "revm::db::states::cache_account::CacheAccount",
-                                            "account"
-                                          |)
-                                        ]
-                                      |);
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
+                                              Ty.tuple
                                                 [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let plain_acc := M.copy (| γ |) in
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (| M.read (| address |) |);
-                                                          M.read (| plain_acc |)
-                                                        ]))
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.path
+                                                        "revm::db::states::plain_account::PlainAccount"
+                                                    ]
                                                 ]
-                                              |)
-                                            | _ => M.impossible (||)
-                                            end))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path "alloy_primitives::bits::address::Address";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  [
+                                                    Ty.path
+                                                      "revm::db::states::plain_account::PlainAccount"
+                                                  ]
+                                              ])
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [
+                                                Ty.path
+                                                  "revm::db::states::plain_account::PlainAccount"
+                                              ],
+                                            "as_ref",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| account |),
+                                              "revm::db::states::cache_account::CacheAccount",
+                                              "account"
+                                            |)
+                                          ]
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let plain_acc := M.copy (| γ |) in
+                                                          Value.Tuple
+                                                            [
+                                                              M.read (| M.read (| address |) |);
+                                                              M.read (| plain_acc |)
+                                                            ]))
+                                                    ]
+                                                  |)))
+                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              end))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)))

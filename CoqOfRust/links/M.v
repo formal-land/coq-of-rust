@@ -311,6 +311,13 @@ Module Run.
       {{ k (φ ref) ⇓ output_to_value }}
      ) ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
+  (* It can help to simplify the definition of some links. *)
+  | CallPrimitiveStateAllocImmediate {A : Set} (IsToValueA : ToValue A)
+      (value : A) (value' : Value.t)
+      (k : Value.t -> M) :
+    value' = φ value ->
+    {{ k (φ (Ref.Immediate value)) ⇓ output_to_value }} ->
+    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
   | CallPrimitiveStateRead {A : Set}
       (* We make the [to_value] explicit instead of using the class to avoid inference problems *)
       (to_value : A -> Value.t)
@@ -321,6 +328,15 @@ Module Run.
     (forall (value : A),
       {{ k (to_value value) ⇓ output_to_value }}
     ) ->
+    {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
+  | CallPrimitiveStateReadImmediate {A : Set}
+      (* We make the [to_value] explicit instead of using the class to avoid inference problems *)
+      (to_value : A -> Value.t) (value : A)
+      (pointer_core : Pointer.Core.t Value.t A)
+      (k : Value.t -> M) :
+    let pointer := Pointer.Make to_value pointer_core in
+    pointer_core = Ref.to_core (@Ref.Immediate A {| φ := to_value |} value) ->
+    {{ k (to_value value) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
   | CallPrimitiveStateWrite {A : Set}
       (* Same as with [Read], we use an explicit [to_value] *)
@@ -489,6 +505,9 @@ Proof.
     | H : forall _, _ |- _ => apply (H ref_core)
     end.
   }
+  { (* AllocImmediate *)
+    exact (evaluate _ _ _ run).
+  }
   { (* Read *)
     apply (LowM.CallPrimitive (Primitive.StateRead ref)).
     intros value.
@@ -496,6 +515,9 @@ Proof.
     match goal with
     | H : forall _, _ |- _ => apply (H value)
     end.
+  }
+  { (* ReadImmediate *)
+    exact (evaluate _ _ _ run).
   }
   { (* Write *)
     apply (LowM.CallPrimitive (Primitive.StateWrite ref value)).
@@ -590,3 +612,25 @@ Ltac run_symbolic :=
     validity statement for the index that we access. *)
 Ltac run_sub_pointer sub_pointer_is_valid :=
   cbn; eapply (run_sub_pointer sub_pointer_is_valid); [reflexivity|]; intros.
+
+Module Function.
+  Record t (Args Output : Set)
+      (args_to_value : Args -> list Value.t)
+      (output_to_value : Output -> Value.t + Exception.t) :
+      Set := {
+    f : list Value.t -> M;
+    run_f : forall (args : Args),
+      {{ f (args_to_value args) ⇓ output_to_value }};
+  }.
+End Function.
+
+Module Function2.
+  Record t (A1 A2 Output : Set)
+      `{ToValue A1} `{ToValue A2}
+      (output_to_value : Output -> Value.t + Exception.t) :
+      Set := {
+    f : list Value.t -> M;
+    run_f : forall (a1 : A1) (a2 : A2),
+      {{ f [ φ a1; φ a2 ] ⇓ output_to_value }};
+  }.
+End Function2.

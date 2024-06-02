@@ -178,89 +178,92 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let s := M.copy (| γ |) in
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
-                              "map",
-                              [
-                                Ty.path "i32";
-                                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                              ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                  "map_err",
-                                  [
-                                    Ty.path "defining_an_error_type::DoubleError";
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
-                                      (Ty.path "defining_an_error_type::DoubleError")
-                                  ]
-                                |),
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let s := M.copy (| γ |) in
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
+                                "map",
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "parse",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ M.read (| M.read (| s |) |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
+                                  Ty.path "i32";
+                                  Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
+                                ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                                    "map_err",
+                                    [
+                                      Ty.path "defining_an_error_type::DoubleError";
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
+                                        (Ty.path "defining_an_error_type::DoubleError")
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "parse",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ M.read (| M.read (| s |) |) ]
+                                    |);
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (Value.StructTuple
+                                                        "defining_an_error_type::DoubleError"
+                                                        []))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          end))
+                                  ]
+                                |);
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (Value.StructTuple
-                                                    "defining_an_error_type::DoubleError"
-                                                    []))
+                                                  (let i := M.copy (| γ |) in
+                                                  BinOp.Wrap.mul
+                                                    Integer.I32
+                                                    (Value.Integer 2)
+                                                    (M.read (| i |))))
                                             ]
-                                          |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |);
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let i := M.copy (| γ |) in
-                                              BinOp.Wrap.mul
-                                                Integer.I32
-                                                (Value.Integer 2)
-                                                (M.read (| i |))))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
-                                    end))
-                            ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      end))
+                              ]
+                            |)))
+                      ]
+                    |)))
+                | _ => ltac:(M.monadic (M.impossible (||)))
                 end))
         ]
       |)))

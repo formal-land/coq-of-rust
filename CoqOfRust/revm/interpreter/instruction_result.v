@@ -1184,8 +1184,8 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1245,8 +1245,8 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1482,8 +1482,8 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -2461,16 +2461,17 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                Value.StructTuple
-                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                  [
-                                    Value.StructTuple
-                                      "revm_primitives::result::HaltReason::OpcodeNotFound"
-                                      []
-                                  ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                    [
+                                      Value.StructTuple
+                                        "revm_primitives::result::HaltReason::OpcodeNotFound"
+                                        []
+                                    ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>
@@ -2671,16 +2672,17 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                Value.StructTuple
-                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                  [
-                                    Value.StructTuple
-                                      "revm_primitives::result::HaltReason::CreateContractSizeLimit"
-                                      []
-                                  ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                    [
+                                      Value.StructTuple
+                                        "revm_primitives::result::HaltReason::CreateContractSizeLimit"
+                                        []
+                                    ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     |)));
                 fun γ =>

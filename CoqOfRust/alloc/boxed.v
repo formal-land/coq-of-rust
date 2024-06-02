@@ -6306,49 +6306,50 @@ Module boxed.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let s := M.copy (| γ |) in
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          [
-                                            Ty.dyn
-                                              [
-                                                ("core::error::Error::Trait", []);
-                                                ("core::marker::Send::AutoTrait", [])
-                                              ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "from_raw",
-                                        []
-                                      |),
-                                      [
-                                        M.rust_cast
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let s := M.copy (| γ |) in
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            [
+                                              Ty.dyn
                                                 [
-                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "into_raw",
-                                              []
-                                            |),
-                                            [ M.read (| s |) ]
-                                          |))
-                                      ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  ("core::error::Error::Trait", []);
+                                                  ("core::marker::Send::AutoTrait", [])
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "from_raw",
+                                          []
+                                        |),
+                                        [
+                                          M.rust_cast
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  [
+                                                    Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "into_raw",
+                                                []
+                                              |),
+                                              [ M.read (| s |) ]
+                                            |))
+                                        ]
+                                      |))))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -6451,50 +6452,51 @@ Module boxed.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let s := M.copy (| γ |) in
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          [
-                                            Ty.dyn
-                                              [
-                                                ("core::error::Error::Trait", []);
-                                                ("core::marker::Sync::AutoTrait", []);
-                                                ("core::marker::Send::AutoTrait", [])
-                                              ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "from_raw",
-                                        []
-                                      |),
-                                      [
-                                        M.rust_cast
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let s := M.copy (| γ |) in
+                                    (* Unsize *)
+                                    M.pointer_coercion
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            [
+                                              Ty.dyn
                                                 [
-                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "into_raw",
-                                              []
-                                            |),
-                                            [ M.read (| s |) ]
-                                          |))
-                                      ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  ("core::error::Error::Trait", []);
+                                                  ("core::marker::Sync::AutoTrait", []);
+                                                  ("core::marker::Send::AutoTrait", [])
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "from_raw",
+                                          []
+                                        |),
+                                        [
+                                          M.rust_cast
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  [
+                                                    Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "into_raw",
+                                                []
+                                              |),
+                                              [ M.read (| s |) ]
+                                            |))
+                                        ]
+                                      |))))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)

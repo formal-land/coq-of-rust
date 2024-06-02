@@ -438,11 +438,12 @@ Module evm.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -660,31 +661,32 @@ Module evm.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let e := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "revm::evm::Evm")
-                                                            [ EXT; DB ],
-                                                          "clear",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |) in
-                                                  e
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let e := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ _ :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "revm::evm::Evm")
+                                                              [ EXT; DB ],
+                                                            "clear",
+                                                            []
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |) in
+                                                    e
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -1320,31 +1322,32 @@ Module evm.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let e := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "revm::evm::Evm")
-                                                            [ EXT; DB ],
-                                                          "clear",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |) in
-                                                  e
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let e := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ _ :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "revm::evm::Evm")
+                                                              [ EXT; DB ],
+                                                            "clear",
+                                                            []
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |) in
+                                                    e
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => ltac:(M.monadic (M.impossible (||)))
                                       end))
                               ]
                             |)
@@ -5318,48 +5321,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5449,48 +5453,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5580,48 +5585,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5714,48 +5720,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5849,48 +5856,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -5982,48 +5990,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -6117,48 +6126,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)
@@ -6417,48 +6427,49 @@ Module evm.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let e := M.copy (| γ |) in
-                                  M.read (|
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let e := M.copy (| γ |) in
+                                    M.read (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::DerefMut",
+                                              Ty.apply
+                                                (Ty.path "revm::context::evm_context::EvmContext")
+                                                [ DB ],
+                                              [],
+                                              "deref_mut",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "revm::evm::Evm",
+                                                  "context"
+                                                |),
+                                                "revm::context::Context",
+                                                "evm"
+                                              |)
+                                            ]
+                                          |),
+                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                          "error"
                                         |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "error"
-                                      |),
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        [ M.read (| e |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                        Value.StructTuple
+                                          "core::result::Result::Err"
+                                          [ M.read (| e |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => ltac:(M.monadic (M.impossible (||)))
                         end))
                 ]
               |)

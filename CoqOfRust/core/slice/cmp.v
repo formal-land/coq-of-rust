@@ -289,28 +289,29 @@ Module slice.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let x := M.copy (| γ0_0 |) in
-                                        let y := M.copy (| γ0_1 |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::cmp::PartialEq",
-                                            Ty.apply (Ty.path "&") [ A ],
-                                            [ Ty.apply (Ty.path "&") [ B ] ],
-                                            "eq",
-                                            []
-                                          |),
-                                          [ x; y ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                          let x := M.copy (| γ0_0 |) in
+                                          let y := M.copy (| γ0_1 |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialEq",
+                                              Ty.apply (Ty.path "&") [ A ],
+                                              [ Ty.apply (Ty.path "&") [ B ] ],
+                                              "eq",
+                                              []
+                                            |),
+                                            [ x; y ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => ltac:(M.monadic (M.impossible (||)))
                               end))
                       ]
                     |)
@@ -1401,25 +1402,26 @@ Module slice.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let y := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
-                                    "eq",
-                                    []
-                                  |),
-                                  [ M.read (| y |); M.read (| self |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let y := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      T,
+                                      [ T ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ M.read (| y |); M.read (| self |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))

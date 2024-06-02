@@ -143,32 +143,33 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is a prime
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_const",
+                                          []
+                                        |),
+                                        [
+                                          (* Unsize *)
+                                          M.pointer_coercion
+                                            (M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "This is a prime
 " |) ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)
-                          | _ => M.impossible (||)
+                                            |))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   |)));
               fun γ =>

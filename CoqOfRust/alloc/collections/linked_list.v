@@ -848,142 +848,143 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.read (|
-                                  let~ node :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ];
-                                              Ty.apply (Ty.path "&") [ A ]
-                                            ],
-                                          "from_raw_in",
-                                          []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ node :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ];
+                                                Ty.apply (Ty.path "&") [ A ]
+                                              ],
+                                            "from_raw_in",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::Node")
+                                                      [ T ]
+                                                  ],
+                                                "as_ptr",
+                                                []
+                                              |),
+                                              [ M.read (| node |) ]
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::linked_list::LinkedList",
+                                              "alloc"
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "head"
+                                        |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| node |),
+                                            "alloc::collections::linked_list::Node",
+                                            "next"
+                                          |)
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.match_operator (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "head"
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::Node")
-                                                    [ T ]
-                                                ],
-                                              "as_ptr",
-                                              []
-                                            |),
-                                            [ M.read (| node |) ]
-                                          |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::linked_list::LinkedList",
-                                            "alloc"
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "head"
-                                      |),
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| node |),
-                                          "alloc::collections::linked_list::Node",
-                                          "next"
-                                        |)
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "head"
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::collections::linked_list::LinkedList",
-                                                "tail"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let head := M.copy (| γ0_0 |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::linked_list::Node")
-                                                          [ T ]
-                                                      ],
-                                                    "as_ptr",
-                                                    []
-                                                  |),
-                                                  [ M.read (| head |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::LinkedList",
+                                                  "tail"
                                                 |),
-                                                "alloc::collections::linked_list::Node",
-                                                "prev"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)))
-                                      ]
-                                    |) in
-                                  let~ _ :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "len"
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let head := M.copy (| γ0_0 |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            [ T ]
+                                                        ],
+                                                      "as_ptr",
+                                                      []
+                                                    |),
+                                                    [ M.read (| head |) ]
+                                                  |),
+                                                  "alloc::collections::linked_list::Node",
+                                                  "prev"
+                                                |),
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)))
+                                        ]
                                       |) in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
-                                    |) in
-                                  node
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    let~ _ :=
+                                      let β :=
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "len"
+                                        |) in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| β |))
+                                          (Value.Integer 1)
+                                      |) in
+                                    node
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -1214,142 +1215,143 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.read (|
-                                  let~ node :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ];
-                                              Ty.apply (Ty.path "&") [ A ]
-                                            ],
-                                          "from_raw_in",
-                                          []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ node :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ];
+                                                Ty.apply (Ty.path "&") [ A ]
+                                              ],
+                                            "from_raw_in",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::Node")
+                                                      [ T ]
+                                                  ],
+                                                "as_ptr",
+                                                []
+                                              |),
+                                              [ M.read (| node |) ]
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::linked_list::LinkedList",
+                                              "alloc"
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "tail"
+                                        |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| node |),
+                                            "alloc::collections::linked_list::Node",
+                                            "prev"
+                                          |)
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.match_operator (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "tail"
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::Node")
-                                                    [ T ]
-                                                ],
-                                              "as_ptr",
-                                              []
-                                            |),
-                                            [ M.read (| node |) ]
-                                          |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::linked_list::LinkedList",
-                                            "alloc"
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "tail"
-                                      |),
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| node |),
-                                          "alloc::collections::linked_list::Node",
-                                          "prev"
-                                        |)
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "tail"
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::collections::linked_list::LinkedList",
-                                                "head"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let tail := M.copy (| γ0_0 |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::linked_list::Node")
-                                                          [ T ]
-                                                      ],
-                                                    "as_ptr",
-                                                    []
-                                                  |),
-                                                  [ M.read (| tail |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::LinkedList",
+                                                  "head"
                                                 |),
-                                                "alloc::collections::linked_list::Node",
-                                                "next"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)))
-                                      ]
-                                    |) in
-                                  let~ _ :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "len"
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let tail := M.copy (| γ0_0 |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            [ T ]
+                                                        ],
+                                                      "as_ptr",
+                                                      []
+                                                    |),
+                                                    [ M.read (| tail |) ]
+                                                  |),
+                                                  "alloc::collections::linked_list::Node",
+                                                  "next"
+                                                |),
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)))
+                                        ]
                                       |) in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
-                                    |) in
-                                  node
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    let~ _ :=
+                                      let β :=
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "len"
+                                        |) in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| β |))
+                                          (Value.Integer 1)
+                                      |) in
+                                    node
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -2936,25 +2938,26 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [ T ],
-                                    [ Ty.apply (Ty.path "&") [ T ] ],
-                                    "eq",
-                                    []
-                                  |),
-                                  [ e; x ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [ T ],
+                                      [ Ty.apply (Ty.path "&") [ T ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ e; x ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -3034,33 +3037,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_ref",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_ref",
+                                        []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -3140,33 +3144,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_mut",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_mut",
+                                        []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -3246,33 +3251,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_ref",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_ref",
+                                        []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -3352,33 +3358,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_mut",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_mut",
+                                        []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -4605,25 +4612,26 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let elem := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                          "call_mut",
-                                          []
-                                        |),
-                                        [ f; Value.Tuple [ M.read (| elem |) ] ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let elem := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                            "call_mut",
+                                            []
+                                          |),
+                                          [ f; Value.Tuple [ M.read (| elem |) ] ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)
@@ -5364,71 +5372,72 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "head"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "next"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
+                                                        []
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "head"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "next"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -5604,71 +5613,72 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "tail"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "prev"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
+                                                        []
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "tail"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "prev"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -5858,71 +5868,72 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "head"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "next"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
+                                                        []
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "head"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "next"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -6098,71 +6109,72 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "tail"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "prev"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
+                                                        []
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "tail"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "prev"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -6984,33 +6996,34 @@ Module collections.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::LinkedList")
-                                                    [ T; A ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "alloc::collections::linked_list::Cursor",
-                                                      "list"
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::LinkedList")
+                                                      [ T; A ],
+                                                    "len",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::linked_list::Cursor",
+                                                        "list"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)
@@ -7074,33 +7087,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let current := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_ptr",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let current := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_ptr",
+                                        []
+                                      |),
+                                      [ M.read (| current |) ]
                                     |),
-                                    [ M.read (| current |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -7211,33 +7225,34 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let next := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let next := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
+                                            []
+                                          |),
+                                          [ M.read (| next |) ]
                                         |),
-                                        [ M.read (| next |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -7350,33 +7365,34 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let prev := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let prev := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
+                                            []
+                                          |),
+                                          [ M.read (| prev |) ]
                                         |),
-                                        [ M.read (| prev |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -7903,33 +7919,34 @@ Module collections.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::LinkedList")
-                                                    [ T; A ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "alloc::collections::linked_list::CursorMut",
-                                                      "list"
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::LinkedList")
+                                                      [ T; A ],
+                                                    "len",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::linked_list::CursorMut",
+                                                        "list"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |)
@@ -7993,33 +8010,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let current := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            [ T ]
-                                        ],
-                                      "as_ptr",
-                                      []
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let current := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ],
+                                        "as_ptr",
+                                        []
+                                      |),
+                                      [ M.read (| current |) ]
                                     |),
-                                    [ M.read (| current |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => ltac:(M.monadic (M.impossible (||)))
                       end))
               ]
             |)))
@@ -8130,33 +8148,34 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let next := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let next := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
+                                            []
+                                          |),
+                                          [ M.read (| next |) ]
                                         |),
-                                        [ M.read (| next |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -8269,33 +8288,34 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let prev := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let prev := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
+                                            []
+                                          |),
+                                          [ M.read (| prev |) ]
                                         |),
-                                        [ M.read (| prev |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => ltac:(M.monadic (M.impossible (||)))
                           end))
                   ]
                 |)
@@ -11474,25 +11494,27 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let elt := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::LinkedList")
-                                            [ Ty.associated; A ],
-                                          "push_back",
-                                          []
-                                        |),
-                                        [ M.read (| self |); M.read (| elt |) ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let elt := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::linked_list::LinkedList")
+                                              [ Ty.associated; A ],
+                                            "push_back",
+                                            []
+                                          |),
+                                          [ M.read (| self |); M.read (| elt |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)

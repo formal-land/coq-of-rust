@@ -1252,32 +1252,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::Split",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Split",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -1566,32 +1567,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::Split",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Split",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -2108,32 +2110,34 @@ Module slice.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::slice::iter::SplitInclusive",
-                                                        "pred"
-                                                      |);
-                                                      Value.Tuple [ M.read (| x |) ]
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::SplitInclusive",
+                                                          "pred"
+                                                        |);
+                                                        Value.Tuple [ M.read (| x |) ]
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |);
@@ -2142,19 +2146,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| idx |))
+                                                  (Value.Integer 1)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |);
@@ -2569,32 +2574,34 @@ Module slice.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::slice::iter::SplitInclusive",
-                                                        "pred"
-                                                      |);
-                                                      Value.Tuple [ M.read (| x |) ]
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::SplitInclusive",
+                                                          "pred"
+                                                        |);
+                                                        Value.Tuple [ M.read (| x |) ]
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => ltac:(M.monadic (M.impossible (||)))
                                         end))
                                 ]
                               |);
@@ -2603,19 +2610,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| idx |))
+                                                  (Value.Integer 1)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |);
@@ -3040,32 +3048,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::SplitMut",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::SplitMut",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => ltac:(M.monadic (M.impossible (||)))
                                 end))
                         ]
                       |)
@@ -3371,25 +3380,27 @@ Module slice.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                P,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| x |) ] ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  P,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| x |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -3774,25 +3785,27 @@ Module slice.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                P,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| x |) ] ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  P,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| x |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => ltac:(M.monadic (M.impossible (||)))
                                   end))
                           ]
                         |)
@@ -3823,19 +3836,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| idx |))
+                                                  (Value.Integer 1)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |);
@@ -4234,29 +4248,32 @@ Module slice.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::FnMut",
-                                                        P,
-                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
-                                                        ],
-                                                        "call_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| pred |);
-                                                        Value.Tuple [ M.read (| x |) ]
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          P,
+                                                          [
+                                                            Ty.tuple
+                                                              [ Ty.apply (Ty.path "&") [ T ] ]
+                                                          ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| pred |);
+                                                          Value.Tuple [ M.read (| x |) ]
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |)
@@ -4289,19 +4306,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| idx |))
+                                                  (Value.Integer 1)))
+                                          ]
+                                        |)))
+                                    | _ => ltac:(M.monadic (M.impossible (||)))
                                     end))
                             ]
                           |);
@@ -5347,31 +5365,32 @@ Module slice.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let upper := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::cmp::min",
-                                                        [ Ty.path "usize" ]
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::slice::iter::GenericSplitN",
-                                                            "count"
-                                                          |)
-                                                        |);
-                                                        M.read (| upper |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let upper := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::cmp::min",
+                                                          [ Ty.path "usize" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::slice::iter::GenericSplitN",
+                                                              "count"
+                                                            |)
+                                                          |);
+                                                          M.read (| upper |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |)

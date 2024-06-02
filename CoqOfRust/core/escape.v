@@ -1055,45 +1055,46 @@ Module escape.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::ascii::ascii_char::AsciiChar",
-                                  "to_u8",
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::escape::EscapeIterInner",
-                                        "data"
-                                      |),
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "usize",
-                                            [ Ty.path "u8" ],
-                                            "from",
-                                            []
-                                          |),
-                                          [ M.read (| i |) ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ascii::ascii_char::AsciiChar",
+                                    "to_u8",
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_array_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::escape::EscapeIterInner",
+                                          "data"
+                                        |),
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::convert::From",
+                                              Ty.path "usize",
+                                              [ Ty.path "u8" ],
+                                              "from",
+                                              []
+                                            |),
+                                            [ M.read (| i |) ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -1140,45 +1141,46 @@ Module escape.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::ascii::ascii_char::AsciiChar",
-                                  "to_u8",
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::escape::EscapeIterInner",
-                                        "data"
-                                      |),
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::convert::From",
-                                            Ty.path "usize",
-                                            [ Ty.path "u8" ],
-                                            "from",
-                                            []
-                                          |),
-                                          [ M.read (| i |) ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ascii::ascii_char::AsciiChar",
+                                    "to_u8",
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_array_field (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::escape::EscapeIterInner",
+                                          "data"
+                                        |),
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::convert::From",
+                                              Ty.path "usize",
+                                              [ Ty.path "u8" ],
+                                              "from",
+                                              []
+                                            |),
+                                            [ M.read (| i |) ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))

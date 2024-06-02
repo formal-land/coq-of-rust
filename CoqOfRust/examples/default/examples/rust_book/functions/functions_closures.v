@@ -43,16 +43,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           |) in
         let~ closure_inferred :=
@@ -62,16 +63,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
+                        ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           |) in
         let~ _ :=
@@ -187,11 +189,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Integer 1)) ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [ fun γ => ltac:(M.monadic (Value.Integer 1)) ]
+                      |)))
+                  | _ => ltac:(M.monadic (M.impossible (||)))
                   end))
           |) in
         let~ _ :=

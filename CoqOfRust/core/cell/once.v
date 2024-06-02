@@ -343,28 +343,29 @@ Module cell.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnOnce",
-                                              F,
-                                              [ Ty.tuple [] ],
-                                              "call_once",
-                                              []
-                                            |),
-                                            [ M.read (| f |); Value.Tuple [] ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnOnce",
+                                                F,
+                                                [ Ty.tuple [] ],
+                                                "call_once",
+                                                []
+                                              |),
+                                              [ M.read (| f |); Value.Tuple [] ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => ltac:(M.monadic (M.impossible (||)))
                             end))
                     ]
                   |)

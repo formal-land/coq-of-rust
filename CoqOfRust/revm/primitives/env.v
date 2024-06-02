@@ -562,55 +562,56 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let blob_gas_price := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "ruint::Uint",
-                                  "saturating_mul",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
-                                      "from",
-                                      [ Ty.path "u128" ]
-                                    |),
-                                    [ M.read (| blob_gas_price |) ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
-                                      "from",
-                                      [ Ty.path "u64" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_primitives::env::TxEnv",
-                                          "get_total_blob_gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_primitives::env::Env",
-                                            "tx"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let blob_gas_price := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "ruint::Uint",
+                                    "saturating_mul",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "ruint::Uint",
+                                        "from",
+                                        [ Ty.path "u128" ]
+                                      |),
+                                      [ M.read (| blob_gas_price |) ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "ruint::Uint",
+                                        "from",
+                                        [ Ty.path "u64" ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_primitives::env::TxEnv",
+                                            "get_total_blob_gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "revm_primitives::env::Env",
+                                              "tx"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -658,48 +659,49 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let max_fee_per_blob_gas := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "ruint::Uint",
-                                  "saturating_mul",
-                                  []
-                                |),
-                                [
-                                  M.read (| max_fee_per_blob_gas |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "ruint::Uint",
-                                      "from",
-                                      [ Ty.path "u64" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_primitives::env::TxEnv",
-                                          "get_total_blob_gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_primitives::env::Env",
-                                            "tx"
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let max_fee_per_blob_gas := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "ruint::Uint",
+                                    "saturating_mul",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| max_fee_per_blob_gas |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "ruint::Uint",
+                                        "from",
+                                        [ Ty.path "u64" ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_primitives::env::TxEnv",
+                                            "get_total_blob_gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "revm_primitives::env::Env",
+                                              "tx"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -1377,23 +1379,24 @@ Module env.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let limit := M.copy (| γ |) in
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "usize",
-                                                          "saturating_mul",
-                                                          []
-                                                        |),
-                                                        [ M.read (| limit |); Value.Integer 2 ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let limit := M.copy (| γ |) in
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "usize",
+                                                            "saturating_mul",
+                                                            []
+                                                          |),
+                                                          [ M.read (| limit |); Value.Integer 2 ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => ltac:(M.monadic (M.impossible (||)))
                                             end))
                                     ]
                                   |);
@@ -2587,52 +2590,54 @@ Module env.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ α0 ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        0
-                                                                      |) in
-                                                                    let γ0_1 :=
-                                                                      M.SubPointer.get_tuple_field (|
-                                                                        γ,
-                                                                        1
-                                                                      |) in
-                                                                    let i := M.copy (| γ0_1 |) in
-                                                                    BinOp.Pure.ge
-                                                                      (M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "bytes::bytes::Bytes",
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::deref::Deref",
-                                                                              Ty.path
-                                                                                "alloy_primitives::bytes_::Bytes",
-                                                                              [],
-                                                                              "deref",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| i |) ]
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          0
+                                                                        |) in
+                                                                      let γ0_1 :=
+                                                                        M.SubPointer.get_tuple_field (|
+                                                                          γ,
+                                                                          1
+                                                                        |) in
+                                                                      let i := M.copy (| γ0_1 |) in
+                                                                      BinOp.Pure.ge
+                                                                        (M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "bytes::bytes::Bytes",
+                                                                            "len",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.path
+                                                                                  "alloy_primitives::bytes_::Bytes",
+                                                                                [],
+                                                                                "deref",
+                                                                                []
+                                                                              |),
+                                                                              [ M.read (| i |) ]
+                                                                            |)
+                                                                          ]
+                                                                        |))
+                                                                        (M.read (|
+                                                                          M.get_constant (|
+                                                                            "revm_primitives::constants::MAX_INITCODE_SIZE"
                                                                           |)
-                                                                        ]
-                                                                      |))
-                                                                      (M.read (|
-                                                                        M.get_constant (|
-                                                                          "revm_primitives::constants::MAX_INITCODE_SIZE"
-                                                                        |)
-                                                                      |))))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                        |))))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            ltac:(M.monadic (M.impossible (||)))
                                                           end))
                                                   ]
                                                 |)
@@ -3051,36 +3056,37 @@ Module env.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let gas_cost := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "ruint::Uint",
-                                                        "checked_add",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| gas_cost |);
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let gas_cost := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "ruint::Uint",
+                                                          "checked_add",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| gas_cost |);
+                                                          M.read (|
                                                             M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "revm_primitives::env::Env",
-                                                              "tx"
-                                                            |),
-                                                            "revm_primitives::env::TxEnv",
-                                                            "value"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "revm_primitives::env::Env",
+                                                                "tx"
+                                                              |),
+                                                              "revm_primitives::env::TxEnv",
+                                                              "value"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => ltac:(M.monadic (M.impossible (||)))
                                           end))
                                   ]
                                 |);
@@ -4884,22 +4890,23 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| a |),
-                                  "revm_primitives::env::BlobExcessGasAndPrice",
-                                  "blob_gasprice"
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| a |),
+                                    "revm_primitives::env::BlobExcessGasAndPrice",
+                                    "blob_gasprice"
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
@@ -4964,22 +4971,23 @@ Module env.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| a |),
-                                  "revm_primitives::env::BlobExcessGasAndPrice",
-                                  "excess_blob_gas"
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| a |),
+                                    "revm_primitives::env::BlobExcessGasAndPrice",
+                                    "excess_blob_gas"
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                    | _ => ltac:(M.monadic (M.impossible (||)))
                     end))
             ]
           |)))
