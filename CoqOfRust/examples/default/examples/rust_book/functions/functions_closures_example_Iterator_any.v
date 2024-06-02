@@ -58,7 +58,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
                         |)
                       ]
                     |)
@@ -91,7 +96,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ]
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 4;
+                              Value.Integer IntegerKind.I32 5;
+                              Value.Integer IntegerKind.I32 6
+                            ]
                         |)
                       ]
                     |)
@@ -182,12 +192,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         ltac:(M.monadic
                                                           (let γ := M.read (| γ |) in
                                                           let x := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| x |))
-                                                            (Value.Integer 2)))
+                                                          BinOp.eq (|
+                                                            M.read (| x |),
+                                                            Value.Integer IntegerKind.I32 2
+                                                          |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -273,12 +284,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let x := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| x |))
-                                                            (Value.Integer 2)))
+                                                          BinOp.eq (|
+                                                            M.read (| x |),
+                                                            Value.Integer IntegerKind.I32 2
+                                                          |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -385,7 +397,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "index",
                                       []
                                     |),
-                                    [ vec1; Value.Integer 0 ]
+                                    [ vec1; Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 ]
                               |)
@@ -398,9 +410,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ array1 :=
-          M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3
+              ]
+          |) in
         let~ array2 :=
-          M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 4;
+                Value.Integer IntegerKind.I32 5;
+                Value.Integer IntegerKind.I32 6
+              ]
+          |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -472,12 +498,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         ltac:(M.monadic
                                                           (let γ := M.read (| γ |) in
                                                           let x := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| x |))
-                                                            (Value.Integer 2)))
+                                                          BinOp.eq (|
+                                                            M.read (| x |),
+                                                            Value.Integer IntegerKind.I32 2
+                                                          |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -566,12 +593,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let x := M.copy (| γ |) in
-                                                          BinOp.Pure.eq
-                                                            (M.read (| M.read (| x |) |))
-                                                            (Value.Integer 2)))
+                                                          BinOp.eq (|
+                                                            M.read (| M.read (| x |) |),
+                                                            Value.Integer IntegerKind.I32 2
+                                                          |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -588,7 +616,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_example_Iterator_any::main" main.

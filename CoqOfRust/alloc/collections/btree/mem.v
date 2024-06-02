@@ -50,11 +50,11 @@ Module collections.
                                     ]))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
@@ -138,7 +138,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
@@ -167,7 +167,7 @@ Module collections.
                 M.never_to_any (|
                   M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :

@@ -43,7 +43,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -75,7 +75,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -107,7 +107,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -139,7 +139,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -171,7 +171,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -203,7 +203,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -235,7 +235,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -267,7 +267,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -299,7 +299,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -331,7 +331,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -363,7 +363,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -395,7 +395,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -438,7 +438,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -470,7 +470,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -502,7 +502,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -534,7 +534,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -566,7 +566,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -598,7 +598,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -630,7 +630,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -662,7 +662,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -694,7 +694,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -726,7 +726,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -758,7 +758,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -790,7 +790,7 @@ Module convert.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -815,7 +815,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -840,7 +840,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -865,7 +865,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -890,7 +890,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -915,7 +915,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -940,7 +940,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -965,7 +965,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -990,7 +990,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1015,7 +1015,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1040,7 +1040,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1065,7 +1065,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1090,7 +1090,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1115,7 +1115,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1140,7 +1140,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1165,7 +1165,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1190,7 +1190,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1215,7 +1215,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1240,7 +1240,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1265,7 +1265,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1290,7 +1290,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1315,7 +1315,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1340,7 +1340,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1365,7 +1365,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1390,7 +1390,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1415,7 +1415,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1440,7 +1440,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1465,7 +1465,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1490,7 +1490,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1515,7 +1515,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1540,7 +1540,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1565,7 +1565,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1590,7 +1590,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1615,7 +1615,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1640,7 +1640,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1665,7 +1665,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1690,7 +1690,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1715,7 +1715,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1740,7 +1740,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1765,7 +1765,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1790,7 +1790,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1815,7 +1815,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1840,7 +1840,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1865,7 +1865,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1890,7 +1890,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1915,7 +1915,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1940,7 +1940,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1965,7 +1965,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1990,7 +1990,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2015,7 +2015,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2040,7 +2040,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2065,7 +2065,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2090,7 +2090,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2115,7 +2115,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2140,7 +2140,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2165,7 +2165,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2190,7 +2190,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2215,7 +2215,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2240,7 +2240,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.read (| small |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2265,7 +2265,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.rust_cast (M.read (| small |)))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2290,7 +2290,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.rust_cast (M.rust_cast (M.read (| small |)))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2330,9 +2330,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2351,7 +2352,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2392,9 +2393,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2413,7 +2415,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2454,9 +2456,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2475,7 +2478,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2516,9 +2519,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2537,7 +2541,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2578,9 +2582,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2599,7 +2604,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2640,9 +2645,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2661,7 +2667,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2702,9 +2708,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2723,7 +2730,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2764,9 +2771,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2785,7 +2793,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2826,9 +2834,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2847,7 +2856,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2888,9 +2897,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2909,7 +2919,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2957,8 +2967,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2978,7 +2988,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3026,8 +3036,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3047,7 +3057,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3095,8 +3105,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3116,7 +3126,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3164,8 +3174,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3185,7 +3195,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3233,8 +3243,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3254,7 +3264,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3302,8 +3312,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3323,7 +3333,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3371,8 +3381,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3392,7 +3402,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3440,8 +3450,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3461,7 +3471,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3509,8 +3519,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3530,7 +3540,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3578,8 +3588,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3599,7 +3609,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3640,9 +3650,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3661,7 +3672,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3702,9 +3713,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3723,7 +3735,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3764,9 +3776,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3785,7 +3798,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3826,9 +3839,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3847,7 +3861,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3888,9 +3902,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3909,7 +3924,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3950,9 +3965,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3971,7 +3987,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4012,9 +4028,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4033,7 +4050,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4074,9 +4091,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4095,7 +4113,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4136,9 +4154,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4157,7 +4176,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4198,9 +4217,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4219,7 +4239,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4260,9 +4280,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4281,7 +4302,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4322,9 +4343,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4343,7 +4365,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4384,9 +4406,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4405,7 +4428,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4446,9 +4469,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4467,7 +4491,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4508,9 +4532,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4529,7 +4554,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4568,7 +4593,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4586,7 +4614,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4625,7 +4653,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4643,7 +4674,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4682,7 +4713,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4700,7 +4734,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4739,7 +4773,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4757,7 +4794,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4796,7 +4833,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4814,7 +4854,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4853,7 +4893,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4871,7 +4914,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4910,7 +4953,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4928,7 +4974,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4967,7 +5013,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -4985,7 +5034,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5024,7 +5073,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5042,7 +5094,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5081,7 +5133,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5099,7 +5154,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5138,7 +5193,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5156,7 +5214,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5195,7 +5253,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5213,7 +5274,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5252,7 +5313,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5270,7 +5334,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5309,7 +5373,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5327,7 +5394,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5366,7 +5433,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I128 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -5384,7 +5454,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5432,8 +5502,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5453,7 +5523,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5501,8 +5571,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5522,7 +5592,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5570,8 +5640,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5591,7 +5661,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5639,8 +5709,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5660,7 +5730,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5708,8 +5778,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5729,7 +5799,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5777,8 +5847,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5798,7 +5868,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5846,8 +5916,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5867,7 +5937,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5915,8 +5985,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5936,7 +6006,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5984,8 +6054,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6005,7 +6075,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6053,8 +6123,8 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                              ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6074,7 +6144,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6115,9 +6185,10 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.read (| u |))
-                              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            BinOp.gt (|
+                              M.read (| u |),
+                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -6136,7 +6207,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6175,7 +6246,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -6193,7 +6267,7 @@ Module convert.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6235,9 +6309,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6260,7 +6335,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6301,9 +6376,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6326,7 +6402,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6367,9 +6443,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6392,7 +6469,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6421,7 +6498,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6450,7 +6527,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6491,9 +6568,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6516,7 +6594,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6557,9 +6635,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6582,7 +6661,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6623,9 +6702,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6648,7 +6728,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6689,9 +6769,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6714,7 +6795,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6743,7 +6824,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6791,8 +6872,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -6816,7 +6897,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6864,8 +6945,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -6889,7 +6970,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6937,8 +7018,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -6962,7 +7043,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7001,7 +7082,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7023,7 +7107,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7062,7 +7146,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7084,7 +7171,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7132,8 +7219,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -7157,7 +7244,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7205,8 +7292,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -7230,7 +7317,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7278,8 +7365,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -7303,7 +7390,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7332,7 +7419,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7361,7 +7448,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7390,7 +7477,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7419,7 +7506,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7460,9 +7547,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7485,7 +7573,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7524,7 +7612,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7546,7 +7637,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7585,7 +7676,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7607,7 +7701,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7646,7 +7740,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7668,7 +7765,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7707,7 +7804,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.ge (M.read (| u |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -7729,7 +7829,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7777,8 +7877,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -7802,7 +7902,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7831,7 +7931,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7860,7 +7960,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7901,9 +8001,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7926,7 +8027,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7967,9 +8068,10 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| u |))
-                                (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                              BinOp.gt (|
+                                M.read (| u |),
+                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7992,7 +8094,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8021,7 +8123,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8050,7 +8152,7 @@ Module convert.
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
               Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8098,8 +8200,8 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.Pure.lt (M.read (| u |)) (M.read (| min |)),
-                                ltac:(M.monadic (BinOp.Pure.gt (M.read (| u |)) (M.read (| max |))))
+                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
+                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
                               |)
                             |)) in
                         let _ :=
@@ -8123,7 +8225,7 @@ Module convert.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8180,7 +8282,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8235,7 +8337,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8290,7 +8392,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8345,7 +8447,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8400,7 +8502,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8455,7 +8557,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8510,7 +8612,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8565,7 +8667,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8620,7 +8722,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8675,7 +8777,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8730,7 +8832,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8785,7 +8887,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8840,7 +8942,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8895,7 +8997,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8950,7 +9052,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9005,7 +9107,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9060,7 +9162,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9115,7 +9217,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9170,7 +9272,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9225,7 +9327,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9280,7 +9382,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9335,7 +9437,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9390,7 +9492,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9445,7 +9547,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9500,7 +9602,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9555,7 +9657,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9610,7 +9712,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9665,7 +9767,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9720,7 +9822,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9775,7 +9877,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9830,7 +9932,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9885,7 +9987,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9940,7 +10042,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9995,7 +10097,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10050,7 +10152,7 @@ Module convert.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10097,7 +10199,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10145,7 +10247,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10193,7 +10295,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10241,7 +10343,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10289,7 +10391,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10337,7 +10439,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10385,7 +10487,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10433,7 +10535,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10481,7 +10583,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10529,7 +10631,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10577,7 +10679,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10625,7 +10727,7 @@ Module convert.
                 Value.StructTuple "core::num::error::TryFromIntError" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10711,11 +10813,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10801,11 +10903,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10891,11 +10993,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10981,11 +11083,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11071,11 +11173,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11161,11 +11263,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11251,11 +11353,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11341,11 +11443,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11431,11 +11533,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11521,11 +11623,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11611,11 +11713,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11701,11 +11803,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11791,11 +11893,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11881,11 +11983,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11971,11 +12073,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12061,11 +12163,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12151,11 +12253,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12241,11 +12343,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12331,11 +12433,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12421,11 +12523,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12511,11 +12613,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12601,11 +12703,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12691,11 +12793,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12781,11 +12883,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12871,11 +12973,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12961,11 +13063,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13051,11 +13153,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13141,11 +13243,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13231,11 +13333,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13321,11 +13423,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13411,11 +13513,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13501,11 +13603,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13591,11 +13693,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13681,11 +13783,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13771,11 +13873,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13861,11 +13963,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13951,11 +14053,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14041,11 +14143,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14131,11 +14233,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14221,11 +14323,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14311,11 +14413,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14401,11 +14503,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14491,11 +14593,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14581,11 +14683,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14671,11 +14773,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14761,11 +14863,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14851,11 +14953,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14941,11 +15043,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15031,11 +15133,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15121,11 +15223,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15211,11 +15313,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15301,11 +15403,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15391,11 +15493,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15481,11 +15583,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15571,11 +15673,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15661,11 +15763,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15751,11 +15853,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15841,11 +15943,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15931,11 +16033,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16021,11 +16123,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16111,11 +16213,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16201,11 +16303,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16291,11 +16393,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16381,11 +16483,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16471,11 +16573,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16561,11 +16663,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16651,11 +16753,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16741,11 +16843,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16831,11 +16933,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16921,11 +17023,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17011,11 +17113,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17101,11 +17203,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17191,11 +17293,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17281,11 +17383,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17371,11 +17473,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17461,11 +17563,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17551,11 +17653,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17641,11 +17743,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17731,11 +17833,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17821,11 +17923,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17911,11 +18013,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18001,11 +18103,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18091,11 +18193,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18181,11 +18283,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18271,11 +18373,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18361,11 +18463,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18451,11 +18553,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18541,11 +18643,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18631,11 +18733,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18721,11 +18823,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18811,11 +18913,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18901,11 +19003,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18991,11 +19093,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19081,11 +19183,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19171,11 +19273,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19261,11 +19363,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19351,11 +19453,11 @@ Module convert.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

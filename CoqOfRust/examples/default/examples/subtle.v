@@ -30,7 +30,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -67,7 +67,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -94,7 +94,7 @@ Module Impl_subtle_Choice.
         M.read (|
           M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
@@ -132,26 +132,29 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.bit_or
-                                        (BinOp.Pure.eq
-                                          (M.read (|
+                                    UnOp.not (|
+                                      BinOp.bit_or
+                                        (BinOp.eq (|
+                                          M.read (|
                                             M.SubPointer.get_struct_tuple_field (|
                                               source,
                                               "subtle::Choice",
                                               0
                                             |)
-                                          |))
-                                          (Value.Integer 0))
-                                        (BinOp.Pure.eq
-                                          (M.read (|
+                                          |),
+                                          Value.Integer IntegerKind.U8 0
+                                        |))
+                                        (BinOp.eq (|
+                                          M.read (|
                                             M.SubPointer.get_struct_tuple_field (|
                                               source,
                                               "subtle::Choice",
                                               0
                                             |)
-                                          |))
-                                          (Value.Integer 1)))
+                                          |),
+                                          Value.Integer IntegerKind.U8 1
+                                        |))
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -179,12 +182,13 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
               ]
             |) in
           M.alloc (|
-            BinOp.Pure.ne
-              (M.read (| M.SubPointer.get_struct_tuple_field (| source, "subtle::Choice", 0 |) |))
-              (Value.Integer 0)
+            BinOp.ne (|
+              M.read (| M.SubPointer.get_struct_tuple_field (| source, "subtle::Choice", 0 |) |),
+              Value.Integer IntegerKind.U8 0
+            |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -221,12 +225,12 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
             []
           |),
           [
-            BinOp.Pure.bit_and
+            BinOp.bit_and
               (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -269,7 +273,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -306,12 +310,12 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
             []
           |),
           [
-            BinOp.Pure.bit_or
+            BinOp.bit_or
               (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -354,7 +358,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -391,12 +395,12 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
             []
           |),
           [
-            BinOp.Pure.bit_xor
+            BinOp.bit_xor
               (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
               (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -439,7 +443,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -475,13 +479,14 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
             []
           |),
           [
-            BinOp.Pure.bit_and
-              (Value.Integer 1)
-              (UnOp.Pure.not
-                (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)))
+            BinOp.bit_and
+              (Value.Integer IntegerKind.U8 1)
+              (UnOp.not (|
+                M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)
+              |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -532,10 +537,17 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.bit_or
-                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 0))
-                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 1)))
+                                  UnOp.not (|
+                                    BinOp.bit_or
+                                      (BinOp.eq (|
+                                        M.read (| input |),
+                                        Value.Integer IntegerKind.U8 0
+                                      |))
+                                      (BinOp.eq (|
+                                        M.read (| input |),
+                                        Value.Integer IntegerKind.U8 1
+                                      |))
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -566,7 +578,7 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
@@ -594,7 +606,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
               [ M.read (| input |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -622,7 +634,7 @@ Module ConstantTimeEq.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_ct_ne : M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
@@ -678,16 +690,17 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.read (| len |))
-                                (M.call_closure (|
+                              BinOp.ne (|
+                                M.read (| len |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| _rhs |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -703,7 +716,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                     "from",
                                     []
                                   |),
-                                  [ Value.Integer 0 ]
+                                  [ Value.Integer IntegerKind.U8 0 ]
                                 |)
                               |)
                             |)
@@ -712,7 +725,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ x := M.alloc (| Value.Integer 1 |) in
+              let~ x := M.alloc (| Value.Integer IntegerKind.U8 1 |) in
               let~ _ :=
                 M.use
                   (M.match_operator (|
@@ -810,7 +823,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                           let β := x in
                                           M.write (|
                                             β,
-                                            BinOp.Pure.bit_and
+                                            BinOp.bit_and
                                               (M.read (| β |))
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -855,7 +868,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -896,7 +909,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -945,14 +958,18 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
             |) in
           let~ y :=
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_or
+              BinOp.Wrap.shr (|
+                BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)))
-                (BinOp.Wrap.sub Integer.I32 (Value.Integer 8) (Value.Integer 1))
+                  |)),
+                BinOp.Wrap.sub (|
+                  Value.Integer IntegerKind.I32 8,
+                  Value.Integer IntegerKind.I32 1
+                |)
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -967,16 +984,16 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 M.read (|
                   M.use
                     (M.alloc (|
-                      BinOp.Pure.bit_xor
+                      BinOp.bit_xor
                         (M.read (| y |))
-                        (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |))
+                        (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 1 |)) |))
                     |))
                 |)
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1009,7 +1026,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1058,14 +1075,18 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
             |) in
           let~ y :=
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_or
+              BinOp.Wrap.shr (|
+                BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)))
-                (BinOp.Wrap.sub Integer.I32 (Value.Integer 16) (Value.Integer 1))
+                  |)),
+                BinOp.Wrap.sub (|
+                  Value.Integer IntegerKind.I32 16,
+                  Value.Integer IntegerKind.I32 1
+                |)
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1078,14 +1099,14 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
               |),
               [
                 M.rust_cast
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 1 |)) |)))
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1118,7 +1139,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1167,14 +1188,18 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
             |) in
           let~ y :=
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_or
+              BinOp.Wrap.shr (|
+                BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)))
-                (BinOp.Wrap.sub Integer.I32 (Value.Integer 32) (Value.Integer 1))
+                  |)),
+                BinOp.Wrap.sub (|
+                  Value.Integer IntegerKind.I32 32,
+                  Value.Integer IntegerKind.I32 1
+                |)
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1187,14 +1212,14 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
               |),
               [
                 M.rust_cast
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)))
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1227,7 +1252,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1276,14 +1301,18 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
             |) in
           let~ y :=
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_or
+              BinOp.Wrap.shr (|
+                BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)))
-                (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 1))
+                  |)),
+                BinOp.Wrap.sub (|
+                  Value.Integer IntegerKind.I32 64,
+                  Value.Integer IntegerKind.I32 1
+                |)
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1296,14 +1325,14 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
               |),
               [
                 M.rust_cast
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 1 |)) |)))
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1336,7 +1365,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1385,23 +1414,24 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
             |) in
           let~ y :=
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_or
+              BinOp.Wrap.shr (|
+                BinOp.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "usize", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)))
-                (BinOp.Wrap.sub
-                  Integer.Usize
-                  (BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.call_closure (|
+                  |)),
+                BinOp.Wrap.sub (|
+                  BinOp.Wrap.mul (|
+                    M.call_closure (|
                       M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                       []
-                    |))
-                    (Value.Integer 8))
-                  (Value.Integer 1))
+                    |),
+                    Value.Integer IntegerKind.Usize 8
+                  |),
+                  Value.Integer IntegerKind.Usize 1
+                |)
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1414,14 +1444,14 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
               |),
               [
                 M.rust_cast
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 1 |)) |)))
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1454,7 +1484,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
             M.alloc (| M.rust_cast (M.read (| M.read (| other |) |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1491,7 +1521,7 @@ Module ConditionallySelectable.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_conditional_assign :
@@ -1533,7 +1563,7 @@ Module ConditionallySelectable.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_conditional_swap :
@@ -1562,8 +1592,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I8,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1582,7 +1611,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -1598,7 +1627,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1620,8 +1649,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I8,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1633,17 +1661,17 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1667,8 +1695,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I8,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1678,19 +1705,19 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1729,8 +1756,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I8,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1750,7 +1776,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -1766,7 +1792,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1789,8 +1815,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I8,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1803,17 +1828,17 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1838,8 +1863,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I8,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1850,19 +1874,19 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1900,8 +1924,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I16,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1920,7 +1943,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -1936,7 +1959,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1958,8 +1981,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I16,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1971,17 +1993,17 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2005,8 +2027,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I16,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2016,19 +2037,19 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2067,8 +2088,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I16,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2088,7 +2108,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -2104,7 +2124,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2127,8 +2147,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I16,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2141,17 +2160,17 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2176,8 +2195,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I16,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2188,19 +2206,19 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2238,8 +2256,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I32,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2258,7 +2275,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -2274,7 +2291,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2296,8 +2313,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I32,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2309,17 +2325,17 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2343,8 +2359,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I32,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2354,19 +2369,19 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2405,8 +2420,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I32,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2426,7 +2440,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -2442,7 +2456,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2465,8 +2479,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I32,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2479,17 +2492,17 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2514,8 +2527,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I32,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2526,19 +2538,19 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2576,8 +2588,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I64,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2596,7 +2607,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -2612,7 +2623,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2634,8 +2645,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I64,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2647,17 +2657,17 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2681,8 +2691,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask :=
             M.alloc (|
               M.rust_cast
-                (UnOp.Panic.neg (|
-                  Integer.I64,
+                (UnOp.neg (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2692,19 +2701,19 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2743,8 +2752,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I64,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2764,7 +2772,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               |),
               [
                 M.read (| a |);
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| mask |))
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -2780,7 +2788,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2803,8 +2811,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I64,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2817,17 +2824,17 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             let β := M.read (| self |) in
             M.write (|
               β,
-              BinOp.Pure.bit_xor
+              BinOp.bit_xor
                 (M.read (| β |))
-                (BinOp.Pure.bit_and
+                (BinOp.bit_and
                   (M.read (| mask |))
-                  (BinOp.Pure.bit_xor
+                  (BinOp.bit_xor
                     (M.read (| M.read (| self |) |))
                     (M.read (| M.read (| other |) |))))
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2852,8 +2859,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             M.copy (|
               M.use
                 (M.alloc (|
-                  UnOp.Panic.neg (|
-                    Integer.I64,
+                  UnOp.neg (|
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2864,19 +2870,19 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           let~ t :=
             M.alloc (|
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.read (| mask |))
-                (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
+                (BinOp.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
           let~ _ :=
             let β := M.read (| a |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let~ _ :=
             let β := M.read (| b |) in
-            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2925,7 +2931,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
               ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2985,7 +2991,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -3046,7 +3052,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -3110,7 +3116,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -3149,8 +3155,8 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.eq
-                          (M.call_closure (|
+                        BinOp.eq (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "subtle::Choice",
                               "unwrap_u8",
@@ -3168,8 +3174,9 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                                 |)
                               |)
                             ]
-                          |))
-                          (Value.Integer 1)
+                          |),
+                          Value.Integer IntegerKind.U8 1
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -3190,7 +3197,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -3223,7 +3230,7 @@ Module Impl_subtle_CtOption_T.
         Value.StructRecord
           "subtle::CtOption"
           [ ("value", M.read (| value |)); ("is_some", M.read (| is_some |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -3260,7 +3267,7 @@ Module Impl_subtle_CtOption_T.
                         ]
                       |)
                     |);
-                    M.alloc (| Value.Integer 1 |)
+                    M.alloc (| Value.Integer IntegerKind.U8 1 |)
                   ]
               |),
               [
@@ -3278,10 +3285,12 @@ Module Impl_subtle_CtOption_T.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.not (|
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3352,7 +3361,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_expect :
@@ -3390,7 +3399,7 @@ Module Impl_subtle_CtOption_T.
                         ]
                       |)
                     |);
-                    M.alloc (| Value.Integer 1 |)
+                    M.alloc (| Value.Integer IntegerKind.U8 1 |)
                   ]
               |),
               [
@@ -3408,10 +3417,12 @@ Module Impl_subtle_CtOption_T.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.not (|
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3446,7 +3457,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_unwrap :
@@ -3484,7 +3495,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_unwrap_or :
@@ -3534,7 +3545,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_unwrap_or_else :
@@ -3559,7 +3570,7 @@ Module Impl_subtle_CtOption_T.
             "is_some"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_some :
@@ -3589,7 +3600,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_none :
@@ -3671,7 +3682,7 @@ Module Impl_subtle_CtOption_T.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -3773,7 +3784,7 @@ Module Impl_subtle_CtOption_T.
             |) in
           tmp
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_and_then :
@@ -3837,7 +3848,7 @@ Module Impl_subtle_CtOption_T.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_or_else :
@@ -3913,7 +3924,7 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4047,7 +4058,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4145,7 +4156,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4156,23 +4167,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 8 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| ltb |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4189,10 +4199,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 |)))
             |) in
           let~ bit :=
-            M.alloc (|
-              BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
-            |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+            M.alloc (| BinOp.bit_and (M.read (| gtb |)) (UnOp.not (| M.read (| ltb |) |)) |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4203,23 +4211,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 8 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| bit |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4246,13 +4253,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               |),
               [
                 M.read (|
-                  M.use (M.alloc (| BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1) |))
+                  M.use
+                    (M.alloc (|
+                      BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U8 1)
+                    |))
                 |)
               ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4346,7 +4356,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4357,23 +4367,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 16 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| ltb |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4390,10 +4399,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 |)))
             |) in
           let~ bit :=
-            M.alloc (|
-              BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
-            |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+            M.alloc (| BinOp.bit_and (M.read (| gtb |)) (UnOp.not (| M.read (| ltb |) |)) |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4404,23 +4411,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 16 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| bit |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4445,11 +4451,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
+              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U16 1)) ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4543,7 +4549,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4554,23 +4560,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 32 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| ltb |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4587,10 +4592,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 |)))
             |) in
           let~ bit :=
-            M.alloc (|
-              BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
-            |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+            M.alloc (| BinOp.bit_and (M.read (| gtb |)) (UnOp.not (| M.read (| ltb |) |)) |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4601,23 +4604,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 32 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| bit |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4642,11 +4644,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
+              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U32 1)) ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4740,7 +4742,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4751,23 +4753,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 64 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| ltb |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4784,10 +4785,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 |)))
             |) in
           let~ bit :=
-            M.alloc (|
-              BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
-            |) in
-          let~ pow := M.alloc (| Value.Integer 1 |) in
+            M.alloc (| BinOp.bit_and (M.read (| gtb |)) (UnOp.not (| M.read (| ltb |) |)) |) in
+          let~ pow := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4798,23 +4797,22 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
+                            (M.alloc (|
+                              BinOp.lt (| M.read (| pow |), Value.Integer IntegerKind.I32 64 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
-                            BinOp.Pure.bit_or
+                            BinOp.bit_or
                               (M.read (| β |))
-                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
+                              (BinOp.Wrap.shr (| M.read (| bit |), M.read (| pow |) |))
                           |) in
                         let~ _ :=
                           let β := pow in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
-                          |) in
+                          M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| pow |) |) |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4839,11 +4837,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
+              [ M.rust_cast (BinOp.bit_and (M.read (| bit |)) (Value.Integer IntegerKind.U64 1)) ]
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -4903,7 +4901,7 @@ Module ConstantTimeLess.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_ct_lt : M.IsProvidedMethod "subtle::ConstantTimeLess" "ct_lt" ct_lt.

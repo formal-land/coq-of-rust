@@ -64,7 +64,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -112,7 +112,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -160,7 +160,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -208,7 +208,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -253,7 +253,7 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
@@ -294,7 +294,7 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
@@ -343,11 +343,11 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructTuple "combinators_map::Cooked" [ M.read (| food |) ]))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
@@ -416,7 +416,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.StructTuple "combinators_map::Peeled" [ M.read (| f |) ]))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
@@ -441,7 +441,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.StructTuple "combinators_map::Chopped" [ M.read (| f |) ]))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |);
@@ -466,11 +466,11 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructTuple "combinators_map::Cooked" [ M.read (| f |) ]))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_process : M.IsFunction "combinators_map::process" process.
@@ -571,7 +571,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
@@ -674,7 +674,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "combinators_map::main" main.

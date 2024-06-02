@@ -21,7 +21,7 @@ Module inspector.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -484,7 +484,7 @@ Module inspector.
                                                     |)))
                                               ]
                                             |)))
-                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -687,7 +687,7 @@ Module inspector.
                                                     |)))
                                               ]
                                             |)))
-                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -857,8 +857,8 @@ Module inspector.
                                                                       ]
                                                                     |)))
                                                                 | _ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.impossible (||)))
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         ]
                                                       |))
@@ -1051,8 +1051,8 @@ Module inspector.
                                                                                         (let γ :=
                                                                                           M.use
                                                                                             (M.alloc (|
-                                                                                              BinOp.Pure.eq
-                                                                                                (M.call_closure (|
+                                                                                              BinOp.eq (|
+                                                                                                M.call_closure (|
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -1108,14 +1108,16 @@ Module inspector.
                                                                                                       "logs"
                                                                                                     |)
                                                                                                   ]
-                                                                                                |))
-                                                                                                (BinOp.Wrap.add
-                                                                                                  Integer.Usize
-                                                                                                  (M.read (|
+                                                                                                |),
+                                                                                                BinOp.Wrap.add (|
+                                                                                                  M.read (|
                                                                                                     old_log_len
-                                                                                                  |))
-                                                                                                  (Value.Integer
-                                                                                                    1))
+                                                                                                  |),
+                                                                                                  Value.Integer
+                                                                                                    IntegerKind.Usize
+                                                                                                    1
+                                                                                                |)
+                                                                                              |)
                                                                                             |)) in
                                                                                         let _ :=
                                                                                           M.is_constant_or_break_match (|
@@ -1319,7 +1321,7 @@ Module inspector.
                                                                 ]
                                                               |)))
                                                           | _ =>
-                                                            ltac:(M.monadic (M.impossible (||)))
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |))
@@ -1330,7 +1332,7 @@ Module inspector.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               |) in
             let~ _ :=
@@ -1552,7 +1554,7 @@ Module inspector.
                                                       |)))
                                                 ]
                                               |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |))
@@ -1892,7 +1894,7 @@ Module inspector.
                                                 |)))
                                           ]
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |))
@@ -2053,7 +2055,7 @@ Module inspector.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2899,7 +2901,7 @@ Module inspector.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |))
@@ -3383,7 +3385,7 @@ Module inspector.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |))
@@ -3808,7 +3810,7 @@ Module inspector.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |))
@@ -4207,7 +4209,7 @@ Module inspector.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |))
@@ -4943,14 +4945,14 @@ Module inspector.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |))
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_inspector_handle_register :
@@ -5068,7 +5070,7 @@ Module inspector.
                                                           "instruction_pointer"
                                                         |)
                                                       |);
-                                                      Value.Integer 1
+                                                      Value.Integer IntegerKind.Usize 1
                                                     ]
                                                   |)
                                                 |) in
@@ -5189,7 +5191,7 @@ Module inspector.
                                                           "instruction_pointer"
                                                         |)
                                                       |);
-                                                      Value.Integer 1
+                                                      Value.Integer IntegerKind.Usize 1
                                                     ]
                                                   |)
                                                 |) in
@@ -5280,11 +5282,11 @@ Module inspector.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_inspector_instruction :

@@ -19,8 +19,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -45,8 +45,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -71,8 +71,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -97,8 +97,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -123,8 +123,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -149,8 +149,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -175,8 +175,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -201,8 +201,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -227,8 +227,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -253,8 +253,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -279,8 +279,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -305,8 +305,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -331,8 +331,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -357,8 +357,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -386,8 +386,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -412,8 +412,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -438,8 +438,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -464,8 +464,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -490,8 +490,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -516,8 +516,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -542,8 +542,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -568,8 +568,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -594,8 +594,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -620,8 +620,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -646,8 +646,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -672,8 +672,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -698,8 +698,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -724,8 +724,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.sub (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -753,8 +753,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -779,8 +779,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -805,8 +805,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -831,8 +831,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -857,8 +857,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -883,8 +883,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -909,8 +909,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -935,8 +935,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -961,8 +961,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -987,8 +987,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1013,8 +1013,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1039,8 +1039,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1065,8 +1065,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1091,8 +1091,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.mul (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1120,8 +1120,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1146,8 +1146,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1172,8 +1172,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1198,8 +1198,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1224,8 +1224,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1250,8 +1250,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1276,8 +1276,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1302,8 +1302,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1328,8 +1328,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1354,8 +1354,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1380,8 +1380,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1406,8 +1406,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1432,8 +1432,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1458,8 +1458,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.div (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1487,8 +1487,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1513,8 +1513,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.U8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1539,8 +1539,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.U16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1565,8 +1565,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.U32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1591,8 +1591,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.U64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1617,8 +1617,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.U128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1643,8 +1643,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.Isize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1669,8 +1669,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.I8 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1695,8 +1695,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.I16 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1721,8 +1721,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.I32 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1747,8 +1747,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.I64 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1773,8 +1773,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.I128 (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1799,8 +1799,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1825,8 +1825,8 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.Wrap.rem (| M.read (| self |), M.read (| other |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1853,8 +1853,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.Isize, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1878,8 +1878,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.I8, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1903,8 +1903,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.I16, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1928,8 +1928,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.I32, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1953,8 +1953,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.I64, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1978,8 +1978,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.I128, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2003,8 +2003,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2028,8 +2028,8 @@ Module ops.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Panic.neg (| Integer.Usize, M.read (| self |) |)))
-        | _, _ => M.impossible
+            UnOp.neg (| M.read (| self |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2056,9 +2056,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2081,9 +2081,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2106,9 +2106,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2131,9 +2131,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2156,9 +2156,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2181,9 +2181,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2206,9 +2206,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2231,9 +2231,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2256,9 +2256,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2281,9 +2281,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2306,9 +2306,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2331,9 +2331,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2356,9 +2356,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2381,9 +2381,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2409,9 +2409,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2434,9 +2434,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2459,9 +2459,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2484,9 +2484,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2509,9 +2509,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2534,9 +2534,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2559,9 +2559,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2584,9 +2584,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2609,9 +2609,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2634,9 +2634,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2659,9 +2659,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2684,9 +2684,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2709,9 +2709,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2734,9 +2734,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2762,9 +2762,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2787,9 +2787,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2812,9 +2812,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2837,9 +2837,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2862,9 +2862,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2887,9 +2887,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2912,9 +2912,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2937,9 +2937,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2962,9 +2962,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2987,9 +2987,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3012,9 +3012,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3037,9 +3037,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3062,9 +3062,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3087,9 +3087,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.mul (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3115,9 +3115,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3140,9 +3140,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3165,9 +3165,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3190,9 +3190,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3215,9 +3215,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3240,9 +3240,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3265,9 +3265,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3290,9 +3290,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3315,9 +3315,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3340,9 +3340,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3365,9 +3365,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3390,9 +3390,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3415,9 +3415,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3440,9 +3440,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.div (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3468,9 +3468,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3493,9 +3493,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3518,9 +3518,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3543,9 +3543,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3568,9 +3568,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3593,9 +3593,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3618,9 +3618,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3643,9 +3643,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3668,9 +3668,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3693,9 +3693,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3718,9 +3718,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3743,9 +3743,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3768,9 +3768,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3793,9 +3793,9 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Wrap.rem (| M.read (| β |), M.read (| other |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

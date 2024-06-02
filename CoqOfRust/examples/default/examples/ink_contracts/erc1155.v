@@ -47,7 +47,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -152,7 +152,7 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -178,7 +178,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -217,14 +217,15 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
-          |))))
-    | _, _ => M.impossible
+          |)
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -279,9 +280,9 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
           "into",
           []
         |),
-        [ repeat (Value.Integer 0) 32 ]
+        [ repeat (Value.Integer IntegerKind.U8 0) 32 ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
@@ -290,14 +291,26 @@ Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array [ Value.Integer 242; Value.Integer 58; Value.Integer 110; Value.Integer 97 ]
+        Value.Array
+          [
+            Value.Integer IntegerKind.U8 242;
+            Value.Integer IntegerKind.U8 58;
+            Value.Integer IntegerKind.U8 110;
+            Value.Integer IntegerKind.U8 97
+          ]
       |))).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array [ Value.Integer 188; Value.Integer 25; Value.Integer 124; Value.Integer 129 ]
+        Value.Array
+          [
+            Value.Integer IntegerKind.U8 188;
+            Value.Integer IntegerKind.U8 25;
+            Value.Integer IntegerKind.U8 124;
+            Value.Integer IntegerKind.U8 129
+          ]
       |))).
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
@@ -384,9 +397,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -418,7 +431,7 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -519,7 +532,7 @@ Module Impl_erc1155_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -605,7 +618,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -642,7 +655,7 @@ Module Impl_erc1155_Contract.
           M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -666,7 +679,7 @@ Module Impl_erc1155_Contract.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -720,7 +733,10 @@ Module Impl_erc1155_Contract.
                 "erc1155::Contract",
                 "token_id_nonce"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (Value.Integer 1) |) in
+            M.write (|
+              β,
+              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U128 1 |)
+            |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -782,7 +798,10 @@ Module Impl_erc1155_Contract.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.eq (M.read (| value |)) (Value.Integer 0)
+                                            BinOp.eq (|
+                                              M.read (| value |),
+                                              Value.Integer IntegerKind.U128 0
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -822,7 +841,7 @@ Module Impl_erc1155_Contract.
             "token_id_nonce"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
@@ -865,16 +884,18 @@ Module Impl_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.le
-                                  (M.read (| token_id |))
-                                  (M.read (|
+                              UnOp.not (|
+                                BinOp.le (|
+                                  M.read (| token_id |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "erc1155::Contract",
                                       "token_id_nonce"
                                     |)
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -975,7 +996,7 @@ Module Impl_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
@@ -1054,7 +1075,7 @@ Module Impl_erc1155_Contract.
             |) in
           let~ _ :=
             let β := sender_balance in
-            M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
+            M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| value |) |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -1103,13 +1124,13 @@ Module Impl_erc1155_Contract.
                       M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                  M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |)
                 ]
               |)
             |) in
           let~ _ :=
             let β := recipient_balance in
-            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| value |) |) |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -1177,7 +1198,7 @@ Module Impl_erc1155_Contract.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_perform_transfer :
@@ -1268,7 +1289,7 @@ Module Impl_erc1155_Contract.
         let value := M.alloc (| value |) in
         let data := M.alloc (| data |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_acceptance_check :
@@ -1308,7 +1329,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1347,10 +1368,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
               ]
             |);
-            M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1436,8 +1457,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
@@ -1450,7 +1471,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1496,8 +1518,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -1514,7 +1536,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       |)
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1565,8 +1588,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge (M.read (| balance |)) (M.read (| value |)))
+                              UnOp.not (| BinOp.ge (| M.read (| balance |), M.read (| value |) |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1634,7 +1656,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1733,8 +1755,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
@@ -1747,7 +1769,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1793,8 +1816,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -1811,7 +1834,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       |)
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1849,9 +1873,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (UnOp.Pure.not
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1860,7 +1884,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ token_ids ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1899,9 +1925,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.eq
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                BinOp.eq (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1910,8 +1936,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ token_ids ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1920,7 +1946,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                     |),
                                     [ values ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2119,10 +2147,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.ge
-                                                            (M.read (| balance |))
-                                                            (M.read (| v |)))
+                                                        UnOp.not (|
+                                                          BinOp.ge (|
+                                                            M.read (| balance |),
+                                                            M.read (| v |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -2285,7 +2315,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ token_ids; Value.Integer 0 ]
+                          [ token_ids; Value.Integer IntegerKind.Usize 0 ]
                         |)
                       |);
                       M.read (|
@@ -2299,7 +2329,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ values; Value.Integer 0 ]
+                          [ values; Value.Integer IntegerKind.Usize 0 ]
                         |)
                       |);
                       M.read (| data |)
@@ -2309,7 +2339,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2517,7 +2547,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               |)) in
           output
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2573,8 +2603,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
@@ -2583,7 +2613,8 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     []
                                   |),
                                   [ operator; caller ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2706,7 +2737,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2796,7 +2827,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -2867,7 +2898,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

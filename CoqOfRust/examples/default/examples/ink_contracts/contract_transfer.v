@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -50,7 +50,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -97,7 +97,7 @@ Module Impl_contract_transfer_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -164,7 +164,7 @@ Module Impl_contract_transfer_GiveMe.
           M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -177,7 +177,7 @@ Module Impl_contract_transfer_GiveMe.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -316,10 +316,10 @@ Module Impl_contract_transfer_GiveMe.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.le
-                              (M.read (| value |))
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.le (|
+                              M.read (| value |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "balance",
@@ -337,7 +337,9 @@ Module Impl_contract_transfer_GiveMe.
                                     |)
                                   |)
                                 ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -434,7 +436,7 @@ Module Impl_contract_transfer_GiveMe.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
@@ -522,9 +524,9 @@ Module Impl_contract_transfer_GiveMe.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.eq
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "transferred_value",
@@ -542,8 +544,10 @@ Module Impl_contract_transfer_GiveMe.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (Value.Integer 10))
+                              |),
+                              Value.Integer IntegerKind.U128 10
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -562,7 +566,7 @@ Module Impl_contract_transfer_GiveMe.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.

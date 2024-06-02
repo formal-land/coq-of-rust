@@ -192,7 +192,7 @@ Module instruction_result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -543,7 +543,7 @@ Module instruction_result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -565,7 +565,7 @@ Module instruction_result.
           (Value.StructTuple
             "revm_interpreter::instruction_result::InstructionResult::Continue"
             []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -618,9 +618,9 @@ Module instruction_result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -652,7 +652,7 @@ Module instruction_result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -692,7 +692,7 @@ Module instruction_result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -757,7 +757,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1106,7 +1106,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1185,14 +1185,14 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
@@ -1246,14 +1246,14 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -1483,14 +1483,14 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
@@ -1673,7 +1673,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1717,7 +1717,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1772,7 +1772,7 @@ Module instruction_result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1849,7 +1849,7 @@ Module instruction_result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1893,7 +1893,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1984,7 +1984,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2025,7 +2025,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_success : M.IsAssociatedFunction Self "is_success" is_success.
@@ -2064,7 +2064,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_success : M.IsAssociatedFunction Self "to_success" to_success.
@@ -2095,7 +2095,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -2127,7 +2127,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_halt : M.IsAssociatedFunction Self "is_halt" is_halt.
@@ -2166,7 +2166,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_halt : M.IsAssociatedFunction Self "to_halt" to_halt.
@@ -2471,7 +2471,7 @@ Module instruction_result.
                                         []
                                     ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -2682,7 +2682,7 @@ Module instruction_result.
                                         []
                                     ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -2776,7 +2776,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

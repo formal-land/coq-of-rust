@@ -31,7 +31,7 @@ Module slice.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -70,7 +70,7 @@ Module slice.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -116,7 +116,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail :
@@ -175,7 +175,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail_rt :
@@ -233,7 +233,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail_ct :
@@ -271,7 +271,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail :
@@ -330,7 +330,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail_rt :
@@ -385,7 +385,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail_ct :
@@ -419,7 +419,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_index_order_fail_rt", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail :
@@ -478,7 +478,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail_rt :
@@ -533,7 +533,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail_ct :
@@ -568,7 +568,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_overflow_fail :
@@ -601,7 +601,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_overflow_fail :
@@ -753,16 +753,17 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -787,7 +788,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -812,16 +813,17 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -846,7 +848,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -890,10 +892,10 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
+                                      UnOp.not (|
+                                        BinOp.lt (|
+                                          M.read (| self |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*const")
@@ -902,7 +904,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -953,16 +957,17 @@ Module slice.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| self |))
-                        (M.call_closure (|
+                      BinOp.lt (|
+                        M.read (| self |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "slice") [ T ] ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -983,7 +988,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1021,10 +1026,10 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
+                                      UnOp.not (|
+                                        BinOp.lt (|
+                                          M.read (| self |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
@@ -1033,7 +1038,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1096,7 +1103,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1113,7 +1120,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.SubPointer.get_array_field (| M.read (| slice |), self |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1130,7 +1137,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.SubPointer.get_array_field (| M.read (| slice |), self |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1183,23 +1190,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1224,7 +1232,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1253,23 +1261,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1294,7 +1303,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1335,17 +1344,17 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
+                                      UnOp.not (|
+                                        BinOp.le (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::ops::index_range::IndexRange",
                                               "end",
                                               []
                                             |),
                                             [ self ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*const")
@@ -1354,7 +1363,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1437,7 +1448,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1475,17 +1486,17 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
+                                      UnOp.not (|
+                                        BinOp.le (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::ops::index_range::IndexRange",
                                               "end",
                                               []
                                             |),
                                             [ self ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "*mut")
@@ -1494,7 +1505,9 @@ Module slice.
                                               []
                                             |),
                                             [ M.read (| slice |) ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1577,7 +1590,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1606,23 +1619,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1667,7 +1681,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1696,23 +1710,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1757,7 +1772,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1812,38 +1827,40 @@ Module slice.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |)),
+                                |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
+                                (BinOp.gt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| slice |) ]
-                                  |))))
+                                  |)
+                                |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1869,7 +1886,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1899,38 +1916,40 @@ Module slice.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |)),
+                                |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
+                                (BinOp.gt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| slice |) ]
-                                  |))))
+                                  |)
+                                |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1956,7 +1975,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2000,33 +2019,34 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.not (|
+                                        LogicalOp.and (|
+                                          BinOp.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*const")
@@ -2035,8 +2055,10 @@ Module slice.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2133,7 +2155,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2174,33 +2196,34 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.not (|
+                                        LogicalOp.and (|
+                                          BinOp.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*mut")
@@ -2209,8 +2232,10 @@ Module slice.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2307,7 +2332,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2338,21 +2363,22 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2389,22 +2415,23 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2456,7 +2483,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2487,21 +2514,22 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "end"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2538,22 +2566,23 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2605,7 +2634,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2657,7 +2686,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2670,7 +2699,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2697,7 +2726,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2710,7 +2739,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2738,7 +2767,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2751,7 +2780,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2779,7 +2808,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2792,7 +2821,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2819,7 +2848,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2832,7 +2861,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2859,7 +2888,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2872,7 +2901,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2941,7 +2970,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2985,7 +3014,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3034,7 +3063,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3083,7 +3112,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3112,22 +3141,23 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3174,7 +3204,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3203,22 +3233,23 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3265,7 +3296,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3305,7 +3336,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3321,7 +3352,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3337,7 +3368,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3353,7 +3384,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3369,7 +3400,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3385,7 +3416,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3434,8 +3465,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3446,8 +3477,9 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3480,7 +3512,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3504,8 +3536,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3516,8 +3548,9 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3550,7 +3583,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3586,7 +3619,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3622,7 +3655,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3650,8 +3683,8 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3662,8 +3695,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3704,7 +3738,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3732,8 +3766,8 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3744,8 +3778,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3786,7 +3821,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3842,7 +3877,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3855,7 +3890,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3886,7 +3921,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3899,7 +3934,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3931,7 +3966,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3944,7 +3979,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3976,7 +4011,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3989,7 +4024,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4020,7 +4055,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4033,7 +4068,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4064,7 +4099,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4077,7 +4112,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4196,7 +4231,8 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| start |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| start |) |); Value.Integer IntegerKind.Usize 1
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -4220,7 +4256,7 @@ Module slice.
                                                 |)))
                                           ]
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -4228,7 +4264,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                        M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
@@ -4269,7 +4305,8 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| end_ |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| end_ |) |); Value.Integer IntegerKind.Usize 1
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
@@ -4293,7 +4330,7 @@ Module slice.
                                                 |)))
                                           ]
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -4324,7 +4361,7 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| start |)) (M.read (| end_ |)) |)) in
+                          (M.alloc (| BinOp.gt (| M.read (| start |), M.read (| end_ |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4344,8 +4381,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| end_ |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.gt (| M.read (| end_ |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4364,7 +4400,7 @@ Module slice.
                 [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_range : M.IsFunction "core::slice::index::range" range.
@@ -4429,13 +4465,16 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| i |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer 0 |)))
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -4454,7 +4493,10 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| i |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -4482,7 +4524,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_range_unchecked :
@@ -4573,7 +4615,10 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| start |); Value.Integer 1 ]
+                                              [
+                                                M.read (| start |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4635,7 +4680,7 @@ Module slice.
                                         γ,
                                         "core::ops::range::Bound::Unbounded"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)))
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                               ]
                             |)
                           |) in
@@ -4672,7 +4717,8 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| end_ |); Value.Integer 1 ]
+                                              [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4761,7 +4807,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_range : M.IsFunction "core::slice::index::into_range" into_range.
@@ -4848,7 +4894,7 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| start |); Value.Integer 1 ]
+                                        [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>
@@ -4872,7 +4918,7 @@ Module slice.
                                                         |)))
                                                   ]
                                                 |)))
-                                            | _ => ltac:(M.monadic (M.impossible (||)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -4881,7 +4927,7 @@ Module slice.
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer 0 |)))
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -4913,7 +4959,7 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| end_ |); Value.Integer 1 ]
+                                        [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>
@@ -4937,7 +4983,7 @@ Module slice.
                                                         |)))
                                                   ]
                                                 |)))
-                                            | _ => ltac:(M.monadic (M.impossible (||)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -4968,7 +5014,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_slice_range :
@@ -5095,7 +5141,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5208,7 +5254,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5250,7 +5296,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5292,7 +5338,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5329,7 +5375,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5366,7 +5412,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

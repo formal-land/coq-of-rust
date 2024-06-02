@@ -54,7 +54,7 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_elided_input :
@@ -113,7 +113,7 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_annotated_input :
@@ -130,7 +130,7 @@ Definition elided_pass (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (| x |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_elided_pass :
@@ -147,7 +147,7 @@ Definition annotated_pass (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (| x |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_annotated_pass :
@@ -169,7 +169,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 3 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
@@ -286,7 +286,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_elision::main" main.

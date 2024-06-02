@@ -94,23 +94,23 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let n := M.copy (| γ |) in
-                                                  BinOp.Wrap.mul
-                                                    Integer.I32
-                                                    (Value.Integer 2)
-                                                    (M.read (| n |))))
+                                                  BinOp.Wrap.mul (|
+                                                    Value.Integer IntegerKind.I32 2,
+                                                    M.read (| n |)
+                                                  |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first :
@@ -404,7 +404,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "pulling_results_out_of_options::main" main.

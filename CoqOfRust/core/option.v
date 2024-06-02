@@ -118,7 +118,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -158,7 +158,7 @@ Module option.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -255,7 +255,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -323,7 +323,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -387,7 +387,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -430,7 +430,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_some :
@@ -484,7 +484,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_some_and :
@@ -502,16 +502,17 @@ Module option.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ T ],
                 "is_some",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_none :
@@ -555,7 +556,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -599,7 +600,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut :
@@ -680,7 +681,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_pin_ref :
@@ -765,7 +766,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_pin_mut :
@@ -852,7 +853,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_slice :
@@ -939,7 +940,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_slice :
@@ -989,7 +990,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_expect :
@@ -1039,7 +1040,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap :
@@ -1082,7 +1083,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or :
@@ -1139,7 +1140,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or_else :
@@ -1189,7 +1190,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or_default :
@@ -1230,15 +1231,16 @@ Module option.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "core::option::Option") [ T ],
                                             "is_some",
                                             []
                                           |),
                                           [ self ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1288,7 +1290,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_unchecked :
@@ -1349,7 +1351,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -1404,7 +1406,7 @@ Module option.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_inspect :
@@ -1462,7 +1464,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_or :
@@ -1532,7 +1534,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_or_else :
@@ -1577,7 +1579,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ok_or :
@@ -1638,7 +1640,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ok_or_else :
@@ -1701,7 +1703,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_deref :
@@ -1770,7 +1772,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_deref_mut :
@@ -1806,7 +1808,7 @@ Module option.
                       |))
                   ])
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -1842,7 +1844,7 @@ Module option.
                       |))
                   ])
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter_mut :
@@ -1884,7 +1886,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_and : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "and" (and T).
@@ -1939,7 +1941,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_and_then :
@@ -2027,7 +2029,7 @@ Module option.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_filter :
@@ -2070,7 +2072,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_or : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "or" (or T).
@@ -2125,7 +2127,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_or_else :
@@ -2183,7 +2185,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_xor : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "xor" (xor T).
@@ -2229,7 +2231,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert :
@@ -2292,7 +2294,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert :
@@ -2324,7 +2326,7 @@ Module option.
               M.get_trait_method (| "core::default::Default", T, [], "default", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert_default :
@@ -2404,7 +2406,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert_with :
@@ -2430,7 +2432,7 @@ Module option.
             |),
             [ M.read (| self |); Value.StructTuple "core::option::Option::None" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take :
@@ -2499,7 +2501,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_if :
@@ -2528,7 +2530,7 @@ Module option.
               Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace :
@@ -2582,7 +2584,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zip : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "zip" (zip T).
@@ -2649,7 +2651,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zip_with :
@@ -2711,7 +2713,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unzip :
@@ -2766,7 +2768,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2820,7 +2822,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -2873,7 +2875,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2927,7 +2929,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -3009,7 +3011,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_transpose :
@@ -3031,7 +3033,7 @@ Module option.
           M.get_function (| "core::panicking::panic_str", [] |),
           [ M.read (| msg |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_expect_failed : M.IsFunction "core::option::expect_failed" expect_failed.
@@ -3085,7 +3087,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3155,7 +3157,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3183,7 +3185,7 @@ Module option.
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3218,7 +3220,7 @@ Module option.
           Value.StructRecord
             "core::option::IntoIter"
             [ ("inner", Value.StructRecord "core::option::Item" [ ("opt", M.read (| self |)) ]) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3264,7 +3266,7 @@ Module option.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3310,7 +3312,7 @@ Module option.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3342,7 +3344,7 @@ Module option.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3377,7 +3379,7 @@ Module option.
             |),
             [ M.read (| o |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3413,7 +3415,7 @@ Module option.
             |),
             [ M.read (| o |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3457,7 +3459,7 @@ Module option.
             M.get_trait_method (| "core::option::SpecOptionPartialEq", T, [], "eq", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3534,7 +3536,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3560,8 +3562,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
                 "unwrap_or",
@@ -3588,10 +3590,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U8 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
                 "unwrap_or",
@@ -3618,10 +3620,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U8 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3646,8 +3649,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
                 "unwrap_or",
@@ -3674,10 +3677,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U16 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u16" ],
                 "unwrap_or",
@@ -3704,10 +3707,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U16 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3732,8 +3736,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
                 "unwrap_or",
@@ -3760,10 +3764,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U32 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
                 "unwrap_or",
@@ -3790,10 +3794,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U32 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3818,8 +3823,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
                 "unwrap_or",
@@ -3846,10 +3851,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U64 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ],
                 "unwrap_or",
@@ -3876,10 +3881,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U64 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3904,8 +3910,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
                 "unwrap_or",
@@ -3932,10 +3938,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U128 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
                 "unwrap_or",
@@ -3962,10 +3968,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.U128 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3990,8 +3997,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
                 "unwrap_or",
@@ -4018,10 +4025,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.Usize 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
                 "unwrap_or",
@@ -4048,10 +4055,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.Usize 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4076,8 +4084,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i8" ],
                 "unwrap_or",
@@ -4104,10 +4112,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I8 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i8" ],
                 "unwrap_or",
@@ -4134,10 +4142,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I8 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4162,8 +4171,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i16" ],
                 "unwrap_or",
@@ -4190,10 +4199,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I16 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i16" ],
                 "unwrap_or",
@@ -4220,10 +4229,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I16 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4248,8 +4258,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
                 "unwrap_or",
@@ -4276,10 +4286,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I32 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
                 "unwrap_or",
@@ -4306,10 +4316,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I32 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4334,8 +4345,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i64" ],
                 "unwrap_or",
@@ -4362,10 +4373,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I64 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i64" ],
                 "unwrap_or",
@@ -4392,10 +4403,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I64 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4420,8 +4432,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i128" ],
                 "unwrap_or",
@@ -4448,10 +4460,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I128 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "i128" ],
                 "unwrap_or",
@@ -4478,10 +4490,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.I128 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4506,8 +4519,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "isize" ],
                 "unwrap_or",
@@ -4534,10 +4547,10 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.Isize 0
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "isize" ],
                 "unwrap_or",
@@ -4564,10 +4577,11 @@ Module option.
                     |)
                   ]
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.Isize 0
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4594,8 +4608,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "*mut") [ T ] ],
                 "unwrap_or_else",
@@ -4641,11 +4655,11 @@ Module option.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "*mut") [ T ] ],
                 "unwrap_or_else",
@@ -4691,11 +4705,12 @@ Module option.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4721,8 +4736,8 @@ Module option.
         ltac:(M.monadic
           (let l := M.alloc (| l |) in
           let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ],
                 "map_or",
@@ -4733,7 +4748,7 @@ Module option.
               |),
               [
                 M.read (| M.read (| l |) |);
-                Value.Integer 2;
+                Value.Integer IntegerKind.I8 2;
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -4749,11 +4764,11 @@ Module option.
                                   M.rust_cast (M.read (| x |))))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ],
                 "map_or",
@@ -4764,7 +4779,7 @@ Module option.
               |),
               [
                 M.read (| M.read (| r |) |);
-                Value.Integer 2;
+                Value.Integer IntegerKind.I8 2;
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -4780,11 +4795,12 @@ Module option.
                                   M.rust_cast (M.read (| x |))))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4833,7 +4849,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4877,7 +4893,7 @@ Module option.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4920,7 +4936,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4956,8 +4972,10 @@ Module option.
                     M.alloc (|
                       Value.Tuple
                         [
-                          Value.Integer 1;
-                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
+                          Value.Integer IntegerKind.Usize 1;
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ Value.Integer IntegerKind.Usize 1 ]
                         ]
                     |)));
                 fun γ =>
@@ -4966,14 +4984,16 @@ Module option.
                     M.alloc (|
                       Value.Tuple
                         [
-                          Value.Integer 0;
-                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                          Value.Integer IntegerKind.Usize 0;
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ Value.Integer IntegerKind.Usize 0 ]
                         ]
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5018,7 +5038,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5106,7 +5126,7 @@ Module option.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5151,7 +5171,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5181,7 +5201,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5228,7 +5248,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5311,7 +5331,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5363,7 +5383,7 @@ Module option.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5408,7 +5428,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5438,7 +5458,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5485,7 +5505,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5571,7 +5591,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5615,7 +5635,7 @@ Module option.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5660,7 +5680,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5690,7 +5710,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5737,7 +5757,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5869,11 +5889,11 @@ Module option.
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5907,7 +5927,7 @@ Module option.
         ltac:(M.monadic
           (let output := M.alloc (| output |) in
           Value.StructTuple "core::option::Option::Some" [ M.read (| output |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5953,7 +5973,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5998,7 +6018,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6034,7 +6054,7 @@ Module option.
                   Value.StructTuple "core::option::Option::None" []))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6102,7 +6122,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_flatten :

@@ -11,10 +11,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| M.alloc (| Value.Integer 1 |) |) in
+        let~ x := M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 1 |) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "example04::main" main.

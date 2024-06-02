@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -50,7 +50,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -138,7 +138,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -185,7 +185,7 @@ Definition return_value (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_function (| "core::panicking::panic", [] |),
         [ M.read (| Value.String "not implemented" |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
@@ -206,7 +206,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         Value.StructRecord
           "constructors_return_value::ConstructorsReturnValue"
           [ ("value", M.read (| init_value |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -257,7 +257,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -309,14 +309,14 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                         "from",
                         []
                       |),
-                      [ repeat (Value.Integer 0) 32 ]
+                      [ repeat (Value.Integer IntegerKind.U8 0) 32 ]
                     |)
                   ]
               |)
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
@@ -365,7 +365,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     "from",
                                     []
                                   |),
-                                  [ repeat (Value.Integer 0) 32 ]
+                                  [ repeat (Value.Integer IntegerKind.U8 0) 32 ]
                                 |)
                               ]
                           ]
@@ -418,7 +418,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_revert_new :
@@ -441,7 +441,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.

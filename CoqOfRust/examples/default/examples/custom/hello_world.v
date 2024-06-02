@@ -85,7 +85,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ number :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 7 ] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 7 ]
+          |) in
         let~ letter := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ emoticon := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ _ :=
@@ -373,7 +375,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "hello_world::main" main.

@@ -177,7 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u16" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.U16 1000 |)) ]
                               |)
                             ]
                         |))
@@ -217,7 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.U8 1000 |)) ]
                               |)
                             ]
                         |))
@@ -257,7 +257,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.alloc (| M.rust_cast (Value.Integer (-1)) |) ]
+                                [ M.alloc (| M.rust_cast (Value.Integer IntegerKind.I8 (-1)) |) ]
                               |)
                             ]
                         |))
@@ -299,10 +299,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.rem
-                                      Integer.I32
-                                      (Value.Integer 1000)
-                                      (Value.Integer 256)
+                                    BinOp.Wrap.rem (|
+                                      Value.Integer IntegerKind.I32 1000,
+                                      Value.Integer IntegerKind.I32 256
+                                    |)
                                   |)
                                 ]
                               |)
@@ -344,7 +344,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i16" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 128 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.I16 128 |)) ]
                               |)
                             ]
                         |))
@@ -384,7 +384,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 128 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.I8 128 |)) ]
                               |)
                             ]
                         |))
@@ -424,7 +424,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 1000 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.U8 1000 |)) ]
                               |)
                             ]
                         |))
@@ -464,7 +464,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i8" ]
                                 |),
-                                [ M.use (M.alloc (| Value.Integer 232 |)) ]
+                                [ M.use (M.alloc (| Value.Integer IntegerKind.I8 232 |)) ]
                               |)
                             ]
                         |))
@@ -753,7 +753,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "casting::main" main.

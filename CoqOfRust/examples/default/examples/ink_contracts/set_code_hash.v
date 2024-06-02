@@ -42,7 +42,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -75,7 +75,7 @@ Module Impl_set_code_hash_Incrementer.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -102,7 +102,7 @@ Module Impl_set_code_hash_Incrementer.
                 "set_code_hash::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |) |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -154,7 +154,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -176,7 +176,7 @@ Module Impl_set_code_hash_Incrementer.
             "count"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -242,7 +242,7 @@ Module Impl_set_code_hash_Incrementer.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
@@ -289,7 +289,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.

@@ -22,7 +22,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "DoubleError" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -43,7 +43,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple "defining_an_error_type::DoubleError" []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -91,7 +91,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -235,7 +235,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                                         []))
                                                 ]
                                               |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |);
@@ -251,23 +251,23 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let i := M.copy (| γ |) in
-                                                  BinOp.Wrap.mul
-                                                    Integer.I32
-                                                    (Value.Integer 2)
-                                                    (M.read (| i |))))
+                                                  BinOp.Wrap.mul (|
+                                                    Value.Integer IntegerKind.I32 2,
+                                                    M.read (| i |)
+                                                  |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first : M.IsFunction "defining_an_error_type::double_first" double_first.
@@ -388,7 +388,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "defining_an_error_type::print" print.
@@ -536,7 +536,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "defining_an_error_type::main" main.

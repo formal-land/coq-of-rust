@@ -104,7 +104,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -204,7 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ get_lemon_as_fallback :=
@@ -263,7 +263,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ first_available_fruit :=
@@ -350,7 +350,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "unpacking_options_and_defaults_via_or_else::main" main.

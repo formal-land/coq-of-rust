@@ -16,7 +16,7 @@ Module iter.
             (Value.StructTuple
               "core::iter::sources::empty::Empty"
               [ Value.StructTuple "core::marker::PhantomData" [] ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_empty : M.IsFunction "core::iter::sources::empty::empty" empty.
@@ -63,7 +63,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -94,7 +94,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "core::option::Option::None" []))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -110,10 +110,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.Tuple
                 [
-                  Value.Integer 0;
-                  Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    [ Value.Integer IntegerKind.Usize 0 ]
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -146,7 +148,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "core::option::Option::None" []))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -173,8 +175,8 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Integer 0))
-          | _, _ => M.impossible
+              Value.Integer IntegerKind.Usize 0))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -230,7 +232,7 @@ Module iter.
               Value.StructTuple
                 "core::iter::sources::empty::Empty"
                 [ Value.StructTuple "core::marker::PhantomData" [] ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -259,7 +261,7 @@ Module iter.
               (Value.StructTuple
                 "core::iter::sources::empty::Empty"
                 [ Value.StructTuple "core::marker::PhantomData" [] ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

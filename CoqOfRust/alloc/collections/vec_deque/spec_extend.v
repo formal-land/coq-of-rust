@@ -118,7 +118,10 @@ Module collections.
                                                 "saturating_add",
                                                 []
                                               |),
-                                              [ M.read (| lower |); Value.Integer 1 ]
+                                              [
+                                                M.read (| lower |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -144,15 +147,15 @@ Module collections.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (|
+                                                      BinOp.lt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "alloc::collections::vec_deque::VecDeque",
                                                             "len"
                                                           |)
-                                                        |))
-                                                        (M.call_closure (|
+                                                        |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -162,7 +165,8 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -244,7 +248,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -364,14 +368,16 @@ Module collections.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.not (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -564,14 +570,16 @@ Module collections.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.not (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -674,7 +682,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -785,17 +793,17 @@ Module collections.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (| β |))
-                        (M.call_closure (|
+                      BinOp.Wrap.add (|
+                        M.read (| β |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ T ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |))
+                        |)
+                      |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 let~ _ :=
@@ -813,7 +821,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -870,7 +878,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -977,17 +985,17 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (| β |))
-                      (M.call_closure (|
+                    BinOp.Wrap.add (|
+                      M.read (| β |),
+                      M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| slice |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

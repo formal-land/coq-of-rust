@@ -180,7 +180,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -249,7 +249,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -298,7 +298,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_addresses :
@@ -433,7 +433,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend :
@@ -710,7 +710,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_call :
@@ -757,7 +757,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -799,7 +799,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -832,7 +832,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -893,7 +893,7 @@ Module context.
             Value.StructTuple
               "revm::context::context_precompiles::ContextPrecompile::Ordinary"
               [ M.read (| p |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1075,14 +1075,14 @@ Module context.
                                               ]))
                                       ]
                                     |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1284,14 +1284,14 @@ Module context.
                                               ]))
                                       ]
                                     |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

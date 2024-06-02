@@ -52,7 +52,7 @@ Module hint.
             M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [] |), [] |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_unreachable_unchecked :
@@ -110,7 +110,7 @@ Module hint.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
@@ -129,7 +129,7 @@ Module hint.
           M.get_function (| "core::intrinsics::black_box", [ T ] |),
           [ M.read (| dummy |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
@@ -145,7 +145,7 @@ Module hint.
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.read (| value |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.

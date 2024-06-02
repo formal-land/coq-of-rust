@@ -88,11 +88,12 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ge
-                                (M.read (| len |))
-                                (M.read (|
+                              BinOp.ge (|
+                                M.read (| len |),
+                                M.read (|
                                   M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -201,14 +202,14 @@ Module collections.
                                               |),
                                               [
                                                 left_parent_kv;
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (|
+                                                BinOp.Wrap.sub (|
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
                                                     |)
-                                                  |))
-                                                  (M.read (| len |))
+                                                  |),
+                                                  M.read (| len |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -297,14 +298,14 @@ Module collections.
                                               |),
                                               [
                                                 right_parent_kv;
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (|
+                                                BinOp.Wrap.sub (|
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
                                                     |)
-                                                  |))
-                                                  (M.read (| len |))
+                                                  |),
+                                                  M.read (| len |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -332,7 +333,10 @@ Module collections.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.gt (M.read (| len |)) (Value.Integer 0)
+                                              BinOp.gt (|
+                                                M.read (| len |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -358,7 +362,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_node_through_parent :
@@ -492,7 +496,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_node_and_affected_ancestors :
@@ -541,8 +545,8 @@ Module collections.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.gt
-                                      (M.call_closure (|
+                                    BinOp.gt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -558,11 +562,12 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| self |) ]
-                                      |))
-                                      (Value.Integer 0),
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.call_closure (|
+                                      (BinOp.eq (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -578,8 +583,9 @@ Module collections.
                                             []
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
-                                        (Value.Integer 0)))
+                                        |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -631,7 +637,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_top :
@@ -687,8 +693,8 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -703,8 +709,9 @@ Module collections.
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (Value.Integer 0)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -795,7 +802,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_right_border :
@@ -851,8 +858,8 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -867,8 +874,9 @@ Module collections.
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (Value.Integer 0)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -959,7 +967,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_left_border :
@@ -1108,9 +1116,9 @@ Module collections.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (BinOp.Pure.ge
-                                                          (M.call_closure (|
+                                                      UnOp.not (|
+                                                        BinOp.ge (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -1120,15 +1128,17 @@ Module collections.
                                                               []
                                                             |),
                                                             [ last_kv ]
-                                                          |))
-                                                          (BinOp.Wrap.mul
-                                                            Integer.Usize
-                                                            (M.read (|
+                                                          |),
+                                                          BinOp.Wrap.mul (|
+                                                            M.read (|
                                                               M.get_constant (|
                                                                 "alloc::collections::btree::map::MIN_LEN"
                                                               |)
-                                                            |))
-                                                            (Value.Integer 2)))
+                                                            |),
+                                                            Value.Integer IntegerKind.Usize 2
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1180,13 +1190,14 @@ Module collections.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt
-                                              (M.read (| right_child_len |))
-                                              (M.read (|
+                                            BinOp.lt (|
+                                              M.read (| right_child_len |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "alloc::collections::btree::map::MIN_LEN"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1206,14 +1217,14 @@ Module collections.
                                             |),
                                             [
                                               last_kv;
-                                              BinOp.Wrap.sub
-                                                Integer.Usize
-                                                (M.read (|
+                                              BinOp.Wrap.sub (|
+                                                M.read (|
                                                   M.get_constant (|
                                                     "alloc::collections::btree::map::MIN_LEN"
                                                   |)
-                                                |))
-                                                (M.read (| right_child_len |))
+                                                |),
+                                                M.read (| right_child_len |)
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -1251,7 +1262,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_right_border_of_plentiful :
@@ -1412,9 +1423,9 @@ Module collections.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (BinOp.Pure.gt
-                                                          (M.call_closure (|
+                                                      UnOp.not (|
+                                                        BinOp.gt (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -1485,12 +1496,14 @@ Module collections.
                                                                 |)
                                                               |)
                                                             ]
-                                                          |))
-                                                          (M.read (|
+                                                          |),
+                                                          M.read (|
                                                             M.get_constant (|
                                                               "alloc::collections::btree::map::MIN_LEN"
                                                             |)
-                                                          |)))
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1536,7 +1549,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_left_border_of_left_edge :
@@ -1680,9 +1693,9 @@ Module collections.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (BinOp.Pure.gt
-                                                          (M.call_closure (|
+                                                      UnOp.not (|
+                                                        BinOp.gt (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -1753,12 +1766,14 @@ Module collections.
                                                                 |)
                                                               |)
                                                             ]
-                                                          |))
-                                                          (M.read (|
+                                                          |),
+                                                          M.read (|
                                                             M.get_constant (|
                                                               "alloc::collections::btree::map::MIN_LEN"
                                                             |)
-                                                          |)))
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1804,7 +1819,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_right_border_of_right_edge :
@@ -1913,9 +1928,9 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -1925,12 +1940,14 @@ Module collections.
                                                   []
                                                 |),
                                                 [ internal_kv ]
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "alloc::collections::btree::map::MIN_LEN"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1997,12 +2014,12 @@ Module collections.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.add (|
+                                  M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
-                                  |))
-                                  (Value.Integer 1);
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |);
                                 M.read (| left_len |)
                               ]
                             |)
@@ -2016,7 +2033,10 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| count |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2056,7 +2076,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_left_child :
@@ -2145,9 +2165,9 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -2157,12 +2177,14 @@ Module collections.
                                                   []
                                                 |),
                                                 [ internal_kv ]
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "alloc::collections::btree::map::MIN_LEN"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2229,12 +2251,12 @@ Module collections.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.add (|
+                                  M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
-                                  |))
-                                  (Value.Integer 1);
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |);
                                 M.read (| right_len |)
                               ]
                             |)
@@ -2248,7 +2270,10 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| count |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| count |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2288,7 +2313,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_fix_right_child :

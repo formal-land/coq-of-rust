@@ -67,7 +67,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -117,7 +117,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -200,7 +200,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -244,7 +244,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -398,7 +398,7 @@ Module db.
                                                 ]))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -449,7 +449,7 @@ Module db.
                                             ]))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -470,7 +470,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -513,7 +513,7 @@ Module db.
                   ("status",
                     Value.StructTuple "revm::db::states::account_status::AccountStatus::Loaded" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_loaded : M.IsAssociatedFunction Self "new_loaded" new_loaded.
@@ -552,7 +552,7 @@ Module db.
                       "revm::db::states::account_status::AccountStatus::LoadedEmptyEIP161"
                       [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_loaded_empty_eip161 :
@@ -579,7 +579,7 @@ Module db.
                       "revm::db::states::account_status::AccountStatus::LoadedNotExisting"
                       [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_loaded_not_existing :
@@ -615,7 +615,7 @@ Module db.
                       "revm::db::states::account_status::AccountStatus::InMemoryChange"
                       [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_newly_created :
@@ -642,7 +642,7 @@ Module db.
                       "revm::db::states::account_status::AccountStatus::Destroyed"
                       [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_destroyed :
@@ -676,7 +676,7 @@ Module db.
                   ("status",
                     Value.StructTuple "revm::db::states::account_status::AccountStatus::Changed" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_changed :
@@ -758,14 +758,14 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_some : M.IsAssociatedFunction Self "is_some" is_some.
@@ -870,11 +870,11 @@ Module db.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_storage_slot :
@@ -961,11 +961,11 @@ Module db.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_account_info :
@@ -1046,7 +1046,7 @@ Module db.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |);
@@ -1058,7 +1058,7 @@ Module db.
                     |)
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_components :
@@ -1191,7 +1191,7 @@ Module db.
                                                   |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -1404,7 +1404,7 @@ Module db.
                                                     ]))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -1467,7 +1467,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1531,7 +1531,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_touch_create_pre_eip161 :
@@ -1633,7 +1633,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1705,7 +1705,7 @@ Module db.
                                           ltac:(M.monadic
                                             match γ with
                                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                                            | _ => ltac:(M.monadic (M.impossible (||)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1758,7 +1758,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_touch_empty_eip161 :
@@ -1845,7 +1845,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1951,7 +1951,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_selfdestruct :
@@ -2056,7 +2056,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -2172,7 +2172,7 @@ Module db.
                                                 ]))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2255,7 +2255,7 @@ Module db.
                   |) in
                 transition_account
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_newly_created :
@@ -2290,7 +2290,10 @@ Module db.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq (M.read (| balance |)) (Value.Integer 0)
+                                    BinOp.eq (|
+                                      M.read (| balance |),
+                                      Value.Integer IntegerKind.U128 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2380,7 +2383,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2400,7 +2403,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_increment_balance :
@@ -2651,7 +2654,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_account_info_change :
@@ -2752,11 +2755,11 @@ Module db.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_drain_balance :
@@ -2888,7 +2891,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -2978,7 +2981,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3099,7 +3102,7 @@ Module db.
                                                 ]))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3271,7 +3274,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |));
@@ -3290,7 +3293,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_change : M.IsAssociatedFunction Self "change" change.

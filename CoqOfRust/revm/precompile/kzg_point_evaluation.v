@@ -26,14 +26,15 @@ Module kzg_point_evaluation.
         (M.alloc (|
           M.call_closure (|
             M.get_function (| "revm_precompile::u64_to_address", [] |),
-            [ Value.Integer 10 ]
+            [ Value.Integer IntegerKind.U64 10 ]
           |)
         |))).
   
-  Definition value_GAS_COST : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 50000 |))).
+  Definition value_GAS_COST : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
   Definition value_RETURN_VALUE : Value.t :=
     M.run
@@ -92,13 +93,14 @@ Module kzg_point_evaluation.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| gas_limit |))
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (| gas_limit |),
+                                M.read (|
                                   M.get_constant (|
                                     "revm_precompile::kzg_point_evaluation::GAS_COST"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -129,8 +131,8 @@ Module kzg_point_evaluation.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.call_closure (|
+                              BinOp.ne (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "bytes::bytes::Bytes",
                                     "len",
@@ -148,8 +150,9 @@ Module kzg_point_evaluation.
                                       [ M.read (| input |) ]
                                     |)
                                   ]
-                                |))
-                                (Value.Integer 192)
+                                |),
+                                Value.Integer IntegerKind.Usize 192
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -203,7 +206,9 @@ Module kzg_point_evaluation.
                           |)
                         ]
                       |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 32) ]
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                     ]
                   |)
                 |) in
@@ -241,7 +246,10 @@ Module kzg_point_evaluation.
                       |);
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [ ("start", Value.Integer 96); ("end_", Value.Integer 144) ]
+                        [
+                          ("start", Value.Integer IntegerKind.Usize 96);
+                          ("end_", Value.Integer IntegerKind.Usize 144)
+                        ]
                     ]
                   |)
                 |) in
@@ -344,7 +352,10 @@ Module kzg_point_evaluation.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 32); ("end_", Value.Integer 64) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 32);
+                              ("end_", Value.Integer IntegerKind.Usize 64)
+                            ]
                         ]
                       |)
                     ]
@@ -387,7 +398,10 @@ Module kzg_point_evaluation.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 64); ("end_", Value.Integer 96) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 64);
+                              ("end_", Value.Integer IntegerKind.Usize 96)
+                            ]
                         ]
                       |)
                     ]
@@ -430,7 +444,10 @@ Module kzg_point_evaluation.
                           |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 144); ("end_", Value.Integer 192) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 144);
+                              ("end_", Value.Integer IntegerKind.Usize 192)
+                            ]
                         ]
                       |)
                     ]
@@ -445,8 +462,8 @@ Module kzg_point_evaluation.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_function (|
                                     "revm_precompile::kzg_point_evaluation::verify_kzg_proof",
                                     []
@@ -476,7 +493,8 @@ Module kzg_point_evaluation.
                                       ]
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -528,7 +546,7 @@ Module kzg_point_evaluation.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::kzg_point_evaluation::run" run.
@@ -647,7 +665,10 @@ Module kzg_point_evaluation.
             |) in
           let~ _ :=
             M.write (|
-              M.SubPointer.get_array_field (| hash, M.alloc (| Value.Integer 0 |) |),
+              M.SubPointer.get_array_field (|
+                hash,
+                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+              |),
               M.read (|
                 M.get_constant (|
                   "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
@@ -656,7 +677,7 @@ Module kzg_point_evaluation.
             |) in
           hash
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_kzg_to_versioned_hash :
@@ -710,7 +731,7 @@ Module kzg_point_evaluation.
             Value.Bool false
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_kzg_proof :
@@ -751,7 +772,7 @@ Module kzg_point_evaluation.
             M.read (| Value.String "slice with incorrect length" |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_as_array : M.IsFunction "revm_precompile::kzg_point_evaluation::as_array" as_array.
@@ -791,7 +812,7 @@ Module kzg_point_evaluation.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_as_bytes32 :
@@ -832,7 +853,7 @@ Module kzg_point_evaluation.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_as_bytes48 :

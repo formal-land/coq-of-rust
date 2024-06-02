@@ -21,7 +21,7 @@ Definition order (τ : list Ty.t) (α : list Value.t) : M :=
         |),
         ltac:(M.monadic (M.read (| b4 |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_order : M.IsFunction "if_let::order" order.
@@ -99,17 +99,17 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         match γ with
                         | [ value ] => ltac:(M.monadic value)
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "if_let::Container::Empty" |) in
-                M.alloc (| Value.Integer 0 |)))
+                M.alloc (| Value.Integer IntegerKind.I32 0 |)))
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_extract_value : M.IsFunction "if_let::extract_value" extract_value.
@@ -152,7 +152,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ x :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 5 ]
+          |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -282,7 +284,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
-                  let γ := M.use (M.alloc (| BinOp.Pure.gt (M.read (| y |)) (Value.Integer 3) |)) in
+                  let γ :=
+                    M.use
+                      (M.alloc (|
+                        BinOp.gt (| M.read (| y |), Value.Integer IntegerKind.I32 3 |)
+                      |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let γ := x in
                   let γ0_0 :=
@@ -356,7 +362,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let y := M.copy (| γ0_0 |) in
-                let γ := M.alloc (| BinOp.Pure.gt (M.read (| y |)) (Value.Integer 3) |) in
+                let γ :=
+                  M.alloc (| BinOp.gt (| M.read (| y |), Value.Integer IntegerKind.I32 3 |) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let γ := x in
                 let γ0_0 :=
@@ -421,7 +428,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "if_let::main" main.

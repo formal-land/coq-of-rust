@@ -105,7 +105,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "result_use_in_main::main" main.

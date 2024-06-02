@@ -54,7 +54,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -107,7 +107,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -138,7 +138,7 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::skip::Skip"
                 [ ("iter", M.read (| iter |)); ("n", M.read (| n |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -180,15 +180,16 @@ Module iter.
                               M.call_closure (|
                                 M.get_function (| "core::intrinsics::unlikely", [] |),
                                 [
-                                  BinOp.Pure.gt
-                                    (M.read (|
+                                  BinOp.gt (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::iter::adapters::skip::Skip",
                                         "n"
                                       |)
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -245,7 +246,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -288,15 +289,16 @@ Module iter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.read (|
+                                  BinOp.gt (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::iter::adapters::skip::Skip",
                                         "n"
                                       |)
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -369,10 +371,10 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (| skip |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| skip |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -475,7 +477,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -507,15 +509,16 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.read (|
+                                    BinOp.gt (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           self,
                                           "core::iter::adapters::skip::Skip",
                                           "n"
                                         |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -554,16 +557,16 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (|
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             self,
                                                             "core::iter::adapters::skip::Skip",
                                                             "n"
                                                           |)
-                                                        |))
-                                                        (Value.Integer 1)
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
@@ -577,7 +580,9 @@ Module iter.
                                         |) in
                                       M.alloc (|
                                         M.never_to_any (|
-                                          M.read (| M.return_ (| Value.Integer 0 |) |)
+                                          M.read (|
+                                            M.return_ (| Value.Integer IntegerKind.Usize 0 |)
+                                          |)
                                         |)
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -608,7 +613,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -638,15 +643,16 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.read (|
+                                    BinOp.gt (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           self,
                                           "core::iter::adapters::skip::Skip",
                                           "n"
                                         |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -679,16 +685,16 @@ Module iter.
                                               "core::iter::adapters::skip::Skip",
                                               "iter"
                                             |);
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::iter::adapters::skip::Skip",
                                                   "n"
                                                 |)
-                                              |))
-                                              (Value.Integer 1)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -766,7 +772,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -882,7 +888,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -929,7 +935,7 @@ Module iter.
                           "core::iter::adapters::skip::Skip",
                           "n"
                         |),
-                        Value.Integer 0
+                        Value.Integer IntegerKind.Usize 0
                       |) in
                     let~ _ :=
                       M.match_operator (|
@@ -940,7 +946,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0)
+                                    BinOp.gt (| M.read (| n |), Value.Integer IntegerKind.Usize 0 |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -979,10 +985,10 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (| n |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| n |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
@@ -1040,7 +1046,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1077,15 +1083,16 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.read (|
+                                    BinOp.gt (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           self,
                                           "core::iter::adapters::skip::Skip",
                                           "n"
                                         |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1124,16 +1131,16 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (|
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             self,
                                                             "core::iter::adapters::skip::Skip",
                                                             "n"
                                                           |)
-                                                        |))
-                                                        (Value.Integer 1)
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
@@ -1180,7 +1187,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1261,7 +1268,7 @@ Module iter.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            M.alloc (| Value.Integer 0 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
@@ -1286,22 +1293,19 @@ Module iter.
                   |) in
                 let~ advanced_inner :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| skip_and_advance |))
-                      (M.read (| remainder |))
+                    BinOp.Wrap.sub (| M.read (| skip_and_advance |), M.read (| remainder |) |)
                   |) in
                 let~ _ :=
                   let β := n in
                   M.write (|
                     β,
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| β |))
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.read (| β |),
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                         [ M.read (| advanced_inner |); M.read (| skip_inner |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 let~ _ :=
                   M.write (|
@@ -1337,9 +1341,15 @@ Module iter.
                                   M.get_function (| "core::intrinsics::unlikely", [] |),
                                   [
                                     LogicalOp.and (|
-                                      BinOp.Pure.eq (M.read (| remainder |)) (Value.Integer 0),
+                                      BinOp.eq (|
+                                        M.read (| remainder |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0)))
+                                        (BinOp.gt (|
+                                          M.read (| n |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)))
                                     |)
                                   ]
                                 |)
@@ -1378,7 +1388,7 @@ Module iter.
                                           "core::result::Result::Ok",
                                           0
                                         |) in
-                                      M.alloc (| Value.Integer 0 |)));
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
@@ -1438,7 +1448,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1498,8 +1508,8 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     Ty.apply
@@ -1511,8 +1521,9 @@ Module iter.
                                     []
                                   |),
                                   [ self ]
-                                |))
-                                (Value.Integer 0)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1540,7 +1551,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1586,7 +1597,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.lt (M.read (| n |)) (M.read (| len |)) |)) in
+                          M.use (M.alloc (| BinOp.lt (| M.read (| n |), M.read (| len |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -1619,7 +1630,10 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| len |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| len |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1642,10 +1656,10 @@ Module iter.
                                             "core::iter::adapters::skip::Skip",
                                             "iter"
                                           |);
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| len |))
-                                            (Value.Integer 1)
+                                          BinOp.Wrap.sub (|
+                                            M.read (| len |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1657,7 +1671,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1712,7 +1726,10 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| n |), Value.Integer IntegerKind.Usize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -1772,7 +1789,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1826,7 +1843,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1895,8 +1912,8 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1905,7 +1922,8 @@ Module iter.
                                       []
                                     |),
                                     [ rem ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1965,7 +1983,7 @@ Module iter.
                           "new",
                           []
                         |),
-                        [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| min |)) ]
+                        [ BinOp.Wrap.sub (| M.read (| n |), M.read (| min |) |) ]
                       |);
                       Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                       M.constructor_as_closure "core::result::Result::Err"
@@ -1973,7 +1991,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2047,7 +2065,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

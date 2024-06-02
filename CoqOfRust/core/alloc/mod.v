@@ -30,7 +30,7 @@ Module alloc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -63,7 +63,7 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -95,7 +95,7 @@ Module alloc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -121,7 +121,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "AllocError" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -161,7 +161,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "memory allocation failed" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -299,7 +299,7 @@ Module alloc.
                             |)
                           ]
                         |);
-                        Value.Integer 0;
+                        Value.Integer IntegerKind.U8 0;
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -316,7 +316,7 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_allocate_zeroed :
@@ -350,24 +350,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -555,7 +557,7 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_grow : M.IsProvidedMethod "core::alloc::Allocator" "grow" grow.
@@ -588,24 +590,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -793,7 +797,7 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_grow_zeroed :
@@ -827,24 +831,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1032,7 +1038,7 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_shrink : M.IsProvidedMethod "core::alloc::Allocator" "shrink" shrink.
@@ -1042,7 +1048,7 @@ Module alloc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_by_ref : M.IsProvidedMethod "core::alloc::Allocator" "by_ref" by_ref.
@@ -1067,7 +1073,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "allocate", [] |),
             [ M.read (| M.read (| self |) |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1086,7 +1092,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "allocate_zeroed", [] |),
             [ M.read (| M.read (| self |) |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1107,7 +1113,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
             [ M.read (| M.read (| self |) |); M.read (| ptr |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1139,7 +1145,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1171,7 +1177,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1203,7 +1209,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

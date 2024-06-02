@@ -143,7 +143,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -248,7 +248,7 @@ Module collections.
                     |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -371,7 +371,7 @@ Module collections.
                     |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -510,7 +510,7 @@ Module collections.
                     |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -642,7 +642,7 @@ Module collections.
                     |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -672,7 +672,7 @@ Module collections.
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.read (| Value.String "key already exists" |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :
@@ -752,7 +752,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_or_insert :
@@ -835,7 +835,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_or_insert_with :
@@ -938,7 +938,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_or_insert_with_key :
@@ -1008,7 +1008,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_key :
@@ -1100,7 +1100,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_and_modify :
@@ -1181,7 +1181,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_or_default :
@@ -1210,7 +1210,7 @@ Module collections.
                   "alloc::collections::btree::map::entry::VacantEntry",
                   "key"
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_key :
@@ -1235,7 +1235,7 @@ Module collections.
                     "key"
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_into_key :
@@ -1448,7 +1448,7 @@ Module collections.
                                     "alloc::collections::btree::map::BTreeMap",
                                     "length"
                                   |),
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 |) in
                               val_ptr));
                           fun γ =>
@@ -1737,7 +1737,7 @@ Module collections.
                                                             |)))
                                                       ]
                                                     |)))
-                                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |)
@@ -1802,10 +1802,10 @@ Module collections.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |) in
                                   val_ptr
                                 |)
@@ -1815,7 +1815,7 @@ Module collections.
                     |) in
                   M.alloc (| M.read (| out_ptr |) |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_insert :
@@ -1893,7 +1893,7 @@ Module collections.
                     0
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_key :
@@ -1921,7 +1921,7 @@ Module collections.
                   |),
                   [ M.read (| self |) ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_remove_entry :
@@ -1994,7 +1994,7 @@ Module collections.
                     1
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_get :
@@ -2045,7 +2045,7 @@ Module collections.
                     1
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_get_mut :
@@ -2091,7 +2091,7 @@ Module collections.
                     |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_into_mut :
@@ -2126,7 +2126,7 @@ Module collections.
                     M.read (| value |)
                   ]
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_insert :
@@ -2161,7 +2161,7 @@ Module collections.
                     1
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_remove :
@@ -2235,7 +2235,7 @@ Module collections.
                                             |)))
                                       ]
                                     |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end));
                           M.call_closure (|
                             M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
@@ -2290,7 +2290,7 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           let~ _ :=
                             M.match_operator (|
@@ -2399,7 +2399,7 @@ Module collections.
                     ]
                   |)
                 |)))
-            | _, _ => M.impossible
+            | _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom AssociatedFunction_remove_kv :

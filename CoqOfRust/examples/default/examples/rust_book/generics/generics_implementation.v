@@ -33,7 +33,7 @@ Module Impl_generics_implementation_Val.
           "generics_implementation::Val",
           "val"
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
@@ -58,7 +58,7 @@ Module Impl_generics_implementation_GenVal_T.
           "generics_implementation::GenVal",
           "gen_val"
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_value :
@@ -87,7 +87,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ y :=
           M.alloc (|
-            Value.StructRecord "generics_implementation::GenVal" [ ("gen_val", Value.Integer 3) ]
+            Value.StructRecord
+              "generics_implementation::GenVal"
+              [ ("gen_val", Value.Integer IntegerKind.I32 3) ]
           |) in
         let~ _ :=
           let~ _ :=
@@ -164,7 +166,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_implementation::main" main.

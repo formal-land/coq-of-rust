@@ -62,7 +62,7 @@ Module interpreter_action.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -113,7 +113,7 @@ Module interpreter_action.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -192,7 +192,7 @@ Module interpreter_action.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -238,7 +238,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -271,7 +271,7 @@ Module interpreter_action.
             Value.StructRecord
               "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
               [ ("result", M.read (| result |)); ("memory_offset", M.read (| memory_offset |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -295,7 +295,7 @@ Module interpreter_action.
               "revm_interpreter::interpreter::InterpreterResult",
               "result"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_instruction_result :
@@ -322,7 +322,7 @@ Module interpreter_action.
                 "gas"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -346,7 +346,7 @@ Module interpreter_action.
               "revm_interpreter::interpreter::InterpreterResult",
               "output"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -372,7 +372,7 @@ Module interpreter_action.
                 "start"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_memory_start :
@@ -404,7 +404,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_memory_length :

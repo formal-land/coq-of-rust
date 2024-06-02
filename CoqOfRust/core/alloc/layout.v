@@ -17,7 +17,7 @@ Module alloc.
               M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |);
               M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
@@ -63,7 +63,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -113,7 +113,7 @@ Module alloc.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -146,21 +146,22 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -184,7 +185,7 @@ Module alloc.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -228,7 +229,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -291,7 +292,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -333,15 +334,16 @@ Module alloc.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "is_power_of_two",
                                         []
                                       |),
                                       [ M.read (| align |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -381,7 +383,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_size_align :
@@ -411,21 +413,21 @@ Module alloc.
         | [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
-              (BinOp.Wrap.sub
-                Integer.Usize
-                (M.call_closure (|
+            BinOp.Wrap.sub (|
+              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+              BinOp.Wrap.sub (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
                     []
                   |),
                   [ M.read (| align |) ]
-                |))
-                (Value.Integer 1))))
-        | _, _ => M.impossible
+                |),
+                Value.Integer IntegerKind.Usize 1
+              |)
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_max_size_for_align :
@@ -459,16 +461,17 @@ Module alloc.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.read (| size |))
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.read (| size |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
                                         []
                                       |),
                                       [ M.read (| align |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -497,7 +500,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_size_alignment :
@@ -529,7 +532,7 @@ Module alloc.
                     [ M.read (| align |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_size_align_unchecked :
@@ -552,7 +555,7 @@ Module alloc.
                 "size"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -583,7 +586,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
@@ -629,7 +632,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -681,7 +684,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_for_value : M.IsAssociatedFunction Self "for_value" for_value.
@@ -734,7 +737,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_for_value_raw :
@@ -773,7 +776,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_dangling : M.IsAssociatedFunction Self "dangling" dangling.
@@ -816,7 +819,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align_to : M.IsAssociatedFunction Self "align_to" align_to.
@@ -868,7 +871,7 @@ Module alloc.
                 |) in
               let~ len_rounded_up :=
                 M.alloc (|
-                  BinOp.Pure.bit_and
+                  BinOp.bit_and
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                       [
@@ -876,14 +879,15 @@ Module alloc.
                           M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
                           [ M.read (| len |); M.read (| align |) ]
                         |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Usize 1
                       ]
                     |))
-                    (UnOp.Pure.not
-                      (M.call_closure (|
+                    (UnOp.not (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
-                        [ M.read (| align |); Value.Integer 1 ]
-                      |)))
+                        [ M.read (| align |); Value.Integer IntegerKind.Usize 1 ]
+                      |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -892,7 +896,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_padding_needed_for :
@@ -940,17 +944,17 @@ Module alloc.
                 |) in
               let~ new_size :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |))
-                    (M.read (| pad |))
+                    |),
+                    M.read (| pad |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -973,7 +977,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pad_to_align :
@@ -1004,17 +1008,16 @@ Module alloc.
                 (M.read (|
                   let~ padded_size :=
                     M.alloc (|
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.call_closure (|
+                      BinOp.Wrap.add (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "size",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        (M.call_closure (|
+                        |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "padding_needed_for",
@@ -1031,7 +1034,8 @@ Module alloc.
                               [ M.read (| self |) ]
                             |)
                           ]
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ alloc_size :=
                     M.copy (|
@@ -1228,7 +1232,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
@@ -1600,7 +1604,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1741,7 +1745,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_repeat_packed :
@@ -1890,7 +1894,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend_packed :
@@ -1959,7 +1963,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_array : M.IsAssociatedFunction Self "array" array.
@@ -1985,7 +1989,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::alloc::layout::LayoutError" []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2018,7 +2022,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2050,7 +2054,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2076,7 +2080,7 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2119,7 +2123,7 @@ Module alloc.
                 M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

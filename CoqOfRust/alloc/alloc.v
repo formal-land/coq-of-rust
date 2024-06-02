@@ -49,7 +49,7 @@ Module alloc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -67,7 +67,7 @@ Module alloc.
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [] => ltac:(M.monadic (Value.StructTuple "alloc::alloc::Global" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -92,7 +92,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "Global" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -148,7 +148,7 @@ Module alloc.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_alloc : M.IsFunction "alloc::alloc::alloc" alloc.
@@ -178,7 +178,7 @@ Module alloc.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_dealloc : M.IsFunction "alloc::alloc::dealloc" dealloc.
@@ -210,7 +210,7 @@ Module alloc.
             M.read (| new_size |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_realloc : M.IsFunction "alloc::alloc::realloc" realloc.
@@ -238,7 +238,7 @@ Module alloc.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_alloc_zeroed : M.IsFunction "alloc::alloc::alloc_zeroed" alloc_zeroed.
@@ -284,7 +284,10 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -306,7 +309,7 @@ Module alloc.
                                     |),
                                     [ layout ]
                                   |);
-                                  Value.Integer 0
+                                  Value.Integer IntegerKind.Usize 0
                                 ]
                               |)
                             ]
@@ -469,7 +472,7 @@ Module alloc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_alloc_impl : M.IsAssociatedFunction Self "alloc_impl" alloc_impl.
@@ -550,24 +553,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -625,7 +630,10 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -641,23 +649,24 @@ Module alloc.
                         (let old_size := M.copy (| γ |) in
                         let γ :=
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.call_closure (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
                                   []
                                 |),
                                 [ old_layout ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
                                   []
                                 |),
                                 [ new_layout ]
-                              |))
+                              |)
+                            |)
                           |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -677,16 +686,17 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (| "core::intrinsics::assume", [] |),
                               [
-                                BinOp.Pure.ge
-                                  (M.read (| new_size |))
-                                  (M.call_closure (|
+                                BinOp.ge (|
+                                  M.read (| new_size |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
                                       []
                                     |),
                                     [ old_layout ]
-                                  |))
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -844,11 +854,11 @@ Module alloc.
                                             |),
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
                                           |);
-                                          Value.Integer 0;
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| new_size |))
-                                            (M.read (| old_size |))
+                                          Value.Integer IntegerKind.U8 0;
+                                          BinOp.Wrap.sub (|
+                                            M.read (| new_size |),
+                                            M.read (| old_size |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1020,7 +1030,7 @@ Module alloc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_grow_impl : M.IsAssociatedFunction Self "grow_impl" grow_impl.
@@ -1044,7 +1054,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
             [ M.read (| self |); M.read (| layout |); Value.Bool false ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1062,7 +1072,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
             [ M.read (| self |); M.read (| layout |); Value.Bool true ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1090,16 +1100,17 @@ Module alloc.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ne
-                            (M.call_closure (|
+                          BinOp.ne (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
                                 []
                               |),
                               [ layout ]
-                            |))
-                            (Value.Integer 0)
+                            |),
+                            Value.Integer IntegerKind.Usize 0
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1122,7 +1133,7 @@ Module alloc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1154,7 +1165,7 @@ Module alloc.
               Value.Bool false
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1186,7 +1197,7 @@ Module alloc.
               Value.Bool true
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1261,24 +1272,26 @@ Module alloc.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1336,7 +1349,10 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
@@ -1371,7 +1387,7 @@ Module alloc.
                                     |),
                                     [ new_layout ]
                                   |);
-                                  Value.Integer 0
+                                  Value.Integer IntegerKind.Usize 0
                                 ]
                               |)
                             ]
@@ -1381,23 +1397,24 @@ Module alloc.
                         (let new_size := M.copy (| γ |) in
                         let γ :=
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.call_closure (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
                                   []
                                 |),
                                 [ old_layout ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
                                   []
                                 |),
                                 [ new_layout ]
-                              |))
+                              |)
+                            |)
                           |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1406,16 +1423,17 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (| "core::intrinsics::assume", [] |),
                               [
-                                BinOp.Pure.le
-                                  (M.read (| new_size |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| new_size |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
                                       []
                                     |),
                                     [ old_layout ]
-                                  |))
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -1706,7 +1724,7 @@ Module alloc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1798,7 +1816,7 @@ Module alloc.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_exchange_malloc : M.IsFunction "alloc::alloc::exchange_malloc" exchange_malloc.
@@ -1851,7 +1869,7 @@ Module alloc.
             M.get_function (| "alloc::alloc::handle_alloc_error.rt_error", [] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_handle_alloc_error :
@@ -1894,7 +1912,7 @@ Module alloc.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_ct_error : M.IsFunction "alloc::alloc::handle_alloc_error::ct_error" ct_error.
@@ -1924,7 +1942,7 @@ Module alloc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_rt_error : M.IsFunction "alloc::alloc::handle_alloc_error::rt_error" rt_error.
@@ -1964,15 +1982,16 @@ Module alloc.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ne
-                            (M.read (|
+                          BinOp.ne (|
+                            M.read (|
                               M.read (|
                                 M.get_constant (|
                                   "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
                                 |)
                               |)
-                            |))
-                            (Value.Integer 0)
+                            |),
+                            Value.Integer IntegerKind.U8 0
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2061,7 +2080,7 @@ Module alloc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function___rdl_oom :
@@ -2108,7 +2127,7 @@ Module alloc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2145,12 +2164,12 @@ Module alloc.
                     "copy_from_nonoverlapping",
                     []
                   |),
-                  [ M.read (| target |); M.read (| self |); Value.Integer 1 ]
+                  [ M.read (| target |); M.read (| self |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

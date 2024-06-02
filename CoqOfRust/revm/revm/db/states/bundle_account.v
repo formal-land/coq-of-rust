@@ -121,7 +121,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -187,7 +187,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -338,7 +338,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -397,7 +397,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -443,7 +443,7 @@ Module db.
                   ("storage", M.read (| storage |));
                   ("status", M.read (| status |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -458,10 +458,9 @@ Module db.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (Value.Integer 1)
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
@@ -480,8 +479,9 @@ Module db.
                       "storage"
                     |)
                   ]
-                |))))
-          | _, _ => M.impossible
+                |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_size_hint : M.IsAssociatedFunction Self "size_hint" size_hint.
@@ -571,7 +571,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -641,7 +641,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_storage_slot :
@@ -675,7 +675,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_account_info :
@@ -705,7 +705,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_was_destroyed :
@@ -748,7 +748,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_info_changed :
@@ -839,7 +839,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -904,14 +904,14 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_contract_changed :
@@ -1181,7 +1181,7 @@ Module db.
                                                                 ]
                                                               |)))
                                                           | _ =>
-                                                            ltac:(M.monadic (M.impossible (||)))
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -1406,7 +1406,7 @@ Module db.
                     M.alloc (| Value.Bool false |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert : M.IsAssociatedFunction Self "revert" revert.
@@ -1862,7 +1862,7 @@ Module db.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
                 let~ previous_storage_from_update :=
@@ -2112,7 +2112,8 @@ Module db.
                                                                     |)))
                                                               ]
                                                             |)))
-                                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |);
@@ -2156,7 +2157,7 @@ Module db.
                                                                   ]))
                                                           ]
                                                         |)))
-                                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             ]
                                           |)
@@ -2164,7 +2165,7 @@ Module db.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
                 let~ info_revert :=
@@ -2430,7 +2431,7 @@ Module db.
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       |)));
                                   fun γ =>
@@ -2716,7 +2717,7 @@ Module db.
                                                         |)
                                                       |) in
                                                     info_revert))
-                                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         |)));
                                     fun γ =>
@@ -2894,7 +2895,7 @@ Module db.
                                         (M.alloc (|
                                           Value.StructTuple "core::option::Option::None" []
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             |)));
                         fun γ =>
@@ -3029,7 +3030,7 @@ Module db.
                                                           |)
                                                         ]
                                                     |)))
-                                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         |)));
                                     fun γ =>
@@ -3385,7 +3386,8 @@ Module db.
                                                                     ]
                                                                 ]
                                                             |)))
-                                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 |)));
                                             fun γ =>
@@ -3599,8 +3601,8 @@ Module db.
                                                                                     ]
                                                                                   |)))
                                                                               | _ =>
-                                                                                ltac:(M.monadic
-                                                                                  (M.impossible (||)))
+                                                                                M.impossible
+                                                                                  "wrong number of arguments"
                                                                               end))
                                                                       ]
                                                                     |)
@@ -4188,7 +4190,8 @@ Module db.
                                                                 "core::option::Option::None"
                                                                 []
                                                             |)))
-                                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 |)));
                                             fun γ =>
@@ -4508,13 +4511,13 @@ Module db.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_update_and_create_revert :

@@ -43,73 +43,77 @@ Module mem.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -146,7 +150,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -173,7 +177,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -250,7 +254,7 @@ Module mem.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -445,7 +449,7 @@ Module mem.
                       |)))
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_and : M.IsAssociatedFunction Self "and" and.
@@ -479,14 +483,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "alignment"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("lifetimes",
                   LogicalOp.and (|
@@ -498,14 +503,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "lifetimes"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("safety",
                   LogicalOp.and (|
@@ -517,14 +523,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "safety"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("validity",
                   LogicalOp.and (|
@@ -536,17 +543,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "validity"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_but_not : M.IsAssociatedFunction Self "but_not" but_not.
@@ -577,7 +585,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -614,7 +622,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

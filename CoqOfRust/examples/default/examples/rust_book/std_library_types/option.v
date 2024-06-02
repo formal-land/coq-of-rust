@@ -25,7 +25,10 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use (M.alloc (| BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer 0) |)) in
+                  M.use
+                    (M.alloc (|
+                      BinOp.eq (| M.read (| divisor |), Value.Integer IntegerKind.I32 0 |)
+                    |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
@@ -33,12 +36,12 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ BinOp.Wrap.div Integer.I32 (M.read (| dividend |)) (M.read (| divisor |)) ]
+                    [ BinOp.Wrap.div (| M.read (| dividend |), M.read (| divisor |) |) ]
                 |)))
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
@@ -193,7 +196,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
@@ -229,14 +232,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
-              [ Value.Integer 4; Value.Integer 2 ]
+              [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 2 ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
-              [ Value.Integer 1; Value.Integer 0 ]
+              [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
         let~ none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
@@ -367,7 +370,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "option::main" main.

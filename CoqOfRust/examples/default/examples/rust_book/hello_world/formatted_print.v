@@ -234,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_binary",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 69420 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 69420 |) ]
                               |)
                             ]
                         |))
@@ -274,7 +274,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_octal",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 69420 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 69420 |) ]
                               |)
                             ]
                         |))
@@ -314,7 +314,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_lower_hex",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 69420 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 69420 |) ]
                               |)
                             ]
                         |))
@@ -354,7 +354,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_upper_hex",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 69420 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 69420 |) ]
                               |)
                             ]
                         |))
@@ -395,7 +395,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 1 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
                               |)
                             ]
                         |));
@@ -411,12 +411,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 5 ]
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 5 ]
                                 ]
                               |)
                             ]
@@ -466,7 +468,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 1 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
                               |)
                             ]
                         |));
@@ -482,12 +484,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 48;
                                   Value.StructTuple "core::fmt::rt::Alignment::Left" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 5 ]
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 5 ]
                                 ]
                               |)
                             ]
@@ -537,7 +541,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| Value.Integer 1 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -545,7 +549,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "from_usize",
                                   []
                                 |),
-                                [ M.alloc (| Value.Integer 5 |) ]
+                                [ M.alloc (| Value.Integer IntegerKind.Usize 5 |) ]
                               |)
                             ]
                         |));
@@ -561,14 +565,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 48;
                                   Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                   Value.StructTuple
                                     "core::fmt::rt::Count::Param"
-                                    [ Value.Integer 1 ]
+                                    [ Value.Integer IntegerKind.Usize 1 ]
                                 ]
                               |)
                             ]
@@ -621,7 +625,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ number := M.copy (| UnsupportedLiteral |) in
-        let~ width := M.alloc (| Value.Integer 5 |) in
+        let~ width := M.alloc (| Value.Integer IntegerKind.Usize 5 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -677,14 +681,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.U32 0;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                   Value.StructTuple
                                     "core::fmt::rt::Count::Param"
-                                    [ Value.Integer 1 ]
+                                    [ Value.Integer IntegerKind.Usize 1 ]
                                 ]
                               |)
                             ]
@@ -705,7 +709,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "formatted_print::main" main.

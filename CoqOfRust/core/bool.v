@@ -32,7 +32,7 @@ Module bool.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_then_some : M.IsAssociatedFunction Self "then_some" then_some.
@@ -77,7 +77,7 @@ Module bool.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.

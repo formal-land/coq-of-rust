@@ -62,7 +62,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -111,7 +111,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -175,7 +175,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -223,7 +223,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -255,7 +255,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -296,7 +296,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -337,7 +337,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -371,7 +371,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -405,7 +405,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -439,7 +439,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -494,7 +494,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -535,7 +535,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -576,7 +576,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -610,7 +610,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -739,7 +739,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1055,7 +1055,7 @@ Module iter.
                       [ M.read (| iter |) ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -1115,7 +1115,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1163,7 +1163,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1209,7 +1209,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1239,7 +1239,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1278,7 +1278,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1317,7 +1317,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1349,7 +1349,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1381,7 +1381,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1413,7 +1413,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1466,7 +1466,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1505,7 +1505,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1544,7 +1544,7 @@ Module iter.
                   M.read (| fold |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1576,7 +1576,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1703,7 +1703,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1746,7 +1746,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1836,7 +1836,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1897,7 +1897,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1941,7 +1941,7 @@ Module iter.
                   ("frontiter", Value.StructTuple "core::option::Option::None" []);
                   ("backiter", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -2084,7 +2084,7 @@ Module iter.
                   |) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter_fold :
@@ -2465,7 +2465,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter_try_fold :
@@ -2608,7 +2608,7 @@ Module iter.
                   |) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter_rfold :
@@ -2989,7 +2989,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter_try_rfold :
@@ -3179,7 +3179,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3253,8 +3253,10 @@ Module iter.
                             |);
                             Value.Tuple
                               [
-                                Value.Integer 0;
-                                Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                                Value.Integer IntegerKind.Usize 0;
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ Value.Integer IntegerKind.Usize 0 ]
                               ];
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -3317,10 +3319,10 @@ Module iter.
                                     |);
                                     Value.Tuple
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.StructTuple
                                           "core::option::Option::Some"
-                                          [ Value.Integer 0 ]
+                                          [ Value.Integer IntegerKind.Usize 0 ]
                                       ];
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
@@ -3913,7 +3915,7 @@ Module iter.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
-                                                Value.Integer 0
+                                                Value.Integer IntegerKind.Usize 0
                                               |) in
                                             let γ2_0 :=
                                               M.SubPointer.get_struct_tuple_field (|
@@ -3924,7 +3926,7 @@ Module iter.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ2_0 |),
-                                                Value.Integer 0
+                                                Value.Integer IntegerKind.Usize 0
                                               |) in
                                             let γ1_0 :=
                                               M.SubPointer.get_struct_tuple_field (|
@@ -3971,7 +3973,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4014,7 +4016,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4055,7 +4057,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4158,7 +4160,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4186,11 +4188,11 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.get_associated_function (| Self, "count.count", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4226,7 +4228,7 @@ Module iter.
                   M.get_associated_function (| Self, "last.last", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4328,7 +4330,7 @@ Module iter.
                                                               |)))
                                                         ]
                                                       |)))
-                                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                                  | _ => M.impossible "wrong number of arguments"
                                                   end))
                                           ]
                                         |)
@@ -4419,7 +4421,7 @@ Module iter.
                                                                 |)))
                                                           ]
                                                         |)))
-                                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             ]
                                           |)
@@ -4463,7 +4465,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4506,7 +4508,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4547,7 +4549,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4650,7 +4652,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4712,7 +4714,7 @@ Module iter.
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" []))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4740,7 +4742,7 @@ Module iter.
               (Value.StructTuple
                 "core::option::Option::Some"
                 [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4769,7 +4771,7 @@ Module iter.
               (Value.StructTuple
                 "core::option::Option::Some"
                 [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4798,7 +4800,7 @@ Module iter.
               (Value.StructTuple
                 "core::option::Option::Some"
                 [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4948,7 +4950,7 @@ Module iter.
                   x
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_and_then_or_clear :

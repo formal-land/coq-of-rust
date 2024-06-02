@@ -51,7 +51,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
                         |)
                       ]
                     |)
@@ -97,7 +102,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -139,7 +144,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "call",
                                         []
                                       |),
-                                      [ contains; Value.Tuple [ M.alloc (| Value.Integer 1 |) ] ]
+                                      [
+                                        contains;
+                                        Value.Tuple
+                                          [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
+                                      ]
                                     |)
                                   |)
                                 ]
@@ -191,7 +200,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "call",
                                         []
                                       |),
-                                      [ contains; Value.Tuple [ M.alloc (| Value.Integer 4 |) ] ]
+                                      [
+                                        contains;
+                                        Value.Tuple
+                                          [ M.alloc (| Value.Integer IntegerKind.I32 4 |) ]
+                                      ]
                                     |)
                                   |)
                                 ]
@@ -206,7 +219,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_forced_capturing_with_move::main" main.

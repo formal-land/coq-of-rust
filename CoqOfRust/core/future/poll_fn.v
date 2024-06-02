@@ -17,7 +17,7 @@ Module future.
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
           Value.StructRecord "core::future::poll_fn::PollFn" [ ("f", M.read (| f |)) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_poll_fn : M.IsFunction "core::future::poll_fn::poll_fn" poll_fn.
@@ -75,7 +75,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -137,7 +137,7 @@ Module future.
                 Value.Tuple [ M.read (| cx |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

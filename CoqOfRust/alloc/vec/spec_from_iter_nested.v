@@ -131,7 +131,10 @@ Module vec.
                                                   "saturating_add",
                                                   []
                                                 |),
-                                                [ M.read (| lower |); Value.Integer 1 ]
+                                                [
+                                                  M.read (| lower |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -179,7 +182,7 @@ Module vec.
                                                 "set_len",
                                                 []
                                               |),
-                                              [ vector; Value.Integer 1 ]
+                                              [ vector; Value.Integer IntegerKind.Usize 1 ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |) in
@@ -207,7 +210,7 @@ Module vec.
                   vector
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -328,7 +331,7 @@ Module vec.
                 |) in
               vector
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

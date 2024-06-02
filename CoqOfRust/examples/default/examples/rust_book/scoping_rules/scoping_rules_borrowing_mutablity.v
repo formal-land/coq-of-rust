@@ -42,7 +42,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -137,7 +137,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_borrow_book :
@@ -162,7 +162,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_mutablity::Book",
               "year"
             |),
-            Value.Integer 2014
+            Value.Integer IntegerKind.U32 2014
           |) in
         let~ _ :=
           let~ _ :=
@@ -227,7 +227,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_new_edition :
@@ -273,7 +273,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("author", M.read (| Value.String "Douglas Hofstadter" |));
                 ("title",
                   M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
-                ("year", Value.Integer 1979)
+                ("year", Value.Integer IntegerKind.U32 1979)
               ]
           |) in
         let~ mutabook := M.copy (| immutabook |) in
@@ -300,7 +300,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.

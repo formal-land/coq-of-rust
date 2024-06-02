@@ -32,7 +32,7 @@ Module ops.
             |),
             [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
@@ -94,9 +94,9 @@ Module ops.
                                 ]))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap_mut_1 :
@@ -150,9 +150,9 @@ Module ops.
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap_mut_2 :
@@ -201,7 +201,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -216,7 +216,7 @@ Module ops.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple "core::ops::try_trait::NeverShortCircuit" [ M.read (| x |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -250,7 +250,7 @@ Module ops.
           ltac:(M.monadic
             (let never := M.alloc (| never |) in
             M.never_to_any (| M.read (| M.match_operator (| never, [] |) |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -317,7 +317,7 @@ Module ops.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -61,8 +61,8 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.lt
-                                          (M.call_closure (|
+                                        BinOp.lt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -78,8 +78,8 @@ Module collections.
                                               []
                                             |),
                                             [ M.read (| root_a |) ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -95,7 +95,8 @@ Module collections.
                                               []
                                             |),
                                             [ M.read (| root_b |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -144,10 +145,10 @@ Module collections.
                                   let~ _ :=
                                     M.write (|
                                       length_b,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| total_num |))
-                                        (M.read (| length_a |))
+                                      BinOp.Wrap.sub (|
+                                        M.read (| total_num |),
+                                        M.read (| length_a |)
+                                      |)
                                     |) in
                                   let~ _ :=
                                     M.match_operator (|
@@ -225,14 +226,16 @@ Module collections.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    UnOp.Pure.not
-                                                                      (BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                    UnOp.not (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.read (| left_val |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.read (| right_val |)
-                                                                        |)))
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -326,10 +329,10 @@ Module collections.
                                   let~ _ :=
                                     M.write (|
                                       length_a,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| total_num |))
-                                        (M.read (| length_b |))
+                                      BinOp.Wrap.sub (|
+                                        M.read (| total_num |),
+                                        M.read (| length_b |)
+                                      |)
                                     |) in
                                   let~ _ :=
                                     M.match_operator (|
@@ -407,14 +410,16 @@ Module collections.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    UnOp.Pure.not
-                                                                      (BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                    UnOp.not (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.read (| left_val |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.read (| right_val |)
-                                                                        |)))
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -470,7 +475,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_calc_split_length :
@@ -901,7 +906,7 @@ Module collections.
                   |) in
                 right_root
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_split_off :
@@ -963,7 +968,10 @@ Module collections.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| height |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| height |))
+                              ]
                           ]
                         |)
                       |),
@@ -1050,7 +1058,7 @@ Module collections.
                     |)) in
                 root
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_pillar :

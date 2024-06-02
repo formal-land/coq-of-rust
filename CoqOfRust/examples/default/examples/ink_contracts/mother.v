@@ -47,7 +47,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -108,7 +108,7 @@ Module Impl_core_default_Default_for_mother_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -134,7 +134,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -173,14 +173,15 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::AccountId", 0 |)
-          |))))
-    | _, _ => M.impossible
+          |)
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -217,7 +218,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -298,7 +299,7 @@ Module Impl_core_default_Default_for_mother_Bids.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -369,7 +370,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "mother::Bids", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -406,7 +407,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -453,7 +454,7 @@ Module Impl_core_clone_Clone_for_mother_Bids.
               [ M.SubPointer.get_struct_tuple_field (| M.read (| self |), "mother::Bids", 0 |) ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -531,9 +532,9 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -565,7 +566,7 @@ Module Impl_core_cmp_Eq_for_mother_Outline.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -608,7 +609,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -698,7 +699,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+              BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -725,9 +726,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                             |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (| M.read (| __self_0 |) |))
-                              (M.read (| M.read (| __arg1_0 |) |))
+                            BinOp.eq (|
+                              M.read (| M.read (| __self_0 |) |),
+                              M.read (| M.read (| __arg1_0 |) |)
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -782,9 +784,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                             |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (| M.read (| __self_0 |) |))
-                              (M.read (| M.read (| __arg1_0 |) |))
+                            BinOp.eq (|
+                              M.read (| M.read (| __self_0 |) |),
+                              M.read (| M.read (| __arg1_0 |) |)
+                            |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
                     ]
@@ -793,7 +796,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -837,7 +840,7 @@ Module Impl_core_cmp_Eq_for_mother_Status.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -945,7 +948,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1114,21 +1117,22 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "mother::Auction",
                     "finalized"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "mother::Auction",
                     "finalized"
                   |)
-                |))))
+                |)
+              |)))
           |),
           ltac:(M.monadic
             (M.call_closure (|
@@ -1159,7 +1163,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1242,7 +1246,7 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1382,7 +1386,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1476,7 +1480,7 @@ Module Impl_core_default_Default_for_mother_Auction.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1551,7 +1555,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+              BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -1596,7 +1600,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1633,7 +1637,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1683,7 +1687,7 @@ Module Impl_mother_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "mother::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -1746,7 +1750,7 @@ Module Impl_core_default_Default_for_mother_Mother.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1783,7 +1787,7 @@ Module Impl_mother_Mother.
           M.get_associated_function (| Ty.path "mother::Mother", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -1819,7 +1823,7 @@ Module Impl_mother_Mother.
               |));
             ("auction", M.read (| auction |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1843,7 +1847,7 @@ Module Impl_mother_Mother.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -1911,7 +1915,7 @@ Module Impl_mother_Mother.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
@@ -1966,7 +1970,7 @@ Module Impl_mother_Mother.
             |) in
           auction
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
@@ -2043,7 +2047,7 @@ Module Impl_mother_Mother.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_revert_or_trap :
@@ -2103,7 +2107,7 @@ Module Impl_mother_Mother.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.

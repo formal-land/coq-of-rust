@@ -17,7 +17,7 @@ Module iter.
             Value.StructRecord
               "core::iter::sources::repeat_with::RepeatWith"
               [ ("repeater", M.read (| repeater |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_repeat_with :
@@ -69,7 +69,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -116,7 +116,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -167,7 +167,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -186,7 +186,7 @@ Module iter.
                   M.read (| M.get_constant (| "core::num::MAX" |) |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -317,7 +317,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module kzg.
   Module trusted_setup_points.
     Definition value_NUM_G1_POINTS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4096 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4096 |))).
     
     Definition value_NUM_G2_POINTS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 65 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65 |))).
     
     (* StructTuple
       {
@@ -46,7 +46,7 @@ Module kzg.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -86,7 +86,7 @@ Module kzg.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -139,7 +139,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -164,7 +164,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -190,7 +190,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -220,7 +220,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -246,7 +246,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G1Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -271,8 +271,8 @@ Module kzg.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G1Points"
-              [ repeat (repeat (Value.Integer 0) 48) 4096 ]))
-        | _, _ => M.impossible
+              [ repeat (repeat (Value.Integer IntegerKind.U8 0) 48) 4096 ]))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -320,7 +320,7 @@ Module kzg.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -360,7 +360,7 @@ Module kzg.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -397,7 +397,7 @@ Module kzg.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -451,7 +451,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -476,7 +476,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -502,7 +502,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -532,7 +532,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -558,7 +558,7 @@ Module kzg.
               "revm_primitives::kzg::trusted_setup_points::G2Points",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -583,8 +583,8 @@ Module kzg.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_primitives::kzg::trusted_setup_points::G2Points"
-              [ repeat (repeat (Value.Integer 0) 96) 65 ]))
-        | _, _ => M.impossible
+              [ repeat (repeat (Value.Integer IntegerKind.U8 0) 96) 65 ]))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -607,9 +607,9 @@ Module kzg.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.eq
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                   "len",
@@ -622,14 +622,16 @@ Module kzg.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (|
                                   "core::mem::size_of",
                                   [ Ty.path "revm_primitives::kzg::trusted_setup_points::G1Points" ]
                                 |),
                                 []
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -693,9 +695,9 @@ Module kzg.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.eq
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                   "len",
@@ -708,14 +710,16 @@ Module kzg.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (|
                                   "core::mem::size_of",
                                   [ Ty.path "revm_primitives::kzg::trusted_setup_points::G2Points" ]
                                 |),
                                 []
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1006,7 +1010,7 @@ Module kzg.
                                                     []))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -1261,7 +1265,7 @@ Module kzg.
                                                     []))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -1348,13 +1352,14 @@ Module kzg.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (M.read (| n_g1 |))
-                                  (M.read (|
+                                BinOp.ne (|
+                                  M.read (| n_g1 |),
+                                  M.read (|
                                     M.get_constant (|
                                       "revm_primitives::kzg::trusted_setup_points::NUM_G1_POINTS"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1385,13 +1390,14 @@ Module kzg.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (M.read (| n_g2 |))
-                                  (M.read (|
+                                BinOp.ne (|
+                                  M.read (| n_g2 |),
+                                  M.read (|
                                     M.get_constant (|
                                       "revm_primitives::kzg::trusted_setup_points::NUM_G2_POINTS"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1705,7 +1711,8 @@ Module kzg.
                                                                     ]
                                                                   |)))
                                                               | _ =>
-                                                                ltac:(M.monadic (M.impossible (||)))
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       ]
                                                     |)
@@ -2086,7 +2093,8 @@ Module kzg.
                                                                     ]
                                                                   |)))
                                                               | _ =>
-                                                                ltac:(M.monadic (M.impossible (||)))
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       ]
                                                     |)
@@ -2235,7 +2243,7 @@ Module kzg.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_parse_kzg_trusted_setup :
@@ -2374,7 +2382,7 @@ Module kzg.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2495,7 +2503,7 @@ Module kzg.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

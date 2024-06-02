@@ -36,7 +36,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -84,7 +84,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -124,7 +124,7 @@ Module str.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -163,7 +163,7 @@ Module str.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -201,7 +201,7 @@ Module str.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -238,7 +238,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_str_index_overflow_fail :
@@ -262,7 +262,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -277,7 +277,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -292,7 +292,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -307,7 +307,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -322,7 +322,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -337,7 +337,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -395,21 +395,22 @@ Module str.
                           (M.alloc (|
                             LogicalOp.and (|
                               LogicalOp.and (|
-                                BinOp.Pure.le
-                                  (M.read (|
+                                BinOp.le (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "start"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -472,7 +473,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -506,21 +507,22 @@ Module str.
                           (M.alloc (|
                             LogicalOp.and (|
                               LogicalOp.and (|
-                                BinOp.Pure.le
-                                  (M.read (|
+                                BinOp.le (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "start"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -583,7 +585,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -633,33 +635,34 @@ Module str.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.not (|
+                                        LogicalOp.and (|
+                                          BinOp.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*const")
@@ -668,8 +671,10 @@ Module str.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -746,22 +751,22 @@ Module str.
                 |) in
               let~ len :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.rust_cast
@@ -771,7 +776,7 @@ Module str.
                   |))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -814,33 +819,34 @@ Module str.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
+                                      UnOp.not (|
+                                        LogicalOp.and (|
+                                          BinOp.ge (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "end"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 self,
                                                 "core::ops::range::Range",
                                                 "start"
                                               |)
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
+                                            (BinOp.le (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::ops::range::Range",
                                                   "end"
                                                 |)
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "*mut")
@@ -849,8 +855,10 @@ Module str.
                                                   []
                                                 |),
                                                 [ M.read (| slice |) ]
-                                              |))))
-                                        |))
+                                              |)
+                                            |)))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -925,22 +933,22 @@ Module str.
                 |) in
               let~ len :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.rust_cast
@@ -950,7 +958,7 @@ Module str.
                   |))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1036,7 +1044,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1072,21 +1080,22 @@ Module str.
                           (M.alloc (|
                             LogicalOp.and (|
                               LogicalOp.and (|
-                                BinOp.Pure.le
-                                  (M.read (|
+                                BinOp.le (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "start"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
                                       "core::ops::range::Range",
                                       "end"
                                     |)
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -1168,7 +1177,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1300,7 +1309,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1404,7 +1413,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1451,7 +1460,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1498,7 +1507,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1534,7 +1543,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1570,7 +1579,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1659,7 +1668,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1725,7 +1734,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1752,7 +1761,7 @@ Module str.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1765,7 +1774,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1792,7 +1801,7 @@ Module str.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1805,7 +1814,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1863,14 +1872,18 @@ Module str.
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::str::slice_error_fail", [] |),
-                            [ M.read (| slice |); Value.Integer 0; M.read (| end_ |) ]
+                            [
+                              M.read (| slice |);
+                              Value.Integer IntegerKind.Usize 0;
+                              M.read (| end_ |)
+                            ]
                           |)
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1934,7 +1947,7 @@ Module str.
                             M.get_function (| "core::str::slice_error_fail", [] |),
                             [
                               M.read (| slice |);
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -1949,7 +1962,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2041,7 +2054,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2109,7 +2122,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2165,7 +2178,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2221,7 +2234,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2304,7 +2317,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2386,7 +2399,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2433,8 +2446,8 @@ Module str.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -2445,8 +2458,9 @@ Module str.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -2479,7 +2493,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2502,8 +2516,8 @@ Module str.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -2514,8 +2528,9 @@ Module str.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -2548,7 +2563,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2583,7 +2598,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2618,7 +2633,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2645,8 +2660,8 @@ Module str.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -2657,8 +2672,9 @@ Module str.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2696,7 +2712,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2723,8 +2739,8 @@ Module str.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -2735,8 +2751,9 @@ Module str.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2774,7 +2791,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2828,7 +2845,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2841,7 +2858,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2871,7 +2888,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2884,7 +2901,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2915,7 +2932,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2928,7 +2945,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2959,7 +2976,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2972,7 +2989,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3002,7 +3019,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3015,7 +3032,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3045,7 +3062,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3058,7 +3075,7 @@ Module str.
                 M.read (| slice |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3129,7 +3146,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

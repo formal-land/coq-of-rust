@@ -23,7 +23,7 @@ Module hint.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                    (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -42,14 +42,17 @@ Module hint.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::hint::unreachable_unchecked::runtime" runtime.
     
     (*             const fn comptime$(<$($tt)*>)?($(_:$ty),* ) {} *)
     Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Function_comptime : M.IsFunction "core::hint::unreachable_unchecked::comptime" comptime.
   End unreachable_unchecked.
@@ -71,7 +74,7 @@ Module intrinsics.
           M.get_function (| "core::ptr::drop_in_place", [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::intrinsics::drop_in_place" drop_in_place.
@@ -1164,18 +1167,19 @@ Module intrinsics.
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         LogicalOp.and (|
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_null", [] |),
               [ M.read (| ptr |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_aligned", [] |),
               [ M.read (| ptr |) ]
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_aligned_and_not_null :
@@ -1200,9 +1204,9 @@ Module intrinsics.
             M.copy (|
               M.get_constant (| "core::intrinsics::is_valid_allocation_size_discriminant" |)
             |) in
-          M.alloc (| BinOp.Pure.le (M.read (| len |)) (M.read (| max_len |)) |)
+          M.alloc (| BinOp.le (| M.read (| len |), M.read (| max_len |) |) |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_valid_allocation_size :
@@ -1272,9 +1276,9 @@ Module intrinsics.
                 [ M.read (| src_usize |); M.read (| dst_usize |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.ge (M.read (| diff |)) (M.read (| size |)) |)
+          M.alloc (| BinOp.ge (| M.read (| diff |), M.read (| size |) |) |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_nonoverlapping :
@@ -1372,7 +1376,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_copy_nonoverlapping :
@@ -1410,8 +1414,8 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -1439,7 +1443,8 @@ Module intrinsics.
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1459,7 +1464,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::copy_nonoverlapping::runtime" runtime.
@@ -1490,7 +1495,7 @@ Module intrinsics.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime :
@@ -1570,7 +1575,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_copy : M.IsFunction "core::intrinsics::copy" copy.
@@ -1605,8 +1610,8 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_aligned_and_not_null",
@@ -1622,7 +1627,8 @@ Module intrinsics.
                                   |),
                                   [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1642,7 +1648,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::copy::runtime" runtime.
@@ -1662,7 +1668,7 @@ Module intrinsics.
                   (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::intrinsics::copy::comptime" comptime.
@@ -1732,7 +1738,7 @@ Module intrinsics.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_bytes : M.IsFunction "core::intrinsics::write_bytes" write_bytes.
@@ -1767,14 +1773,15 @@ Module intrinsics.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1794,7 +1801,7 @@ Module intrinsics.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::intrinsics::write_bytes::runtime" runtime.
@@ -1806,7 +1813,7 @@ Module intrinsics.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::intrinsics::write_bytes::comptime" comptime.
@@ -1841,8 +1848,8 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (LogicalOp.and (|
+                          UnOp.not (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -1869,7 +1876,8 @@ Module ptr.
                                     M.read (| count |)
                                   ]
                                 |)))
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1889,7 +1897,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::swap_nonoverlapping::runtime" runtime.
@@ -1920,7 +1928,7 @@ Module ptr.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::swap_nonoverlapping::comptime" comptime.
@@ -1951,14 +1959,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1978,7 +1987,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::replace::runtime" runtime.
@@ -1990,7 +1999,7 @@ Module ptr.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::replace::comptime" comptime.
@@ -2021,14 +2030,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ M.read (| src |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2048,7 +2058,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::read::runtime" runtime.
@@ -2060,7 +2070,7 @@ Module ptr.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::read::comptime" comptime.
@@ -2091,14 +2101,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2118,7 +2129,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::write::runtime" runtime.
@@ -2130,7 +2141,7 @@ Module ptr.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::write::comptime" comptime.
@@ -2161,14 +2172,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ M.read (| src |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2188,7 +2200,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::read_volatile::runtime" runtime.
@@ -2200,7 +2212,7 @@ Module ptr.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::read_volatile::comptime" comptime.
@@ -2231,14 +2243,15 @@ Module ptr.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::is_aligned_and_not_null",
                                 [ T ]
                               |),
                               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |)) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2258,7 +2271,7 @@ Module ptr.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ptr::write_volatile::runtime" runtime.
@@ -2270,7 +2283,7 @@ Module ptr.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ptr::write_volatile::comptime" comptime.
@@ -2305,8 +2318,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::is_aligned_and_not_null",
@@ -2322,7 +2335,8 @@ Module slice.
                                     |),
                                     [ M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2342,7 +2356,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_runtime : M.IsFunction "core::slice::raw::from_raw_parts::runtime" runtime.
@@ -2362,7 +2376,7 @@ Module slice.
                     (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_comptime : M.IsFunction "core::slice::raw::from_raw_parts::comptime" comptime.
@@ -2394,8 +2408,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (LogicalOp.and (|
+                            UnOp.not (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::is_aligned_and_not_null",
@@ -2411,7 +2425,8 @@ Module slice.
                                     |),
                                     [ M.read (| len |) ]
                                   |)))
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2431,7 +2446,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_runtime : M.IsFunction "core::slice::raw::from_raw_parts_mut::runtime" runtime.
@@ -2451,7 +2466,7 @@ Module slice.
                     (M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_comptime :

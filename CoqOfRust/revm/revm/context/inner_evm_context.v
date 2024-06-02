@@ -82,7 +82,7 @@ Module context.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -189,7 +189,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -266,7 +266,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -323,7 +323,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_with_env :
@@ -371,7 +371,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_db :
@@ -400,7 +400,7 @@ Module context.
                 "spec"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_spec_id :
@@ -705,7 +705,7 @@ Module context.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_access_list :
@@ -730,7 +730,7 @@ Module context.
                 "env"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_env :
@@ -769,7 +769,7 @@ Module context.
                 Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_error :
@@ -822,7 +822,7 @@ Module context.
                 M.constructor_as_closure "revm_primitives::result::EVMError::Database"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_block_hash :
@@ -862,7 +862,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_touch :
@@ -904,7 +904,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_account :
@@ -947,7 +947,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_account_exist :
@@ -1052,11 +1052,11 @@ Module context.
                                     ]))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_balance :
@@ -1183,11 +1183,11 @@ Module context.
                                     ]))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_code :
@@ -1400,7 +1400,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_code_hash :
@@ -1446,7 +1446,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sload :
@@ -1495,7 +1495,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sstore :
@@ -1531,7 +1531,7 @@ Module context.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_tload :
@@ -1569,7 +1569,7 @@ Module context.
                 M.read (| value |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_tstore :
@@ -1615,7 +1615,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_selfdestruct :
@@ -1794,7 +1794,7 @@ Module context.
                                           ]))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
                   let~ _ :=
@@ -1806,8 +1806,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm::journaled_state::JournaledState",
                                         "depth",
@@ -1820,10 +1820,9 @@ Module context.
                                           "journaled_state"
                                         |)
                                       ]
-                                    |))
-                                    (M.read (|
-                                      M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |)
-                                    |))
+                                    |),
+                                    M.read (| M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2518,7 +2517,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_eofcreate_frame :
@@ -2717,7 +2716,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_eofcreate_return :
@@ -2885,7 +2884,7 @@ Module context.
                                           ]))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
                   let~ _ :=
@@ -2897,8 +2896,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm::journaled_state::JournaledState",
                                         "depth",
@@ -2911,10 +2910,9 @@ Module context.
                                           "journaled_state"
                                         |)
                                       ]
-                                    |))
-                                    (M.read (|
-                                      M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |)
-                                    |))
+                                    |),
+                                    M.read (| M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3195,10 +3193,10 @@ Module context.
                                     let~ _ :=
                                       M.write (|
                                         old_nonce,
-                                        BinOp.Wrap.sub
-                                          Integer.U64
-                                          (M.read (| nonce |))
-                                          (Value.Integer 1)
+                                        BinOp.Wrap.sub (|
+                                          M.read (| nonce |),
+                                          Value.Integer IntegerKind.U64 1
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -3661,7 +3659,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_create_frame :
@@ -3756,7 +3754,7 @@ Module context.
                                         ltac:(M.monadic
                                           match γ with
                                           | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -3805,7 +3803,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_call_return :
@@ -3903,8 +3901,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.read (|
+                                  UnOp.not (|
+                                    M.read (|
                                       M.match_operator (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| interpreter_result |),
@@ -3965,13 +3963,15 @@ Module context.
                                                       | [] =>
                                                         ltac:(M.monadic
                                                           (M.alloc (| Value.Bool true |)))
-                                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                                         ]
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4029,8 +4029,8 @@ Module context.
                                         ]
                                       |),
                                       ltac:(M.monadic
-                                        (UnOp.Pure.not
-                                          (M.call_closure (|
+                                        (UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "bytes::bytes::Bytes",
                                               "is_empty",
@@ -4054,7 +4054,8 @@ Module context.
                                                 ]
                                               |)
                                             ]
-                                          |))))
+                                          |)
+                                        |)))
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -4113,7 +4114,7 @@ Module context.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ M.alloc (| Value.Integer 239 |) ]
+                                              [ M.alloc (| Value.Integer IntegerKind.U8 239 |) ]
                                           |)
                                         ]
                                       |)))
@@ -4185,8 +4186,8 @@ Module context.
                                       ]
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.gt
-                                        (M.call_closure (|
+                                      (BinOp.gt (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "bytes::bytes::Bytes",
                                             "len",
@@ -4210,8 +4211,8 @@ Module context.
                                               ]
                                             |)
                                           ]
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -4243,7 +4244,8 @@ Module context.
                                               |)
                                             |)
                                           ]
-                                        |))))
+                                        |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -4289,9 +4291,8 @@ Module context.
                     |) in
                   let~ gas_for_code :=
                     M.alloc (|
-                      BinOp.Wrap.mul
-                        Integer.U64
-                        (M.rust_cast
+                      BinOp.Wrap.mul (|
+                        M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "bytes::bytes::Bytes",
@@ -4316,10 +4317,11 @@ Module context.
                                 ]
                               |)
                             ]
-                          |)))
-                        (M.read (|
+                          |)),
+                        M.read (|
                           M.get_constant (| "revm_interpreter::gas::constants::CODEDEPOSIT" |)
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ _ :=
                     M.match_operator (|
@@ -4330,8 +4332,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::gas::Gas",
                                         "record_cost",
@@ -4345,7 +4347,8 @@ Module context.
                                         |);
                                         M.read (| gas_for_code |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4585,7 +4588,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_create_return :

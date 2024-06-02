@@ -711,7 +711,7 @@ Module handler.
                         ]
                       |)))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -783,7 +783,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_last_frame_return :
@@ -880,7 +880,7 @@ Module handler.
                     ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_call :
@@ -959,7 +959,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_call_return :
@@ -1046,7 +1046,7 @@ Module handler.
                     ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_call_outcome :
@@ -1125,7 +1125,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| inputs |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_create :
@@ -1204,7 +1204,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_create_return :
@@ -1281,7 +1281,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame |); M.read (| outcome |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_create_outcome :
@@ -1363,7 +1363,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| inputs |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_eofcreate :
@@ -1442,7 +1442,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_eofcreate_return :
@@ -1523,7 +1523,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame |); M.read (| outcome |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_eofcreate_outcome :

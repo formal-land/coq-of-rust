@@ -282,7 +282,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -315,7 +315,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe",
               0
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -365,7 +365,7 @@ Module panic.
                 Value.Tuple []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -432,7 +432,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -466,7 +466,7 @@ Module panic.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -552,7 +552,7 @@ Module panic.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -564,7 +564,7 @@ Module panic.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -655,14 +655,14 @@ Module panic.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -692,7 +692,7 @@ Module panic.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

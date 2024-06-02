@@ -24,7 +24,7 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define_and_use::apply" apply.
@@ -45,7 +45,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 7 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
         let~ print :=
           M.alloc (|
             M.closure
@@ -106,7 +106,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -121,7 +121,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define_and_use::main" main.

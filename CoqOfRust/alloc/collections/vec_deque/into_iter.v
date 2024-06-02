@@ -44,7 +44,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -74,7 +74,7 @@ Module collections.
               Value.StructRecord
                 "alloc::collections::vec_deque::into_iter::IntoIter"
                 [ ("inner", M.read (| inner |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -99,7 +99,7 @@ Module collections.
                   "inner"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_vecdeque :
@@ -158,7 +158,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -202,7 +202,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -243,7 +243,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -288,7 +288,7 @@ Module collections.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (| BinOp.Pure.lt (M.read (| len |)) (M.read (| n |)) |)) in
+                                (M.alloc (| BinOp.lt (| M.read (| len |), M.read (| n |) |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
@@ -310,9 +310,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (|
-                              BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| len |))
-                            |)));
+                            M.alloc (| BinOp.Wrap.sub (| M.read (| n |), M.read (| len |) |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ _ :=
@@ -341,7 +339,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Integer 0 |)))
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                       ]
                     |)
                   |) in
@@ -378,7 +376,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -403,7 +401,7 @@ Module collections.
                   "len"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -471,7 +469,7 @@ Module collections.
                                 "alloc::collections::vec_deque::into_iter::IntoIter",
                                 "inner"
                               |));
-                            ("consumed", Value.Integer 0)
+                            ("consumed", Value.Integer IntegerKind.Usize 0)
                           ]
                       |) in
                     M.match_operator (|
@@ -581,10 +579,12 @@ Module collections.
                                                                             |) in
                                                                           M.write (|
                                                                             β,
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (| β |))
-                                                                              (Value.Integer 1)
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (| β |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
                                                                           |) in
                                                                         M.alloc (|
                                                                           M.call_closure (|
@@ -599,7 +599,7 @@ Module collections.
                                                                 ]
                                                               |)))
                                                           | _ =>
-                                                            ltac:(M.monadic (M.impossible (||)))
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -713,10 +713,10 @@ Module collections.
                                                                 |) in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| β |))
-                                                                  (Value.Integer 1)
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
@@ -730,7 +730,7 @@ Module collections.
                                                           |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -744,7 +744,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -828,7 +828,7 @@ Module collections.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -859,7 +859,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -887,7 +887,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1014,20 +1014,21 @@ Module collections.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ge
-                                              (M.call_closure (|
+                                            BinOp.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ T ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| head |) ]
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "alloc::collections::vec_deque::into_iter::next_chunk::N"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -1109,14 +1110,14 @@ Module collections.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (| β |))
-                                                  (M.read (|
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| β |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::vec_deque::into_iter::next_chunk::N"
                                                     |)
-                                                  |))
+                                                  |)
+                                                |)
                                               |) in
                                             M.return_ (|
                                               Value.StructTuple
@@ -1187,21 +1188,21 @@ Module collections.
                               |) in
                             let~ remaining :=
                               M.alloc (|
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.sub (|
+                                  M.read (|
                                     M.get_constant (|
                                       "alloc::collections::vec_deque::into_iter::next_chunk::N"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| head |) ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1211,16 +1212,17 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ge
-                                            (M.call_closure (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ T ],
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| tail |) ]
-                                            |))
-                                            (M.read (| remaining |))
+                                            |),
+                                            M.read (| remaining |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1311,14 +1313,14 @@ Module collections.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| β |))
-                                          (M.read (|
+                                        BinOp.Wrap.sub (|
+                                          M.read (| β |),
+                                          M.read (|
                                             M.get_constant (|
                                               "alloc::collections::vec_deque::into_iter::next_chunk::N"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple
@@ -1401,24 +1403,24 @@ Module collections.
                                       |) in
                                     let~ init :=
                                       M.alloc (|
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.call_closure (|
+                                        BinOp.Wrap.add (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| head |) ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| tail |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     let~ _ :=
                                       M.write (|
@@ -1431,7 +1433,7 @@ Module collections.
                                           "alloc::collections::vec_deque::VecDeque",
                                           "head"
                                         |),
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.Usize 0
                                       |) in
                                     let~ _ :=
                                       M.write (|
@@ -1444,7 +1446,7 @@ Module collections.
                                           "alloc::collections::vec_deque::VecDeque",
                                           "len"
                                         |),
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.Usize 0
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple
@@ -1463,7 +1465,7 @@ Module collections.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_", M.read (| init |))
                                                 ]
                                             ]
@@ -1476,7 +1478,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1528,7 +1530,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1573,7 +1575,7 @@ Module collections.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (| BinOp.Pure.lt (M.read (| len |)) (M.read (| n |)) |)) in
+                                (M.alloc (| BinOp.lt (| M.read (| len |), M.read (| n |) |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
@@ -1595,9 +1597,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (|
-                              BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| len |))
-                            |)));
+                            M.alloc (| BinOp.Wrap.sub (| M.read (| n |), M.read (| len |) |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ _ :=
@@ -1616,11 +1616,11 @@ Module collections.
                                       "alloc::collections::vec_deque::into_iter::IntoIter",
                                       "inner"
                                     |);
-                                    BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| n |))
+                                    BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Integer 0 |)))
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                       ]
                     |)
                   |) in
@@ -1657,7 +1657,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1722,7 +1722,7 @@ Module collections.
                                 "alloc::collections::vec_deque::into_iter::IntoIter",
                                 "inner"
                               |));
-                            ("consumed", Value.Integer 0)
+                            ("consumed", Value.Integer IntegerKind.Usize 0)
                           ]
                       |) in
                     M.match_operator (|
@@ -1832,10 +1832,12 @@ Module collections.
                                                                             |) in
                                                                           M.write (|
                                                                             β,
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (| β |))
-                                                                              (Value.Integer 1)
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (| β |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
                                                                           |) in
                                                                         M.alloc (|
                                                                           M.call_closure (|
@@ -1850,7 +1852,7 @@ Module collections.
                                                                 ]
                                                               |)))
                                                           | _ =>
-                                                            ltac:(M.monadic (M.impossible (||)))
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   ]
                                                 |)
@@ -1964,10 +1966,10 @@ Module collections.
                                                                 |) in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| β |))
-                                                                  (Value.Integer 1)
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
@@ -1981,7 +1983,7 @@ Module collections.
                                                           |)))
                                                     ]
                                                   |)))
-                                              | _ => ltac:(M.monadic (M.impossible (||)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       ]
                                     |)
@@ -1995,7 +1997,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2079,7 +2081,7 @@ Module collections.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -2110,7 +2112,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2157,7 +2159,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

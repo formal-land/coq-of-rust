@@ -41,7 +41,7 @@ Module future.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -83,7 +83,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -168,7 +168,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -208,7 +208,7 @@ Module future.
                 M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -229,7 +229,7 @@ Module future.
           Value.StructTuple
             "core::future::ready::Ready"
             [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.

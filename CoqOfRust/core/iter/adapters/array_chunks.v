@@ -59,7 +59,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -116,7 +116,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -154,12 +154,14 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.ne
-                                    (M.read (|
+                                UnOp.not (|
+                                  BinOp.ne (|
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                    |))
-                                    (Value.Integer 0))
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -203,7 +205,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -228,7 +230,7 @@ Module iter.
                   "remainder"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_remainder :
@@ -308,9 +310,8 @@ Module iter.
                       |) in
                     let~ rem :=
                       M.alloc (|
-                        BinOp.Wrap.rem
-                          Integer.Usize
-                          (M.call_closure (|
+                        BinOp.Wrap.rem (|
+                          M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::exact_size::ExactSizeIterator",
                               I,
@@ -325,10 +326,9 @@ Module iter.
                                 "iter"
                               |)
                             ]
-                          |))
-                          (M.read (|
-                            M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                          |))
+                          |),
+                          M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+                        |)
                       |) in
                     let~ remainder :=
                       M.alloc (|
@@ -439,7 +439,7 @@ Module iter.
                     M.alloc (| Value.Tuple [] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_next_back_remainder :
@@ -498,7 +498,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -544,12 +544,12 @@ Module iter.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.div
-                                Integer.Usize
-                                (M.read (| lower |))
-                                (M.read (|
+                              BinOp.Wrap.div (|
+                                M.read (| lower |),
+                                M.read (|
                                   M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                |));
+                                |)
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
@@ -573,17 +573,17 @@ Module iter.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let n := M.copy (| γ |) in
-                                                    BinOp.Wrap.div
-                                                      Integer.Usize
-                                                      (M.read (| n |))
-                                                      (M.read (|
+                                                    BinOp.Wrap.div (|
+                                                      M.read (| n |),
+                                                      M.read (|
                                                         M.get_constant (|
                                                           "core::iter::adapters::array_chunks::N"
                                                         |)
-                                                      |))))
+                                                      |)
+                                                    |)))
                                               ]
                                             |)))
-                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -592,7 +592,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -606,9 +606,8 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.div
-                Integer.Usize
-                (M.call_closure (|
+              BinOp.Wrap.div (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -625,9 +624,10 @@ Module iter.
                       |)
                     |)
                   ]
-                |))
-                (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+                |),
+                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -818,7 +818,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -848,7 +848,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -937,13 +937,13 @@ Module iter.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1177,7 +1177,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1231,7 +1231,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1290,9 +1290,8 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.div
-                Integer.Usize
-                (M.call_closure (|
+              BinOp.Wrap.div (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     I,
@@ -1307,9 +1306,10 @@ Module iter.
                       "iter"
                     |)
                   ]
-                |))
-                (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+                |),
+                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1323,8 +1323,8 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.lt
-                (M.call_closure (|
+              BinOp.lt (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     I,
@@ -1339,9 +1339,10 @@ Module iter.
                       "iter"
                     |)
                   ]
-                |))
-                (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
-          | _, _ => M.impossible
+                |),
+                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1412,7 +1413,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1486,7 +1487,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ i := M.alloc (| Value.Integer 0 |) in
+                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
@@ -1498,14 +1499,12 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge
-                                      (BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| inner_len |))
-                                        (M.read (| i |)))
-                                      (M.read (|
+                                    BinOp.ge (|
+                                      BinOp.Wrap.sub (| M.read (| inner_len |), M.read (| i |) |),
+                                      M.read (|
                                         M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1538,10 +1537,10 @@ Module iter.
                                                         M.read (|
                                                           let~ idx :=
                                                             M.alloc (|
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (M.read (| local |))
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                M.read (| local |)
+                                                              |)
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -1565,7 +1564,7 @@ Module iter.
                                                         |)))
                                                   ]
                                                 |)))
-                                            | _ => ltac:(M.monadic (M.impossible (||)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -1589,12 +1588,12 @@ Module iter.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (M.read (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                    |))
+                                    |)
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -1615,7 +1614,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1656,7 +1655,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

@@ -175,7 +175,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -215,11 +215,11 @@ Module interpreter.
                 |),
                 []
               |);
-              Value.Integer 0;
+              Value.Integer IntegerKind.U64 0;
               Value.Bool false
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -306,7 +306,7 @@ Module interpreter.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -364,7 +364,7 @@ Module interpreter.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -465,7 +465,7 @@ Module interpreter.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -516,7 +516,7 @@ Module interpreter.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -572,8 +572,8 @@ Module interpreter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "revm_primitives::bytecode::Bytecode",
                                   "is_execution_ready",
@@ -586,7 +586,8 @@ Module interpreter.
                                     "bytecode"
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -781,7 +782,7 @@ Module interpreter.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -808,7 +809,7 @@ Module interpreter.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_is_eof_init :
@@ -842,7 +843,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_eof : M.IsAssociatedFunction Self "eof" eof.
@@ -997,7 +998,7 @@ Module interpreter.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_load_eof_code :
@@ -1356,7 +1357,7 @@ Module interpreter.
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1490,7 +1491,7 @@ Module interpreter.
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1593,7 +1594,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_create_outcome :
@@ -2014,7 +2015,7 @@ Module interpreter.
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2117,7 +2118,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_eofcreate_outcome :
@@ -2493,7 +2494,7 @@ Module interpreter.
                                                   "from",
                                                   [ Ty.path "i32" ]
                                                 |),
-                                                [ Value.Integer 1 ]
+                                                [ Value.Integer IntegerKind.I32 1 ]
                                               |)
                                             ]
                                           |)
@@ -2536,7 +2537,7 @@ Module interpreter.
                                         ]
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2732,7 +2733,7 @@ Module interpreter.
                                         ]
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2835,7 +2836,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_call_outcome :
@@ -2860,7 +2861,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_current_opcode :
@@ -2881,7 +2882,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "contract"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contract : M.IsAssociatedFunction Self "contract" contract.
@@ -2901,7 +2902,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "gas"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -2921,7 +2922,7 @@ Module interpreter.
             "revm_interpreter::interpreter::Interpreter",
             "stack"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_stack : M.IsAssociatedFunction Self "stack" stack.
@@ -2991,7 +2992,7 @@ Module interpreter.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_program_counter :
@@ -3053,7 +3054,7 @@ Module interpreter.
                         "instruction_pointer"
                       |)
                     |);
-                    Value.Integer 1
+                    Value.Integer IntegerKind.Isize 1
                   ]
                 |)
               |) in
@@ -3084,7 +3085,7 @@ Module interpreter.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_step : M.IsAssociatedFunction Self "step" step.
@@ -3117,7 +3118,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_memory : M.IsAssociatedFunction Self "take_memory" take_memory.
@@ -3351,7 +3352,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
@@ -3383,7 +3384,7 @@ Module interpreter.
               M.read (| new_size |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_resize_memory :
@@ -3419,7 +3420,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
@@ -3450,7 +3451,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -3481,7 +3482,7 @@ Module interpreter.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
@@ -3534,9 +3535,7 @@ Module interpreter.
               |)
             |) in
           let~ cost :=
-            M.alloc (|
-              BinOp.Wrap.sub Integer.U64 (M.read (| new_cost |)) (M.read (| current_cost |))
-            |) in
+            M.alloc (| BinOp.Wrap.sub (| M.read (| new_cost |), M.read (| current_cost |) |) |) in
           let~ success :=
             M.alloc (|
               M.call_closure (|
@@ -3566,10 +3565,10 @@ Module interpreter.
                           |),
                           [
                             M.read (| memory |);
-                            BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.rust_cast (M.read (| new_words |)))
-                              (Value.Integer 32)
+                            BinOp.Wrap.mul (|
+                              M.rust_cast (M.read (| new_words |)),
+                              Value.Integer IntegerKind.Usize 32
+                            |)
                           ]
                         |)
                       |) in
@@ -3579,7 +3578,7 @@ Module interpreter.
             |) in
           success
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_resize_memory :

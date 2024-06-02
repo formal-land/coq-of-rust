@@ -51,12 +51,12 @@ Module fmt.
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end));
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
@@ -125,7 +125,7 @@ Module fmt.
               |) in
             output
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.

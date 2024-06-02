@@ -69,7 +69,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -126,7 +126,7 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
@@ -157,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash::Person"
               [
-                ("id", Value.Integer 5);
+                ("id", Value.Integer IntegerKind.U32 5);
                 ("name",
                   M.call_closure (|
                     M.get_trait_method (|
@@ -169,7 +169,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [ M.read (| Value.String "Janet" |) ]
                   |));
-                ("phone", Value.Integer 5556667777)
+                ("phone", Value.Integer IntegerKind.U64 5556667777)
               ]
           |) in
         let~ person2 :=
@@ -177,7 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "hash::Person"
               [
-                ("id", Value.Integer 5);
+                ("id", Value.Integer IntegerKind.U32 5);
                 ("name",
                   M.call_closure (|
                     M.get_trait_method (|
@@ -189,7 +189,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [ M.read (| Value.String "Bob" |) ]
                   |));
-                ("phone", Value.Integer 5556667777)
+                ("phone", Value.Integer IntegerKind.U64 5556667777)
               ]
           |) in
         let~ _ :=
@@ -201,22 +201,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (BinOp.Pure.ne
-                            (M.call_closure (|
+                        UnOp.not (|
+                          BinOp.ne (|
+                            M.call_closure (|
                               M.get_function (|
                                 "hash::calculate_hash",
                                 [ Ty.path "hash::Person" ]
                               |),
                               [ person1 ]
-                            |))
-                            (M.call_closure (|
+                            |),
+                            M.call_closure (|
                               M.get_function (|
                                 "hash::calculate_hash",
                                 [ Ty.path "hash::Person" ]
                               |),
                               [ person2 ]
-                            |)))
+                            |)
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -237,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "hash::main" main.

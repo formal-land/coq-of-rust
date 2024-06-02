@@ -34,7 +34,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -55,7 +55,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple "boxing_errors::EmptyVec" []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -96,7 +96,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -227,7 +227,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |);
@@ -330,7 +330,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                                       |)))
                                                 ]
                                               |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |);
@@ -346,23 +346,23 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let i := M.copy (| γ |) in
-                                                  BinOp.Wrap.mul
-                                                    Integer.I32
-                                                    (Value.Integer 2)
-                                                    (M.read (| i |))))
+                                                  BinOp.Wrap.mul (|
+                                                    Value.Integer IntegerKind.I32 2,
+                                                    M.read (| i |)
+                                                  |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
@@ -490,7 +490,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "boxing_errors::print" print.
@@ -638,7 +638,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "boxing_errors::main" main.

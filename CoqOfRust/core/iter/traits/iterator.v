@@ -11,7 +11,7 @@ Module iter.
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
             M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function__assert_is_object_safe :
@@ -28,7 +28,7 @@ Module iter.
                 M.get_function (| "core::array::iter_next_chunk", [ Ty.associated; Self ] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_next_chunk :
@@ -38,8 +38,12 @@ Module iter.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
-          | _, _ => M.impossible
+              Value.Tuple
+                [
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.StructTuple "core::option::Option::None" []
+                ]))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_size_hint :
@@ -62,7 +66,7 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -80,19 +84,19 @@ Module iter.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| count |))
-                                              (Value.Integer 1)))
+                                            (BinOp.Wrap.add (|
+                                              M.read (| count |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_count :
@@ -121,7 +125,7 @@ Module iter.
                   M.get_associated_function (| Self, "some.last", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_last :
@@ -150,7 +154,10 @@ Module iter.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", M.read (| n |)) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.Usize 0);
+                                    ("end_", M.read (| n |))
+                                  ]
                               ]
                             |)
                           |),
@@ -248,10 +255,10 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Wrap.sub
-                                                                        Integer.Usize
-                                                                        (M.read (| n |))
-                                                                        (M.read (| i |))
+                                                                      BinOp.Wrap.sub (|
+                                                                        M.read (| n |),
+                                                                        M.read (| i |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -272,7 +279,7 @@ Module iter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_advance_by :
@@ -382,7 +389,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_nth :
@@ -401,7 +408,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| step |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_step_by :
@@ -432,7 +439,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_chain :
@@ -463,7 +470,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_zip :
@@ -482,7 +489,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| separator |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_intersperse :
@@ -503,7 +510,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| separator |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_intersperse_with :
@@ -525,7 +532,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_map :
@@ -559,7 +566,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_for_each :
@@ -578,7 +585,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_filter :
@@ -597,7 +604,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_filter_map :
@@ -615,7 +622,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_enumerate :
@@ -633,7 +640,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_peekable :
@@ -652,7 +659,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_skip_while :
@@ -671,7 +678,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_take_while :
@@ -690,7 +697,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_map_while :
@@ -709,7 +716,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_skip :
@@ -728,7 +735,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_take :
@@ -748,7 +755,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| initial_state |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_scan :
@@ -767,7 +774,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_flat_map :
@@ -785,7 +792,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_flatten :
@@ -804,7 +811,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_map_windows :
@@ -822,7 +829,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_fuse :
@@ -841,7 +848,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_inspect :
@@ -852,7 +859,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| self |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_by_ref :
@@ -872,7 +879,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_collect :
@@ -943,11 +950,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_collect :
@@ -974,7 +981,7 @@ Module iter.
                   |) in
                 M.alloc (| M.read (| collection |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_collect_into :
@@ -1022,7 +1029,7 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| left |); M.read (| right |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_partition :
@@ -1040,7 +1047,7 @@ Module iter.
                     ltac:(M.monadic
                       (let predicate := M.alloc (| γ |) in
                       M.read (|
-                        let~ true_count := M.alloc (| Value.Integer 0 |) in
+                        let~ true_count := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                         let~ _ :=
                           M.loop (|
                             ltac:(M.monadic
@@ -1125,10 +1132,10 @@ Module iter.
                                                 let β := true_count in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
@@ -1158,7 +1165,7 @@ Module iter.
                       |)))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_partition_in_place :
@@ -1184,8 +1191,8 @@ Module iter.
                   [ self; predicate ]
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.call_closure (|
+                  (UnOp.not (|
+                    M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Self,
@@ -1194,9 +1201,10 @@ Module iter.
                         [ P ]
                       |),
                       [ self; M.read (| predicate |) ]
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_is_partitioned :
@@ -1348,7 +1356,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_fold :
@@ -1376,7 +1384,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_for_each :
@@ -1451,7 +1459,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_fold :
@@ -1556,7 +1564,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_reduce :
@@ -1686,7 +1694,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_reduce :
@@ -1744,7 +1752,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_all :
@@ -1802,7 +1810,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_any :
@@ -1847,7 +1855,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_find :
@@ -1888,7 +1896,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_find_map :
@@ -1960,7 +1968,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_try_find :
@@ -1996,7 +2004,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Integer 0;
+                      Value.Integer IntegerKind.Usize 0;
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.position", [] |),
                         [ M.read (| predicate |) ]
@@ -2005,7 +2013,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_position :
@@ -2067,7 +2075,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_rposition :
@@ -2097,7 +2105,7 @@ Module iter.
                   M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], "cmp", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_max :
@@ -2127,7 +2135,7 @@ Module iter.
                   M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], "cmp", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_min :
@@ -2254,7 +2262,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_max_by_key :
@@ -2281,7 +2289,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_max_by :
@@ -2408,7 +2416,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_min_by_key :
@@ -2435,7 +2443,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_min_by :
@@ -2453,7 +2461,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_rev :
@@ -2492,7 +2500,7 @@ Module iter.
                   |) in
                 unzipped
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_unzip :
@@ -2510,7 +2518,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_copied :
@@ -2528,7 +2536,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_cloned :
@@ -2546,7 +2554,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_cycle :
@@ -2564,7 +2572,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_array_chunks :
@@ -2584,7 +2592,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_sum :
@@ -2604,7 +2612,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_product :
@@ -2663,11 +2671,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_cmp :
@@ -2730,7 +2738,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_cmp_by :
@@ -2789,11 +2797,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_partial_cmp :
@@ -2865,7 +2873,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_partial_cmp_by :
@@ -2922,11 +2930,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_eq :
@@ -2999,7 +3007,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_eq_by :
@@ -3010,8 +3018,8 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              UnOp.Pure.not
-                (M.call_closure (|
+              UnOp.not (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Self,
@@ -3020,8 +3028,9 @@ Module iter.
                     [ I ]
                   |),
                   [ M.read (| self |); M.read (| other |) ]
-                |))))
-          | _, _ => M.impossible
+                |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_ne :
@@ -3060,7 +3069,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_lt :
@@ -3111,14 +3120,14 @@ Module iter.
                               ltac:(M.monadic
                                 match γ with
                                 | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_le :
@@ -3157,7 +3166,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_gt :
@@ -3209,14 +3218,14 @@ Module iter.
                               ltac:(M.monadic
                                 match γ with
                                 | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_ge :
@@ -3252,7 +3261,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_is_sorted :
@@ -3321,7 +3330,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_is_sorted_by :
@@ -3353,7 +3362,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_is_sorted_by_key :
@@ -3402,7 +3411,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod___iterator_get_unchecked :
@@ -3546,7 +3555,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_iter_compare :
@@ -3672,9 +3681,9 @@ Module iter.
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_compare :
@@ -3712,7 +3721,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3736,7 +3745,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3761,7 +3770,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3780,7 +3789,7 @@ Module iter.
                 M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3809,7 +3818,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3839,7 +3848,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3949,7 +3958,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4110,7 +4119,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4180,7 +4189,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4210,7 +4219,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

@@ -9,12 +9,12 @@ Module bn128.
           (M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_precompile::u64_to_address", [] |),
-              [ Value.Integer 6 ]
+              [ Value.Integer IntegerKind.U64 6 ]
             |)
           |))).
     
     Definition value_ISTANBUL_ADD_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 150 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
     
     Definition value_ISTANBUL : Value.t :=
       M.run
@@ -87,14 +87,14 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
           |))).
     
     Definition value_BYZANTIUM_ADD_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 500 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
     
     Definition value_BYZANTIUM : Value.t :=
       M.run
@@ -167,7 +167,7 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
@@ -181,12 +181,12 @@ Module bn128.
           (M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_precompile::u64_to_address", [] |),
-              [ Value.Integer 7 ]
+              [ Value.Integer IntegerKind.U64 7 ]
             |)
           |))).
     
     Definition value_ISTANBUL_MUL_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 6000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
     
     Definition value_ISTANBUL : Value.t :=
       M.run
@@ -259,14 +259,14 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
           |))).
     
     Definition value_BYZANTIUM_MUL_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 40000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
     
     Definition value_BYZANTIUM : Value.t :=
       M.run
@@ -339,7 +339,7 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
@@ -353,15 +353,15 @@ Module bn128.
           (M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_precompile::u64_to_address", [] |),
-              [ Value.Integer 8 ]
+              [ Value.Integer IntegerKind.U64 8 ]
             |)
           |))).
     
     Definition value_ISTANBUL_PAIR_PER_POINT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 34000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
     
     Definition value_ISTANBUL_PAIR_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 45000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
     
     Definition value_ISTANBUL : Value.t :=
       M.run
@@ -439,17 +439,17 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
           |))).
     
     Definition value_BYZANTIUM_PAIR_PER_POINT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 80000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
     
     Definition value_BYZANTIUM_PAIR_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 100000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
     
     Definition value_BYZANTIUM : Value.t :=
       M.run
@@ -527,7 +527,7 @@ Module bn128.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end)))
                   ]
               ]
@@ -537,17 +537,32 @@ Module bn128.
   Definition value_ADD_INPUT_LEN : Value.t :=
     M.run
       ltac:(M.monadic
-        (M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 64) (Value.Integer 64) |))).
+        (M.alloc (|
+          BinOp.Wrap.add (|
+            Value.Integer IntegerKind.Usize 64,
+            Value.Integer IntegerKind.Usize 64
+          |)
+        |))).
   
   Definition value_MUL_INPUT_LEN : Value.t :=
     M.run
       ltac:(M.monadic
-        (M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 64) (Value.Integer 32) |))).
+        (M.alloc (|
+          BinOp.Wrap.add (|
+            Value.Integer IntegerKind.Usize 64,
+            Value.Integer IntegerKind.Usize 32
+          |)
+        |))).
   
   Definition value_PAIR_ELEMENT_LEN : Value.t :=
     M.run
       ltac:(M.monadic
-        (M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 64) (Value.Integer 128) |))).
+        (M.alloc (|
+          BinOp.Wrap.add (|
+            Value.Integer IntegerKind.Usize 64,
+            Value.Integer IntegerKind.Usize 128
+          |)
+        |))).
   
   (*
   pub fn read_fq(input: &[u8]) -> Result<Fq, Error> {
@@ -586,7 +601,9 @@ Module bn128.
                   |),
                   [
                     M.read (| input |);
-                    Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 32) ]
+                    Value.StructRecord
+                      "core::ops::range::RangeTo"
+                      [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                   ]
                 |)
               ]
@@ -607,11 +624,11 @@ Module bn128.
                                 []))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
@@ -665,7 +682,10 @@ Module bn128.
                                   M.read (| input |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 0); ("end_", Value.Integer 32) ]
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 0);
+                                      ("end_", Value.Integer IntegerKind.Usize 32)
+                                    ]
                                 ]
                               |)
                             ]
@@ -760,7 +780,10 @@ Module bn128.
                                   M.read (| input |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 32); ("end_", Value.Integer 64) ]
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 32);
+                                      ("end_", Value.Integer IntegerKind.Usize 64)
+                                    ]
                                 ]
                               |)
                             ]
@@ -829,7 +852,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
@@ -992,7 +1015,7 @@ Module bn128.
                                             []))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1000,7 +1023,7 @@ Module bn128.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_new_g1_point : M.IsFunction "revm_precompile::bn128::new_g1_point" new_g1_point.
@@ -1043,7 +1066,7 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| gas_cost |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| gas_cost |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1120,7 +1143,7 @@ Module bn128.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
-                                    [ ("end_", Value.Integer 64) ]
+                                    [ ("end_", Value.Integer IntegerKind.Usize 64) ]
                                 ]
                               |)
                             ]
@@ -1233,7 +1256,7 @@ Module bn128.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer 64) ]
+                                    [ ("start", Value.Integer IntegerKind.Usize 64) ]
                                 ]
                               |)
                             ]
@@ -1298,7 +1321,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 64 |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1378,7 +1401,7 @@ Module bn128.
                                         output;
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
-                                          [ ("end_", Value.Integer 32) ]
+                                          [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                                       ]
                                     |)
                                   ]
@@ -1430,7 +1453,7 @@ Module bn128.
                                         output;
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
-                                          [ ("start", Value.Integer 32) ]
+                                          [ ("start", Value.Integer IntegerKind.Usize 32) ]
                                       ]
                                     |)
                                   ]
@@ -1464,7 +1487,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run_add : M.IsFunction "revm_precompile::bn128::run_add" run_add.
@@ -1509,7 +1532,7 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| gas_cost |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| gas_cost |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1586,7 +1609,7 @@ Module bn128.
                                   |);
                                   Value.StructRecord
                                     "core::ops::range::RangeTo"
-                                    [ ("end_", Value.Integer 64) ]
+                                    [ ("end_", Value.Integer IntegerKind.Usize 64) ]
                                 ]
                               |)
                             ]
@@ -1692,7 +1715,10 @@ Module bn128.
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer 64); ("end_", Value.Integer 96) ]
+                                [
+                                  ("start", Value.Integer IntegerKind.Usize 64);
+                                  ("end_", Value.Integer IntegerKind.Usize 96)
+                                ]
                             ]
                           |)
                         ]
@@ -1700,7 +1726,7 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ output := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 64 |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1780,7 +1806,7 @@ Module bn128.
                                         output;
                                         Value.StructRecord
                                           "core::ops::range::RangeTo"
-                                          [ ("end_", Value.Integer 32) ]
+                                          [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                                       ]
                                     |)
                                   ]
@@ -1832,7 +1858,7 @@ Module bn128.
                                         output;
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
-                                          [ ("start", Value.Integer 32) ]
+                                          [ ("start", Value.Integer IntegerKind.Usize 32) ]
                                       ]
                                     |)
                                   ]
@@ -1866,7 +1892,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run_mul : M.IsFunction "revm_precompile::bn128::run_mul" run_mul.
@@ -1941,26 +1967,26 @@ Module bn128.
             (M.read (|
               let~ gas_used :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.U64
-                    (BinOp.Wrap.mul
-                      Integer.U64
-                      (M.rust_cast
-                        (BinOp.Wrap.div
-                          Integer.Usize
-                          (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.mul (|
+                      M.rust_cast
+                        (BinOp.Wrap.div (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                               "len",
                               []
                             |),
                             [ M.read (| input |) ]
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
-                          |))))
-                      (M.read (| pair_per_point_cost |)))
-                    (M.read (| pair_base_cost |))
+                          |)
+                        |)),
+                      M.read (| pair_per_point_cost |)
+                    |),
+                    M.read (| pair_base_cost |)
+                  |)
                 |) in
               let~ _ :=
                 M.match_operator (|
@@ -1971,7 +1997,7 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| gas_used |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2002,21 +2028,22 @@ Module bn128.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (BinOp.Wrap.rem
-                                  Integer.Usize
-                                  (M.call_closure (|
+                              BinOp.ne (|
+                                BinOp.Wrap.rem (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| input |) ]
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
-                                  |)))
-                                (Value.Integer 0)
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2064,19 +2091,19 @@ Module bn128.
                         ltac:(M.monadic
                           (let~ elements :=
                             M.alloc (|
-                              BinOp.Wrap.div
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.div (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| input |) ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
-                                |))
+                                |)
+                              |)
                             |) in
                           let~ mul :=
                             M.alloc (|
@@ -2107,7 +2134,7 @@ Module bn128.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 0);
+                                          ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_", M.read (| elements |))
                                         ]
                                     ]
@@ -2206,20 +2233,23 @@ Module bn128.
                                                                                                       γ :=
                                                                                                   M.use
                                                                                                     (M.alloc (|
-                                                                                                      UnOp.Pure.not
-                                                                                                        (BinOp.Pure.lt
-                                                                                                          (M.read (|
+                                                                                                      UnOp.not (|
+                                                                                                        BinOp.lt (|
+                                                                                                          M.read (|
                                                                                                             n
-                                                                                                          |))
-                                                                                                          (BinOp.Wrap.div
-                                                                                                            Integer.Usize
-                                                                                                            (M.read (|
+                                                                                                          |),
+                                                                                                          BinOp.Wrap.div (|
+                                                                                                            M.read (|
                                                                                                               M.get_constant (|
                                                                                                                 "revm_precompile::bn128::PAIR_ELEMENT_LEN"
                                                                                                               |)
-                                                                                                            |))
-                                                                                                            (Value.Integer
-                                                                                                              32)))
+                                                                                                            |),
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              32
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)) in
                                                                                                 let
                                                                                                       _ :=
@@ -2268,23 +2298,24 @@ Module bn128.
                                                                               |) in
                                                                             let~ start :=
                                                                               M.alloc (|
-                                                                                BinOp.Wrap.add
-                                                                                  Integer.Usize
-                                                                                  (BinOp.Wrap.mul
-                                                                                    Integer.Usize
-                                                                                    (M.read (|
+                                                                                BinOp.Wrap.add (|
+                                                                                  BinOp.Wrap.mul (|
+                                                                                    M.read (|
                                                                                       idx
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.get_constant (|
                                                                                         "revm_precompile::bn128::PAIR_ELEMENT_LEN"
                                                                                       |)
-                                                                                    |)))
-                                                                                  (BinOp.Wrap.mul
-                                                                                    Integer.Usize
-                                                                                    (M.read (| n |))
-                                                                                    (Value.Integer
-                                                                                      32))
+                                                                                    |)
+                                                                                  |),
+                                                                                  BinOp.Wrap.mul (|
+                                                                                    M.read (| n |),
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      32
+                                                                                  |)
+                                                                                |)
                                                                               |) in
                                                                             let~ slice :=
                                                                               M.alloc (|
@@ -2318,13 +2349,14 @@ Module bn128.
                                                                                             start
                                                                                           |));
                                                                                         ("end_",
-                                                                                          BinOp.Wrap.add
-                                                                                            Integer.Usize
-                                                                                            (M.read (|
+                                                                                          BinOp.Wrap.add (|
+                                                                                            M.read (|
                                                                                               start
-                                                                                            |))
-                                                                                            (Value.Integer
-                                                                                              32))
+                                                                                            |),
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              32
+                                                                                          |))
                                                                                       ]
                                                                                   ]
                                                                                 |)
@@ -2391,8 +2423,8 @@ Module bn128.
                                                                                               ]
                                                                                             |)))
                                                                                         | _ =>
-                                                                                          ltac:(M.monadic
-                                                                                            (M.impossible (||)))
+                                                                                          M.impossible
+                                                                                            "wrong number of arguments"
                                                                                         end))
                                                                                 ]
                                                                               |)
@@ -2401,7 +2433,8 @@ Module bn128.
                                                                     ]
                                                                   |)))
                                                               | _ =>
-                                                                ltac:(M.monadic (M.impossible (||)))
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |) in
                                                     let~ ax :=
@@ -2445,7 +2478,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 0 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -2555,7 +2593,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 1 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -2665,7 +2708,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 2 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -2775,7 +2823,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 3 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          3
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -2885,7 +2938,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 4 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          4
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -2995,7 +3053,12 @@ Module bn128.
                                                                   |),
                                                                   [
                                                                     read_fq_at;
-                                                                    Value.Tuple [ Value.Integer 5 ]
+                                                                    Value.Tuple
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          5
+                                                                      ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -3329,8 +3392,8 @@ Module bn128.
                                                                                                 ]
                                                                                               |)))
                                                                                           | _ =>
-                                                                                            ltac:(M.monadic
-                                                                                              (M.impossible (||)))
+                                                                                            M.impossible
+                                                                                              "wrong number of arguments"
                                                                                           end))
                                                                                   ]
                                                                                 |)
@@ -3490,7 +3553,7 @@ Module bn128.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run_pair : M.IsFunction "revm_precompile::bn128::run_pair" run_pair.

@@ -10,12 +10,13 @@ Module cmp.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_trait_method (| "core::cmp::PartialEq", Self, [ Rhs ], "eq", [] |),
               [ M.read (| self |); M.read (| other |) ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_ne :
@@ -31,7 +32,7 @@ Module cmp.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_assert_receiver_is_total_eq :
@@ -80,7 +81,7 @@ Module cmp.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -144,9 +145,9 @@ Module cmp.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -178,7 +179,7 @@ Module cmp.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -234,7 +235,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -283,7 +284,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -332,7 +333,7 @@ Module cmp.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -371,7 +372,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -407,7 +408,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_eq : M.IsAssociatedFunction Self "is_eq" is_eq.
@@ -422,8 +423,8 @@ Module cmp.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
@@ -434,8 +435,9 @@ Module cmp.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ne : M.IsAssociatedFunction Self "is_ne" is_ne.
@@ -462,7 +464,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_lt : M.IsAssociatedFunction Self "is_lt" is_lt.
@@ -489,7 +491,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_gt : M.IsAssociatedFunction Self "is_gt" is_gt.
@@ -504,8 +506,8 @@ Module cmp.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
@@ -516,8 +518,9 @@ Module cmp.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_le : M.IsAssociatedFunction Self "is_le" is_le.
@@ -532,8 +535,8 @@ Module cmp.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
@@ -544,8 +547,9 @@ Module cmp.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ge : M.IsAssociatedFunction Self "is_ge" is_ge.
@@ -583,7 +587,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reverse : M.IsAssociatedFunction Self "reverse" reverse.
@@ -614,7 +618,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
@@ -656,7 +660,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_then_with : M.IsAssociatedFunction Self "then_with" then_with.
@@ -699,7 +703,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -739,7 +743,7 @@ Module cmp.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -783,7 +787,7 @@ Module cmp.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -824,7 +828,7 @@ Module cmp.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -854,7 +858,7 @@ Module cmp.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -888,7 +892,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -910,7 +914,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -932,7 +936,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -954,7 +958,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -976,7 +980,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1017,7 +1021,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1057,7 +1061,7 @@ Module cmp.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1079,7 +1083,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1119,7 +1123,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_max : M.IsProvidedMethod "core::cmp::Ord" "max" max.
@@ -1145,7 +1149,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_min : M.IsProvidedMethod "core::cmp::Ord" "min" min.
@@ -1166,8 +1170,8 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Self,
@@ -1176,7 +1180,8 @@ Module cmp.
                                   []
                                 |),
                                 [ min; max ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1241,7 +1246,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_clamp : M.IsProvidedMethod "core::cmp::Ord" "clamp" clamp.
@@ -1284,7 +1289,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_lt :
@@ -1336,14 +1341,14 @@ Module cmp.
                           ltac:(M.monadic
                             match γ with
                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_le :
@@ -1384,7 +1389,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_gt :
@@ -1436,14 +1441,14 @@ Module cmp.
                           ltac:(M.monadic
                             match γ with
                             | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_ge :
@@ -1466,7 +1471,7 @@ Module cmp.
           M.get_trait_method (| "core::cmp::Ord", T, [], "min", [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min : M.IsFunction "core::cmp::min" min.
@@ -1520,7 +1525,7 @@ Module cmp.
                         ltac:(M.monadic
                           match γ with
                           | [] => ltac:(M.monadic v1)
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -1530,7 +1535,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
@@ -1611,11 +1616,11 @@ Module cmp.
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
@@ -1635,7 +1640,7 @@ Module cmp.
           M.get_trait_method (| "core::cmp::Ord", T, [], "max", [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_max : M.IsFunction "core::cmp::max" max.
@@ -1689,7 +1694,7 @@ Module cmp.
                         ltac:(M.monadic
                           match γ with
                           | [] => ltac:(M.monadic v2)
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -1699,7 +1704,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
@@ -1780,11 +1785,11 @@ Module cmp.
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
@@ -1824,7 +1829,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
@@ -1883,7 +1888,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
@@ -1968,11 +1973,11 @@ Module cmp.
                               |)))
                         ]
                       |)))
-                  | _ => ltac:(M.monadic (M.impossible (||)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
@@ -1993,7 +1998,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2008,7 +2013,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.Bool false))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2029,8 +2034,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2040,8 +2045,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2062,8 +2067,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2073,8 +2078,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2095,8 +2100,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2106,8 +2111,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2128,8 +2133,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2139,8 +2144,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2161,8 +2166,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2172,8 +2177,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2194,8 +2199,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2205,8 +2210,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2227,8 +2232,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2238,8 +2243,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2260,8 +2265,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2271,8 +2276,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2293,8 +2298,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2304,8 +2309,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2326,8 +2331,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2337,8 +2342,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2359,8 +2364,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2370,8 +2375,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2392,8 +2397,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2403,8 +2408,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2425,8 +2430,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2436,8 +2441,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2458,8 +2463,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2469,8 +2474,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2491,8 +2496,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2502,8 +2507,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2524,8 +2529,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
@@ -2535,8 +2540,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ne (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2676,7 +2681,7 @@ Module cmp.
                       [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2709,7 +2714,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2744,12 +2749,11 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.Pure.le
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |));
-                      BinOp.Pure.ge
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |))
+                      BinOp.le (|
+                        M.read (| M.read (| self |) |),
+                        M.read (| M.read (| other |) |)
+                      |);
+                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
                     ]
                 |),
                 [
@@ -2804,7 +2808,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -2814,8 +2818,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -2825,8 +2829,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -2836,8 +2840,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -2847,8 +2851,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2890,12 +2894,11 @@ Module cmp.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.Pure.le
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |));
-                      BinOp.Pure.ge
-                        (M.read (| M.read (| self |) |))
-                        (M.read (| M.read (| other |) |))
+                      BinOp.le (|
+                        M.read (| M.read (| self |) |),
+                        M.read (| M.read (| other |) |)
+                      |);
+                      BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)
                     ]
                 |),
                 [
@@ -2950,7 +2953,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -2960,8 +2963,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -2971,8 +2974,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -2982,8 +2985,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -2993,8 +2996,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3027,7 +3030,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.StructTuple "core::cmp::Ordering::Equal" []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3064,26 +3067,35 @@ Module cmp.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.I8
-                    (M.rust_cast (M.read (| M.read (| self |) |)))
-                    (M.rust_cast (M.read (| M.read (| other |) |)))
+                  BinOp.Wrap.sub (|
+                    M.rust_cast (M.read (| M.read (| self |) |)),
+                    M.rust_cast (M.read (| M.read (| other |) |))
+                  |)
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer (-1) |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.I8 (-1)
+                        |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.I8 0
+                        |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.I8 1
+                        |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3098,7 +3110,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3112,8 +3124,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.bit_and (M.read (| self |)) (M.read (| other |))))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3127,8 +3139,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+            BinOp.bit_or (M.read (| self |)) (M.read (| other |))))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3154,7 +3166,7 @@ Module cmp.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not (BinOp.Pure.le (M.read (| min |)) (M.read (| max |)))
+                              UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3182,7 +3194,7 @@ Module cmp.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3221,7 +3233,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -3231,8 +3243,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -3242,8 +3254,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -3253,8 +3265,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -3264,8 +3276,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3310,9 +3322,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -3326,9 +3339,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3344,7 +3358,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3377,7 +3391,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -3387,8 +3401,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -3398,8 +3412,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -3409,8 +3423,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -3420,8 +3434,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3466,9 +3480,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -3482,9 +3497,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3500,7 +3516,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3533,7 +3549,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -3543,8 +3559,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -3554,8 +3570,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -3565,8 +3581,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -3576,8 +3592,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3622,9 +3638,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -3638,9 +3655,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3656,7 +3674,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3689,7 +3707,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -3699,8 +3717,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -3710,8 +3728,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -3721,8 +3739,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -3732,8 +3750,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3778,9 +3796,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -3794,9 +3813,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3812,7 +3832,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3845,7 +3865,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -3855,8 +3875,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -3866,8 +3886,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -3877,8 +3897,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -3888,8 +3908,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3934,9 +3954,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -3950,9 +3971,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3968,7 +3990,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4001,7 +4023,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4011,8 +4033,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4022,8 +4044,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4033,8 +4055,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4044,8 +4066,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4090,9 +4112,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4106,9 +4129,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4124,7 +4148,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4157,7 +4181,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4167,8 +4191,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4178,8 +4202,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4189,8 +4213,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4200,8 +4224,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4246,9 +4270,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4262,9 +4287,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4280,7 +4306,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4313,7 +4339,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4323,8 +4349,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4334,8 +4360,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4345,8 +4371,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4356,8 +4382,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4402,9 +4428,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4418,9 +4445,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4436,7 +4464,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4469,7 +4497,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4479,8 +4507,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4490,8 +4518,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4501,8 +4529,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4512,8 +4540,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4558,9 +4586,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4574,9 +4603,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4592,7 +4622,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4625,7 +4655,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4635,8 +4665,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4646,8 +4676,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4657,8 +4687,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4668,8 +4698,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4714,9 +4744,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4730,9 +4761,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4748,7 +4780,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4781,7 +4813,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4791,8 +4823,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4802,8 +4834,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4813,8 +4845,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4824,8 +4856,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4870,9 +4902,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -4886,9 +4919,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4904,7 +4938,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4937,7 +4971,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -4947,8 +4981,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -4958,8 +4992,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -4969,8 +5003,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -4980,8 +5014,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5026,9 +5060,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -5042,9 +5077,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5060,7 +5096,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5093,7 +5129,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
@@ -5103,8 +5139,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
@@ -5114,8 +5150,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
@@ -5125,8 +5161,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
@@ -5136,8 +5172,8 @@ Module cmp.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5182,9 +5218,10 @@ Module cmp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| M.read (| self |) |))
-                              (M.read (| M.read (| other |) |))
+                            BinOp.lt (|
+                              M.read (| M.read (| self |) |),
+                              M.read (| M.read (| other |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
@@ -5198,9 +5235,10 @@ Module cmp.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| M.read (| self |) |))
-                                      (M.read (| M.read (| other |) |))
+                                    BinOp.eq (|
+                                      M.read (| M.read (| self |) |),
+                                      M.read (| M.read (| other |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5216,7 +5254,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5245,7 +5283,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5281,7 +5319,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5310,7 +5348,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5340,7 +5378,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5359,7 +5397,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5391,7 +5429,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5410,7 +5448,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5429,7 +5467,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5448,7 +5486,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5467,7 +5505,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5505,7 +5543,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5548,7 +5586,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5567,7 +5605,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5599,7 +5637,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5618,7 +5656,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5637,7 +5675,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5656,7 +5694,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5675,7 +5713,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5713,7 +5751,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5756,7 +5794,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5775,7 +5813,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5807,7 +5845,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5826,7 +5864,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

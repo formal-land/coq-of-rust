@@ -21,14 +21,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ counter := M.alloc (| Value.Integer 0 |) in
+        let~ counter := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
         let~ result :=
           M.copy (|
             M.loop (|
               ltac:(M.monadic
                 (let~ _ :=
                   let β := counter in
-                  M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
+                  M.write (|
+                    β,
+                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -37,7 +40,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| counter |)) (Value.Integer 10)
+                              BinOp.eq (| M.read (| counter |), Value.Integer IntegerKind.I32 10 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -49,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer 20 |) ] |),
+            M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer IntegerKind.I32 20 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -65,10 +68,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -103,7 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "loop_returning_from_loops::main" main.

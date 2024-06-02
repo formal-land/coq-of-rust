@@ -40,7 +40,7 @@ Module Impl_trait_flipper_Flipper.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -67,18 +67,19 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
                 "trait_flipper::Flipper",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "trait_flipper::Flipper",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -98,7 +99,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

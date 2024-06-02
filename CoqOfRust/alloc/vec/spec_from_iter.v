@@ -31,7 +31,7 @@ Module vec.
               |),
               [ M.read (| iterator |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -86,8 +86,8 @@ Module vec.
                 (M.read (|
                   let~ has_advanced :=
                     M.alloc (|
-                      BinOp.Pure.ne
-                        (M.rust_cast
+                      BinOp.ne (|
+                        M.rust_cast
                           (* MutToConstPointer *)
                           (M.pointer_coercion
                             (M.call_closure (|
@@ -105,14 +105,15 @@ Module vec.
                                   |)
                                 |)
                               ]
-                            |))))
-                        (M.read (|
+                            |))),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             iterator,
                             "alloc::vec::into_iter::IntoIter",
                             "ptr"
                           |)
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ _ :=
                     M.match_operator (|
@@ -124,10 +125,10 @@ Module vec.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    UnOp.Pure.not (M.read (| has_advanced |)),
+                                    UnOp.not (| M.read (| has_advanced |) |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ge
-                                        (M.call_closure (|
+                                      (BinOp.ge (|
+                                        M.call_closure (|
                                           M.get_trait_method (|
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
@@ -138,17 +139,18 @@ Module vec.
                                             []
                                           |),
                                           [ iterator ]
-                                        |))
-                                        (BinOp.Wrap.div
-                                          Integer.Usize
-                                          (M.read (|
+                                        |),
+                                        BinOp.Wrap.div (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               iterator,
                                               "alloc::vec::into_iter::IntoIter",
                                               "cap"
                                             |)
-                                          |))
-                                          (Value.Integer 2))))
+                                          |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -440,7 +442,7 @@ Module vec.
                   vec
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

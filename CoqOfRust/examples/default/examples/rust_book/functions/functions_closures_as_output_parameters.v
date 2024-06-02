@@ -79,11 +79,11 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fn :
@@ -171,11 +171,11 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fnmut :
@@ -263,11 +263,11 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fnonce :
@@ -355,7 +355,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.

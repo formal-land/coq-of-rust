@@ -61,7 +61,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
@@ -81,7 +81,7 @@ Module slice.
             M.get_trait_method (| "alloc::slice::hack::ConvertVec", T, [], "to_vec", [ A ] |),
             [ M.read (| s |); M.read (| alloc |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
@@ -155,7 +155,7 @@ Module slice.
                 M.alloc (|
                   Value.StructRecord
                     "alloc::slice::hack::to_vec::DropGuard"
-                    [ ("vec", vec); ("num_init", Value.Integer 0) ]
+                    [ ("vec", vec); ("num_init", Value.Integer IntegerKind.Usize 0) ]
                 |) in
               let~ slots :=
                 M.alloc (|
@@ -369,7 +369,7 @@ Module slice.
                 M.alloc (| Value.Tuple [] |) in
               vec
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -483,7 +483,7 @@ Module slice.
                 M.alloc (| Value.Tuple [] |) in
               v
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -534,7 +534,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort :
@@ -629,14 +629,14 @@ Module slice.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_by :
@@ -733,14 +733,14 @@ Module slice.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_by_key :
@@ -850,7 +850,9 @@ Module slice.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.lt (M.read (| len |)) (Value.Integer 2) |)) in
+                              (M.alloc (|
+                                BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -869,12 +871,13 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.lt (M.read (| sz_u8 |)) (M.read (| sz_u16 |)),
+                                  BinOp.lt (| M.read (| sz_u8 |), M.read (| sz_u16 |) |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| len |))
-                                      (M.rust_cast
-                                        (M.read (| M.get_constant (| "core::num::MAX" |) |)))))
+                                    (BinOp.le (|
+                                      M.read (| len |),
+                                      M.rust_cast
+                                        (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1017,7 +1020,8 @@ Module slice.
                                                                     ]))
                                                             ]
                                                           |)))
-                                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               ]
                                             |)
@@ -1070,7 +1074,7 @@ Module slice.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_",
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -1162,12 +1166,13 @@ Module slice.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.rust_cast
+                                                                                BinOp.lt (|
+                                                                                  M.rust_cast
                                                                                     (M.read (|
                                                                                       index
-                                                                                    |)))
-                                                                                  (M.read (| i |))
+                                                                                    |)),
+                                                                                  M.read (| i |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -1305,12 +1310,13 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.lt (M.read (| sz_u16 |)) (M.read (| sz_u32 |)),
+                                  BinOp.lt (| M.read (| sz_u16 |), M.read (| sz_u32 |) |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| len |))
-                                      (M.rust_cast
-                                        (M.read (| M.get_constant (| "core::num::MAX" |) |)))))
+                                    (BinOp.le (|
+                                      M.read (| len |),
+                                      M.rust_cast
+                                        (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1453,7 +1459,8 @@ Module slice.
                                                                     ]))
                                                             ]
                                                           |)))
-                                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               ]
                                             |)
@@ -1506,7 +1513,7 @@ Module slice.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_",
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -1598,12 +1605,13 @@ Module slice.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.rust_cast
+                                                                                BinOp.lt (|
+                                                                                  M.rust_cast
                                                                                     (M.read (|
                                                                                       index
-                                                                                    |)))
-                                                                                  (M.read (| i |))
+                                                                                    |)),
+                                                                                  M.read (| i |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -1741,12 +1749,13 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.lt (M.read (| sz_u32 |)) (M.read (| sz_usize |)),
+                                  BinOp.lt (| M.read (| sz_u32 |), M.read (| sz_usize |) |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| len |))
-                                      (M.rust_cast
-                                        (M.read (| M.get_constant (| "core::num::MAX" |) |)))))
+                                    (BinOp.le (|
+                                      M.read (| len |),
+                                      M.rust_cast
+                                        (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1889,7 +1898,8 @@ Module slice.
                                                                     ]))
                                                             ]
                                                           |)))
-                                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               ]
                                             |)
@@ -1942,7 +1952,7 @@ Module slice.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_",
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -2034,12 +2044,13 @@ Module slice.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.rust_cast
+                                                                                BinOp.lt (|
+                                                                                  M.rust_cast
                                                                                     (M.read (|
                                                                                       index
-                                                                                    |)))
-                                                                                  (M.read (| i |))
+                                                                                    |)),
+                                                                                  M.read (| i |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -2267,7 +2278,7 @@ Module slice.
                                               Value.Tuple [ M.read (| k |); M.read (| M.use i |) ]))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2313,7 +2324,7 @@ Module slice.
                           Value.StructRecord
                             "core::ops::range::Range"
                             [
-                              ("start", Value.Integer 0);
+                              ("start", Value.Integer IntegerKind.Usize 0);
                               ("end_",
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2398,9 +2409,10 @@ Module slice.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.Pure.lt
-                                                              (M.read (| M.use index |))
-                                                              (M.read (| i |))
+                                                            BinOp.lt (|
+                                                              M.read (| M.use index |),
+                                                              M.read (| i |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2498,7 +2510,7 @@ Module slice.
                   |))
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_by_cached_key :
@@ -2527,7 +2539,7 @@ Module slice.
             |),
             [ M.read (| self |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_vec :
@@ -2554,7 +2566,7 @@ Module slice.
             M.get_function (| "alloc::slice::hack::to_vec", [ T; A ] |),
             [ M.read (| self |); M.read (| alloc |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_vec_in :
@@ -2577,7 +2589,7 @@ Module slice.
             M.get_function (| "alloc::slice::hack::into_vec", [ T; A ] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_vec :
@@ -2661,7 +2673,9 @@ Module slice.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0) |)) in
+                              (M.alloc (|
+                                BinOp.eq (| M.read (| n |), Value.Integer IntegerKind.Usize 0 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -2737,7 +2751,10 @@ Module slice.
                     |)
                   |) in
                 let~ _ :=
-                  let~ m := M.alloc (| BinOp.Wrap.shr (M.read (| n |)) (Value.Integer 1) |) in
+                  let~ m :=
+                    M.alloc (|
+                      BinOp.Wrap.shr (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
+                    |) in
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -2748,7 +2765,7 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt (M.read (| m |)) (Value.Integer 0)
+                                    BinOp.gt (| M.read (| m |), Value.Integer IntegerKind.Usize 0 |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2842,10 +2859,10 @@ Module slice.
                                       |),
                                       [
                                         buf;
-                                        BinOp.Wrap.mul
-                                          Integer.Usize
-                                          (M.read (| buf_len |))
-                                          (Value.Integer 2)
+                                        BinOp.Wrap.mul (|
+                                          M.read (| buf_len |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
                                       ]
                                     |)
                                   |) in
@@ -2854,7 +2871,10 @@ Module slice.
                                 let β := m in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.shr (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -2875,10 +2895,9 @@ Module slice.
                   |) in
                 let~ rem_len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (| capacity |))
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.read (| capacity |),
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -2887,7 +2906,8 @@ Module slice.
                           []
                         |),
                         [ buf ]
-                      |))
+                      |)
+                    |)
                   |) in
                 let~ _ :=
                   M.match_operator (|
@@ -2898,7 +2918,10 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.gt (M.read (| rem_len |)) (Value.Integer 0)
+                                BinOp.gt (|
+                                  M.read (| rem_len |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2971,7 +2994,7 @@ Module slice.
                 buf
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_repeat :
@@ -3002,7 +3025,7 @@ Module slice.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_concat :
@@ -3034,7 +3057,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| sep |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_join :
@@ -3066,7 +3089,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| sep |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_connect :
@@ -3127,7 +3150,7 @@ Module slice.
               |) in
             me
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
@@ -3183,7 +3206,7 @@ Module slice.
               |) in
             me
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
@@ -3291,7 +3314,7 @@ Module slice.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -3393,7 +3416,7 @@ Module slice.
                 |)) in
             result
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3501,11 +3524,9 @@ Module slice.
                   |) in
                 let~ size :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      BinOp.Wrap.add (|
+                        M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -3576,21 +3597,23 @@ Module slice.
                                                   |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
                           ]
-                        |))
-                        (M.call_closure (|
+                        |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ V ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |)))
-                      (Value.Integer 1)
+                        |)
+                      |),
+                      Value.Integer IntegerKind.Usize 1
+                    |)
                   |) in
                 let~ result :=
                   M.alloc (|
@@ -3739,7 +3762,7 @@ Module slice.
                 result
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3847,9 +3870,8 @@ Module slice.
                   |) in
                 let~ size :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.add (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -3920,33 +3942,34 @@ Module slice.
                                                 |)))
                                           ]
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
                         ]
-                      |))
-                      (BinOp.Wrap.mul
-                        Integer.Usize
-                        (M.call_closure (|
+                      |),
+                      BinOp.Wrap.mul (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ T ],
                             "len",
                             []
                           |),
                           [ M.read (| sep |) ]
-                        |))
-                        (BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.call_closure (|
+                        |),
+                        BinOp.Wrap.sub (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ V ],
                               "len",
                               []
                             |),
                             [ M.read (| slice |) ]
-                          |))
-                          (Value.Integer 1)))
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
+                      |)
+                    |)
                   |) in
                 let~ result :=
                   M.alloc (|
@@ -4083,7 +4106,7 @@ Module slice.
                 result
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4121,7 +4144,7 @@ Module slice.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4157,7 +4180,7 @@ Module slice.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4276,7 +4299,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4329,7 +4352,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4363,7 +4386,7 @@ Module slice.
             M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "to_vec", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4394,7 +4417,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4529,7 +4552,7 @@ Module slice.
                                       |))))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
               let~ elem_dealloc_fn :=
@@ -4594,7 +4617,7 @@ Module slice.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
               let~ run_alloc_fn :=
@@ -4641,7 +4664,7 @@ Module slice.
                                       |))))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
               let~ run_dealloc_fn :=
@@ -4709,7 +4732,7 @@ Module slice.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
               let~ _ :=
@@ -4755,7 +4778,7 @@ Module slice.
               M.alloc (| Value.Tuple [] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.

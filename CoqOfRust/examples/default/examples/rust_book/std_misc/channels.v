@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 3 |) |))).
 
 (*
 fn main() {
@@ -98,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -288,7 +288,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     |)))
                                                               ]
                                                             |)))
-                                                        | _ => ltac:(M.monadic (M.impossible (||)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |)
@@ -355,7 +356,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -615,7 +616,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "channels::main" main.

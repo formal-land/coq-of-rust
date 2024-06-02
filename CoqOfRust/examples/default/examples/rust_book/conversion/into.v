@@ -22,7 +22,7 @@ Module Impl_core_convert_From_i32_for_into_Number.
       ltac:(M.monadic
         (let item := M.alloc (| item |) in
         Value.StructRecord "into::Number" [ ("value", M.read (| item |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -53,12 +53,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "into",
                 []
               |),
-              [ Value.Integer 5 ]
+              [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "into::main" main.

@@ -40,7 +40,7 @@ Module inspector.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -82,7 +82,7 @@ Module inspector.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -116,7 +116,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -168,7 +168,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -495,10 +495,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -510,10 +510,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 1;
+                                        Value.Integer IntegerKind.Usize 1;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -525,10 +525,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 2;
+                                        Value.Integer IntegerKind.Usize 2;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.U32 4;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -540,10 +540,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 3;
+                                        Value.Integer IntegerKind.Usize 3;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -555,10 +555,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.Usize 4;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -570,10 +570,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 5;
+                                        Value.Integer IntegerKind.Usize 5;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -585,10 +585,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 6;
+                                        Value.Integer IntegerKind.Usize 6;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
+                                        Value.Integer IntegerKind.U32 4;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -600,10 +600,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 7;
+                                        Value.Integer IntegerKind.Usize 7;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -615,10 +615,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 8;
+                                        Value.Integer IntegerKind.Usize 8;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -630,10 +630,10 @@ Module inspector.
                                         []
                                       |),
                                       [
-                                        Value.Integer 9;
+                                        Value.Integer IntegerKind.Usize 9;
                                         Value.UnicodeChar 32;
                                         Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.U32 0;
                                         Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                         Value.StructTuple "core::fmt::rt::Count::Implied" []
                                       ]
@@ -677,7 +677,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -717,7 +717,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -758,7 +758,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -799,7 +799,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -981,7 +981,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1118,7 +1118,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1203,7 +1203,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -213,7 +213,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -254,7 +254,7 @@ Module db.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -317,7 +317,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -370,9 +370,9 @@ Module db.
                       [ M.read (| other |) ]
                     |)
                   |) in
-                M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+                M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -404,7 +404,7 @@ Module db.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -460,7 +460,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -509,7 +509,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -554,7 +554,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -595,7 +595,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_not_known :
@@ -714,7 +714,7 @@ Module db.
                         "new",
                         []
                       |),
-                      [ Value.Integer 0; Value.Integer 0 ]
+                      [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
                     |));
                   ("revert_account",
                     M.call_closure (|
@@ -775,7 +775,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -814,7 +814,7 @@ Module db.
                   []
                 |))
                 [ ("revert_range", M.read (| revert_range |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -857,7 +857,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_state_address :
@@ -928,7 +928,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_state_original_account_info :
@@ -999,7 +999,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_state_present_account_info :
@@ -1076,7 +1076,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_state_storage :
@@ -1122,7 +1122,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert_address :
@@ -1207,7 +1207,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert_account_info :
@@ -1291,7 +1291,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert_storage :
@@ -1338,7 +1338,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_contract : M.IsAssociatedFunction Self "contract" contract.
@@ -1427,7 +1427,7 @@ Module db.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ state_size := M.alloc (| Value.Integer 0 |) in
+                let~ state_size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ state :=
                   M.alloc (|
                     M.call_closure (|
@@ -1885,8 +1885,8 @@ Module db.
                                                                                                   ]
                                                                                                 |)))
                                                                                             | _ =>
-                                                                                              ltac:(M.monadic
-                                                                                                (M.impossible (||)))
+                                                                                              M.impossible
+                                                                                                "wrong number of arguments"
                                                                                             end))
                                                                                     ]
                                                                                   |)
@@ -1895,8 +1895,8 @@ Module db.
                                                                         ]
                                                                       |)))
                                                                   | _ =>
-                                                                    ltac:(M.monadic
-                                                                      (M.impossible (||)))
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
                                                                   end))
                                                           ]
                                                         |)
@@ -1980,10 +1980,9 @@ Module db.
                                                   let β := state_size in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -1991,7 +1990,8 @@ Module db.
                                                           []
                                                         |),
                                                         [ bundle_account ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |) in
                                                 M.alloc (|
                                                   Value.Tuple
@@ -2003,14 +2003,14 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
                       ]
                     |)
                   |) in
-                let~ reverts_size := M.alloc (| Value.Integer 0 |) in
+                let~ reverts_size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ reverts_map :=
                   M.alloc (|
                     M.call_closure (|
@@ -2691,8 +2691,8 @@ Module db.
                                                                                               ]
                                                                                             |)))
                                                                                         | _ =>
-                                                                                          ltac:(M.monadic
-                                                                                            (M.impossible (||)))
+                                                                                          M.impossible
+                                                                                            "wrong number of arguments"
                                                                                         end))
                                                                                 ]
                                                                               |)
@@ -2701,7 +2701,8 @@ Module db.
                                                                     ]
                                                                   |)))
                                                               | _ =>
-                                                                ltac:(M.monadic (M.impossible (||)))
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       ]
                                                     |)
@@ -2766,10 +2767,9 @@ Module db.
                                                       let β := reverts_size in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| β |))
-                                                          (M.call_closure (|
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "revm::db::states::reverts::AccountRevert",
@@ -2777,7 +2777,8 @@ Module db.
                                                               []
                                                             |),
                                                             [ account_revert ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |) in
                                                     let~ _ :=
                                                       M.alloc (|
@@ -2895,7 +2896,7 @@ Module db.
                                           |)))
                                     ]
                                   |)))
-                              | _ => ltac:(M.monadic (M.impossible (||)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -2993,7 +2994,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
@@ -3013,7 +3014,7 @@ Module db.
                 "revm::db::states::bundle_state::BundleBuilder",
                 "states"
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_get_states : M.IsAssociatedFunction Self "get_states" get_states.
@@ -3080,7 +3081,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3121,7 +3122,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_includes_reverts :
@@ -3235,7 +3236,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3356,7 +3357,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3430,7 +3431,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3562,40 +3563,42 @@ Module db.
                       |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::db::states::bundle_state::BundleState",
                           "state_size"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::db::states::bundle_state::BundleState",
                           "state_size"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm::db::states::bundle_state::BundleState",
                         "reverts_size"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm::db::states::bundle_state::BundleState",
                         "reverts_size"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3654,7 +3657,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3687,7 +3690,7 @@ Module db.
                 |),
                 [ M.read (| revert_range |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_builder : M.IsAssociatedFunction Self "builder" builder.
@@ -3785,7 +3788,7 @@ Module db.
               let reverts := M.alloc (| reverts |) in
               let contracts := M.alloc (| contracts |) in
               M.read (|
-                let~ state_size := M.alloc (| Value.Integer 0 |) in
+                let~ state_size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ state :=
                   M.alloc (|
                     M.call_closure (|
@@ -4122,8 +4125,8 @@ Module db.
                                                                             ]
                                                                           |)))
                                                                       | _ =>
-                                                                        ltac:(M.monadic
-                                                                          (M.impossible (||)))
+                                                                        M.impossible
+                                                                          "wrong number of arguments"
                                                                       end))
                                                               ]
                                                             |)
@@ -4139,10 +4142,9 @@ Module db.
                                                   let β := state_size in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -4150,7 +4152,8 @@ Module db.
                                                           []
                                                         |),
                                                         [ account ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |) in
                                                 M.alloc (|
                                                   Value.Tuple
@@ -4159,14 +4162,14 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
                       ]
                     |)
                   |) in
-                let~ reverts_size := M.alloc (| Value.Integer 0 |) in
+                let~ reverts_size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ reverts :=
                   M.alloc (|
                     M.call_closure (|
@@ -4650,8 +4653,8 @@ Module db.
                                                                                                         ]
                                                                                                       |)))
                                                                                                   | _ =>
-                                                                                                    ltac:(M.monadic
-                                                                                                      (M.impossible (||)))
+                                                                                                    M.impossible
+                                                                                                      "wrong number of arguments"
                                                                                                   end))
                                                                                           ]
                                                                                         |)
@@ -4670,10 +4673,9 @@ Module db.
                                                                             let β := reverts_size in
                                                                             M.write (|
                                                                               β,
-                                                                              BinOp.Wrap.add
-                                                                                Integer.Usize
-                                                                                (M.read (| β |))
-                                                                                (M.call_closure (|
+                                                                              BinOp.Wrap.add (|
+                                                                                M.read (| β |),
+                                                                                M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "revm::db::states::reverts::AccountRevert",
@@ -4681,7 +4683,8 @@ Module db.
                                                                                     []
                                                                                   |),
                                                                                   [ revert ]
-                                                                                |))
+                                                                                |)
+                                                                              |)
                                                                             |) in
                                                                           M.alloc (|
                                                                             Value.Tuple
@@ -4696,7 +4699,8 @@ Module db.
                                                                   ]
                                                                 |)))
                                                             | _ =>
-                                                              ltac:(M.monadic (M.impossible (||)))
+                                                              M.impossible
+                                                                "wrong number of arguments"
                                                             end))
                                                     ]
                                                   |)
@@ -4704,7 +4708,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -4760,7 +4764,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4775,25 +4779,24 @@ Module db.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (BinOp.Wrap.add
-                  Integer.Usize
-                  (M.read (|
+              BinOp.Wrap.add (|
+                BinOp.Wrap.add (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::bundle_state::BundleState",
                       "state_size"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::bundle_state::BundleState",
                       "reverts_size"
                     |)
-                  |)))
-                (M.call_closure (|
+                  |)
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
@@ -4812,8 +4815,9 @@ Module db.
                       "contracts"
                     |)
                   ]
-                |))))
-          | _, _ => M.impossible
+                |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_size_hint : M.IsAssociatedFunction Self "size_hint" size_hint.
@@ -4833,7 +4837,7 @@ Module db.
                 "revm::db::states::bundle_state::BundleState",
                 "state"
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_state : M.IsAssociatedFunction Self "state" state.
@@ -4848,17 +4852,18 @@ Module db.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "revm::db::states::bundle_state::BundleState",
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (Value.Integer 0)))
-          | _, _ => M.impossible
+                |),
+                Value.Integer IntegerKind.Usize 0
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -4893,7 +4898,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -4930,7 +4935,7 @@ Module db.
                   M.read (| address |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_account : M.IsAssociatedFunction Self "account" account.
@@ -4978,7 +4983,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -5088,7 +5093,7 @@ Module db.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                       ]
                     |)
                   |) in
@@ -5348,10 +5353,9 @@ Module db.
                                                           |) in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.sub
-                                                            Integer.Usize
-                                                            (M.read (| β |))
-                                                            (M.call_closure (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| β |),
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "revm::db::states::bundle_account::BundleAccount",
@@ -5359,7 +5363,8 @@ Module db.
                                                                 []
                                                               |),
                                                               [ M.read (| entry |) ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let~ revert :=
                                                         M.alloc (|
@@ -5385,10 +5390,9 @@ Module db.
                                                           |) in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.add
-                                                            Integer.Usize
-                                                            (M.read (| β |))
-                                                            (M.call_closure (|
+                                                          BinOp.Wrap.add (|
+                                                            M.read (| β |),
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "revm::db::states::bundle_account::BundleAccount",
@@ -5396,7 +5400,8 @@ Module db.
                                                                 []
                                                               |),
                                                               [ M.read (| entry |) ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |) in
                                                       revert));
                                                   fun γ =>
@@ -5470,10 +5475,9 @@ Module db.
                                                                     |) in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.add
-                                                                      Integer.Usize
-                                                                      (M.read (| β |))
-                                                                      (M.call_closure (|
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| β |),
+                                                                      M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -5481,7 +5485,8 @@ Module db.
                                                                           []
                                                                         |),
                                                                         [ present_bundle ]
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |) in
                                                                 let~ _ :=
                                                                   M.alloc (|
@@ -5566,8 +5571,8 @@ Module db.
                                                                       ]
                                                                     |)))
                                                                 | _ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.impossible (||)))
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         ]
                                                       |)
@@ -5588,10 +5593,9 @@ Module db.
                                                       |) in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (M.call_closure (|
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "revm::db::states::reverts::AccountRevert",
@@ -5599,7 +5603,8 @@ Module db.
                                                             []
                                                           |),
                                                           [ revert ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     M.alloc (|
@@ -5686,7 +5691,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_apply_transitions_and_create_reverts :
@@ -6198,10 +6203,11 @@ Module db.
                                                                           not_destroyed_and_changed :=
                                                                       M.alloc (|
                                                                         LogicalOp.and (|
-                                                                          UnOp.Pure.not
-                                                                            (M.read (|
+                                                                          UnOp.not (|
+                                                                            M.read (|
                                                                               was_destroyed
-                                                                            |)),
+                                                                            |)
+                                                                          |),
                                                                           ltac:(M.monadic
                                                                             (M.call_closure (|
                                                                               M.get_associated_function (|
@@ -6315,8 +6321,8 @@ Module db.
                                                     M.use
                                                       (M.alloc (|
                                                         LogicalOp.or (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
@@ -6332,7 +6338,8 @@ Module db.
                                                                 []
                                                               |),
                                                               [ account_storage_changed ]
-                                                            |)),
+                                                            |)
+                                                          |),
                                                           ltac:(M.monadic
                                                             (M.read (| was_destroyed |)))
                                                         |)
@@ -6521,7 +6528,7 @@ Module db.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -6538,7 +6545,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_plain_state :
@@ -6598,7 +6605,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_plain_state_and_reverts :
@@ -6778,10 +6785,9 @@ Module db.
                                                     |) in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -6789,7 +6795,8 @@ Module db.
                                                           []
                                                         |),
                                                         [ M.read (| this |) ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -7059,10 +7066,9 @@ Module db.
                                                     |) in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -7070,7 +7076,8 @@ Module db.
                                                           []
                                                         |),
                                                         [ M.read (| this |) ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -7091,10 +7098,9 @@ Module db.
                                                     |) in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -7102,7 +7108,8 @@ Module db.
                                                           []
                                                         |),
                                                         [ other_account ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.alloc (|
@@ -7136,7 +7143,7 @@ Module db.
                     ]
                   |))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_extend_state :
@@ -7682,10 +7689,9 @@ Module db.
                                               |) in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (M.call_closure (|
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "revm::db::states::reverts::AccountRevert",
@@ -7693,7 +7699,8 @@ Module db.
                                                     []
                                                   |),
                                                   [ M.read (| revert |) ]
-                                                |))
+                                                |)
+                                              |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -7794,7 +7801,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -7833,9 +7840,9 @@ Module db.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.read (| reverts_to_take |))
-                                      (M.call_closure (|
+                                    BinOp.gt (|
+                                      M.read (| reverts_to_take |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -7875,7 +7882,8 @@ Module db.
                                             ]
                                           |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8115,7 +8123,7 @@ Module db.
                                         |)
                                       ]
                                     |);
-                                    Value.Integer 0;
+                                    Value.Integer IntegerKind.Usize 0;
                                     M.closure
                                       (fun γ =>
                                         ltac:(M.monadic
@@ -8145,10 +8153,9 @@ Module db.
                                                                   1
                                                                 |) in
                                                               let revert := M.alloc (| γ1_1 |) in
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| acc |))
-                                                                (M.call_closure (|
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| acc |),
+                                                                M.call_closure (|
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "revm::db::states::reverts::AccountRevert",
@@ -8156,12 +8163,13 @@ Module db.
                                                                     []
                                                                   |),
                                                                   [ M.read (| revert |) ]
-                                                                |))))
+                                                                |)
+                                                              |)))
                                                         ]
                                                       |)))
                                                 ]
                                               |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -8211,7 +8219,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take_n_reverts :
@@ -8236,7 +8244,7 @@ Module db.
                       "revm::db::states::bundle_state::BundleState",
                       "reverts_size"
                     |),
-                    Value.Integer 0
+                    Value.Integer IntegerKind.Usize 0
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -8254,7 +8262,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take_all_reverts :
@@ -8488,10 +8496,9 @@ Module db.
                                                                   |) in
                                                                 M.write (|
                                                                   β,
-                                                                  BinOp.Wrap.sub
-                                                                    Integer.Usize
-                                                                    (M.read (| β |))
-                                                                    (M.call_closure (|
+                                                                  BinOp.Wrap.sub (|
+                                                                    M.read (| β |),
+                                                                    M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "revm::db::states::reverts::AccountRevert",
@@ -8499,7 +8506,8 @@ Module db.
                                                                         []
                                                                       |),
                                                                       [ revert_account ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |) in
                                                               M.match_operator (|
                                                                 M.alloc (|
@@ -8568,10 +8576,9 @@ Module db.
                                                                           |) in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Wrap.sub
-                                                                            Integer.Usize
-                                                                            (M.read (| β |))
-                                                                            (M.call_closure (|
+                                                                          BinOp.Wrap.sub (|
+                                                                            M.read (| β |),
+                                                                            M.call_closure (|
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "revm::db::states::bundle_account::BundleAccount",
@@ -8580,7 +8587,8 @@ Module db.
                                                                               |),
                                                                               [ M.read (| account |)
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |) in
                                                                       M.match_operator (|
                                                                         M.alloc (|
@@ -8653,10 +8661,9 @@ Module db.
                                                                                   |) in
                                                                                 M.write (|
                                                                                   β,
-                                                                                  BinOp.Wrap.add
-                                                                                    Integer.Usize
-                                                                                    (M.read (| β |))
-                                                                                    (M.call_closure (|
+                                                                                  BinOp.Wrap.add (|
+                                                                                    M.read (| β |),
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "revm::db::states::bundle_account::BundleAccount",
@@ -8668,7 +8675,8 @@ Module db.
                                                                                           account
                                                                                         |)
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 Value.Tuple []
@@ -8735,8 +8743,8 @@ Module db.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.call_closure (|
+                                                                                    UnOp.not (|
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "revm::db::states::bundle_account::BundleAccount",
@@ -8749,7 +8757,8 @@ Module db.
                                                                                             revert_account
                                                                                           |)
                                                                                         ]
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -8767,10 +8776,9 @@ Module db.
                                                                                   |) in
                                                                                 M.write (|
                                                                                   β,
-                                                                                  BinOp.Wrap.add
-                                                                                    Integer.Usize
-                                                                                    (M.read (| β |))
-                                                                                    (M.call_closure (|
+                                                                                  BinOp.Wrap.add (|
+                                                                                    M.read (| β |),
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "revm::db::states::bundle_account::BundleAccount",
@@ -8778,7 +8786,8 @@ Module db.
                                                                                         []
                                                                                       |),
                                                                                       [ account ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |) in
                                                                               let~ _ :=
                                                                                 M.alloc (|
@@ -8834,7 +8843,7 @@ Module db.
                     M.alloc (| Value.Bool false |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert_latest :
@@ -8873,7 +8882,10 @@ Module db.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq (M.read (| num_transitions |)) (Value.Integer 0)
+                                    BinOp.eq (|
+                                      M.read (| num_transitions |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8914,7 +8926,10 @@ Module db.
                                   let β := num_transitions in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -8924,9 +8939,10 @@ Module db.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.eq
-                                                (M.read (| num_transitions |))
-                                                (Value.Integer 0)
+                                              BinOp.eq (|
+                                                M.read (| num_transitions |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -8957,7 +8973,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_revert : M.IsAssociatedFunction Self "revert" revert.
@@ -9067,7 +9083,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_prepend_state :

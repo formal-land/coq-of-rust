@@ -24,7 +24,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ elem := M.alloc (| Value.Integer 5 |) in
+        let~ elem := M.alloc (| Value.Integer IntegerKind.U8 5 |) in
         let~ vec :=
           M.alloc (|
             M.call_closure (|
@@ -94,7 +94,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inference::main" main.

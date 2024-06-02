@@ -147,7 +147,7 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         res
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_comp_sci_student_greeting :
@@ -155,6 +155,9 @@ Axiom Function_comp_sci_student_greeting :
 
 (* fn main() {} *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  match τ, α with
+  | [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Axiom Function_main : M.IsFunction "supertraits::main" main.

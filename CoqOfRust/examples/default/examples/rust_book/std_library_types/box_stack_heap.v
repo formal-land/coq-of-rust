@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -73,7 +73,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -114,7 +114,7 @@ Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
       (Value.StructRecord
         "box_stack_heap::Point"
         [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
@@ -143,7 +143,7 @@ Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
             [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
@@ -611,7 +611,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "box_stack_heap::main" main.

@@ -16,7 +16,7 @@ Definition gen_range (τ : list Ty.t) (α : list Value.t) : M :=
           [ M.read (| Value.String "not yet implemented" |) ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
@@ -340,7 +340,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "guessing_game::main" main.

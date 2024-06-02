@@ -40,7 +40,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -59,19 +59,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.I8
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -112,7 +109,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -131,19 +128,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.I8
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -186,7 +180,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -219,11 +213,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -266,7 +260,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -299,11 +293,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -344,7 +338,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -363,19 +357,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.I16
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -416,7 +407,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -435,19 +426,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.I16
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -490,7 +478,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -523,11 +511,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -570,7 +558,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -603,11 +591,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -648,7 +636,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -667,19 +655,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.I32
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -720,7 +705,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -739,19 +724,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.I32
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -794,7 +776,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -827,11 +809,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -874,7 +856,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -907,11 +889,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -952,7 +934,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -971,19 +953,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.I64
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1024,7 +1003,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1043,19 +1022,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.I64
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1098,7 +1074,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1131,11 +1107,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1178,7 +1154,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1211,11 +1187,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1256,7 +1232,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1275,19 +1251,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.I128
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1328,7 +1301,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1347,19 +1320,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.I128
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1402,7 +1372,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1435,11 +1405,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1482,7 +1452,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1515,11 +1485,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1560,7 +1530,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Isize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1579,19 +1549,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.Isize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1632,7 +1599,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Isize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1651,19 +1618,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.Isize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1706,7 +1670,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Isize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1739,11 +1703,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1786,7 +1750,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Isize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1819,11 +1783,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1864,7 +1828,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1883,19 +1847,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.U8
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1936,7 +1897,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1955,19 +1916,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U8
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2010,7 +1968,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2043,11 +2001,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2090,7 +2048,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2123,11 +2081,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2168,7 +2126,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2187,19 +2145,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.U16
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2240,7 +2195,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2259,19 +2214,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U16
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2314,7 +2266,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2347,11 +2299,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2394,7 +2346,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2427,11 +2379,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2472,7 +2424,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2491,19 +2443,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.U32
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2544,7 +2493,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2563,19 +2512,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U32
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2618,7 +2564,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2651,11 +2597,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2698,7 +2644,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2731,11 +2677,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2776,7 +2722,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2795,19 +2741,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.U64
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2848,7 +2791,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2867,19 +2810,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U64
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2922,7 +2862,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -2955,11 +2895,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3002,7 +2942,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3035,11 +2975,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3080,7 +3020,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3099,19 +3039,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.U128
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3152,7 +3089,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3171,19 +3108,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U128
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3226,7 +3160,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3259,11 +3193,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3306,7 +3240,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3339,11 +3273,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3384,7 +3318,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3403,19 +3337,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3456,7 +3387,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Usize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3475,19 +3406,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3530,7 +3458,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3563,11 +3491,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3610,7 +3538,7 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Usize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3643,11 +3571,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3697,7 +3625,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3736,11 +3666,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3790,7 +3720,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3829,11 +3761,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3886,7 +3818,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -3929,11 +3863,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3992,7 +3926,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4035,11 +3971,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4095,7 +4031,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4134,11 +4072,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4188,7 +4126,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4227,11 +4167,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4284,7 +4224,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4327,11 +4269,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4390,7 +4332,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4433,11 +4377,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4493,7 +4437,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4532,11 +4478,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4586,7 +4532,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4625,11 +4573,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4682,7 +4630,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4725,11 +4675,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4788,7 +4738,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4831,11 +4783,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4891,7 +4843,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -4930,11 +4884,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4984,7 +4938,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5023,11 +4979,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5080,7 +5036,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5123,11 +5081,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5186,7 +5144,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5229,11 +5189,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5289,7 +5249,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5328,11 +5290,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5382,7 +5344,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5421,11 +5385,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5481,7 +5445,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5524,11 +5490,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5590,7 +5556,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5633,11 +5601,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5693,7 +5661,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5732,11 +5702,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5786,7 +5756,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5825,11 +5797,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5885,7 +5857,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -5928,11 +5902,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5994,7 +5968,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6037,11 +6013,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6097,7 +6073,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6136,11 +6114,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6190,7 +6168,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6229,11 +6209,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6286,7 +6266,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6329,11 +6311,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6392,7 +6374,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6435,11 +6419,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6495,7 +6479,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6534,11 +6520,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6588,7 +6574,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6627,11 +6615,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6684,7 +6672,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6727,11 +6717,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6790,7 +6780,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6833,11 +6825,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6893,7 +6885,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -6932,11 +6926,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6986,7 +6980,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7025,11 +7021,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7082,7 +7078,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7125,11 +7123,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7188,7 +7186,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7231,11 +7231,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7291,7 +7291,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7330,11 +7332,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7384,7 +7386,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7423,11 +7427,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7480,7 +7484,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7523,11 +7529,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7586,7 +7592,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7629,11 +7637,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7689,7 +7697,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7728,11 +7738,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7782,7 +7792,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7821,11 +7833,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7881,7 +7893,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7924,11 +7938,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7990,7 +8004,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8033,11 +8049,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8093,7 +8109,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8132,11 +8150,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8186,7 +8204,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8225,11 +8245,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8285,7 +8305,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8328,11 +8350,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8394,7 +8416,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8437,11 +8461,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8507,19 +8531,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8579,19 +8600,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8667,11 +8685,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8747,11 +8765,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8811,19 +8829,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8883,19 +8898,16 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| a |))
-                                              (M.read (| b |))))
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
                                       ]
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8971,11 +8983,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9051,11 +9063,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9143,11 +9155,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9237,11 +9249,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9331,11 +9343,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9425,11 +9437,11 @@ Module iter.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

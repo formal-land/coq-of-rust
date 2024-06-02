@@ -42,7 +42,7 @@ Module str.
             M.get_function (| "core::str::slice_error_fail_rt", [] |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_error_fail : M.IsFunction "core::str::slice_error_fail" slice_error_fail.
@@ -100,7 +100,7 @@ Module str.
                 |)))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_error_fail_ct :
@@ -190,12 +190,13 @@ Module str.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| trunc_len |))
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.read (| trunc_len |),
+                              M.call_closure (|
                                 M.get_associated_function (| Ty.path "str", "len", [] |),
                                 [ M.read (| s |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       Value.String "[...]"));
@@ -213,19 +214,21 @@ Module str.
                       M.use
                         (M.alloc (|
                           LogicalOp.or (|
-                            BinOp.Pure.gt
-                              (M.read (| begin |))
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.read (| begin |),
+                              M.call_closure (|
                                 M.get_associated_function (| Ty.path "str", "len", [] |),
                                 [ M.read (| s |) ]
-                              |)),
+                              |)
+                            |),
                             ltac:(M.monadic
-                              (BinOp.Pure.gt
-                                (M.read (| end_ |))
-                                (M.call_closure (|
+                              (BinOp.gt (|
+                                M.read (| end_ |),
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "str", "len", [] |),
                                   [ M.read (| s |) ]
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -242,16 +245,17 @@ Module str.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.gt
-                                              (M.read (| begin |))
-                                              (M.call_closure (|
+                                            BinOp.gt (|
+                                              M.read (| begin |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| s |) ]
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -335,7 +339,7 @@ Module str.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not (BinOp.Pure.le (M.read (| begin |)) (M.read (| end_ |)))
+                          UnOp.not (| BinOp.le (| M.read (| begin |), M.read (| end_ |) |) |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -419,15 +423,16 @@ Module str.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
                                   []
                                 |),
                                 [ M.read (| s |); M.read (| begin |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       begin));
@@ -498,13 +503,13 @@ Module str.
                 [
                   ("start", M.read (| char_start |));
                   ("end_",
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (| char_start |))
-                      (M.call_closure (|
+                    BinOp.Wrap.add (|
+                      M.read (| char_start |),
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
                         [ M.read (| ch |) ]
-                      |)))
+                      |)
+                    |))
                 ]
             |) in
           M.alloc (|
@@ -579,7 +584,7 @@ Module str.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_error_fail_rt :
@@ -587,7 +592,7 @@ Module str.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 256 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   End slice_error_fail_rt.
   
   Module Impl_str.
@@ -603,8 +608,16 @@ Module str.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| (* thir failed to compile: Any { .. } *) M.alloc (| Value.Tuple [] |) |)))
-      | _, _ => M.impossible
+          M.call_closure (|
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [ Ty.path "u8" ], "len", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                [ M.read (| self |) ]
+              |)
+            ]
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -619,13 +632,14 @@ Module str.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "str", "len", [] |),
               [ M.read (| self |) ]
-            |))
-            (Value.Integer 0)))
-      | _, _ => M.impossible
+            |),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -674,7 +688,7 @@ Module str.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq (M.read (| index |)) (Value.Integer 0)
+                                BinOp.eq (| M.read (| index |), Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -706,12 +720,13 @@ Module str.
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (|
-                          BinOp.Pure.eq
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -737,7 +752,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_char_boundary :
@@ -773,12 +788,13 @@ Module str.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ge
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.ge (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -793,7 +809,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
-                          [ M.read (| index |); Value.Integer 3 ]
+                          [ M.read (| index |); Value.Integer IntegerKind.Usize 3 ]
                         |)
                       |) in
                     let~ new_index :=
@@ -877,28 +893,28 @@ Module str.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
                       |) in
                     M.alloc (|
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (| lower_bound |))
-                        (M.call_closure (|
+                      BinOp.Wrap.add (|
+                        M.read (| lower_bound |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
                             "unwrap_unchecked",
                             []
                           |),
                           [ M.read (| new_index |) ]
-                        |))
+                        |)
+                      |)
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_floor_char_boundary :
@@ -932,12 +948,13 @@ Module str.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| index |))
-                            (M.call_closure (|
+                          BinOp.gt (|
+                            M.read (| index |),
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -953,7 +970,10 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                           [
-                            BinOp.Wrap.add Integer.Usize (M.read (| index |)) (Value.Integer 4);
+                            BinOp.Wrap.add (|
+                              M.read (| index |),
+                              Value.Integer IntegerKind.Usize 4
+                            |);
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
@@ -1047,7 +1067,7 @@ Module str.
                                                 |)))
                                           ]
                                         |)))
-                                    | _ => ltac:(M.monadic (M.impossible (||)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |);
@@ -1064,13 +1084,13 @@ Module str.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let pos := M.copy (| γ |) in
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| pos |))
-                                              (M.read (| index |))))
+                                            BinOp.Wrap.add (|
+                                              M.read (| pos |),
+                                              M.read (| index |)
+                                            |)))
                                       ]
                                     |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -1078,7 +1098,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ceil_char_boundary :
@@ -1095,8 +1115,17 @@ Module str.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| (* thir failed to compile: Any { .. } *) M.alloc (| Value.Tuple [] |) |)))
-      | _, _ => M.impossible
+          M.call_closure (|
+            M.get_function (|
+              "core::intrinsics::transmute",
+              [
+                Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+              ]
+            |),
+            [ M.read (| self |) ]
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -1116,7 +1145,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_bytes_mut : M.IsAssociatedFunction Self "as_bytes_mut" as_bytes_mut.
@@ -1132,7 +1161,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
@@ -1148,7 +1177,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_ptr : M.IsAssociatedFunction Self "as_mut_ptr" as_mut_ptr.
@@ -1174,7 +1203,7 @@ Module str.
             |),
             [ M.read (| i |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -1200,7 +1229,7 @@ Module str.
             |),
             [ M.read (| i |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
@@ -1229,7 +1258,7 @@ Module str.
             |),
             [ M.read (| i |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_unchecked :
@@ -1259,7 +1288,7 @@ Module str.
             |),
             [ M.read (| i |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_unchecked_mut :
@@ -1295,7 +1324,7 @@ Module str.
               M.read (| self |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_slice_unchecked :
@@ -1331,7 +1360,7 @@ Module str.
               M.read (| self |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_slice_mut_unchecked :
@@ -1382,7 +1411,10 @@ Module str.
                               M.read (| self |);
                               Value.StructRecord
                                 "core::ops::range::Range"
-                                [ ("start", Value.Integer 0); ("end_", M.read (| mid |)) ]
+                                [
+                                  ("start", Value.Integer IntegerKind.Usize 0);
+                                  ("end_", M.read (| mid |))
+                                ]
                             ]
                           |);
                           M.call_closure (|
@@ -1413,14 +1445,14 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
+                          [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| mid |) ]
                         |)
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at : M.IsAssociatedFunction Self "split_at" split_at.
@@ -1510,7 +1542,7 @@ Module str.
                                     |),
                                     [ M.read (| ptr |); M.read (| mid |) ]
                                   |);
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
+                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |)
                                 ]
                               |)
                             ]
@@ -1523,14 +1555,14 @@ Module str.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::str::slice_error_fail", [] |),
-                          [ M.read (| self |); Value.Integer 0; M.read (| mid |) ]
+                          [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| mid |) ]
                         |)
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at_mut : M.IsAssociatedFunction Self "split_at_mut" split_at_mut.
@@ -1563,7 +1595,7 @@ Module str.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_chars : M.IsAssociatedFunction Self "chars" chars.
@@ -1581,14 +1613,14 @@ Module str.
           Value.StructRecord
             "core::str::iter::CharIndices"
             [
-              ("front_offset", Value.Integer 0);
+              ("front_offset", Value.Integer IntegerKind.Usize 0);
               ("iter",
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "str", "chars", [] |),
                   [ M.read (| self |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_char_indices : M.IsAssociatedFunction Self "char_indices" char_indices.
@@ -1631,7 +1663,7 @@ Module str.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
@@ -1673,7 +1705,7 @@ Module str.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_whitespace :
@@ -1751,7 +1783,7 @@ Module str.
                 [ ("inner", M.read (| inner |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_ascii_whitespace :
@@ -1791,7 +1823,7 @@ Module str.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_lines : M.IsAssociatedFunction Self "lines" lines.
@@ -1814,7 +1846,7 @@ Module str.
                 [ M.read (| self |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_lines_any : M.IsAssociatedFunction Self "lines_any" lines_any.
@@ -1837,9 +1869,9 @@ Module str.
                   M.get_associated_function (| Ty.path "str", "chars", [] |),
                   [ M.read (| self |) ]
                 |));
-              ("extra", Value.Integer 0)
+              ("extra", Value.Integer IntegerKind.U16 0)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_encode_utf16 : M.IsAssociatedFunction Self "encode_utf16" encode_utf16.
@@ -1859,7 +1891,7 @@ Module str.
             M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_contained_in", [] |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
@@ -1879,7 +1911,7 @@ Module str.
             M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_prefix_of", [] |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_starts_with : M.IsAssociatedFunction Self "starts_with" starts_with.
@@ -1902,7 +1934,7 @@ Module str.
             M.get_trait_method (| "core::str::pattern::Pattern", P, [], "is_suffix_of", [] |),
             [ M.read (| pat |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ends_with : M.IsAssociatedFunction Self "ends_with" ends_with.
@@ -1972,11 +2004,11 @@ Module str.
                                 M.read (| i |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_find : M.IsAssociatedFunction Self "find" find.
@@ -2049,11 +2081,11 @@ Module str.
                                 M.read (| i |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rfind : M.IsAssociatedFunction Self "rfind" rfind.
@@ -2081,7 +2113,7 @@ Module str.
               Value.StructRecord
                 "core::str::iter::SplitInternal"
                 [
-                  ("start", Value.Integer 0);
+                  ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2102,7 +2134,7 @@ Module str.
                   ("finished", Value.Bool false)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split : M.IsAssociatedFunction Self "split" split.
@@ -2130,7 +2162,7 @@ Module str.
               Value.StructRecord
                 "core::str::iter::SplitInternal"
                 [
-                  ("start", Value.Integer 0);
+                  ("start", Value.Integer IntegerKind.Usize 0);
                   ("end_",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2151,7 +2183,7 @@ Module str.
                   ("finished", Value.Bool false)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_inclusive :
@@ -2187,7 +2219,7 @@ Module str.
                 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit : M.IsAssociatedFunction Self "rsplit" rsplit.
@@ -2221,7 +2253,7 @@ Module str.
                 |))
                 [ ("allow_trailing_empty", Value.Bool false) ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_terminator :
@@ -2257,7 +2289,7 @@ Module str.
                 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_terminator :
@@ -2297,7 +2329,7 @@ Module str.
                   ("count", M.read (| n |))
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_splitn : M.IsAssociatedFunction Self "splitn" splitn.
@@ -2333,7 +2365,7 @@ Module str.
                 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplitn : M.IsAssociatedFunction Self "rsplitn" rsplitn.
@@ -2500,7 +2532,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_once : M.IsAssociatedFunction Self "split_once" split_once.
@@ -2670,7 +2702,7 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_once : M.IsAssociatedFunction Self "rsplit_once" rsplit_once.
@@ -2704,7 +2736,7 @@ Module str.
                   |)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_matches : M.IsAssociatedFunction Self "matches" matches.
@@ -2739,7 +2771,7 @@ Module str.
                 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rmatches : M.IsAssociatedFunction Self "rmatches" rmatches.
@@ -2773,7 +2805,7 @@ Module str.
                   |)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_match_indices :
@@ -2809,7 +2841,7 @@ Module str.
                 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rmatch_indices :
@@ -2855,11 +2887,11 @@ Module str.
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim : M.IsAssociatedFunction Self "trim" trim.
@@ -2904,11 +2936,11 @@ Module str.
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_start : M.IsAssociatedFunction Self "trim_start" trim_start.
@@ -2953,11 +2985,11 @@ Module str.
                                 |)))
                           ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_end : M.IsAssociatedFunction Self "trim_end" trim_end.
@@ -2976,7 +3008,7 @@ Module str.
             M.get_associated_function (| Ty.path "str", "trim_start", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_left : M.IsAssociatedFunction Self "trim_left" trim_left.
@@ -2995,7 +3027,7 @@ Module str.
             M.get_associated_function (| Ty.path "str", "trim_end", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_right : M.IsAssociatedFunction Self "trim_right" trim_right.
@@ -3027,8 +3059,8 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let~ i := M.alloc (| Value.Integer 0 |) in
-            let~ j := M.alloc (| Value.Integer 0 |) in
+            let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ j := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3126,7 +3158,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_matches : M.IsAssociatedFunction Self "trim_matches" trim_matches.
@@ -3225,7 +3257,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_start_matches :
@@ -3246,7 +3278,7 @@ Module str.
             M.get_trait_method (| "core::str::pattern::Pattern", P, [], "strip_prefix_of", [] |),
             [ M.read (| prefix |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_strip_prefix : M.IsAssociatedFunction Self "strip_prefix" strip_prefix.
@@ -3270,7 +3302,7 @@ Module str.
             M.get_trait_method (| "core::str::pattern::Pattern", P, [], "strip_suffix_of", [] |),
             [ M.read (| suffix |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_strip_suffix : M.IsAssociatedFunction Self "strip_suffix" strip_suffix.
@@ -3296,7 +3328,7 @@ Module str.
           (let self := M.alloc (| self |) in
           let pat := M.alloc (| pat |) in
           M.read (|
-            let~ j := M.alloc (| Value.Integer 0 |) in
+            let~ j := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ matcher :=
               M.alloc (|
                 M.call_closure (|
@@ -3354,12 +3386,12 @@ Module str.
                   M.read (| self |);
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", M.read (| j |)) ]
+                    [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| j |)) ]
                 ]
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_end_matches :
@@ -3380,7 +3412,7 @@ Module str.
             M.get_associated_function (| Ty.path "str", "trim_start_matches", [ P ] |),
             [ M.read (| self |); M.read (| pat |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_left_matches :
@@ -3404,7 +3436,7 @@ Module str.
             M.get_associated_function (| Ty.path "str", "trim_end_matches", [ P ] |),
             [ M.read (| self |); M.read (| pat |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_right_matches :
@@ -3424,7 +3456,7 @@ Module str.
             M.get_trait_method (| "core::str::traits::FromStr", F, [], "from_str", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parse : M.IsAssociatedFunction Self "parse" parse.
@@ -3455,7 +3487,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -3484,7 +3516,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -3517,7 +3549,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -3554,7 +3586,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_make_ascii_uppercase :
@@ -3591,7 +3623,7 @@ Module str.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_make_ascii_lowercase :
@@ -3627,7 +3659,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_ascii_start :
@@ -3663,7 +3695,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_ascii_end :
@@ -3699,7 +3731,7 @@ Module str.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
@@ -3831,7 +3863,7 @@ Module str.
                                                       |)))
                                                 ]
                                               |)))
-                                          | _ => ltac:(M.monadic (M.impossible (||)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -3860,7 +3892,7 @@ Module str.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_escape_debug : M.IsAssociatedFunction Self "escape_debug" escape_debug.
@@ -3896,7 +3928,7 @@ Module str.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_escape_default :
@@ -3933,7 +3965,7 @@ Module str.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_escape_unicode :
@@ -3957,7 +3989,7 @@ Module str.
             M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3979,7 +4011,7 @@ Module str.
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [] => ltac:(M.monadic (M.read (| Value.String "" |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4007,7 +4039,7 @@ Module str.
             M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
             [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4028,7 +4060,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::LinesMap" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4049,7 +4081,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::CharEscapeDebugContinue" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4070,7 +4102,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::CharEscapeUnicode" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4091,7 +4123,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::CharEscapeDefault" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4112,7 +4144,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::IsWhitespace" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4133,7 +4165,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::IsAsciiWhitespace" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4154,7 +4186,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::IsNotEmpty" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4175,7 +4207,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::BytesIsNotEmpty" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4196,7 +4228,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::str::UnsafeBytesToStr" []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

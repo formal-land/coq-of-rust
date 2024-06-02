@@ -26,7 +26,7 @@ Module borrow.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -57,7 +57,7 @@ Module borrow.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_clone_into :
@@ -85,7 +85,7 @@ Module borrow.
             M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -110,7 +110,7 @@ Module borrow.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -220,7 +220,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -302,7 +302,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -356,7 +356,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_borrowed :
@@ -374,16 +374,17 @@ Module borrow.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
                 "is_borrowed",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_owned :
@@ -490,7 +491,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_mut :
@@ -539,7 +540,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_owned :
@@ -601,7 +602,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -662,7 +663,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -714,7 +715,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -766,7 +767,7 @@ Module borrow.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -835,7 +836,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -904,7 +905,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -937,7 +938,7 @@ Module borrow.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -980,7 +981,7 @@ Module borrow.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1016,7 +1017,7 @@ Module borrow.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1062,7 +1063,7 @@ Module borrow.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1107,7 +1108,7 @@ Module borrow.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1182,11 +1183,12 @@ Module borrow.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
                                       [ M.read (| rhs |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1213,24 +1215,24 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                              BinOp.Wrap.add (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| rhs |) ]
-                                                |))
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -1284,7 +1286,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1355,8 +1357,8 @@ Module borrow.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
                                       [
                                         M.call_closure (|
@@ -1372,7 +1374,8 @@ Module borrow.
                                           [ rhs ]
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1399,17 +1402,16 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                              BinOp.Wrap.add (|
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
@@ -1429,7 +1431,8 @@ Module borrow.
                                                       [ rhs ]
                                                     |)
                                                   ]
-                                                |))
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -1492,7 +1495,7 @@ Module borrow.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

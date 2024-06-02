@@ -134,7 +134,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
@@ -251,7 +251,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
@@ -320,7 +320,7 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
@@ -608,7 +608,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -725,7 +725,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -848,7 +848,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -990,7 +990,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)))
                                       ]
                                     |)))
-                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -1483,7 +1483,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -1598,14 +1598,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "filesystem_operations::main" main.

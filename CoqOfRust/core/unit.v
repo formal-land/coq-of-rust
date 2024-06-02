@@ -44,11 +44,11 @@ Module unit_.
                           M.alloc (| α0 |),
                           [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
                         |)))
-                    | _ => ltac:(M.monadic (M.impossible (||)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

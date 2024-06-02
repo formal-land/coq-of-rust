@@ -32,7 +32,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| Value.String "baaaaah!" |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -57,7 +57,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| Value.String "moooooo!" |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -95,9 +95,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.read (| random_number |))
-                            (M.read (| UnsupportedLiteral |))
+                          BinOp.lt (| M.read (| random_number |), M.read (| UnsupportedLiteral |) |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -141,7 +139,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |)))))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_random_animal :
@@ -227,7 +225,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.

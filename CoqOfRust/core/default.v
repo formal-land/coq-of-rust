@@ -14,7 +14,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -33,7 +36,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Bool false)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Bool false))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -52,7 +58,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.UnicodeChar 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.UnicodeChar 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -71,7 +80,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Usize 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -90,7 +102,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U8 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -109,7 +124,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U16 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -128,7 +146,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U32 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -147,7 +168,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U64 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -166,7 +190,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U128 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -185,7 +212,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.Isize 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -204,7 +234,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I8 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -223,7 +256,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I16 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -242,7 +278,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I32 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -261,7 +300,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I64 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -280,7 +322,10 @@ Module default.
                 }
     *)
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 0)) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.I128 0))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -301,7 +346,7 @@ Module default.
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -323,7 +368,7 @@ Module default.
     Definition default (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
       | [], [] => ltac:(M.monadic (M.read (| UnsupportedLiteral |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

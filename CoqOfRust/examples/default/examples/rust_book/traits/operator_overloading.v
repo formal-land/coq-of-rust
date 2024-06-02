@@ -36,7 +36,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "FooBar" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -68,7 +68,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "BarFoo" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -126,7 +126,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -184,7 +184,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -320,7 +320,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "operator_overloading::main" main.

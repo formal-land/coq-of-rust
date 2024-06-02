@@ -55,7 +55,7 @@ Module vec.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -101,7 +101,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -131,7 +131,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -179,7 +179,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -324,8 +324,8 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.eq (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -335,8 +335,9 @@ Module vec.
                                         "alloc::vec::drain::Drain",
                                         "tail_len"
                                       |)
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -413,8 +414,8 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::drain::Drain")
@@ -434,7 +435,8 @@ Module vec.
                                           "replace_with"
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -479,7 +481,10 @@ Module vec.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt (M.read (| lower_bound |)) (Value.Integer 0)
+                                          BinOp.gt (|
+                                            M.read (| lower_bound |),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -514,8 +519,8 @@ Module vec.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::drain::Drain")
@@ -535,7 +540,8 @@ Module vec.
                                                           "replace_with"
                                                         |)
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -608,8 +614,8 @@ Module vec.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::iter::traits::exact_size::ExactSizeIterator",
                                               Ty.apply
@@ -620,8 +626,9 @@ Module vec.
                                               []
                                             |),
                                             [ collected ]
-                                          |))
-                                          (Value.Integer 0)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -704,7 +711,7 @@ Module vec.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not (M.read (| filled |))
+                                                            UnOp.not (| M.read (| filled |) |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -770,7 +777,9 @@ Module vec.
                                                           [ collected ]
                                                         |)
                                                       |);
-                                                      M.alloc (| Value.Integer 0 |)
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 0
+                                                      |)
                                                     ]
                                                 |),
                                                 [
@@ -790,14 +799,16 @@ Module vec.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    UnOp.Pure.not
-                                                                      (BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                    UnOp.not (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.read (| left_val |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.read (| right_val |)
-                                                                        |)))
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -854,7 +865,7 @@ Module vec.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -957,10 +968,7 @@ Module vec.
                               M.read (| range_start |)
                             ]
                           |);
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.read (| range_end |))
-                            (M.read (| range_start |))
+                          BinOp.Wrap.sub (| M.read (| range_end |), M.read (| range_start |) |)
                         ]
                       |)
                     |) in
@@ -1066,10 +1074,10 @@ Module vec.
                                                         |) in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| β |))
-                                                          (Value.Integer 1)
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
@@ -1092,7 +1100,7 @@ Module vec.
                   M.alloc (| Value.Bool true |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fill :
@@ -1143,22 +1151,22 @@ Module vec.
                 |) in
               let~ len :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.add (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_len"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 M.alloc (|
@@ -1181,16 +1189,16 @@ Module vec.
                 |) in
               let~ new_tail_start :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.add (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
-                    |))
-                    (M.read (| additional |))
+                    |),
+                    M.read (| additional |)
+                  |)
                 |) in
               let~ _ :=
                 let~ src :=
@@ -1262,7 +1270,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_move_tail :

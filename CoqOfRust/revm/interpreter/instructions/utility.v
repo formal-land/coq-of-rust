@@ -39,7 +39,7 @@ Module instructions.
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); Value.Integer IntegerKind.Usize 2 ]
                       |)
                     ]
                   |)
@@ -47,7 +47,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_read_i16 :
@@ -89,7 +89,7 @@ Module instructions.
                     [
                       M.call_closure (|
                         M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
-                        [ M.read (| ptr |); Value.Integer 2 ]
+                        [ M.read (| ptr |); Value.Integer IntegerKind.Usize 2 ]
                       |)
                     ]
                   |)
@@ -97,7 +97,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_read_u16 :

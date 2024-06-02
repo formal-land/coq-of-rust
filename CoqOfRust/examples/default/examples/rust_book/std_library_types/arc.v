@@ -55,7 +55,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 0); ("end_", Value.Integer 10) ]
+                      [
+                        ("start", Value.Integer IntegerKind.I32 0);
+                        ("end_", Value.Integer IntegerKind.I32 10)
+                      ]
                   ]
                 |)
               |),
@@ -205,7 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             |)))
                                                       ]
                                                     |)))
-                                                | _ => ltac:(M.monadic (M.impossible (||)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |)
@@ -224,14 +227,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.U64 1 ]
                 |)
               ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "arc::main" main.

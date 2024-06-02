@@ -32,7 +32,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -101,7 +101,7 @@ Module gas.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -157,7 +157,7 @@ Module gas.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -191,56 +191,59 @@ Module gas.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
                     "limit"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::gas::Gas",
                     "limit"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::gas::Gas",
                       "remaining"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::gas::Gas",
                       "remaining"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -284,7 +287,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -349,7 +352,7 @@ Module gas.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -382,9 +385,9 @@ Module gas.
             [
               ("limit", M.read (| limit |));
               ("remaining", M.read (| limit |));
-              ("refunded", Value.Integer 0)
+              ("refunded", Value.Integer IntegerKind.I64 0)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -407,10 +410,10 @@ Module gas.
             "revm_interpreter::gas::Gas"
             [
               ("limit", M.read (| limit |));
-              ("remaining", Value.Integer 0);
-              ("refunded", Value.Integer 0)
+              ("remaining", Value.Integer IntegerKind.U64 0);
+              ("refunded", Value.Integer IntegerKind.I64 0)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_spent : M.IsAssociatedFunction Self "new_spent" new_spent.
@@ -432,7 +435,7 @@ Module gas.
               "limit"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_limit : M.IsAssociatedFunction Self "limit" limit.
@@ -447,8 +450,8 @@ Module gas.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Integer 0))
-      | _, _ => M.impossible
+          Value.Integer IntegerKind.U64 0))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_memory : M.IsAssociatedFunction Self "memory" memory.
@@ -470,7 +473,7 @@ Module gas.
               "refunded"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_refunded : M.IsAssociatedFunction Self "refunded" refunded.
@@ -485,23 +488,23 @@ Module gas.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.sub
-            Integer.U64
-            (M.read (|
+          BinOp.Wrap.sub (|
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "limit"
               |)
-            |))
-            (M.read (|
+            |),
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "remaining"
               |)
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_spent : M.IsAssociatedFunction Self "spent" spent.
@@ -520,7 +523,7 @@ Module gas.
             M.get_associated_function (| Ty.path "revm_interpreter::gas::Gas", "spent", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_spend : M.IsAssociatedFunction Self "spend" spend.
@@ -542,7 +545,7 @@ Module gas.
               "remaining"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_remaining : M.IsAssociatedFunction Self "remaining" remaining.
@@ -566,13 +569,10 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |) in
-              M.write (|
-                β,
-                BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| returned |))
-              |) in
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| returned |) |) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_erase_cost : M.IsAssociatedFunction Self "erase_cost" erase_cost.
@@ -595,11 +595,11 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |),
-                Value.Integer 0
+                Value.Integer IntegerKind.U64 0
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_spend_all : M.IsAssociatedFunction Self "spend_all" spend_all.
@@ -623,10 +623,10 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |) in
-              M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| refund |)) |) in
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| refund |) |) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_record_refund :
@@ -655,8 +655,8 @@ Module gas.
                         (let γ := M.use is_london in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer 5 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
+                        M.alloc (| Value.Integer IntegerKind.U64 5 |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |)))
                   ]
                 |)
               |) in
@@ -680,23 +680,23 @@ Module gas.
                           |),
                           [ M.read (| self |) ]
                         |));
-                      BinOp.Wrap.div
-                        Integer.U64
-                        (M.call_closure (|
+                      BinOp.Wrap.div (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        (M.read (| max_refund_quotient |))
+                        |),
+                        M.read (| max_refund_quotient |)
+                      |)
                     ]
                   |))
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_final_refund :
@@ -725,7 +725,7 @@ Module gas.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_refund : M.IsAssociatedFunction Self "set_refund" set_refund.
@@ -770,7 +770,7 @@ Module gas.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let remaining := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
-                    let~ success := M.alloc (| UnOp.Pure.not (M.read (| overflow |)) |) in
+                    let~ success := M.alloc (| UnOp.not (| M.read (| overflow |) |) |) in
                     let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -800,7 +800,7 @@ Module gas.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_record_cost : M.IsAssociatedFunction Self "record_cost" record_cost.

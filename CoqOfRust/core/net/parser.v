@@ -11,7 +11,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u8" *)
-      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+      Definition value_ZERO : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -116,7 +117,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -222,7 +223,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -243,7 +244,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u16" *)
-      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+      Definition value_ZERO : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -348,7 +350,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -454,7 +456,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -475,7 +477,8 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u32" *)
-      Definition value_ZERO : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+      Definition value_ZERO : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
@@ -580,7 +583,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -686,7 +689,7 @@ Module net.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -724,7 +727,7 @@ Module net.
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
             Value.StructRecord "core::net::parser::Parser" [ ("state", M.read (| input |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -808,7 +811,7 @@ Module net.
                 |) in
               result
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_atomically :
@@ -898,7 +901,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_with : M.IsAssociatedFunction Self "parse_with" parse_with.
@@ -968,11 +971,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_peek_char : M.IsAssociatedFunction Self "peek_char" peek_char.
@@ -1076,11 +1079,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_char : M.IsAssociatedFunction Self "read_char" read_char.
@@ -1167,9 +1170,10 @@ Module net.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.eq
-                                                                          (M.read (| c |))
-                                                                          (M.read (| target |))
+                                                                        BinOp.eq (|
+                                                                          M.read (| c |),
+                                                                          M.read (| target |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -1193,17 +1197,17 @@ Module net.
                                                         |)))
                                                   ]
                                                 |)))
-                                            | _ => ltac:(M.monadic (M.impossible (||)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_given_char :
@@ -1266,9 +1270,10 @@ Module net.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.gt
-                                                      (M.read (| index |))
-                                                      (Value.Integer 0)
+                                                    BinOp.gt (|
+                                                      M.read (| index |),
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1377,11 +1382,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_separator :
@@ -1461,7 +1466,8 @@ Module net.
                                           "core::net::parser::ReadNumberHelper::ZERO"
                                         |)
                                       |) in
-                                    let~ digit_count := M.alloc (| Value.Integer 0 |) in
+                                    let~ digit_count :=
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                                     let~ has_leading_zero :=
                                       M.alloc (|
                                         M.call_closure (|
@@ -1660,8 +1666,8 @@ Module net.
                                                                       ]
                                                                     |)))
                                                                 | _ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.impossible (||)))
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         ]
                                                       |)
@@ -1843,10 +1849,10 @@ Module net.
                                                     let β := digit_count in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
@@ -1869,9 +1875,10 @@ Module net.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.gt
-                                                                          (M.read (| digit_count |))
-                                                                          (M.read (| max_digits |))
+                                                                        BinOp.gt (|
+                                                                          M.read (| digit_count |),
+                                                                          M.read (| max_digits |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -1925,9 +1932,10 @@ Module net.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.eq
-                                                    (M.read (| digit_count |))
-                                                    (Value.Integer 0)
+                                                  BinOp.eq (|
+                                                    M.read (| digit_count |),
+                                                    Value.Integer IntegerKind.Usize 0
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1949,15 +1957,17 @@ Module net.
                                                         (M.alloc (|
                                                           LogicalOp.and (|
                                                             LogicalOp.and (|
-                                                              UnOp.Pure.not
-                                                                (M.read (| allow_zero_prefix |)),
+                                                              UnOp.not (|
+                                                                M.read (| allow_zero_prefix |)
+                                                              |),
                                                               ltac:(M.monadic
                                                                 (M.read (| has_leading_zero |)))
                                                             |),
                                                             ltac:(M.monadic
-                                                              (BinOp.Pure.gt
-                                                                (M.read (| digit_count |))
-                                                                (Value.Integer 1)))
+                                                              (BinOp.gt (|
+                                                                M.read (| digit_count |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)))
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -1984,11 +1994,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_number : M.IsAssociatedFunction Self "read_number" read_number.
@@ -2044,7 +2054,8 @@ Module net.
                                 ltac:(M.monadic
                                   (let p := M.copy (| γ |) in
                                   M.read (|
-                                    let~ groups := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                                    let~ groups :=
+                                      M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |) in
                                     let~ _ :=
                                       M.use
                                         (M.match_operator (|
@@ -2234,11 +2245,13 @@ Module net.
                                                                                                         p
                                                                                                       |);
                                                                                                       Value.Integer
+                                                                                                        IntegerKind.U32
                                                                                                         10;
                                                                                                       Value.StructTuple
                                                                                                         "core::option::Option::Some"
                                                                                                         [
                                                                                                           Value.Integer
+                                                                                                            IntegerKind.Usize
                                                                                                             3
                                                                                                         ];
                                                                                                       Value.Bool
@@ -2248,8 +2261,8 @@ Module net.
                                                                                             ]
                                                                                           |)))
                                                                                       | _ =>
-                                                                                        ltac:(M.monadic
-                                                                                          (M.impossible (||)))
+                                                                                        M.impossible
+                                                                                          "wrong number of arguments"
                                                                                       end))
                                                                               ]
                                                                             |)
@@ -2344,11 +2357,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_ipv4_addr :
@@ -2455,7 +2468,8 @@ Module net.
                                 ltac:(M.monadic
                                   (let p := M.copy (| γ |) in
                                   M.read (|
-                                    let~ head := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                                    let~ head :=
+                                      M.alloc (| repeat (Value.Integer IntegerKind.U16 0) 8 |) in
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -2483,9 +2497,10 @@ Module net.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.Pure.eq
-                                                              (M.read (| head_size |))
-                                                              (Value.Integer 8)
+                                                            BinOp.eq (|
+                                                              M.read (| head_size |),
+                                                              Value.Integer IntegerKind.Usize 8
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2706,16 +2721,19 @@ Module net.
                                                       val))
                                                 ]
                                               |) in
-                                            let~ tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
+                                            let~ tail :=
+                                              M.alloc (|
+                                                repeat (Value.Integer IntegerKind.U16 0) 7
+                                              |) in
                                             let~ limit :=
                                               M.alloc (|
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (Value.Integer 8)
-                                                  (BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| head_size |))
-                                                    (Value.Integer 1))
+                                                BinOp.Wrap.sub (|
+                                                  Value.Integer IntegerKind.Usize 8,
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| head_size |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
+                                                |)
                                               |) in
                                             M.match_operator (|
                                               M.alloc (|
@@ -2791,11 +2809,16 @@ Module net.
                                                                   "core::ops::range::Range"
                                                                   [
                                                                     ("start",
-                                                                      BinOp.Wrap.sub
-                                                                        Integer.Usize
-                                                                        (Value.Integer 8)
-                                                                        (M.read (| tail_size |)));
-                                                                    ("end_", Value.Integer 8)
+                                                                      BinOp.Wrap.sub (|
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          8,
+                                                                        M.read (| tail_size |)
+                                                                      |));
+                                                                    ("end_",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        8)
                                                                   ]
                                                               ]
                                                             |);
@@ -2853,11 +2876,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_ipv6_addr :
@@ -2949,11 +2972,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_ip_addr :
@@ -3080,7 +3103,7 @@ Module net.
                                         |),
                                         [
                                           M.read (| p |);
-                                          Value.Integer 10;
+                                          Value.Integer IntegerKind.U32 10;
                                           Value.StructTuple "core::option::Option::None" [];
                                           Value.Bool true
                                         ]
@@ -3089,11 +3112,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_port : M.IsAssociatedFunction Self "read_port" read_port.
@@ -3219,7 +3242,7 @@ Module net.
                                         |),
                                         [
                                           M.read (| p |);
-                                          Value.Integer 10;
+                                          Value.Integer IntegerKind.U32 10;
                                           Value.StructTuple "core::option::Option::None" [];
                                           Value.Bool true
                                         ]
@@ -3228,11 +3251,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_scope_id :
@@ -3456,11 +3479,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_socket_addr_v4 :
@@ -3686,7 +3709,7 @@ Module net.
                                               |),
                                               [ M.read (| p |) ]
                                             |);
-                                            Value.Integer 0
+                                            Value.Integer IntegerKind.U32 0
                                           ]
                                         |)
                                       |) in
@@ -3857,7 +3880,7 @@ Module net.
                                             [
                                               M.read (| ip |);
                                               M.read (| port |);
-                                              Value.Integer 0;
+                                              Value.Integer IntegerKind.U32 0;
                                               M.read (| scope_id |)
                                             ]
                                           |)
@@ -3866,11 +3889,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_socket_addr_v6 :
@@ -3967,11 +3990,11 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_socket_addr :
@@ -4034,12 +4057,12 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end));
                 Value.StructTuple "core::net::parser::AddrKind::Ip" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4074,7 +4097,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4113,16 +4136,17 @@ Module net.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| b |) ]
-                              |))
-                              (Value.Integer 15)
+                              |),
+                              Value.Integer IntegerKind.Usize 15
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4190,7 +4214,7 @@ Module net.
                                               |)))
                                         ]
                                       |)))
-                                  | _ => ltac:(M.monadic (M.impossible (||)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end));
                             Value.StructTuple "core::net::parser::AddrKind::Ipv4" []
                           ]
@@ -4199,7 +4223,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4234,7 +4258,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4302,12 +4326,12 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end));
                 Value.StructTuple "core::net::parser::AddrKind::Ipv6" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4342,7 +4366,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4410,12 +4434,12 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end));
                 Value.StructTuple "core::net::parser::AddrKind::SocketV4" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4450,7 +4474,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4518,12 +4542,12 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end));
                 Value.StructTuple "core::net::parser::AddrKind::SocketV6" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4558,7 +4582,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4626,12 +4650,12 @@ Module net.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end));
                 Value.StructTuple "core::net::parser::AddrKind::Socket" []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
@@ -4666,7 +4690,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4774,7 +4798,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4831,7 +4855,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4884,9 +4908,9 @@ Module net.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4918,7 +4942,7 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4967,7 +4991,7 @@ Module net.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5007,7 +5031,7 @@ Module net.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5060,7 +5084,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5097,7 +5121,7 @@ Module net.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5139,7 +5163,7 @@ Module net.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5209,7 +5233,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -34,7 +34,7 @@ Module collections.
               Value.StructRecord
                 "alloc::collections::vec_deque::iter::Iter"
                 [ ("i1", M.read (| i1 |)); ("i2", M.read (| i2 |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -131,7 +131,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -196,7 +196,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -315,7 +315,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -440,7 +440,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -477,7 +477,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -544,7 +544,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -665,7 +665,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -689,7 +689,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -740,9 +740,7 @@ Module collections.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| idx |)) (M.read (| i1_len |))
-                            |)) in
+                            (M.alloc (| BinOp.lt (| M.read (| idx |), M.read (| i1_len |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -781,14 +779,14 @@ Module collections.
                                 "alloc::collections::vec_deque::iter::Iter",
                                 "i2"
                               |);
-                              BinOp.Wrap.sub Integer.Usize (M.read (| idx |)) (M.read (| i1_len |))
+                              BinOp.Wrap.sub (| M.read (| idx |), M.read (| i1_len |) |)
                             ]
                           |)
                         |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -914,7 +912,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1036,7 +1034,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1103,7 +1101,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1224,7 +1222,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1257,9 +1255,8 @@ Module collections.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
@@ -1274,8 +1271,8 @@ Module collections.
                       "i1"
                     |)
                   ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
@@ -1290,8 +1287,9 @@ Module collections.
                       "i2"
                     |)
                   ]
-                |))))
-          | _, _ => M.impossible
+                |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1340,7 +1338,7 @@ Module collections.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

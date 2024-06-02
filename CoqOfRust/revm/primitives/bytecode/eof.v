@@ -79,7 +79,7 @@ Module bytecode.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -137,7 +137,7 @@ Module bytecode.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -238,7 +238,7 @@ Module bytecode.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -289,7 +289,7 @@ Module bytecode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -372,7 +372,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -502,7 +502,7 @@ Module bytecode.
                                               "into",
                                               []
                                             |),
-                                            [ Value.Array [ Value.Integer 0 ] ]
+                                            [ Value.Array [ Value.Integer IntegerKind.U8 0 ] ]
                                           |)
                                         ]
                                     |)
@@ -548,7 +548,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -572,9 +572,8 @@ Module bytecode.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.add
-              Integer.Usize
-              (M.call_closure (|
+            BinOp.Wrap.add (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                   "size",
@@ -587,8 +586,8 @@ Module bytecode.
                     "header"
                   |)
                 ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                   "body_size",
@@ -601,8 +600,9 @@ Module bytecode.
                     "header"
                   |)
                 ]
-              |))))
-        | _, _ => M.impossible
+              |)
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -622,7 +622,7 @@ Module bytecode.
               "revm_primitives::bytecode::eof::Eof",
               "raw"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_raw : M.IsAssociatedFunction Self "raw" raw.
@@ -766,14 +766,14 @@ Module bytecode.
                                       |)))
                                 ]
                               |)))
-                          | _ => ltac:(M.monadic (M.impossible (||)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
                 (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data_slice : M.IsAssociatedFunction Self "data_slice" data_slice.
@@ -819,7 +819,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -911,7 +911,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_encode_slow : M.IsAssociatedFunction Self "encode_slow" encode_slow.
@@ -1147,7 +1147,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
@@ -1452,7 +1452,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1491,7 +1491,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1544,9 +1544,9 @@ Module bytecode.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1578,7 +1578,7 @@ Module bytecode.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1634,7 +1634,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1683,7 +1683,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1704,7 +1704,7 @@ Module bytecode.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

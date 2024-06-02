@@ -80,23 +80,23 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let second_number := M.copy (| γ |) in
-                                                  BinOp.Wrap.mul
-                                                    Integer.I32
-                                                    (M.read (| first_number |))
-                                                    (M.read (| second_number |))))
+                                                  BinOp.Wrap.mul (|
+                                                    M.read (| first_number |),
+                                                    M.read (| second_number |)
+                                                  |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)))
                       ]
                     |)))
-                | _ => ltac:(M.monadic (M.impossible (||)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_multiply : M.IsFunction "map_in_result_via_combinators::multiply" multiply.
@@ -215,7 +215,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "map_in_result_via_combinators::print" print.
@@ -266,7 +266,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "map_in_result_via_combinators::main" main.

@@ -47,7 +47,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -152,7 +152,7 @@ Module Impl_core_default_Default_for_multisig_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -193,7 +193,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -219,7 +219,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -258,14 +258,15 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
-          |))))
-    | _, _ => M.impossible
+          |)
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -302,7 +303,7 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -337,7 +338,7 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -365,7 +366,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -385,7 +386,8 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
 
-Definition value_MAX_OWNERS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 50 |))).
+Definition value_MAX_OWNERS : Value.t :=
+  M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 50 |))).
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
@@ -434,7 +436,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -542,7 +544,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -578,7 +580,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -618,7 +620,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         Value.Bool true))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -650,7 +652,7 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -704,7 +706,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -858,7 +860,7 @@ Module Impl_multisig_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "multisig::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -1010,7 +1012,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1042,18 +1044,23 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (LogicalOp.and (|
+                        UnOp.not (|
+                          LogicalOp.and (|
                             LogicalOp.and (|
-                              BinOp.Pure.lt (Value.Integer 0) (M.read (| requirement |)),
+                              BinOp.lt (|
+                                Value.Integer IntegerKind.U32 0,
+                                M.read (| requirement |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.le (M.read (| requirement |)) (M.read (| owners |))))
+                                (BinOp.le (| M.read (| requirement |), M.read (| owners |) |)))
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.le
-                                (M.read (| owners |))
-                                (M.read (| M.get_constant (| "multisig::MAX_OWNERS" |) |))))
-                          |))
+                              (BinOp.le (|
+                                M.read (| owners |),
+                                M.read (| M.get_constant (| "multisig::MAX_OWNERS" |) |)
+                              |)))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -1074,7 +1081,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_ensure_requirement_is_valid :
@@ -1106,7 +1113,7 @@ Module Impl_multisig_Multisig.
           M.get_associated_function (| Ty.path "multisig::Multisig", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -1325,7 +1332,7 @@ Module Impl_multisig_Multisig.
             |) in
           contract
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1356,9 +1363,9 @@ Module Impl_multisig_Multisig.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.ge
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.ge (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
                                   "expect",
@@ -1384,14 +1391,16 @@ Module Impl_multisig_Multisig.
                                   |);
                                   M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1413,7 +1422,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_confirmed :
@@ -1465,7 +1474,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_transaction_exists :
@@ -1492,8 +1501,8 @@ Module Impl_multisig_Multisig.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "multisig::Mapping")
@@ -1509,7 +1518,8 @@ Module Impl_multisig_Multisig.
                                 |);
                                 M.read (| owner |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1529,7 +1539,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_owner : M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
@@ -1569,7 +1579,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_caller_is_owner :
@@ -1642,8 +1652,8 @@ Module Impl_multisig_Multisig.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "multisig::AccountId",
@@ -1652,7 +1662,8 @@ Module Impl_multisig_Multisig.
                                         []
                                       |),
                                       [ M.read (| left_val |); M.read (| right_val |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1690,7 +1701,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_from_wallet :
@@ -1717,9 +1728,9 @@ Module Impl_multisig_Multisig.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (UnOp.Pure.not
-                              (M.call_closure (|
+                          UnOp.not (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "multisig::Mapping")
@@ -1735,7 +1746,9 @@ Module Impl_multisig_Multisig.
                                   |);
                                   M.read (| owner |)
                                 ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1755,7 +1768,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_ensure_no_owner :
@@ -1802,9 +1815,8 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [
-                  BinOp.Wrap.add
-                    Integer.U32
-                    (M.rust_cast
+                  BinOp.Wrap.add (|
+                    M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -1820,8 +1832,9 @@ Module Impl_multisig_Multisig.
                             "owners"
                           |)
                         ]
-                      |)))
-                    (Value.Integer 1);
+                      |)),
+                    Value.Integer IntegerKind.U32 1
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1896,7 +1909,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_add_owner : M.IsAssociatedFunction Self "add_owner" add_owner.
@@ -1989,7 +2002,7 @@ Module Impl_multisig_Multisig.
                                     |)))
                               ]
                             |)))
-                        | _ => ltac:(M.monadic (M.impossible (||)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
@@ -2000,7 +2013,7 @@ Module Impl_multisig_Multisig.
               |)
             ]
           |))))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_owner_index : M.IsAssociatedFunction Self "owner_index" owner_index.
@@ -2191,7 +2204,12 @@ Module Impl_multisig_Multisig.
                                                       M.read (| trans_id |)
                                                     ]
                                                   |);
-                                                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                                                  M.read (|
+                                                    M.use
+                                                      (M.alloc (|
+                                                        Value.Integer IntegerKind.U32 0
+                                                      |))
+                                                  |)
                                                 ]
                                               |)
                                             |) in
@@ -2199,10 +2217,10 @@ Module Impl_multisig_Multisig.
                                             let β := count in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.sub
-                                                Integer.U32
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.sub (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.U32 1
+                                              |)
                                             |) in
                                           let~ _ :=
                                             M.alloc (|
@@ -2236,7 +2254,7 @@ Module Impl_multisig_Multisig.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_clean_owner_confirmations :
@@ -2285,9 +2303,8 @@ Module Impl_multisig_Multisig.
             |) in
           let~ len :=
             M.alloc (|
-              BinOp.Wrap.sub
-                Integer.U32
-                (M.rust_cast
+              BinOp.Wrap.sub (|
+                M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
@@ -2303,8 +2320,9 @@ Module Impl_multisig_Multisig.
                         "owners"
                       |)
                     ]
-                  |)))
-                (Value.Integer 1)
+                  |)),
+                Value.Integer IntegerKind.U32 1
+              |)
             |) in
           let~ requirement :=
             M.alloc (|
@@ -2417,7 +2435,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_remove_owner : M.IsAssociatedFunction Self "remove_owner" remove_owner.
@@ -2597,7 +2615,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_replace_owner :
@@ -2690,7 +2708,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_change_requirement :
@@ -2762,7 +2780,7 @@ Module Impl_multisig_Multisig.
                       transaction
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+                  M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |)
                 ]
               |)
             |) in
@@ -2770,8 +2788,8 @@ Module Impl_multisig_Multisig.
             M.alloc (| Value.Tuple [ M.read (| transaction |); M.read (| confirmer |) ] |) in
           let~ new_confirmation :=
             M.alloc (|
-              UnOp.Pure.not
-                (M.call_closure (|
+              UnOp.not (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "multisig::Mapping")
@@ -2787,7 +2805,8 @@ Module Impl_multisig_Multisig.
                     |);
                     key
                   ]
-                |))
+                |)
+              |)
             |) in
           let~ _ :=
             M.match_operator (|
@@ -2801,7 +2820,7 @@ Module Impl_multisig_Multisig.
                       let β := count in
                       M.write (|
                         β,
-                        BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
                       |) in
                     let~ _ :=
                       M.alloc (|
@@ -2860,15 +2879,16 @@ Module Impl_multisig_Multisig.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge
-                              (M.read (| count |))
-                              (M.read (|
+                            BinOp.ge (|
+                              M.read (| count |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2880,16 +2900,16 @@ Module Impl_multisig_Multisig.
                         Value.StructTuple
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
                           [
-                            BinOp.Wrap.sub
-                              Integer.U32
-                              (M.read (|
+                            BinOp.Wrap.sub (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |))
-                              (M.read (| count |))
+                              |),
+                              M.read (| count |)
+                            |)
                           ]
                       |)))
                 ]
@@ -2938,7 +2958,7 @@ Module Impl_multisig_Multisig.
             |) in
           status
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_confirm_by_caller :
@@ -3015,7 +3035,10 @@ Module Impl_multisig_Multisig.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
-                    [ M.read (| trans_id |); M.read (| M.use (M.alloc (| Value.Integer 1 |)) |) ]
+                    [
+                      M.read (| trans_id |);
+                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)
+                    ]
                   |);
                   M.read (| Value.String "Transaction ids exhausted." |)
                 ]
@@ -3116,7 +3139,7 @@ Module Impl_multisig_Multisig.
               ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_submit_transaction :
@@ -3289,7 +3312,7 @@ Module Impl_multisig_Multisig.
                                                   |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |);
@@ -3476,7 +3499,7 @@ Module Impl_multisig_Multisig.
             |) in
           transaction
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_take_transaction :
@@ -3571,7 +3594,7 @@ Module Impl_multisig_Multisig.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_cancel_transaction :
@@ -3634,7 +3657,7 @@ Module Impl_multisig_Multisig.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_confirm_transaction :
@@ -3780,7 +3803,7 @@ Module Impl_multisig_Multisig.
                     let β := confirmation_count in
                     M.write (|
                       β,
-                      BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (Value.Integer 1)
+                      BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
                     |) in
                   let~ _ :=
                     M.alloc (|
@@ -3834,7 +3857,7 @@ Module Impl_multisig_Multisig.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_revoke_confirmation :
@@ -3915,9 +3938,9 @@ Module Impl_multisig_Multisig.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.eq
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.eq (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "multisig::Env",
                                   "transferred_value",
@@ -3935,14 +3958,16 @@ Module Impl_multisig_Multisig.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   t,
                                   "multisig::Transaction",
                                   "transferred_value"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4064,7 +4089,7 @@ Module Impl_multisig_Multisig.
                                                     []))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |))
@@ -4075,7 +4100,7 @@ Module Impl_multisig_Multisig.
             |) in
           result
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_invoke_transaction :

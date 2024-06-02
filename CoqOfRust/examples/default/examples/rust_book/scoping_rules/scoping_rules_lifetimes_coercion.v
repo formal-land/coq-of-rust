@@ -22,7 +22,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
         |),
         [ M.read (| first |); M.read (| second |) ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_multiply : M.IsFunction "scoping_rules_lifetimes_coercion::multiply" multiply.
@@ -39,7 +39,7 @@ Definition choose_first (τ : list Ty.t) (α : list Value.t) : M :=
       (let first := M.alloc (| first |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| first |))) ] |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_choose_first :
@@ -62,9 +62,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ first := M.alloc (| Value.Integer 2 |) in
+        let~ first := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
         let~ _ :=
-          let~ second := M.alloc (| Value.Integer 3 |) in
+          let~ second := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -168,7 +168,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_coercion::main" main.

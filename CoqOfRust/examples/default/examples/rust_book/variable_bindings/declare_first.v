@@ -33,9 +33,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ a_binding := M.copy (| Value.DeclaredButUndefined |) in
         let~ _ :=
-          let~ x := M.alloc (| Value.Integer 2 |) in
-          let~ _ :=
-            M.write (| a_binding, BinOp.Wrap.mul Integer.I32 (M.read (| x |)) (M.read (| x |)) |) in
+          let~ x := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
+          let~ _ := M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |) in
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           let~ _ :=
@@ -76,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ another_binding := M.copy (| Value.DeclaredButUndefined |) in
-        let~ _ := M.write (| another_binding, Value.Integer 1 |) in
+        let~ _ := M.write (| another_binding, Value.Integer IntegerKind.I32 1 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -119,7 +118,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "declare_first::main" main.

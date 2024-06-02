@@ -20,7 +20,7 @@ Module ptr.
           M.get_function (| "core::ptr::drop_in_place", [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::ptr::drop_in_place" drop_in_place.
@@ -39,12 +39,12 @@ Module ptr.
           [
             M.call_closure (|
               M.get_function (| "core::ptr::invalid", [ Ty.tuple [] ] |),
-              [ Value.Integer 0 ]
+              [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_null : M.IsFunction "core::ptr::null" null.
@@ -63,12 +63,12 @@ Module ptr.
           [
             M.call_closure (|
               M.get_function (| "core::ptr::invalid_mut", [ Ty.tuple [] ] |),
-              [ Value.Integer 0 ]
+              [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_null_mut : M.IsFunction "core::ptr::null_mut" null_mut.
@@ -95,7 +95,7 @@ Module ptr.
           |),
           [ M.read (| addr |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_invalid : M.IsFunction "core::ptr::invalid" invalid.
@@ -122,7 +122,7 @@ Module ptr.
           |),
           [ M.read (| addr |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_invalid_mut : M.IsFunction "core::ptr::invalid_mut" invalid_mut.
@@ -142,7 +142,7 @@ Module ptr.
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.rust_cast (M.read (| addr |))))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_exposed_addr : M.IsFunction "core::ptr::from_exposed_addr" from_exposed_addr.
@@ -162,7 +162,7 @@ Module ptr.
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.rust_cast (M.read (| addr |))))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_exposed_addr_mut :
@@ -179,7 +179,7 @@ Module ptr.
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
         M.read (| r |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::ptr::from_ref" from_ref.
@@ -195,7 +195,7 @@ Module ptr.
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
         M.read (| r |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::ptr::from_mut" from_mut.
@@ -228,7 +228,7 @@ Module ptr.
             M.read (| len |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_from_raw_parts :
@@ -262,7 +262,7 @@ Module ptr.
             M.read (| len |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_from_raw_parts_mut :
@@ -318,7 +318,7 @@ Module ptr.
                     |),
                     [ tmp ]
                   |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
@@ -329,7 +329,7 @@ Module ptr.
                 [
                   (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
                   M.read (| x |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
@@ -347,13 +347,13 @@ Module ptr.
                     [ tmp ]
                   |);
                   M.read (| y |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap : M.IsFunction "core::ptr::swap" swap.
@@ -482,19 +482,20 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.le
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::align_of", [ T ] |),
                                     []
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                                     []
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
                                   (LogicalOp.or (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "is_power_of_two",
@@ -506,23 +507,25 @@ Module ptr.
                                             []
                                           |)
                                         ]
-                                      |)),
+                                      |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.gt
-                                        (M.call_closure (|
+                                      (BinOp.gt (|
+                                        M.call_closure (|
                                           M.get_function (| "core::mem::size_of", [ T ] |),
                                           []
-                                        |))
-                                        (BinOp.Wrap.mul
-                                          Integer.Usize
-                                          (M.call_closure (|
+                                        |),
+                                        BinOp.Wrap.mul (|
+                                          M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
                                               [ Ty.path "usize" ]
                                             |),
                                             []
-                                          |))
-                                          (Value.Integer 2))))
+                                          |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
+                                      |)))
                                   |)))
                               |)
                             |)) in
@@ -538,34 +541,36 @@ Module ptr.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.call_closure (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::align_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
                                                 [ Ty.path "usize" ]
                                               |),
                                               []
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.eq
-                                              (BinOp.Wrap.rem
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            (BinOp.eq (|
+                                              BinOp.Wrap.rem (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)))
-                                              (Value.Integer 0)))
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -600,22 +605,22 @@ Module ptr.
                                           |) in
                                         let~ count :=
                                           M.alloc (|
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| count |))
-                                              (BinOp.Wrap.div
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            BinOp.Wrap.mul (|
+                                              M.read (| count |),
+                                              BinOp.Wrap.div (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)))
+                                                |)
+                                              |)
+                                            |)
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -642,34 +647,36 @@ Module ptr.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.call_closure (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::align_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
                                                 [ Ty.path "u8" ]
                                               |),
                                               []
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.eq
-                                              (BinOp.Wrap.rem
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            (BinOp.eq (|
+                                              BinOp.Wrap.rem (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)))
-                                              (Value.Integer 0)))
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -704,22 +711,22 @@ Module ptr.
                                           |) in
                                         let~ count :=
                                           M.alloc (|
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| count |))
-                                              (BinOp.Wrap.div
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            BinOp.Wrap.mul (|
+                                              M.read (| count |),
+                                              BinOp.Wrap.div (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)))
+                                                |)
+                                              |)
+                                            |)
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -748,7 +755,7 @@ Module ptr.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap_nonoverlapping :
@@ -801,7 +808,7 @@ Module ptr.
                 [ M.read (| y |) ]
               |)
             |) in
-          let~ i := M.alloc (| Value.Integer 0 |) in
+          let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           M.loop (|
             ltac:(M.monadic
               (M.match_operator (|
@@ -810,7 +817,7 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (M.read (| count |)) |)) in
+                        M.use (M.alloc (| BinOp.lt (| M.read (| i |), M.read (| count |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ x :=
                         M.alloc (|
@@ -852,7 +859,7 @@ Module ptr.
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -870,7 +877,7 @@ Module ptr.
               |)))
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap_nonoverlapping_simple_untyped :
@@ -941,7 +948,7 @@ Module ptr.
             M.alloc (| Value.Tuple [] |) in
           src
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_replace : M.IsFunction "core::ptr::replace" replace.
@@ -1028,7 +1035,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read : M.IsFunction "core::ptr::read" read.
@@ -1095,7 +1102,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_unaligned : M.IsFunction "core::ptr::read_unaligned" read_unaligned.
@@ -1167,7 +1174,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write : M.IsFunction "core::ptr::write" write.
@@ -1211,7 +1218,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_unaligned : M.IsFunction "core::ptr::write_unaligned" write_unaligned.
@@ -1272,7 +1279,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_volatile : M.IsFunction "core::ptr::read_volatile" read_volatile.
@@ -1336,7 +1343,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_volatile : M.IsFunction "core::ptr::write_volatile" write_volatile.
@@ -1545,7 +1552,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                    [ M.read (| a |); Value.Integer 1 ]
+                    [ M.read (| a |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               let~ _ :=
@@ -1556,7 +1563,9 @@ Module ptr.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.eq (M.read (| stride |)) (Value.Integer 0) |)) in
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| stride |), Value.Integer IntegerKind.Usize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -1564,7 +1573,7 @@ Module ptr.
                             M.read (|
                               let~ p_mod_a :=
                                 M.alloc (|
-                                  BinOp.Pure.bit_and (M.read (| addr |)) (M.read (| a_minus_one |))
+                                  BinOp.bit_and (M.read (| addr |)) (M.read (| a_minus_one |))
                                 |) in
                               M.return_ (|
                                 M.read (|
@@ -1576,16 +1585,17 @@ Module ptr.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| p_mod_a |))
-                                                  (Value.Integer 0)
+                                                BinOp.eq (|
+                                                  M.read (| p_mod_a |),
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          M.alloc (| Value.Integer 0 |)));
+                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                       fun γ =>
                                         ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
                                     ]
@@ -1614,7 +1624,10 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| a_mod_stride |)) (Value.Integer 0)
+                              BinOp.eq (|
+                                M.read (| a_mod_stride |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1623,7 +1636,7 @@ Module ptr.
                             M.read (|
                               let~ aligned_address :=
                                 M.alloc (|
-                                  BinOp.Pure.bit_and
+                                  BinOp.bit_and
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::wrapping_add",
@@ -1636,7 +1649,7 @@ Module ptr.
                                         "core::intrinsics::wrapping_sub",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ Value.Integer 0; M.read (| a |) ]
+                                      [ Value.Integer IntegerKind.Usize 0; M.read (| a |) ]
                                     |))
                                 |) in
                               let~ byte_offset :=
@@ -1653,7 +1666,7 @@ Module ptr.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::assume", [] |),
-                                    [ BinOp.Pure.lt (M.read (| byte_offset |)) (M.read (| a |)) ]
+                                    [ BinOp.lt (| M.read (| byte_offset |), M.read (| a |) |) ]
                                   |)
                                 |) in
                               let~ addr_mod_stride :=
@@ -1676,9 +1689,10 @@ Module ptr.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| addr_mod_stride |))
-                                                  (Value.Integer 0)
+                                                BinOp.eq (|
+                                                  M.read (| addr_mod_stride |),
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1728,7 +1742,7 @@ Module ptr.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.alloc (| BinOp.Pure.lt (M.read (| x |)) (M.read (| y |)) |)) in
+                            M.use (M.alloc (| BinOp.lt (| M.read (| x |), M.read (| y |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           x));
@@ -1740,7 +1754,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_shl", [ Ty.path "usize" ] |),
-                    [ Value.Integer 1; M.read (| gcdpow |) ]
+                    [ Value.Integer IntegerKind.Usize 1; M.read (| gcdpow |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1752,17 +1766,18 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Pure.bit_and
+                              BinOp.eq (|
+                                BinOp.bit_and
                                   (M.read (| addr |))
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| gcd |); Value.Integer 1 ]
-                                  |)))
-                                (Value.Integer 0)
+                                    [ M.read (| gcd |); Value.Integer IntegerKind.Usize 1 ]
+                                  |)),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1786,7 +1801,7 @@ Module ptr.
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| a2 |); Value.Integer 1 ]
+                                    [ M.read (| a2 |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |) in
                               let~ s2 :=
@@ -1797,7 +1812,7 @@ Module ptr.
                                       [ Ty.path "usize" ]
                                     |),
                                     [
-                                      BinOp.Pure.bit_and
+                                      BinOp.bit_and
                                         (M.read (| stride |))
                                         (M.read (| a_minus_one |));
                                       M.read (| gcdpow |)
@@ -1819,7 +1834,7 @@ Module ptr.
                                           [ Ty.path "usize" ]
                                         |),
                                         [
-                                          BinOp.Pure.bit_and
+                                          BinOp.bit_and
                                             (M.read (| addr |))
                                             (M.read (| a_minus_one |));
                                           M.read (| gcdpow |)
@@ -1829,7 +1844,7 @@ Module ptr.
                                   |)
                                 |) in
                               M.return_ (|
-                                BinOp.Pure.bit_and
+                                BinOp.bit_and
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::wrapping_mul",
@@ -1854,7 +1869,7 @@ Module ptr.
               M.get_constant (| "core::num::MAX" |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_align_offset : M.IsFunction "core::ptr::align_offset" align_offset.
@@ -1914,7 +1929,7 @@ Module ptr.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                  [ M.read (| m |); Value.Integer 1 ]
+                  [ M.read (| m |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
             let~ inverse :=
@@ -1924,18 +1939,19 @@ Module ptr.
                     M.SubPointer.get_array_field (|
                       M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
                       M.alloc (|
-                        BinOp.Wrap.shr
-                          (BinOp.Pure.bit_and
+                        BinOp.Wrap.shr (|
+                          BinOp.bit_and
                             (M.read (| x |))
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (|
+                            (BinOp.Wrap.sub (|
+                              M.read (|
                                 M.get_constant (|
                                   "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
                                 |)
-                              |))
-                              (Value.Integer 1)))
-                          (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)),
+                          Value.Integer IntegerKind.I32 1
+                        |)
                       |)
                     |)
                   |))
@@ -1954,7 +1970,7 @@ Module ptr.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge (M.read (| mod_gate |)) (M.read (| m |))
+                                  BinOp.ge (| M.read (| mod_gate |), M.read (| m |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1975,7 +1991,7 @@ Module ptr.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              Value.Integer 2;
+                              Value.Integer IntegerKind.Usize 2;
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::wrapping_mul",
@@ -2026,9 +2042,9 @@ Module ptr.
                     ]
                   |)))
               |) in
-            M.alloc (| BinOp.Pure.bit_and (M.read (| inverse |)) (M.read (| m_minus_one |)) |)
+            M.alloc (| BinOp.bit_and (M.read (| inverse |)) (M.read (| m_minus_one |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_mod_inv : M.IsFunction "core::ptr::align_offset::mod_inv" mod_inv.
@@ -2040,19 +2056,19 @@ Module ptr.
             (M.alloc (|
               Value.Array
                 [
-                  Value.Integer 1;
-                  Value.Integer 11;
-                  Value.Integer 13;
-                  Value.Integer 7;
-                  Value.Integer 9;
-                  Value.Integer 3;
-                  Value.Integer 5;
-                  Value.Integer 15
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 11;
+                  Value.Integer IntegerKind.U8 13;
+                  Value.Integer IntegerKind.U8 7;
+                  Value.Integer IntegerKind.U8 9;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 5;
+                  Value.Integer IntegerKind.U8 15
                 ]
             |))).
       
       Definition value_INV_TABLE_MOD : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     End mod_inv.
   End align_offset.
   
@@ -2067,8 +2083,8 @@ Module ptr.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
-        BinOp.Pure.eq (M.read (| a |)) (M.read (| b |))))
-    | _, _ => M.impossible
+        BinOp.eq (| M.read (| a |), M.read (| b |) |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_eq : M.IsFunction "core::ptr::eq" eq.
@@ -2084,8 +2100,8 @@ Module ptr.
       ltac:(M.monadic
         (let p := M.alloc (| p |) in
         let q := M.alloc (| q |) in
-        BinOp.Pure.eq (M.rust_cast (M.read (| p |))) (M.rust_cast (M.read (| q |)))))
-    | _, _ => M.impossible
+        BinOp.eq (| M.rust_cast (M.read (| p |)), M.rust_cast (M.read (| q |)) |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_addr_eq : M.IsFunction "core::ptr::addr_eq" addr_eq.
@@ -2118,7 +2134,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_hash : M.IsFunction "core::ptr::hash" hash.
@@ -2138,16 +2154,17 @@ Module ptr.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
               [ M.read (| M.read (| self |) |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
               [ M.read (| M.read (| other |) |) ]
-            |))))
-      | _, _ => M.impossible
+            |)
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2205,7 +2222,7 @@ Module ptr.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2255,7 +2272,7 @@ Module ptr.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2293,7 +2310,7 @@ Module ptr.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2331,7 +2348,7 @@ Module ptr.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2369,7 +2386,7 @@ Module ptr.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

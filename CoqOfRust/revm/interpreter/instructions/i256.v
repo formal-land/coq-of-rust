@@ -38,7 +38,7 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -110,7 +110,7 @@ Module instructions.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -163,9 +163,9 @@ Module instructions.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -197,7 +197,7 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -253,7 +253,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -302,7 +302,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -341,7 +341,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -361,10 +361,10 @@ Module instructions.
               [
                 Value.Array
                   [
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 9223372036854775807
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 9223372036854775807
                   ]
               ]
             |)
@@ -379,17 +379,17 @@ Module instructions.
               [
                 Value.Array
                   [
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 9223372036854775808
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 9223372036854775808
                   ]
               ]
             |)
           |))).
     
     Definition value_FLIPH_BITMASK_U64 : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9223372036854775807 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -419,10 +419,10 @@ Module instructions.
                             M.get_associated_function (| Ty.path "ruint::Uint", "bit", [] |),
                             [
                               M.read (| val |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| M.get_constant (| "ruint::BITS'1" |) |))
-                                (Value.Integer 1)
+                              BinOp.Wrap.sub (|
+                                M.read (| M.get_constant (| "ruint::BITS'1" |) |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |)) in
@@ -455,7 +455,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_sign :
@@ -527,7 +527,7 @@ Module instructions.
               |) in
             sign
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_sign_compl :
@@ -554,11 +554,11 @@ Module instructions.
                     M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs_mut", [] |),
                     [ M.read (| val |) ]
                   |),
-                  M.alloc (| Value.Integer 3 |)
+                  M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                 |) in
               M.write (|
                 β,
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| β |))
                   (M.read (|
                     M.get_constant (| "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64" |)
@@ -566,7 +566,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u256_remove_sign :
@@ -593,7 +593,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_two_compl_mut :
@@ -613,7 +613,7 @@ Module instructions.
             M.get_associated_function (| Ty.path "ruint::Uint", "wrapping_neg", [] |),
             [ M.read (| op |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_two_compl :
@@ -688,7 +688,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_cmp :
@@ -834,7 +834,7 @@ Module instructions.
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
-                                            [ Value.Integer 1 ]
+                                            [ Value.Integer IntegerKind.I32 1 ]
                                           |)
                                         |)
                                       ]
@@ -992,7 +992,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_div :
@@ -1194,7 +1194,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_mod :

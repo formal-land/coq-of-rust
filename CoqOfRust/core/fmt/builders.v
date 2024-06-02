@@ -36,7 +36,7 @@ Module fmt.
             (Value.StructRecord
               "core::fmt::builders::PadAdapterState"
               [ ("on_newline", Value.Bool true) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -116,11 +116,11 @@ Module fmt.
                                     |))))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap : M.IsAssociatedFunction Self "wrap" wrap.
@@ -472,7 +472,7 @@ Module fmt.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -616,7 +616,7 @@ Module fmt.
                         "core::fmt::builders::PadAdapterState",
                         "on_newline"
                       |),
-                      BinOp.Pure.eq (M.read (| c |)) (Value.UnicodeChar 10)
+                      BinOp.eq (| M.read (| c |), Value.UnicodeChar 10 |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -641,7 +641,7 @@ Module fmt.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -704,7 +704,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_struct_new :
@@ -764,11 +764,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
@@ -885,14 +885,15 @@ Module fmt.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.read (|
+                                                                  UnOp.not (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
                                                                         "core::fmt::builders::DebugStruct",
                                                                         "has_fields"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1683,7 +1684,7 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -1699,7 +1700,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
@@ -2020,7 +2021,7 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -2031,7 +2032,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
@@ -2178,7 +2179,7 @@ Module fmt.
                                                   |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -2193,7 +2194,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -2220,7 +2221,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -2271,7 +2272,7 @@ Module fmt.
                 [
                   ("fmt", M.read (| fmt |));
                   ("result", M.read (| result |));
-                  ("fields", Value.Integer 0);
+                  ("fields", Value.Integer IntegerKind.Usize 0);
                   ("empty_name",
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
@@ -2280,7 +2281,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_tuple_new :
@@ -2338,11 +2339,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
@@ -2454,15 +2455,18 @@ Module fmt.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (|
+                                                                  BinOp.eq (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
                                                                         "core::fmt::builders::DebugTuple",
                                                                         "fields"
                                                                       |)
-                                                                    |))
-                                                                    (Value.Integer 0)
+                                                                    |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -2744,15 +2748,18 @@ Module fmt.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
                                                                           M.read (| self |),
                                                                           "core::fmt::builders::DebugTuple",
                                                                           "fields"
                                                                         |)
-                                                                      |))
-                                                                      (Value.Integer 0)
+                                                                      |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -2898,7 +2905,7 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -2910,10 +2917,13 @@ Module fmt.
                     "core::fmt::builders::DebugTuple",
                     "fields"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
@@ -2946,15 +2956,16 @@ Module fmt.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::fmt::builders::DebugTuple",
                                     "fields"
                                   |)
-                                |))
-                                (Value.Integer 0)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3011,15 +3022,18 @@ Module fmt.
                                                                   (M.alloc (|
                                                                     LogicalOp.and (|
                                                                       LogicalOp.and (|
-                                                                        BinOp.Pure.eq
-                                                                          (M.read (|
+                                                                        BinOp.eq (|
+                                                                          M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
                                                                               "core::fmt::builders::DebugTuple",
                                                                               "fields"
                                                                             |)
-                                                                          |))
-                                                                          (Value.Integer 1),
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |),
                                                                         ltac:(M.monadic
                                                                           (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
@@ -3030,8 +3044,8 @@ Module fmt.
                                                                           |)))
                                                                       |),
                                                                       ltac:(M.monadic
-                                                                        (UnOp.Pure.not
-                                                                          (M.call_closure (|
+                                                                        (UnOp.not (|
+                                                                          M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::builders::DebugTuple",
@@ -3039,7 +3053,8 @@ Module fmt.
                                                                               []
                                                                             |),
                                                                             [ M.read (| self |) ]
-                                                                          |))))
+                                                                          |)
+                                                                        |)))
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -3180,7 +3195,7 @@ Module fmt.
                                                   |)))
                                             ]
                                           |)))
-                                      | _ => ltac:(M.monadic (M.impossible (||)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -3195,7 +3210,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -3222,7 +3237,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -3353,14 +3368,15 @@ Module fmt.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.read (|
+                                                                  UnOp.not (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
                                                                         "core::fmt::builders::DebugInner",
                                                                         "has_fields"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -3793,7 +3809,7 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -3809,7 +3825,7 @@ Module fmt.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -3836,7 +3852,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -3883,7 +3899,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
@@ -3951,14 +3967,14 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -3999,7 +4015,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -4098,7 +4114,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -4174,11 +4190,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -4225,7 +4241,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_list_new :
@@ -4294,14 +4310,14 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -4342,7 +4358,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
@@ -4441,7 +4457,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -4517,11 +4533,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -4585,7 +4601,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
@@ -4619,7 +4635,7 @@ Module fmt.
                 (* Unsize *) M.pointer_coercion (M.read (| value |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
@@ -4673,11 +4689,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_key : M.IsAssociatedFunction Self "key" key.
@@ -4776,15 +4792,17 @@ Module fmt.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (UnOp.Pure.not
-                                                              (M.read (|
+                                                          UnOp.not (|
+                                                            UnOp.not (|
+                                                              M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.read (| self |),
                                                                   "core::fmt::builders::DebugMap",
                                                                   "has_key"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -4860,14 +4878,15 @@ Module fmt.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    UnOp.Pure.not
-                                                                      (M.read (|
+                                                                    UnOp.not (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
                                                                           M.read (| self |),
                                                                           "core::fmt::builders::DebugMap",
                                                                           "has_fields"
                                                                         |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -5577,14 +5596,14 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_key_with : M.IsAssociatedFunction Self "key_with" key_with.
@@ -5638,11 +5657,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
@@ -5730,14 +5749,15 @@ Module fmt.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.read (|
+                                                          UnOp.not (|
+                                                            M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.read (| self |),
                                                                 "core::fmt::builders::DebugMap",
                                                                 "has_key"
                                                               |)
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -6157,7 +6177,7 @@ Module fmt.
                                         |)))
                                   ]
                                 |)))
-                            | _ => ltac:(M.monadic (M.impossible (||)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -6173,7 +6193,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value_with : M.IsAssociatedFunction Self "value_with" value_with.
@@ -6277,7 +6297,7 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
@@ -6340,15 +6360,17 @@ Module fmt.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    UnOp.Pure.not
-                                                      (UnOp.Pure.not
-                                                        (M.read (|
+                                                    UnOp.not (|
+                                                      UnOp.not (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "core::fmt::builders::DebugMap",
                                                             "has_key"
                                                           |)
-                                                        |)))
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -6412,11 +6434,11 @@ Module fmt.
                                   |)))
                             ]
                           |)))
-                      | _ => ltac:(M.monadic (M.impossible (||)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -6443,7 +6465,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -6489,7 +6511,7 @@ Module fmt.
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6534,7 +6556,7 @@ Module fmt.
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
