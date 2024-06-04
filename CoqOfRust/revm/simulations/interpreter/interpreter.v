@@ -58,7 +58,7 @@ Require Import CoqOfRust.revm.simulations.interpreter.interpreter_action.
 
 Module Interpreter.
   Record t : Set := {
-    instruction_pointer : list Z;
+    instruction_pointer : Z;
     gas : Gas.t;
     contract : Contract.t;
     instruction_result : InstructionResult.t;
