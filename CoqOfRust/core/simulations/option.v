@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import links.M.
 Require Import simulations.M.
 Require CoqOfRust.core.simulations.default.
 Import simulations.M.Notations.

@@ -1,7 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import simulations.M.
-Require CoqOfRust.core.simulations.default.
-Import simulations.M.Notations.
+Require Import links.M.
 
 Module Array.
   Global Instance IsToTy (A : Set) (_ : ToTy A) : ToTy (list A) := {

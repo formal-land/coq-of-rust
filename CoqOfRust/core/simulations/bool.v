@@ -1,4 +1,5 @@
 Require Import Coq.Strings.String.
+Require Import links.M.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
