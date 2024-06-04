@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.simulations.M.
+Require Import CoqOfRust.links.M.
+
 
 (*
   /// Types section that contains stack information for matching code section.

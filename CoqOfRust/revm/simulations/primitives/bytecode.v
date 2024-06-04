@@ -1,5 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.simulations.M.
+Require Import CoqOfRust.links.M.
 
 (*
     /// State of the [`Bytecode`] analysis.
