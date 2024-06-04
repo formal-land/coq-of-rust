@@ -2,10 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module blake2.
-  Definition value_F_ROUND : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+  Definition value_F_ROUND : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
   
   Definition value_INPUT_LENGTH : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 213 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
   
   Definition value_FUN : Value.t :=
     M.run
@@ -16,7 +17,7 @@ Module blake2.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 9 ]
+                [ Value.Integer IntegerKind.U64 9 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -126,18 +127,19 @@ Module blake2.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.call_closure (|
+                              BinOp.ne (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| input |) ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.get_constant (| "revm_precompile::blake2::INPUT_LENGTH" |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -164,18 +166,24 @@ Module blake2.
                   M.match_operator (|
                     M.SubPointer.get_array_field (|
                       M.read (| input |),
-                      M.alloc (| Value.Integer 212 |)
+                      M.alloc (| Value.Integer IntegerKind.Usize 212 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.U8 1
+                            |) in
                           M.alloc (| Value.Bool true |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.U8 0
+                            |) in
                           M.alloc (| Value.Bool false |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -242,7 +250,7 @@ Module blake2.
                                     M.read (| input |);
                                     Value.StructRecord
                                       "core::ops::range::RangeTo"
-                                      [ ("end_", Value.Integer 4) ]
+                                      [ ("end_", Value.Integer IntegerKind.Usize 4) ]
                                   ]
                                 |)
                               ]
@@ -254,10 +262,10 @@ Module blake2.
                 |) in
               let~ gas_used :=
                 M.alloc (|
-                  BinOp.Wrap.mul
-                    Integer.U64
-                    (M.rust_cast (M.read (| rounds |)))
-                    (M.read (| M.get_constant (| "revm_precompile::blake2::F_ROUND" |) |))
+                  BinOp.Wrap.mul (|
+                    M.rust_cast (M.read (| rounds |)),
+                    M.read (| M.get_constant (| "revm_precompile::blake2::F_ROUND" |) |)
+                  |)
                 |) in
               let~ _ :=
                 M.match_operator (|
@@ -268,7 +276,7 @@ Module blake2.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| gas_used |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -290,8 +298,8 @@ Module blake2.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ h := M.alloc (| repeat (Value.Integer 0) 8 |) in
-              let~ m := M.alloc (| repeat (Value.Integer 0) 16 |) in
+              let~ h := M.alloc (| repeat (Value.Integer IntegerKind.U64 0) 8 |) in
+              let~ m := M.alloc (| repeat (Value.Integer IntegerKind.U64 0) 16 |) in
               let~ _ :=
                 M.use
                   (M.match_operator (|
@@ -334,8 +342,11 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 4); ("end_", Value.Integer 68) ];
-                                  Value.Integer 8
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 4);
+                                      ("end_", Value.Integer IntegerKind.Usize 68)
+                                    ];
+                                  Value.Integer IntegerKind.Usize 8
                                 ]
                               |)
                             ]
@@ -455,10 +466,12 @@ Module blake2.
                                                               [
                                                                 ("start", M.read (| pos |));
                                                                 ("end_",
-                                                                  BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| pos |))
-                                                                    (Value.Integer 8))
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| pos |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      8
+                                                                  |))
                                                               ]
                                                           ]
                                                         |)
@@ -518,8 +531,11 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 68); ("end_", Value.Integer 196) ];
-                                  Value.Integer 8
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 68);
+                                      ("end_", Value.Integer IntegerKind.Usize 196)
+                                    ];
+                                  Value.Integer IntegerKind.Usize 8
                                 ]
                               |)
                             ]
@@ -639,10 +655,12 @@ Module blake2.
                                                               [
                                                                 ("start", M.read (| pos |));
                                                                 ("end_",
-                                                                  BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| pos |))
-                                                                    (Value.Integer 8))
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| pos |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      8
+                                                                  |))
                                                               ]
                                                           ]
                                                         |)
@@ -707,12 +725,12 @@ Module blake2.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 196);
+                                          ("start", Value.Integer IntegerKind.Usize 196);
                                           ("end_",
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (Value.Integer 196)
-                                              (Value.Integer 8))
+                                            BinOp.Wrap.add (|
+                                              Value.Integer IntegerKind.Usize 196,
+                                              Value.Integer IntegerKind.Usize 8
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -765,12 +783,12 @@ Module blake2.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 204);
+                                          ("start", Value.Integer IntegerKind.Usize 204);
                                           ("end_",
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (Value.Integer 204)
-                                              (Value.Integer 8))
+                                            BinOp.Wrap.add (|
+                                              Value.Integer IntegerKind.Usize 204,
+                                              Value.Integer IntegerKind.Usize 8
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -789,7 +807,7 @@ Module blake2.
                     [ M.read (| rounds |); h; M.read (| m |); M.read (| t |); M.read (| f |) ]
                   |)
                 |) in
-              let~ out := M.alloc (| repeat (Value.Integer 0) 64 |) in
+              let~ out := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 64 |) in
               let~ _ :=
                 M.use
                   (M.match_operator (|
@@ -834,8 +852,11 @@ Module blake2.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 0); ("end_", Value.Integer 64) ];
-                                  Value.Integer 8
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 0);
+                                      ("end_", Value.Integer IntegerKind.Usize 64)
+                                    ];
+                                  Value.Integer IntegerKind.Usize 8
                                 ]
                               |);
                               M.call_closure (|
@@ -932,10 +953,10 @@ Module blake2.
                                                       [
                                                         ("start", M.read (| i |));
                                                         ("end_",
-                                                          BinOp.Wrap.add
-                                                            Integer.Usize
-                                                            (M.read (| i |))
-                                                            (Value.Integer 8))
+                                                          BinOp.Wrap.add (|
+                                                            M.read (| i |),
+                                                            Value.Integer IntegerKind.Usize 8
+                                                          |))
                                                       ]
                                                   ]
                                                 |);
@@ -983,7 +1004,7 @@ Module blake2.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::blake2::run" run.
@@ -997,193 +1018,193 @@ Module blake2.
               [
                 Value.Array
                   [
-                    Value.Integer 0;
-                    Value.Integer 1;
-                    Value.Integer 2;
-                    Value.Integer 3;
-                    Value.Integer 4;
-                    Value.Integer 5;
-                    Value.Integer 6;
-                    Value.Integer 7;
-                    Value.Integer 8;
-                    Value.Integer 9;
-                    Value.Integer 10;
-                    Value.Integer 11;
-                    Value.Integer 12;
-                    Value.Integer 13;
-                    Value.Integer 14;
-                    Value.Integer 15
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 15
                   ];
                 Value.Array
                   [
-                    Value.Integer 14;
-                    Value.Integer 10;
-                    Value.Integer 4;
-                    Value.Integer 8;
-                    Value.Integer 9;
-                    Value.Integer 15;
-                    Value.Integer 13;
-                    Value.Integer 6;
-                    Value.Integer 1;
-                    Value.Integer 12;
-                    Value.Integer 0;
-                    Value.Integer 2;
-                    Value.Integer 11;
-                    Value.Integer 7;
-                    Value.Integer 5;
-                    Value.Integer 3
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 3
                   ];
                 Value.Array
                   [
-                    Value.Integer 11;
-                    Value.Integer 8;
-                    Value.Integer 12;
-                    Value.Integer 0;
-                    Value.Integer 5;
-                    Value.Integer 2;
-                    Value.Integer 15;
-                    Value.Integer 13;
-                    Value.Integer 10;
-                    Value.Integer 14;
-                    Value.Integer 3;
-                    Value.Integer 6;
-                    Value.Integer 7;
-                    Value.Integer 1;
-                    Value.Integer 9;
-                    Value.Integer 4
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 4
                   ];
                 Value.Array
                   [
-                    Value.Integer 7;
-                    Value.Integer 9;
-                    Value.Integer 3;
-                    Value.Integer 1;
-                    Value.Integer 13;
-                    Value.Integer 12;
-                    Value.Integer 11;
-                    Value.Integer 14;
-                    Value.Integer 2;
-                    Value.Integer 6;
-                    Value.Integer 5;
-                    Value.Integer 10;
-                    Value.Integer 4;
-                    Value.Integer 0;
-                    Value.Integer 15;
-                    Value.Integer 8
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 8
                   ];
                 Value.Array
                   [
-                    Value.Integer 9;
-                    Value.Integer 0;
-                    Value.Integer 5;
-                    Value.Integer 7;
-                    Value.Integer 2;
-                    Value.Integer 4;
-                    Value.Integer 10;
-                    Value.Integer 15;
-                    Value.Integer 14;
-                    Value.Integer 1;
-                    Value.Integer 11;
-                    Value.Integer 12;
-                    Value.Integer 6;
-                    Value.Integer 8;
-                    Value.Integer 3;
-                    Value.Integer 13
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 13
                   ];
                 Value.Array
                   [
-                    Value.Integer 2;
-                    Value.Integer 12;
-                    Value.Integer 6;
-                    Value.Integer 10;
-                    Value.Integer 0;
-                    Value.Integer 11;
-                    Value.Integer 8;
-                    Value.Integer 3;
-                    Value.Integer 4;
-                    Value.Integer 13;
-                    Value.Integer 7;
-                    Value.Integer 5;
-                    Value.Integer 15;
-                    Value.Integer 14;
-                    Value.Integer 1;
-                    Value.Integer 9
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 9
                   ];
                 Value.Array
                   [
-                    Value.Integer 12;
-                    Value.Integer 5;
-                    Value.Integer 1;
-                    Value.Integer 15;
-                    Value.Integer 14;
-                    Value.Integer 13;
-                    Value.Integer 4;
-                    Value.Integer 10;
-                    Value.Integer 0;
-                    Value.Integer 7;
-                    Value.Integer 6;
-                    Value.Integer 3;
-                    Value.Integer 9;
-                    Value.Integer 2;
-                    Value.Integer 8;
-                    Value.Integer 11
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 11
                   ];
                 Value.Array
                   [
-                    Value.Integer 13;
-                    Value.Integer 11;
-                    Value.Integer 7;
-                    Value.Integer 14;
-                    Value.Integer 12;
-                    Value.Integer 1;
-                    Value.Integer 3;
-                    Value.Integer 9;
-                    Value.Integer 5;
-                    Value.Integer 0;
-                    Value.Integer 15;
-                    Value.Integer 4;
-                    Value.Integer 8;
-                    Value.Integer 6;
-                    Value.Integer 2;
-                    Value.Integer 10
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 10
                   ];
                 Value.Array
                   [
-                    Value.Integer 6;
-                    Value.Integer 15;
-                    Value.Integer 14;
-                    Value.Integer 9;
-                    Value.Integer 11;
-                    Value.Integer 3;
-                    Value.Integer 0;
-                    Value.Integer 8;
-                    Value.Integer 12;
-                    Value.Integer 2;
-                    Value.Integer 13;
-                    Value.Integer 7;
-                    Value.Integer 1;
-                    Value.Integer 4;
-                    Value.Integer 10;
-                    Value.Integer 5
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 0;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 5
                   ];
                 Value.Array
                   [
-                    Value.Integer 10;
-                    Value.Integer 2;
-                    Value.Integer 8;
-                    Value.Integer 4;
-                    Value.Integer 7;
-                    Value.Integer 6;
-                    Value.Integer 1;
-                    Value.Integer 5;
-                    Value.Integer 15;
-                    Value.Integer 11;
-                    Value.Integer 9;
-                    Value.Integer 14;
-                    Value.Integer 3;
-                    Value.Integer 12;
-                    Value.Integer 13;
-                    Value.Integer 0
+                    Value.Integer IntegerKind.Usize 10;
+                    Value.Integer IntegerKind.Usize 2;
+                    Value.Integer IntegerKind.Usize 8;
+                    Value.Integer IntegerKind.Usize 4;
+                    Value.Integer IntegerKind.Usize 7;
+                    Value.Integer IntegerKind.Usize 6;
+                    Value.Integer IntegerKind.Usize 1;
+                    Value.Integer IntegerKind.Usize 5;
+                    Value.Integer IntegerKind.Usize 15;
+                    Value.Integer IntegerKind.Usize 11;
+                    Value.Integer IntegerKind.Usize 9;
+                    Value.Integer IntegerKind.Usize 14;
+                    Value.Integer IntegerKind.Usize 3;
+                    Value.Integer IntegerKind.Usize 12;
+                    Value.Integer IntegerKind.Usize 13;
+                    Value.Integer IntegerKind.Usize 0
                   ]
               ]
           |))).
@@ -1194,14 +1215,14 @@ Module blake2.
           (M.alloc (|
             Value.Array
               [
-                Value.Integer 7640891576956012808;
-                Value.Integer 13503953896175478587;
-                Value.Integer 4354685564936845355;
-                Value.Integer 11912009170470909681;
-                Value.Integer 5840696475078001361;
-                Value.Integer 11170449401992604703;
-                Value.Integer 2270897969802886507;
-                Value.Integer 6620516959819538809
+                Value.Integer IntegerKind.U64 7640891576956012808;
+                Value.Integer IntegerKind.U64 13503953896175478587;
+                Value.Integer IntegerKind.U64 4354685564936845355;
+                Value.Integer IntegerKind.U64 11912009170470909681;
+                Value.Integer IntegerKind.U64 5840696475078001361;
+                Value.Integer IntegerKind.U64 11170449401992604703;
+                Value.Integer IntegerKind.U64 2270897969802886507;
+                Value.Integer IntegerKind.U64 6620516959819538809
               ]
           |))).
     
@@ -1252,10 +1273,10 @@ Module blake2.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
                   [
-                    BinOp.Pure.bit_xor
+                    BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |))
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), a |) |));
-                    Value.Integer 32
+                    Value.Integer IntegerKind.U32 32
                   ]
                 |)
               |) in
@@ -1276,10 +1297,10 @@ Module blake2.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
                   [
-                    BinOp.Pure.bit_xor
+                    BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |))
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), c |) |));
-                    Value.Integer 24
+                    Value.Integer IntegerKind.U32 24
                   ]
                 |)
               |) in
@@ -1306,10 +1327,10 @@ Module blake2.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
                   [
-                    BinOp.Pure.bit_xor
+                    BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), d |) |))
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), a |) |));
-                    Value.Integer 16
+                    Value.Integer IntegerKind.U32 16
                   ]
                 |)
               |) in
@@ -1330,16 +1351,16 @@ Module blake2.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
                   [
-                    BinOp.Pure.bit_xor
+                    BinOp.bit_xor
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), b |) |))
                       (M.read (| M.SubPointer.get_array_field (| M.read (| v |), c |) |));
-                    Value.Integer 63
+                    Value.Integer IntegerKind.U32 63
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_g : M.IsFunction "revm_precompile::blake2::algo::g" g.
@@ -1385,7 +1406,7 @@ Module blake2.
           let t := M.alloc (| t |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ v := M.alloc (| repeat (Value.Integer 0) 16 |) in
+            let~ v := M.alloc (| repeat (Value.Integer IntegerKind.U64 0) 16 |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
@@ -1464,20 +1485,38 @@ Module blake2.
                 |)
               |) in
             let~ _ :=
-              let β := M.SubPointer.get_array_field (| v, M.alloc (| Value.Integer 12 |) |) in
+              let β :=
+                M.SubPointer.get_array_field (|
+                  v,
+                  M.alloc (| Value.Integer IntegerKind.Usize 12 |)
+                |) in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
-                  (M.read (| M.SubPointer.get_array_field (| t, M.alloc (| Value.Integer 0 |) |) |))
+                  (M.read (|
+                    M.SubPointer.get_array_field (|
+                      t,
+                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    |)
+                  |))
               |) in
             let~ _ :=
-              let β := M.SubPointer.get_array_field (| v, M.alloc (| Value.Integer 13 |) |) in
+              let β :=
+                M.SubPointer.get_array_field (|
+                  v,
+                  M.alloc (| Value.Integer IntegerKind.Usize 13 |)
+                |) in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
-                  (M.read (| M.SubPointer.get_array_field (| t, M.alloc (| Value.Integer 1 |) |) |))
+                  (M.read (|
+                    M.SubPointer.get_array_field (|
+                      t,
+                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                    |)
+                  |))
               |) in
             let~ _ :=
               M.match_operator (|
@@ -1488,11 +1527,18 @@ Module blake2.
                       (let γ := M.use f in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.write (|
-                        M.SubPointer.get_array_field (| v, M.alloc (| Value.Integer 14 |) |),
-                        UnOp.Pure.not
-                          (M.read (|
-                            M.SubPointer.get_array_field (| v, M.alloc (| Value.Integer 14 |) |)
-                          |))
+                        M.SubPointer.get_array_field (|
+                          v,
+                          M.alloc (| Value.Integer IntegerKind.Usize 14 |)
+                        |),
+                        UnOp.not (|
+                          M.read (|
+                            M.SubPointer.get_array_field (|
+                              v,
+                              M.alloc (| Value.Integer IntegerKind.Usize 14 |)
+                            |)
+                          |)
+                        |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -1512,7 +1558,10 @@ Module blake2.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
-                          [ ("start", Value.Integer 0); ("end_", M.read (| rounds |)) ]
+                          [
+                            ("start", Value.Integer IntegerKind.Usize 0);
+                            ("end_", M.read (| rounds |))
+                          ]
                       ]
                     |)
                   |),
@@ -1562,10 +1611,10 @@ Module blake2.
                                               "revm_precompile::blake2::algo::SIGMA"
                                             |),
                                             M.alloc (|
-                                              BinOp.Wrap.rem
-                                                Integer.Usize
-                                                (M.read (| i |))
-                                                (Value.Integer 10)
+                                              BinOp.Wrap.rem (|
+                                                M.read (| i |),
+                                                Value.Integer IntegerKind.Usize 10
+                                              |)
                                             |)
                                           |)
                                         |) in
@@ -1578,16 +1627,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 0;
-                                              Value.Integer 4;
-                                              Value.Integer 8;
-                                              Value.Integer 12;
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.Integer IntegerKind.Usize 4;
+                                              Value.Integer IntegerKind.Usize 8;
+                                              Value.Integer IntegerKind.Usize 12;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 0 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                                   |)
                                                 |)
                                               |);
@@ -1596,7 +1645,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 1 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                                   |)
                                                 |)
                                               |)
@@ -1612,16 +1661,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 1;
-                                              Value.Integer 5;
-                                              Value.Integer 9;
-                                              Value.Integer 13;
+                                              Value.Integer IntegerKind.Usize 1;
+                                              Value.Integer IntegerKind.Usize 5;
+                                              Value.Integer IntegerKind.Usize 9;
+                                              Value.Integer IntegerKind.Usize 13;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 2 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 2 |)
                                                   |)
                                                 |)
                                               |);
@@ -1630,7 +1679,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 3 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                                                   |)
                                                 |)
                                               |)
@@ -1646,16 +1695,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 2;
-                                              Value.Integer 6;
-                                              Value.Integer 10;
-                                              Value.Integer 14;
+                                              Value.Integer IntegerKind.Usize 2;
+                                              Value.Integer IntegerKind.Usize 6;
+                                              Value.Integer IntegerKind.Usize 10;
+                                              Value.Integer IntegerKind.Usize 14;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 4 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 4 |)
                                                   |)
                                                 |)
                                               |);
@@ -1664,7 +1713,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 5 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 5 |)
                                                   |)
                                                 |)
                                               |)
@@ -1680,16 +1729,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 3;
-                                              Value.Integer 7;
-                                              Value.Integer 11;
-                                              Value.Integer 15;
+                                              Value.Integer IntegerKind.Usize 3;
+                                              Value.Integer IntegerKind.Usize 7;
+                                              Value.Integer IntegerKind.Usize 11;
+                                              Value.Integer IntegerKind.Usize 15;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 6 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 6 |)
                                                   |)
                                                 |)
                                               |);
@@ -1698,7 +1747,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 7 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 7 |)
                                                   |)
                                                 |)
                                               |)
@@ -1714,16 +1763,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 0;
-                                              Value.Integer 5;
-                                              Value.Integer 10;
-                                              Value.Integer 15;
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.Integer IntegerKind.Usize 5;
+                                              Value.Integer IntegerKind.Usize 10;
+                                              Value.Integer IntegerKind.Usize 15;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 8 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 8 |)
                                                   |)
                                                 |)
                                               |);
@@ -1732,7 +1781,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 9 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 9 |)
                                                   |)
                                                 |)
                                               |)
@@ -1748,16 +1797,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 1;
-                                              Value.Integer 6;
-                                              Value.Integer 11;
-                                              Value.Integer 12;
+                                              Value.Integer IntegerKind.Usize 1;
+                                              Value.Integer IntegerKind.Usize 6;
+                                              Value.Integer IntegerKind.Usize 11;
+                                              Value.Integer IntegerKind.Usize 12;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 10 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 10 |)
                                                   |)
                                                 |)
                                               |);
@@ -1766,7 +1815,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 11 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 11 |)
                                                   |)
                                                 |)
                                               |)
@@ -1782,16 +1831,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 2;
-                                              Value.Integer 7;
-                                              Value.Integer 8;
-                                              Value.Integer 13;
+                                              Value.Integer IntegerKind.Usize 2;
+                                              Value.Integer IntegerKind.Usize 7;
+                                              Value.Integer IntegerKind.Usize 8;
+                                              Value.Integer IntegerKind.Usize 13;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 12 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 12 |)
                                                   |)
                                                 |)
                                               |);
@@ -1800,7 +1849,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 13 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 13 |)
                                                   |)
                                                 |)
                                               |)
@@ -1816,16 +1865,16 @@ Module blake2.
                                             |),
                                             [
                                               (* Unsize *) M.pointer_coercion v;
-                                              Value.Integer 3;
-                                              Value.Integer 4;
-                                              Value.Integer 9;
-                                              Value.Integer 14;
+                                              Value.Integer IntegerKind.Usize 3;
+                                              Value.Integer IntegerKind.Usize 4;
+                                              Value.Integer IntegerKind.Usize 9;
+                                              Value.Integer IntegerKind.Usize 14;
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 14 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 14 |)
                                                   |)
                                                 |)
                                               |);
@@ -1834,7 +1883,7 @@ Module blake2.
                                                   m,
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| s |),
-                                                    M.alloc (| Value.Integer 15 |)
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 15 |)
                                                   |)
                                                 |)
                                               |)
@@ -1862,7 +1911,10 @@ Module blake2.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [ ("start", Value.Integer 0); ("end_", Value.Integer 8) ]
+                        [
+                          ("start", Value.Integer IntegerKind.Usize 0);
+                          ("end_", Value.Integer IntegerKind.Usize 8)
+                        ]
                     ]
                   |)
                 |),
@@ -1908,18 +1960,18 @@ Module blake2.
                                         M.SubPointer.get_array_field (| M.read (| h |), i |) in
                                       M.write (|
                                         β,
-                                        BinOp.Pure.bit_xor
+                                        BinOp.bit_xor
                                           (M.read (| β |))
-                                          (BinOp.Pure.bit_xor
+                                          (BinOp.bit_xor
                                             (M.read (| M.SubPointer.get_array_field (| v, i |) |))
                                             (M.read (|
                                               M.SubPointer.get_array_field (|
                                                 v,
                                                 M.alloc (|
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| i |))
-                                                    (Value.Integer 8)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| i |),
+                                                    Value.Integer IntegerKind.Usize 8
+                                                  |)
                                                 |)
                                               |)
                                             |)))
@@ -1932,7 +1984,7 @@ Module blake2.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_compress : M.IsFunction "revm_precompile::blake2::algo::compress" compress.

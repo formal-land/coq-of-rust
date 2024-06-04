@@ -47,7 +47,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_is_contained_in :
@@ -101,13 +101,16 @@ Module str.
                           1
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer IntegerKind.Usize 0
+                        |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_is_prefix_of :
@@ -163,12 +166,13 @@ Module str.
                       let j := M.copy (| γ0_1 |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| haystack |) ]
-                            |))
-                            (M.read (| j |))
+                            |),
+                            M.read (| j |)
+                          |)
                         |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool true |)));
@@ -176,7 +180,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_is_suffix_of :
@@ -248,7 +252,8 @@ Module str.
                                 let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
-                                      Value.Tuple [ start; M.alloc (| Value.Integer 0 |) ]
+                                      Value.Tuple
+                                        [ start; M.alloc (| Value.Integer IntegerKind.Usize 0 |) ]
                                     |),
                                     [
                                       fun γ =>
@@ -265,10 +270,12 @@ Module str.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.eq
-                                                            (M.read (| M.read (| left_val |) |))
-                                                            (M.read (| M.read (| right_val |) |)))
+                                                        UnOp.not (|
+                                                          BinOp.eq (|
+                                                            M.read (| M.read (| left_val |) |),
+                                                            M.read (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -364,7 +371,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_strip_prefix_of :
@@ -466,10 +473,12 @@ Module str.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.eq
-                                                            (M.read (| M.read (| left_val |) |))
-                                                            (M.read (| M.read (| right_val |) |)))
+                                                        UnOp.not (|
+                                                          BinOp.eq (|
+                                                            M.read (| M.read (| left_val |) |),
+                                                            M.read (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -562,7 +571,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_strip_suffix_of :
@@ -620,7 +629,7 @@ Module str.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -657,7 +666,7 @@ Module str.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -713,7 +722,7 @@ Module str.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -755,13 +764,15 @@ Module str.
                               let __arg1_1 := M.alloc (| γ2_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_0 |) |))
-                                    (M.read (| M.read (| __arg1_0 |) |)),
+                                  BinOp.eq (|
+                                    M.read (| M.read (| __self_0 |) |),
+                                    M.read (| M.read (| __arg1_0 |) |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_1 |) |))
-                                      (M.read (| M.read (| __arg1_1 |) |))))
+                                    (BinOp.eq (|
+                                      M.read (| M.read (| __self_1 |) |),
+                                      M.read (| M.read (| __arg1_1 |) |)
+                                    |)))
                                 |)
                               |)));
                           fun γ =>
@@ -800,13 +811,15 @@ Module str.
                               let __arg1_1 := M.alloc (| γ2_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_0 |) |))
-                                    (M.read (| M.read (| __arg1_0 |) |)),
+                                  BinOp.eq (|
+                                    M.read (| M.read (| __self_0 |) |),
+                                    M.read (| M.read (| __arg1_0 |) |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_1 |) |))
-                                      (M.read (| M.read (| __arg1_1 |) |))))
+                                    (BinOp.eq (|
+                                      M.read (| M.read (| __self_1 |) |),
+                                      M.read (| M.read (| __arg1_1 |) |)
+                                    |)))
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -816,7 +829,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -922,7 +935,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1012,7 +1025,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_next_match :
@@ -1094,7 +1107,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_next_reject :
@@ -1180,7 +1193,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_next_match_back :
@@ -1262,7 +1275,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_next_reject_back :
@@ -1381,7 +1394,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1487,7 +1500,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1518,7 +1531,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1655,13 +1668,11 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| β |))
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (| old_len |))
-                              (M.call_closure (|
+                          BinOp.Wrap.add (|
+                            M.read (| β |),
+                            BinOp.Wrap.sub (|
+                              M.read (| old_len |),
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
@@ -1676,7 +1687,9 @@ Module str.
                                     "iter"
                                   |)
                                 ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1686,15 +1699,16 @@ Module str.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| ch |))
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (| ch |),
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::str::pattern::CharSearcher",
                                           "needle"
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1739,7 +1753,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1930,16 +1944,16 @@ Module str.
                                     "core::str::pattern::CharSearcher",
                                     "utf8_encoded"
                                   |));
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.sub (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::str::pattern::CharSearcher",
                                       "utf8_size"
                                     |)
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               ]
                             |)
                           |) in
@@ -1971,13 +1985,13 @@ Module str.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| β |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| index |))
-                                        (Value.Integer 1))
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      BinOp.Wrap.add (|
+                                        M.read (| index |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -1987,21 +2001,22 @@ Module str.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.ge
-                                                (M.read (|
+                                              BinOp.ge (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::str::pattern::CharSearcher",
                                                     "finger"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::str::pattern::CharSearcher",
                                                     "utf8_size"
                                                   |)
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -2010,22 +2025,22 @@ Module str.
                                           |) in
                                         let~ found_char :=
                                           M.alloc (|
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger"
                                                 |)
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::str::pattern::CharSearcher",
                                                   "utf8_size"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           |) in
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -2142,7 +2157,9 @@ Module str.
                                                                           "core::ops::range::Range"
                                                                           [
                                                                             ("start",
-                                                                              Value.Integer 0);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                0);
                                                                             ("end_",
                                                                               M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
@@ -2229,7 +2246,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2375,13 +2392,11 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.read (| β |))
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (| old_len |))
-                              (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.read (| β |),
+                            BinOp.Wrap.sub (|
+                              M.read (| old_len |),
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
@@ -2396,7 +2411,9 @@ Module str.
                                     "iter"
                                   |)
                                 ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2406,15 +2423,16 @@ Module str.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| ch |))
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (| ch |),
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::str::pattern::CharSearcher",
                                           "needle"
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2459,7 +2477,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2662,16 +2680,16 @@ Module str.
                                         "core::str::pattern::CharSearcher",
                                         "utf8_encoded"
                                       |));
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (|
+                                    BinOp.Wrap.sub (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::str::pattern::CharSearcher",
                                           "utf8_size"
                                         |)
-                                      |))
-                                      (Value.Integer 1)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -2696,29 +2714,29 @@ Module str.
                                     let index := M.copy (| γ0_0 |) in
                                     let~ index :=
                                       M.alloc (|
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (|
+                                        BinOp.Wrap.add (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::CharSearcher",
                                               "finger"
                                             |)
-                                          |))
-                                          (M.read (| index |))
+                                          |),
+                                          M.read (| index |)
+                                        |)
                                       |) in
                                     let~ shift :=
                                       M.alloc (|
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (|
+                                        BinOp.Wrap.sub (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::CharSearcher",
                                               "utf8_size"
                                             |)
-                                          |))
-                                          (Value.Integer 1)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
                                       |) in
                                     let~ _ :=
                                       M.match_operator (|
@@ -2729,9 +2747,10 @@ Module str.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.ge
-                                                      (M.read (| index |))
-                                                      (M.read (| shift |))
+                                                    BinOp.ge (|
+                                                      M.read (| index |),
+                                                      M.read (| shift |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -2740,10 +2759,10 @@ Module str.
                                                 |) in
                                               let~ found_char :=
                                                 M.alloc (|
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| index |))
-                                                    (M.read (| shift |))
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| index |),
+                                                    M.read (| shift |)
+                                                  |)
                                                 |) in
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
@@ -2773,16 +2792,16 @@ Module str.
                                                                   ("start",
                                                                     M.read (| found_char |));
                                                                   ("end_",
-                                                                    BinOp.Wrap.add
-                                                                      Integer.Usize
-                                                                      (M.read (| found_char |))
-                                                                      (M.read (|
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| found_char |),
+                                                                      M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
                                                                           M.read (| self |),
                                                                           "core::str::pattern::CharSearcher",
                                                                           "utf8_size"
                                                                         |)
-                                                                      |)))
+                                                                      |)
+                                                                    |))
                                                                 ]
                                                             ]
                                                           |)
@@ -2854,6 +2873,7 @@ Module str.
                                                                                 [
                                                                                   ("start",
                                                                                     Value.Integer
+                                                                                      IntegerKind.Usize
                                                                                       0);
                                                                                   ("end_",
                                                                                     M.read (|
@@ -2902,9 +2922,8 @@ Module str.
                                                                                   "finger_back"
                                                                                 |)
                                                                               |);
-                                                                              BinOp.Wrap.add
-                                                                                Integer.Usize
-                                                                                (M.read (|
+                                                                              BinOp.Wrap.add (|
+                                                                                M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -2912,8 +2931,8 @@ Module str.
                                                                                     "core::str::pattern::CharSearcher",
                                                                                     "finger_back"
                                                                                   |)
-                                                                                |))
-                                                                                (M.read (|
+                                                                                |),
+                                                                                M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -2921,7 +2940,8 @@ Module str.
                                                                                     "core::str::pattern::CharSearcher",
                                                                                     "utf8_size"
                                                                                   |)
-                                                                                |))
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                         ]
                                                                     |)
@@ -2984,7 +3004,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3037,7 +3057,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let haystack := M.alloc (| haystack |) in
             M.read (|
-              let~ utf8_encoded := M.alloc (| repeat (Value.Integer 0) 4 |) in
+              let~ utf8_encoded := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |) in
               let~ utf8_size :=
                 M.alloc (|
                   M.call_closure (|
@@ -3055,7 +3075,7 @@ Module str.
                   "core::str::pattern::CharSearcher"
                   [
                     ("haystack", M.read (| haystack |));
-                    ("finger", Value.Integer 0);
+                    ("finger", Value.Integer IntegerKind.Usize 0);
                     ("finger_back",
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -3067,7 +3087,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3095,7 +3115,10 @@ Module str.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt (M.rust_cast (M.read (| self |))) (Value.Integer 128)
+                            BinOp.lt (|
+                              M.rust_cast (M.read (| self |)),
+                              Value.Integer IntegerKind.U32 128
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3116,7 +3139,7 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ buffer := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                      (let~ buffer := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -3138,7 +3161,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3165,13 +3188,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3198,13 +3222,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3234,13 +3259,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3270,13 +3296,14 @@ Module str.
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                   [
                     M.read (| self |);
-                    (* Unsize *) M.pointer_coercion (M.alloc (| repeat (Value.Integer 0) 4 |))
+                    (* Unsize *)
+                    M.pointer_coercion (M.alloc (| repeat (Value.Integer IntegerKind.U8 0) 4 |))
                   ]
                 |);
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3324,7 +3351,7 @@ Module str.
               |),
               [ M.read (| self |); Value.Tuple [ M.read (| c |) ] ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3378,21 +3405,22 @@ Module str.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let m := M.copy (| γ |) in
-                                BinOp.Pure.eq (M.read (| m |)) (M.read (| c |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let m := M.copy (| γ |) in
+                                  BinOp.eq (| M.read (| m |), M.read (| c |) |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3446,21 +3474,22 @@ Module str.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let m := M.copy (| γ |) in
-                                BinOp.Pure.eq (M.read (| m |)) (M.read (| c |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let m := M.copy (| γ |) in
+                                  BinOp.eq (| M.read (| m |), M.read (| c |) |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3514,21 +3543,22 @@ Module str.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let m := M.copy (| γ |) in
-                                BinOp.Pure.eq (M.read (| m |)) (M.read (| c |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let m := M.copy (| γ |) in
+                                  BinOp.eq (| M.read (| m |), M.read (| c |) |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3618,7 +3648,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3679,7 +3709,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3729,7 +3759,7 @@ Module str.
                     [ M.read (| haystack |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3767,7 +3797,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3882,10 +3912,7 @@ Module str.
                               |) in
                             let~ char_len :=
                               M.alloc (|
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (| pre_len |))
-                                  (M.read (| len |))
+                                BinOp.Wrap.sub (| M.read (| pre_len |), M.read (| len |) |)
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -3926,10 +3953,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Match"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| i |))
-                                                  (M.read (| char_len |))
+                                                BinOp.Wrap.add (|
+                                                  M.read (| i |),
+                                                  M.read (| char_len |)
+                                                |)
                                               ]
                                           |)
                                         |)
@@ -3945,10 +3972,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Reject"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| i |))
-                                                  (M.read (| char_len |))
+                                                BinOp.Wrap.add (|
+                                                  M.read (| i |),
+                                                  M.read (| char_len |)
+                                                |)
                                               ]
                                           |)
                                         |)
@@ -3962,7 +3989,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4092,10 +4119,7 @@ Module str.
                               |) in
                             let~ char_len :=
                               M.alloc (|
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (| pre_len |))
-                                  (M.read (| len |))
+                                BinOp.Wrap.sub (| M.read (| pre_len |), M.read (| len |) |)
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -4136,10 +4160,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Match"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| i |))
-                                                  (M.read (| char_len |))
+                                                BinOp.Wrap.add (|
+                                                  M.read (| i |),
+                                                  M.read (| char_len |)
+                                                |)
                                               ]
                                           |)
                                         |)
@@ -4155,10 +4179,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Reject"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| i |))
-                                                  (M.read (| char_len |))
+                                                BinOp.Wrap.add (|
+                                                  M.read (| i |),
+                                                  M.read (| char_len |)
+                                                |)
                                               ]
                                           |)
                                         |)
@@ -4172,7 +4196,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::str::pattern::SearchStep::Done" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4235,7 +4259,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4276,7 +4300,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4325,7 +4349,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4366,7 +4390,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4415,7 +4439,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4444,7 +4468,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4473,7 +4497,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4502,7 +4526,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4534,7 +4558,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4566,7 +4590,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4617,7 +4641,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4648,7 +4672,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4679,7 +4703,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4710,7 +4734,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4758,7 +4782,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4789,7 +4813,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4820,7 +4844,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4886,7 +4910,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4915,7 +4939,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4944,7 +4968,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4973,7 +4997,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5005,7 +5029,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5037,7 +5061,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5088,7 +5112,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5119,7 +5143,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5150,7 +5174,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5181,7 +5205,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5229,7 +5253,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5260,7 +5284,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5291,7 +5315,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5356,7 +5380,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5397,7 +5421,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5439,7 +5463,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5470,7 +5494,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5501,7 +5525,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5532,7 +5556,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5580,7 +5604,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5611,7 +5635,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5642,7 +5666,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5708,7 +5732,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5737,7 +5761,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5766,7 +5790,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5795,7 +5819,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5827,7 +5851,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5859,7 +5883,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5917,7 +5941,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6009,7 +6033,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6052,7 +6076,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6082,7 +6106,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6112,7 +6136,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6142,7 +6166,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6191,7 +6215,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6221,7 +6245,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6251,7 +6275,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6319,7 +6343,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6347,7 +6371,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6375,7 +6399,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6403,7 +6427,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6434,7 +6458,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6465,7 +6489,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6520,16 +6544,17 @@ Module str.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let s := M.copy (| γ |) in
-                                  M.read (| s |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let s := M.copy (| γ |) in
+                                    M.read (| s |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple
@@ -6574,17 +6599,18 @@ Module str.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
-                                              let s := M.copy (| γ |) in
-                                              M.read (| s |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := M.read (| γ |) in
+                                                let s := M.copy (| γ |) in
+                                                M.read (| s |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             |);
                             Value.Tuple [ M.read (| self |) ]
@@ -6596,7 +6622,7 @@ Module str.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6642,17 +6668,18 @@ Module str.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let s := M.copy (| γ |) in
-                                      M.read (| s |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let s := M.copy (| γ |) in
+                                        M.read (| s |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |);
                     Value.Tuple [ M.read (| self |) ]
@@ -6661,7 +6688,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6707,17 +6734,18 @@ Module str.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let s := M.copy (| γ |) in
-                                      M.read (| s |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let s := M.copy (| γ |) in
+                                        M.read (| s |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |);
                     Value.Tuple [ M.read (| self |) ]
@@ -6726,7 +6754,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6772,17 +6800,18 @@ Module str.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let s := M.copy (| γ |) in
-                                      M.read (| s |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let s := M.copy (| γ |) in
+                                        M.read (| s |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |);
                     Value.Tuple [ M.read (| self |) ]
@@ -6791,7 +6820,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6840,17 +6869,18 @@ Module str.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let s := M.copy (| γ |) in
-                                      M.read (| s |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let s := M.copy (| γ |) in
+                                        M.read (| s |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |);
                     Value.Tuple [ M.read (| self |) ]
@@ -6859,7 +6889,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6908,17 +6938,18 @@ Module str.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
-                                      let s := M.copy (| γ |) in
-                                      M.read (| s |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ := M.read (| γ |) in
+                                        let s := M.copy (| γ |) in
+                                        M.read (| s |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |);
                     Value.Tuple [ M.read (| self |) ]
@@ -6927,7 +6958,7 @@ Module str.
                 M.read (| haystack |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6968,7 +6999,7 @@ Module str.
               M.get_associated_function (| Ty.path "core::str::pattern::StrSearcher", "new", [] |),
               [ M.read (| haystack |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6999,7 +7030,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7045,12 +7076,13 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
+                                  BinOp.eq (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "len", [] |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7093,16 +7125,17 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.call_closure (|
+                                          BinOp.eq (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| self |) ]
-                                            |))
-                                            (Value.Integer 1)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7137,7 +7170,7 @@ Module str.
                                                     |),
                                                     [ M.read (| self |) ]
                                                   |),
-                                                  M.alloc (| Value.Integer 0 |)
+                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                                 |)
                                               ]
                                             |)
@@ -7157,16 +7190,17 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.le
-                                            (M.call_closure (|
+                                          BinOp.le (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| self |) ]
-                                            |))
-                                            (Value.Integer 32)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 32
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7262,7 +7296,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7350,7 +7384,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7381,7 +7415,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7424,13 +7458,12 @@ Module str.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ i :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| haystack |) ]
-                            |))
-                            (M.call_closure (|
+                            |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                 "len",
@@ -7442,7 +7475,8 @@ Module str.
                                   [ M.read (| self |) ]
                                 |)
                               ]
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -7470,7 +7504,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7566,7 +7600,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7624,7 +7658,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7723,7 +7757,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7799,7 +7833,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7892,7 +7926,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7966,7 +8000,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8040,7 +8074,7 @@ Module str.
                                   Value.StructRecord
                                     "core::str::pattern::EmptyNeedle"
                                     [
-                                      ("position", Value.Integer 0);
+                                      ("position", Value.Integer IntegerKind.Usize 0);
                                       ("end_",
                                         M.call_closure (|
                                           M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -8092,7 +8126,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8118,7 +8152,7 @@ Module str.
                 "haystack"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8244,14 +8278,15 @@ Module str.
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_fw"
                               |),
-                              UnOp.Pure.not
-                                (M.read (|
+                              UnOp.not (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::EmptyNeedle",
                                     "is_match_fw"
                                   |)
-                                |))
+                                |)
+                              |)
                             |) in
                           let~ pos :=
                             M.copy (|
@@ -8355,17 +8390,17 @@ Module str.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (M.call_closure (|
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "char",
                                             "len_utf8",
                                             []
                                           |),
                                           [ M.read (| ch |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |) in
                                   M.alloc (|
                                     Value.StructTuple
@@ -8401,15 +8436,15 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (|
+                                          BinOp.eq (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| searcher |),
                                                 "core::str::pattern::TwoWaySearcher",
                                                 "position"
                                               |)
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
@@ -8424,7 +8459,8 @@ Module str.
                                                   |)
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -8447,15 +8483,16 @@ Module str.
                             |) in
                           let~ is_long :=
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (|
@@ -8523,8 +8560,8 @@ Module str.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (M.call_closure (|
+                                                      UnOp.not (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "str",
                                                             "is_char_boundary",
@@ -8540,7 +8577,8 @@ Module str.
                                                             |);
                                                             M.read (| b |)
                                                           ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -8551,10 +8589,10 @@ Module str.
                                                   let β := b in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -8611,7 +8649,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8759,15 +8797,16 @@ Module str.
                           let searcher := M.alloc (| γ0_0 |) in
                           let~ is_long :=
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -8878,7 +8917,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9014,14 +9053,15 @@ Module str.
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_bw"
                               |),
-                              UnOp.Pure.not
-                                (M.read (|
+                              UnOp.not (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::EmptyNeedle",
                                     "is_match_bw"
                                   |)
-                                |))
+                                |)
+                              |)
                             |) in
                           let~ end_ :=
                             M.copy (|
@@ -9125,17 +9165,17 @@ Module str.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (M.call_closure (|
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "char",
                                             "len_utf8",
                                             []
                                           |),
                                           [ M.read (| ch |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |) in
                                   M.alloc (|
                                     Value.StructTuple
@@ -9171,15 +9211,16 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (|
+                                          BinOp.eq (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| searcher |),
                                                 "core::str::pattern::TwoWaySearcher",
                                                 "end"
                                               |)
-                                            |))
-                                            (Value.Integer 0)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -9202,15 +9243,16 @@ Module str.
                             |) in
                           let~ is_long :=
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (|
@@ -9278,8 +9320,8 @@ Module str.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (M.call_closure (|
+                                                      UnOp.not (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "str",
                                                             "is_char_boundary",
@@ -9295,7 +9337,8 @@ Module str.
                                                             |);
                                                             M.read (| a |)
                                                           ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -9306,10 +9349,10 @@ Module str.
                                                   let β := a in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -9366,7 +9409,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9513,15 +9556,16 @@ Module str.
                           let searcher := M.alloc (| γ0_0 |) in
                           let~ is_long :=
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| searcher |),
                                     "core::str::pattern::TwoWaySearcher",
                                     "memory"
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -9632,7 +9676,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9765,7 +9809,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9887,7 +9931,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10022,9 +10066,10 @@ Module str.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.gt
-                                                (M.read (| crit_pos_false |))
-                                                (M.read (| crit_pos_true |))
+                                              BinOp.gt (|
+                                                M.read (| crit_pos_false |),
+                                                M.read (| crit_pos_true |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -10115,10 +10160,10 @@ Module str.
                                                               [
                                                                 ("start", M.read (| period |));
                                                                 ("end_",
-                                                                  BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| period |))
-                                                                    (M.read (| crit_pos |)))
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| period |),
+                                                                    M.read (| crit_pos |)
+                                                                  |))
                                                               ]
                                                           ]
                                                         |)
@@ -10132,17 +10177,16 @@ Module str.
                                                 |) in
                                               let~ crit_pos_back :=
                                                 M.alloc (|
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.call_closure (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
                                                       [ M.read (| needle |) ]
-                                                    |))
-                                                    (M.call_closure (|
+                                                    |),
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::cmp::max",
                                                         [ Ty.path "usize" ]
@@ -10175,7 +10219,8 @@ Module str.
                                                           ]
                                                         |)
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |) in
                                               M.alloc (|
                                                 Value.StructRecord
@@ -10217,9 +10262,9 @@ Module str.
                                                           |)
                                                         ]
                                                       |));
-                                                    ("position", Value.Integer 0);
+                                                    ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
-                                                    ("memory", Value.Integer 0);
+                                                    ("memory", Value.Integer IntegerKind.Usize 0);
                                                     ("memory_back",
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -10242,18 +10287,16 @@ Module str.
                                                     ("crit_pos", M.read (| crit_pos |));
                                                     ("crit_pos_back", M.read (| crit_pos |));
                                                     ("period",
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.call_closure (|
+                                                      BinOp.Wrap.add (|
+                                                        M.call_closure (|
                                                           M.get_function (|
                                                             "core::cmp::max",
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [
                                                             M.read (| crit_pos |);
-                                                            BinOp.Wrap.sub
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            BinOp.Wrap.sub (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
@@ -10262,11 +10305,13 @@ Module str.
                                                                   []
                                                                 |),
                                                                 [ M.read (| needle |) ]
-                                                              |))
-                                                              (M.read (| crit_pos |))
+                                                              |),
+                                                              M.read (| crit_pos |)
+                                                            |)
                                                           ]
-                                                        |))
-                                                        (Value.Integer 1));
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |));
                                                     ("byteset",
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -10277,7 +10322,7 @@ Module str.
                                                         |),
                                                         [ M.read (| needle |) ]
                                                       |));
-                                                    ("position", Value.Integer 0);
+                                                    ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
                                                     ("memory",
                                                       M.read (|
@@ -10298,7 +10343,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -10335,41 +10380,43 @@ Module str.
                   |),
                   [ M.read (| bytes |) ]
                 |);
-                Value.Integer 0;
+                Value.Integer IntegerKind.U64 0;
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0; α1 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let a := M.copy (| γ |) in
-                                M.match_operator (|
-                                  M.alloc (| α1 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let b := M.copy (| γ |) in
-                                        BinOp.Pure.bit_or
-                                          (BinOp.Wrap.shl
-                                            (Value.Integer 1)
-                                            (BinOp.Pure.bit_and
-                                              (M.read (| b |))
-                                              (Value.Integer 63)))
-                                          (M.read (| a |))))
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let a := M.copy (| γ |) in
+                                  M.match_operator (|
+                                    M.alloc (| α1 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.read (| γ |) in
+                                          let b := M.copy (| γ |) in
+                                          BinOp.bit_or
+                                            (BinOp.Wrap.shl (|
+                                              Value.Integer IntegerKind.U64 1,
+                                              BinOp.bit_and
+                                                (M.read (| b |))
+                                                (Value.Integer IntegerKind.U8 63)
+                                            |))
+                                            (M.read (| a |))))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byteset_create :
@@ -10386,20 +10433,22 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let byte := M.alloc (| byte |) in
-            BinOp.Pure.ne
-              (BinOp.Pure.bit_and
-                (BinOp.Wrap.shr
-                  (M.read (|
+            BinOp.ne (|
+              BinOp.bit_and
+                (BinOp.Wrap.shr (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::str::pattern::TwoWaySearcher",
                       "byteset"
                     |)
-                  |))
-                  (M.rust_cast (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 63))))
-                (Value.Integer 1))
-              (Value.Integer 0)))
-        | _, _ => M.impossible
+                  |),
+                  M.rust_cast (BinOp.bit_and (M.read (| byte |)) (Value.Integer IntegerKind.U8 63))
+                |))
+                (Value.Integer IntegerKind.U64 1),
+              Value.Integer IntegerKind.U64 0
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byteset_contains :
@@ -10497,17 +10546,17 @@ Module str.
                     |) in
                   let~ needle_last :=
                     M.alloc (|
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.call_closure (|
+                      BinOp.Wrap.sub (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                             "len",
                             []
                           |),
                           [ M.read (| needle |) ]
-                        |))
-                        (Value.Integer 1)
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
                     |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -10526,16 +10575,16 @@ Module str.
                                       |),
                                       [
                                         M.read (| haystack |);
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (|
+                                        BinOp.Wrap.add (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::TwoWaySearcher",
                                               "position"
                                             |)
-                                          |))
-                                          (M.read (| needle_last |))
+                                          |),
+                                          M.read (| needle_last |)
+                                        |)
                                       ]
                                     |)
                                   |),
@@ -10622,15 +10671,16 @@ Module str.
                                                 []
                                               |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.ne
-                                                  (M.read (| old_pos |))
-                                                  (M.read (|
+                                                (BinOp.ne (|
+                                                  M.read (| old_pos |),
+                                                  M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "position"
                                                     |)
-                                                  |))))
+                                                  |)
+                                                |)))
                                             |)
                                           |)) in
                                       let _ :=
@@ -10677,15 +10727,16 @@ Module str.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
+                                            UnOp.not (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::str::pattern::TwoWaySearcher",
                                                   "byteset_contains",
                                                   []
                                                 |),
                                                 [ M.read (| self |); M.read (| tail_byte |) ]
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -10704,17 +10755,17 @@ Module str.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| β |))
-                                                  (M.call_closure (|
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| needle |) ]
-                                                  |))
+                                                  |)
+                                                |)
                                               |) in
                                             let~ _ :=
                                               M.match_operator (|
@@ -10725,7 +10776,7 @@ Module str.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not (M.read (| long_period |))
+                                                            UnOp.not (| M.read (| long_period |) |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -10739,7 +10790,7 @@ Module str.
                                                             "core::str::pattern::TwoWaySearcher",
                                                             "memory"
                                                           |),
-                                                          Value.Integer 0
+                                                          Value.Integer IntegerKind.Usize 0
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
                                                   fun γ =>
@@ -10884,30 +10935,31 @@ Module str.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.ne
-                                                                      (M.read (|
+                                                                    BinOp.ne (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (|
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
-                                                                              |))
-                                                                              (M.read (| i |))
+                                                                              |),
+                                                                              M.read (| i |)
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -10926,22 +10978,24 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (BinOp.Wrap.add
-                                                                            Integer.Usize
-                                                                            (BinOp.Wrap.sub
-                                                                              Integer.Usize
-                                                                              (M.read (| i |))
-                                                                              (M.read (|
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (| i |),
+                                                                              M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "crit_pos"
                                                                                 |)
-                                                                              |)))
-                                                                            (Value.Integer 1))
+                                                                              |)
+                                                                            |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -10954,10 +11008,11 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.read (|
+                                                                                    UnOp.not (|
+                                                                                      M.read (|
                                                                                         long_period
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -10973,7 +11028,9 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory"
                                                                                   |),
-                                                                                  Value.Integer 0
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 Value.Tuple []
@@ -11013,7 +11070,7 @@ Module str.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        M.alloc (| Value.Integer 0 |)));
+                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.SubPointer.get_struct_record_field (|
@@ -11128,30 +11185,31 @@ Module str.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.ne
-                                                                      (M.read (|
+                                                                    BinOp.ne (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (|
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
-                                                                              |))
-                                                                              (M.read (| i |))
+                                                                              |),
+                                                                              M.read (| i |)
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -11170,16 +11228,16 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (M.read (|
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -11192,10 +11250,11 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.read (|
+                                                                                    UnOp.not (|
+                                                                                      M.read (|
                                                                                         long_period
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -11211,9 +11270,8 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory"
                                                                                   |),
-                                                                                  BinOp.Wrap.sub
-                                                                                    Integer.Usize
-                                                                                    (M.call_closure (|
+                                                                                  BinOp.Wrap.sub (|
+                                                                                    M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -11230,8 +11288,8 @@ Module str.
                                                                                           needle
                                                                                         |)
                                                                                       ]
-                                                                                    |))
-                                                                                    (M.read (|
+                                                                                    |),
+                                                                                    M.read (|
                                                                                       M.SubPointer.get_struct_record_field (|
                                                                                         M.read (|
                                                                                           self
@@ -11239,7 +11297,8 @@ Module str.
                                                                                         "core::str::pattern::TwoWaySearcher",
                                                                                         "period"
                                                                                       |)
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 Value.Tuple []
@@ -11283,17 +11342,17 @@ Module str.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.read (| β |))
-                                  (M.call_closure (|
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             let~ _ :=
                               M.match_operator (|
@@ -11303,9 +11362,7 @@ Module str.
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.alloc (|
-                                            UnOp.Pure.not (M.read (| long_period |))
-                                          |)) in
+                                          (M.alloc (| UnOp.not (| M.read (| long_period |) |) |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -11318,7 +11375,7 @@ Module str.
                                             "core::str::pattern::TwoWaySearcher",
                                             "memory"
                                           |),
-                                          Value.Integer 0
+                                          Value.Integer IntegerKind.Usize 0
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -11335,17 +11392,17 @@ Module str.
                                 |),
                                 [
                                   M.read (| match_pos |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| match_pos |))
-                                    (M.call_closure (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| match_pos |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| needle |) ]
-                                    |))
+                                    |)
+                                  |)
                                 ]
                               |)
                             |)))
@@ -11355,7 +11412,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next : M.IsAssociatedFunction Self "next" next.
@@ -11523,7 +11580,7 @@ Module str.
                                                     "core::str::pattern::TwoWaySearcher",
                                                     "end"
                                                   |),
-                                                  Value.Integer 0
+                                                  Value.Integer IntegerKind.Usize 0
                                                 |) in
                                               M.return_ (|
                                                 M.call_closure (|
@@ -11534,7 +11591,10 @@ Module str.
                                                     "rejecting",
                                                     []
                                                   |),
-                                                  [ Value.Integer 0; M.read (| old_end |) ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 0;
+                                                    M.read (| old_end |)
+                                                  ]
                                                 |)
                                               |)
                                             |)
@@ -11564,15 +11624,16 @@ Module str.
                                                 []
                                               |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.ne
-                                                  (M.read (| old_end |))
-                                                  (M.read (|
+                                                (BinOp.ne (|
+                                                  M.read (| old_end |),
+                                                  M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::pattern::TwoWaySearcher",
                                                       "end"
                                                     |)
-                                                  |))))
+                                                  |)
+                                                |)))
                                             |)
                                           |)) in
                                       let _ :=
@@ -11619,15 +11680,16 @@ Module str.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
+                                            UnOp.not (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::str::pattern::TwoWaySearcher",
                                                   "byteset_contains",
                                                   []
                                                 |),
                                                 [ M.read (| self |); M.read (| front_byte |) ]
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -11646,17 +11708,17 @@ Module str.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (| β |))
-                                                  (M.call_closure (|
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| β |),
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| needle |) ]
-                                                  |))
+                                                  |)
+                                                |)
                                               |) in
                                             let~ _ :=
                                               M.match_operator (|
@@ -11667,7 +11729,7 @@ Module str.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not (M.read (| long_period |))
+                                                            UnOp.not (| M.read (| long_period |) |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -11784,7 +11846,7 @@ Module str.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer 0);
+                                                ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_", M.read (| crit |))
                                               ]
                                           ]
@@ -11848,22 +11910,20 @@ Module str.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.ne
-                                                                      (M.read (|
+                                                                    BinOp.ne (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (BinOp.Wrap.sub
-                                                                                Integer.Usize
-                                                                                (M.read (|
+                                                                            BinOp.Wrap.add (|
+                                                                              BinOp.Wrap.sub (|
+                                                                                M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -11871,8 +11931,8 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
                                                                                   |)
-                                                                                |))
-                                                                                (M.call_closure (|
+                                                                                |),
+                                                                                M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -11887,11 +11947,14 @@ Module str.
                                                                                       needle
                                                                                     |)
                                                                                   ]
-                                                                                |)))
-                                                                              (M.read (| i |))
+                                                                                |)
+                                                                              |),
+                                                                              M.read (| i |)
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -11910,19 +11973,19 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.sub
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (BinOp.Wrap.sub
-                                                                            Integer.Usize
-                                                                            (M.read (|
+                                                                        BinOp.Wrap.sub (|
+                                                                          M.read (| β |),
+                                                                          BinOp.Wrap.sub (|
+                                                                            M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.read (| self |),
                                                                                 "core::str::pattern::TwoWaySearcher",
                                                                                 "crit_pos_back"
                                                                               |)
-                                                                            |))
-                                                                            (M.read (| i |)))
+                                                                            |),
+                                                                            M.read (| i |)
+                                                                          |)
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -11935,10 +11998,11 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.read (|
+                                                                                    UnOp.not (|
+                                                                                      M.read (|
                                                                                         long_period
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -12114,22 +12178,20 @@ Module str.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.ne
-                                                                      (M.read (|
+                                                                    BinOp.ne (|
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| needle |),
                                                                           i
                                                                         |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (BinOp.Wrap.sub
-                                                                                Integer.Usize
-                                                                                (M.read (|
+                                                                            BinOp.Wrap.add (|
+                                                                              BinOp.Wrap.sub (|
+                                                                                M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -12137,8 +12199,8 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
                                                                                   |)
-                                                                                |))
-                                                                                (M.call_closure (|
+                                                                                |),
+                                                                                M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -12153,11 +12215,14 @@ Module str.
                                                                                       needle
                                                                                     |)
                                                                                   ]
-                                                                                |)))
-                                                                              (M.read (| i |))
+                                                                                |)
+                                                                              |),
+                                                                              M.read (| i |)
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -12176,16 +12241,16 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Wrap.sub
-                                                                          Integer.Usize
-                                                                          (M.read (| β |))
-                                                                          (M.read (|
+                                                                        BinOp.Wrap.sub (|
+                                                                          M.read (| β |),
+                                                                          M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |) in
                                                                     let~ _ :=
                                                                       M.match_operator (|
@@ -12198,10 +12263,11 @@ Module str.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.read (|
+                                                                                    UnOp.not (|
+                                                                                      M.read (|
                                                                                         long_period
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -12254,23 +12320,23 @@ Module str.
                                 |)) in
                             let~ match_pos :=
                               M.alloc (|
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.sub (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::str::pattern::TwoWaySearcher",
                                       "end"
                                     |)
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             let~ _ :=
                               let β :=
@@ -12281,17 +12347,17 @@ Module str.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (| β |))
-                                  (M.call_closure (|
+                                BinOp.Wrap.sub (|
+                                  M.read (| β |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             let~ _ :=
                               M.match_operator (|
@@ -12301,9 +12367,7 @@ Module str.
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.alloc (|
-                                            UnOp.Pure.not (M.read (| long_period |))
-                                          |)) in
+                                          (M.alloc (| UnOp.not (| M.read (| long_period |) |) |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -12340,17 +12404,17 @@ Module str.
                                 |),
                                 [
                                   M.read (| match_pos |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| match_pos |))
-                                    (M.call_closure (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| match_pos |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| needle |) ]
-                                    |))
+                                    |)
+                                  |)
                                 ]
                               |)
                             |)))
@@ -12360,7 +12424,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next_back : M.IsAssociatedFunction Self "next_back" next_back.
@@ -12407,10 +12471,10 @@ Module str.
             (let arr := M.alloc (| arr |) in
             let order_greater := M.alloc (| order_greater |) in
             M.read (|
-              let~ left := M.alloc (| Value.Integer 0 |) in
-              let~ right := M.alloc (| Value.Integer 1 |) in
-              let~ offset := M.alloc (| Value.Integer 0 |) in
-              let~ period := M.alloc (| Value.Integer 1 |) in
+              let~ left := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              let~ right := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
+              let~ offset := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              let~ period := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
               let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
@@ -12429,10 +12493,7 @@ Module str.
                                   |),
                                   [
                                     M.read (| arr |);
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| right |))
-                                      (M.read (| offset |))
+                                    BinOp.Wrap.add (| M.read (| right |), M.read (| offset |) |)
                                   ]
                                 |)
                               |) in
@@ -12449,10 +12510,7 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| left |))
-                                      (M.read (| offset |))
+                                    BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
                                   |)
                                 |)
                               |) in
@@ -12466,13 +12524,13 @@ Module str.
                                         (M.alloc (|
                                           LogicalOp.or (|
                                             LogicalOp.and (|
-                                              BinOp.Pure.lt (M.read (| a |)) (M.read (| b |)),
+                                              BinOp.lt (| M.read (| a |), M.read (| b |) |),
                                               ltac:(M.monadic
-                                                (UnOp.Pure.not (M.read (| order_greater |))))
+                                                (UnOp.not (| M.read (| order_greater |) |)))
                                             |),
                                             ltac:(M.monadic
                                               (LogicalOp.and (|
-                                                BinOp.Pure.gt (M.read (| a |)) (M.read (| b |)),
+                                                BinOp.gt (| M.read (| a |), M.read (| b |) |),
                                                 ltac:(M.monadic (M.read (| order_greater |)))
                                               |)))
                                           |)
@@ -12486,22 +12544,20 @@ Module str.
                                       let β := right in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| β |))
-                                          (BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| offset |))
-                                            (Value.Integer 1))
+                                        BinOp.Wrap.add (|
+                                          M.read (| β |),
+                                          BinOp.Wrap.add (|
+                                            M.read (| offset |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
+                                        |)
                                       |) in
-                                    let~ _ := M.write (| offset, Value.Integer 0 |) in
+                                    let~ _ :=
+                                      M.write (| offset, Value.Integer IntegerKind.Usize 0 |) in
                                     let~ _ :=
                                       M.write (|
                                         period,
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| right |))
-                                          (M.read (| left |))
+                                        BinOp.Wrap.sub (| M.read (| right |), M.read (| left |) |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -12514,7 +12570,7 @@ Module str.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.eq (M.read (| a |)) (M.read (| b |))
+                                                  BinOp.eq (| M.read (| a |), M.read (| b |) |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -12529,12 +12585,13 @@ Module str.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.eq
-                                                            (BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| offset |))
-                                                              (Value.Integer 1))
-                                                            (M.read (| period |))
+                                                          BinOp.eq (|
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| offset |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |),
+                                                            M.read (| period |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -12545,16 +12602,19 @@ Module str.
                                                       let β := right in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| β |))
-                                                          (BinOp.Wrap.add
-                                                            Integer.Usize
-                                                            (M.read (| offset |))
-                                                            (Value.Integer 1))
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          BinOp.Wrap.add (|
+                                                            M.read (| offset |),
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          |)
+                                                        |)
                                                       |) in
                                                     let~ _ :=
-                                                      M.write (| offset, Value.Integer 0 |) in
+                                                      M.write (|
+                                                        offset,
+                                                        Value.Integer IntegerKind.Usize 0
+                                                      |) in
                                                     M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -12562,10 +12622,10 @@ Module str.
                                                       let β := offset in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| β |))
-                                                          (Value.Integer 1)
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)))
                                               ]
@@ -12577,13 +12637,21 @@ Module str.
                                               let β := right in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.read (| β |))
-                                                  (Value.Integer 1)
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)
                                               |) in
-                                            let~ _ := M.write (| offset, Value.Integer 0 |) in
-                                            let~ _ := M.write (| period, Value.Integer 1 |) in
+                                            let~ _ :=
+                                              M.write (|
+                                                offset,
+                                                Value.Integer IntegerKind.Usize 0
+                                              |) in
+                                            let~ _ :=
+                                              M.write (|
+                                                period,
+                                                Value.Integer IntegerKind.Usize 1
+                                              |) in
                                             M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |)))
@@ -12605,7 +12673,7 @@ Module str.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| left |); M.read (| period |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_maximal_suffix :
@@ -12659,10 +12727,10 @@ Module str.
             let known_period := M.alloc (| known_period |) in
             let order_greater := M.alloc (| order_greater |) in
             M.read (|
-              let~ left := M.alloc (| Value.Integer 0 |) in
-              let~ right := M.alloc (| Value.Integer 1 |) in
-              let~ offset := M.alloc (| Value.Integer 0 |) in
-              let~ period := M.alloc (| Value.Integer 1 |) in
+              let~ left := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              let~ right := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
+              let~ offset := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              let~ period := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
               let~ n :=
                 M.alloc (|
                   M.call_closure (|
@@ -12685,12 +12753,10 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| right |))
-                                      (M.read (| offset |)))
-                                    (M.read (| n |))
+                                  BinOp.lt (|
+                                    BinOp.Wrap.add (| M.read (| right |), M.read (| offset |) |),
+                                    M.read (| n |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12699,16 +12765,16 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (| n |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (Value.Integer 1)
-                                          (M.read (| right |)))
-                                        (M.read (| offset |)))
+                                    BinOp.Wrap.sub (|
+                                      M.read (| n |),
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.Usize 1,
+                                          M.read (| right |)
+                                        |),
+                                        M.read (| offset |)
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |) in
@@ -12717,16 +12783,16 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (| n |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (Value.Integer 1)
-                                          (M.read (| left |)))
-                                        (M.read (| offset |)))
+                                    BinOp.Wrap.sub (|
+                                      M.read (| n |),
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.Usize 1,
+                                          M.read (| left |)
+                                        |),
+                                        M.read (| offset |)
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |) in
@@ -12741,13 +12807,13 @@ Module str.
                                           (M.alloc (|
                                             LogicalOp.or (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.lt (M.read (| a |)) (M.read (| b |)),
+                                                BinOp.lt (| M.read (| a |), M.read (| b |) |),
                                                 ltac:(M.monadic
-                                                  (UnOp.Pure.not (M.read (| order_greater |))))
+                                                  (UnOp.not (| M.read (| order_greater |) |)))
                                               |),
                                               ltac:(M.monadic
                                                 (LogicalOp.and (|
-                                                  BinOp.Pure.gt (M.read (| a |)) (M.read (| b |)),
+                                                  BinOp.gt (| M.read (| a |), M.read (| b |) |),
                                                   ltac:(M.monadic (M.read (| order_greater |)))
                                                 |)))
                                             |)
@@ -12761,22 +12827,20 @@ Module str.
                                         let β := right in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| offset |))
-                                              (Value.Integer 1))
+                                          BinOp.Wrap.add (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (|
+                                              M.read (| offset |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
+                                          |)
                                         |) in
-                                      let~ _ := M.write (| offset, Value.Integer 0 |) in
+                                      let~ _ :=
+                                        M.write (| offset, Value.Integer IntegerKind.Usize 0 |) in
                                       let~ _ :=
                                         M.write (|
                                           period,
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| right |))
-                                            (M.read (| left |))
+                                          BinOp.Wrap.sub (| M.read (| right |), M.read (| left |) |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -12789,7 +12853,7 @@ Module str.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.eq (M.read (| a |)) (M.read (| b |))
+                                                    BinOp.eq (| M.read (| a |), M.read (| b |) |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -12804,12 +12868,13 @@ Module str.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.Pure.eq
-                                                              (BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| offset |))
-                                                                (Value.Integer 1))
-                                                              (M.read (| period |))
+                                                            BinOp.eq (|
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| offset |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |),
+                                                              M.read (| period |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -12820,16 +12885,19 @@ Module str.
                                                         let β := right in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.add
-                                                            Integer.Usize
-                                                            (M.read (| β |))
-                                                            (BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| offset |))
-                                                              (Value.Integer 1))
+                                                          BinOp.Wrap.add (|
+                                                            M.read (| β |),
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| offset |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let~ _ :=
-                                                        M.write (| offset, Value.Integer 0 |) in
+                                                        M.write (|
+                                                          offset,
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |) in
                                                       M.alloc (| Value.Tuple [] |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -12837,10 +12905,10 @@ Module str.
                                                         let β := offset in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.add
-                                                            Integer.Usize
-                                                            (M.read (| β |))
-                                                            (Value.Integer 1)
+                                                          BinOp.Wrap.add (|
+                                                            M.read (| β |),
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)))
                                                 ]
@@ -12852,13 +12920,21 @@ Module str.
                                                 let β := right in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 |) in
-                                              let~ _ := M.write (| offset, Value.Integer 0 |) in
-                                              let~ _ := M.write (| period, Value.Integer 1 |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  offset,
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |) in
+                                              let~ _ :=
+                                                M.write (|
+                                                  period,
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |) in
                                               M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |)))
@@ -12872,9 +12948,10 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (| period |))
-                                            (M.read (| known_period |))
+                                          BinOp.eq (|
+                                            M.read (| period |),
+                                            M.read (| known_period |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -12917,10 +12994,12 @@ Module str.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.le
-                                            (M.read (| period |))
-                                            (M.read (| known_period |)))
+                                        UnOp.not (|
+                                          BinOp.le (|
+                                            M.read (| period |),
+                                            M.read (| known_period |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -12948,7 +13027,7 @@ Module str.
                 |) in
               left
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reverse_maximal_suffix :
@@ -12979,7 +13058,10 @@ Module str.
           }
       *)
       Definition use_early_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Bool false)) | _, _ => M.impossible end.
+        match τ, α with
+        | [], [] => ltac:(M.monadic (Value.Bool false))
+        | _, _ => M.impossible "wrong number of arguments"
+        end.
       
       (*
           fn rejecting(_a: usize, _b: usize) -> Self::Output {
@@ -12993,7 +13075,7 @@ Module str.
             (let _a := M.alloc (| _a |) in
             let _b := M.alloc (| _b |) in
             Value.StructTuple "core::option::Option::None" []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13010,7 +13092,7 @@ Module str.
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13047,7 +13129,10 @@ Module str.
           }
       *)
       Definition use_early_reject (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with | [], [] => ltac:(M.monadic (Value.Bool true)) | _, _ => M.impossible end.
+        match τ, α with
+        | [], [] => ltac:(M.monadic (Value.Bool true))
+        | _, _ => M.impossible "wrong number of arguments"
+        end.
       
       (*
           fn rejecting(a: usize, b: usize) -> Self::Output {
@@ -13063,7 +13148,7 @@ Module str.
             Value.StructTuple
               "core::str::pattern::SearchStep::Reject"
               [ M.read (| a |); M.read (| b |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13080,7 +13165,7 @@ Module str.
             Value.StructTuple
               "core::str::pattern::SearchStep::Match"
               [ M.read (| a |); M.read (| b |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13262,17 +13347,19 @@ Module str.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.gt
-                                              (M.call_closure (|
+                                          UnOp.not (|
+                                            BinOp.gt (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| needle |) ]
-                                              |))
-                                              (Value.Integer 1))
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -13302,22 +13389,22 @@ Module str.
                   M.copy (|
                     M.SubPointer.get_array_field (|
                       M.read (| needle |),
-                      M.alloc (| Value.Integer 0 |)
+                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                     |)
                   |) in
                 let~ last_byte_offset :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                           "len",
                           []
                         |),
                         [ M.read (| needle |) ]
-                      |))
-                      (Value.Integer 1)
+                      |),
+                      Value.Integer IntegerKind.Usize 1
+                    |)
                   |) in
                 let~ second_probe_offset :=
                   M.copy (|
@@ -13329,20 +13416,21 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
+                                  BinOp.eq (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| needle |) ]
-                                    |))
-                                    (Value.Integer 2)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 1 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -13382,7 +13470,7 @@ Module str.
                                                   |),
                                                   [ M.read (| needle |) ]
                                                 |);
-                                                Value.Integer 4
+                                                Value.Integer IntegerKind.Usize 4
                                               ]
                                             |));
                                           ("end_",
@@ -13401,24 +13489,26 @@ Module str.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ := M.read (| γ |) in
-                                                    let idx := M.copy (| γ |) in
-                                                    BinOp.Pure.ne
-                                                      (M.read (|
-                                                        M.SubPointer.get_array_field (|
-                                                          M.read (| needle |),
-                                                          idx
-                                                        |)
-                                                      |))
-                                                      (M.read (| first_probe |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ := M.read (| γ |) in
+                                                      let idx := M.copy (| γ |) in
+                                                      BinOp.ne (|
+                                                        M.read (|
+                                                          M.SubPointer.get_array_field (|
+                                                            M.read (| needle |),
+                                                            idx
+                                                          |)
+                                                        |),
+                                                        M.read (| first_probe |)
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -13448,21 +13538,22 @@ Module str.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| haystack |) ]
-                                  |))
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (|
+                                  |),
+                                  BinOp.Wrap.add (|
+                                    M.read (|
                                       M.get_constant (| "core::core_simd::vector::LEN" |)
-                                    |))
-                                    (M.read (| last_byte_offset |)))
+                                    |),
+                                    M.read (| last_byte_offset |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13521,39 +13612,40 @@ Module str.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let c := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::cmp::PartialEq",
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    [ Ty.path "u8" ]
-                                                                ],
-                                                              [
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let c := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::cmp::PartialEq",
                                                                 Ty.apply
                                                                   (Ty.path "&")
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "slice")
                                                                       [ Ty.path "u8" ]
-                                                                  ]
-                                                              ],
-                                                              "eq",
-                                                              []
-                                                            |),
-                                                            [ c; needle ]
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                                  ],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        [ Ty.path "u8" ]
+                                                                    ]
+                                                                ],
+                                                                "eq",
+                                                                []
+                                                              |),
+                                                              [ c; needle ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |)
@@ -13608,7 +13700,7 @@ Module str.
                         M.read (| needle |);
                         Value.StructRecord
                           "core::ops::range::RangeFrom"
-                          [ ("start", Value.Integer 1) ]
+                          [ ("start", Value.Integer IntegerKind.Usize 1) ]
                       ]
                     |)
                   |) in
@@ -13619,270 +13711,287 @@ Module str.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1; α2 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let idx := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let mask := M.copy (| γ |) in
-                                            M.match_operator (|
-                                              M.alloc (| α2 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let skip := M.copy (| γ |) in
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        let~ _ :=
-                                                          M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ := M.use skip in
-                                                                  let _ :=
-                                                                    M.is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.read (|
-                                                                        M.return_ (|
-                                                                          Value.Bool false
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let idx := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let mask := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α2 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let skip := M.copy (| γ |) in
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (| Value.Tuple [] |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ := M.use skip in
+                                                                    let _ :=
+                                                                      M.is_constant_or_break_match (|
+                                                                        M.read (| γ |),
+                                                                        Value.Bool true
+                                                                      |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            Value.Bool false
+                                                                          |)
                                                                         |)
                                                                       |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
-                                                            ]
-                                                          |) in
-                                                        let~ mask := M.copy (| mask |) in
-                                                        let~ _ :=
-                                                          M.loop (|
-                                                            ltac:(M.monadic
-                                                              (M.match_operator (|
-                                                                M.alloc (| Value.Tuple [] |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ :=
-                                                                        M.use
-                                                                          (M.alloc (|
-                                                                            BinOp.Pure.ne
-                                                                              (M.read (| mask |))
-                                                                              (Value.Integer 0)
-                                                                          |)) in
-                                                                      let _ :=
-                                                                        M.is_constant_or_break_match (|
-                                                                          M.read (| γ |),
-                                                                          Value.Bool true
-                                                                        |) in
-                                                                      let~ trailing :=
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path "u16",
-                                                                              "trailing_zeros",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| mask |) ]
-                                                                          |)
-                                                                        |) in
-                                                                      let~ offset :=
-                                                                        M.alloc (|
-                                                                          BinOp.Wrap.add
-                                                                            Integer.Usize
-                                                                            (BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (| idx |))
-                                                                              (M.rust_cast
-                                                                                (M.read (|
-                                                                                  trailing
-                                                                                |))))
-                                                                            (Value.Integer 1)
-                                                                        |) in
-                                                                      let~ _ :=
-                                                                        let~ sub :=
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                              ]
+                                                            |) in
+                                                          let~ mask := M.copy (| mask |) in
+                                                          let~ _ :=
+                                                            M.loop (|
+                                                              ltac:(M.monadic
+                                                                (M.match_operator (|
+                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ :=
+                                                                          M.use
+                                                                            (M.alloc (|
+                                                                              BinOp.ne (|
+                                                                                M.read (| mask |),
+                                                                                Value.Integer
+                                                                                  IntegerKind.U16
+                                                                                  0
+                                                                              |)
+                                                                            |)) in
+                                                                        let _ :=
+                                                                          M.is_constant_or_break_match (|
+                                                                            M.read (| γ |),
+                                                                            Value.Bool true
+                                                                          |) in
+                                                                        let~ trailing :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path "slice")
-                                                                                  [ Ty.path "u8" ],
-                                                                                "get_unchecked",
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::ops::range::RangeTo")
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "usize"
-                                                                                    ]
-                                                                                ]
+                                                                                Ty.path "u16",
+                                                                                "trailing_zeros",
+                                                                                []
                                                                               |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "get_unchecked",
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::ops::range::RangeFrom")
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "usize"
-                                                                                        ]
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      haystack
-                                                                                    |);
-                                                                                    Value.StructRecord
-                                                                                      "core::ops::range::RangeFrom"
-                                                                                      [
-                                                                                        ("start",
-                                                                                          M.read (|
-                                                                                            offset
-                                                                                          |))
-                                                                                      ]
-                                                                                  ]
-                                                                                |);
-                                                                                Value.StructRecord
-                                                                                  "core::ops::range::RangeTo"
-                                                                                  [
-                                                                                    ("end_",
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "slice")
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "u8"
-                                                                                            ],
-                                                                                          "len",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            trimmed_needle
-                                                                                          |)
-                                                                                        ]
-                                                                                      |))
-                                                                                  ]
-                                                                              ]
+                                                                              [ M.read (| mask |) ]
                                                                             |)
                                                                           |) in
-                                                                        M.match_operator (|
+                                                                        let~ offset :=
                                                                           M.alloc (|
-                                                                            Value.Tuple []
-                                                                          |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let γ :=
-                                                                                  M.use
-                                                                                    (M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                        M.get_function (|
-                                                                                          "core::str::pattern::small_slice_eq",
-                                                                                          []
-                                                                                        |),
+                                                                            BinOp.Wrap.add (|
+                                                                              BinOp.Wrap.add (|
+                                                                                M.read (| idx |),
+                                                                                M.rust_cast
+                                                                                  (M.read (|
+                                                                                    trailing
+                                                                                  |))
+                                                                              |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
+                                                                          |) in
+                                                                        let~ _ :=
+                                                                          let~ sub :=
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "get_unchecked",
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::ops::range::RangeTo")
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ]
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
                                                                                         [
-                                                                                          M.read (|
-                                                                                            sub
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            trimmed_needle
-                                                                                          |)
+                                                                                          Ty.path
+                                                                                            "u8"
+                                                                                        ],
+                                                                                      "get_unchecked",
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::ops::range::RangeFrom")
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ]
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        haystack
+                                                                                      |);
+                                                                                      Value.StructRecord
+                                                                                        "core::ops::range::RangeFrom"
+                                                                                        [
+                                                                                          ("start",
+                                                                                            M.read (|
+                                                                                              offset
+                                                                                            |))
                                                                                         ]
+                                                                                    ]
+                                                                                  |);
+                                                                                  Value.StructRecord
+                                                                                    "core::ops::range::RangeTo"
+                                                                                    [
+                                                                                      ("end_",
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "slice")
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u8"
+                                                                                              ],
+                                                                                            "len",
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              trimmed_needle
+                                                                                            |)
+                                                                                          ]
+                                                                                        |))
+                                                                                    ]
+                                                                                ]
+                                                                              |)
+                                                                            |) in
+                                                                          M.match_operator (|
+                                                                            M.alloc (|
+                                                                              Value.Tuple []
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.use
+                                                                                      (M.alloc (|
+                                                                                        M.call_closure (|
+                                                                                          M.get_function (|
+                                                                                            "core::str::pattern::small_slice_eq",
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              sub
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              trimmed_needle
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      |)) in
+                                                                                  let _ :=
+                                                                                    M.is_constant_or_break_match (|
+                                                                                      M.read (|
+                                                                                        γ
+                                                                                      |),
+                                                                                      Value.Bool
+                                                                                        true
+                                                                                    |) in
+                                                                                  M.alloc (|
+                                                                                    M.never_to_any (|
+                                                                                      M.read (|
+                                                                                        M.return_ (|
+                                                                                          Value.Bool
+                                                                                            true
+                                                                                        |)
                                                                                       |)
-                                                                                    |)) in
-                                                                                let _ :=
-                                                                                  M.is_constant_or_break_match (|
-                                                                                    M.read (| γ |),
-                                                                                    Value.Bool true
-                                                                                  |) in
+                                                                                    |)
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (M.alloc (|
+                                                                                    Value.Tuple []
+                                                                                  |)))
+                                                                            ]
+                                                                          |) in
+                                                                        let~ _ :=
+                                                                          let β := mask in
+                                                                          M.write (|
+                                                                            β,
+                                                                            BinOp.bit_and
+                                                                              (M.read (| β |))
+                                                                              (UnOp.not (|
+                                                                                BinOp.Wrap.shl (|
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U16
+                                                                                    1,
+                                                                                  M.read (|
+                                                                                    trailing
+                                                                                  |)
+                                                                                |)
+                                                                              |))
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              let~ _ :=
                                                                                 M.alloc (|
                                                                                   M.never_to_any (|
                                                                                     M.read (|
-                                                                                      M.return_ (|
-                                                                                        Value.Bool
-                                                                                          true
-                                                                                      |)
+                                                                                      M.break (||)
                                                                                     |)
                                                                                   |)
-                                                                                |)));
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (M.alloc (|
-                                                                                  Value.Tuple []
-                                                                                |)))
-                                                                          ]
-                                                                        |) in
-                                                                      let~ _ :=
-                                                                        let β := mask in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Pure.bit_and
-                                                                            (M.read (| β |))
-                                                                            (UnOp.Pure.not
-                                                                              (BinOp.Wrap.shl
-                                                                                (Value.Integer 1)
-                                                                                (M.read (|
-                                                                                  trailing
-                                                                                |))))
-                                                                        |) in
-                                                                      M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            let~ _ :=
+                                                                                |) in
                                                                               M.alloc (|
-                                                                                M.never_to_any (|
-                                                                                  M.read (|
-                                                                                    M.break (||)
-                                                                                  |)
-                                                                                |)
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              Value.Tuple []
+                                                                                Value.Tuple []
+                                                                              |)
                                                                             |)
                                                                           |)
-                                                                        |)
-                                                                      |)))
-                                                                ]
-                                                              |)))
-                                                          |) in
-                                                        M.return_ (| Value.Bool false |)
-                                                      |)
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                            |) in
+                                                          M.return_ (| Value.Bool false |)
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
                 let~ test_chunk :=
@@ -13892,204 +14001,205 @@ Module str.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let idx := M.copy (| γ |) in
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ a :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "*const")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::core_simd::vector::Simd")
-                                                      [ Ty.path "u8" ]
-                                                  ],
-                                                "read_unaligned",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
-                                                    "cast",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::core_simd::vector::Simd")
-                                                        [ Ty.path "u8" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "*const")
-                                                          [ Ty.path "u8" ],
-                                                        "add",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              [ Ty.path "u8" ],
-                                                            "as_ptr",
-                                                            []
-                                                          |),
-                                                          [ M.read (| haystack |) ]
-                                                        |);
-                                                        M.read (| idx |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |) in
-                                        let~ b :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "*const")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::core_simd::vector::Simd")
-                                                      [ Ty.path "u8" ]
-                                                  ],
-                                                "read_unaligned",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
-                                                    "cast",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::core_simd::vector::Simd")
-                                                        [ Ty.path "u8" ]
-                                                    ]
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "*const")
-                                                          [ Ty.path "u8" ],
-                                                        "add",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "*const")
-                                                              [ Ty.path "u8" ],
-                                                            "add",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "slice")
-                                                                  [ Ty.path "u8" ],
-                                                                "as_ptr",
-                                                                []
-                                                              |),
-                                                              [ M.read (| haystack |) ]
-                                                            |);
-                                                            M.read (| idx |)
-                                                          ]
-                                                        |);
-                                                        M.read (| second_probe_offset |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |) in
-                                        let~ eq_first :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::core_simd::simd::cmp::eq::SimdPartialEq",
-                                                Ty.apply
-                                                  (Ty.path "core::core_simd::vector::Simd")
-                                                  [ Ty.path "u8" ],
-                                                [],
-                                                "simd_eq",
-                                                []
-                                              |),
-                                              [ M.read (| a |); M.read (| first_probe |) ]
-                                            |)
-                                          |) in
-                                        let~ eq_last :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::core_simd::simd::cmp::eq::SimdPartialEq",
-                                                Ty.apply
-                                                  (Ty.path "core::core_simd::vector::Simd")
-                                                  [ Ty.path "u8" ],
-                                                [],
-                                                "simd_eq",
-                                                []
-                                              |),
-                                              [ M.read (| b |); M.read (| second_probe |) ]
-                                            |)
-                                          |) in
-                                        let~ both :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::bit::BitAnd",
-                                                Ty.apply
-                                                  (Ty.path "core::core_simd::masks::Mask")
-                                                  [ Ty.path "i8" ],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::core_simd::masks::Mask")
-                                                    [ Ty.path "i8" ]
-                                                ],
-                                                "bitand",
-                                                []
-                                              |),
-                                              [ M.read (| eq_first |); M.read (| eq_last |) ]
-                                            |)
-                                          |) in
-                                        let~ mask :=
-                                          M.alloc (|
-                                            M.rust_cast
-                                              (M.call_closure (|
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let idx := M.copy (| γ |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          let~ a :=
+                                            M.alloc (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "*const")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::core_simd::vector::Simd")
+                                                        [ Ty.path "u8" ]
+                                                    ],
+                                                  "read_unaligned",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                      "cast",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::core_simd::vector::Simd")
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "*const")
+                                                            [ Ty.path "u8" ],
+                                                          "add",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                [ Ty.path "u8" ],
+                                                              "as_ptr",
+                                                              []
+                                                            |),
+                                                            [ M.read (| haystack |) ]
+                                                          |);
+                                                          M.read (| idx |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ b :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "*const")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::core_simd::vector::Simd")
+                                                        [ Ty.path "u8" ]
+                                                    ],
+                                                  "read_unaligned",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                                                      "cast",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::core_simd::vector::Simd")
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "*const")
+                                                            [ Ty.path "u8" ],
+                                                          "add",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "*const")
+                                                                [ Ty.path "u8" ],
+                                                              "add",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    [ Ty.path "u8" ],
+                                                                  "as_ptr",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| haystack |) ]
+                                                              |);
+                                                              M.read (| idx |)
+                                                            ]
+                                                          |);
+                                                          M.read (| second_probe_offset |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ eq_first :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::core_simd::simd::cmp::eq::SimdPartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::core_simd::vector::Simd")
+                                                    [ Ty.path "u8" ],
+                                                  [],
+                                                  "simd_eq",
+                                                  []
+                                                |),
+                                                [ M.read (| a |); M.read (| first_probe |) ]
+                                              |)
+                                            |) in
+                                          let~ eq_last :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::core_simd::simd::cmp::eq::SimdPartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::core_simd::vector::Simd")
+                                                    [ Ty.path "u8" ],
+                                                  [],
+                                                  "simd_eq",
+                                                  []
+                                                |),
+                                                [ M.read (| b |); M.read (| second_probe |) ]
+                                              |)
+                                            |) in
+                                          let~ both :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::bit::BitAnd",
                                                   Ty.apply
                                                     (Ty.path "core::core_simd::masks::Mask")
                                                     [ Ty.path "i8" ],
-                                                  "to_bitmask",
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::core_simd::masks::Mask")
+                                                      [ Ty.path "i8" ]
+                                                  ],
+                                                  "bitand",
                                                   []
                                                 |),
-                                                [ M.read (| both |) ]
-                                              |))
-                                          |) in
-                                        M.return_ (| M.read (| mask |) |)
-                                      |)
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                [ M.read (| eq_first |); M.read (| eq_last |) ]
+                                              |)
+                                            |) in
+                                          let~ mask :=
+                                            M.alloc (|
+                                              M.rust_cast
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::core_simd::masks::Mask")
+                                                      [ Ty.path "i8" ],
+                                                    "to_bitmask",
+                                                    []
+                                                  |),
+                                                  [ M.read (| both |) ]
+                                                |))
+                                            |) in
+                                          M.return_ (| M.read (| mask |) |)
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
-                let~ i := M.alloc (| Value.Integer 0 |) in
+                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ result := M.alloc (| Value.Bool false |) in
                 let~ _ :=
                   M.loop (|
@@ -14103,32 +14213,33 @@ Module str.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.and (|
-                                      BinOp.Pure.lt
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| i |))
-                                            (M.read (| last_byte_offset |)))
-                                          (BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.read (|
+                                      BinOp.lt (|
+                                        BinOp.Wrap.add (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| i |),
+                                            M.read (| last_byte_offset |)
+                                          |),
+                                          BinOp.Wrap.mul (|
+                                            M.read (|
                                               M.get_constant (|
                                                 "core::str::pattern::simd_contains::UNROLL"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.get_constant (| "core::core_simd::vector::LEN" |)
-                                            |))))
-                                        (M.call_closure (|
+                                            |)
+                                          |)
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| haystack |) ]
-                                        |)),
-                                      ltac:(M.monadic (UnOp.Pure.not (M.read (| result |))))
+                                        |)
+                                      |),
+                                      ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -14136,7 +14247,8 @@ Module str.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ masks := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                              let~ masks :=
+                                M.alloc (| repeat (Value.Integer IntegerKind.U16 0) 4 |) in
                               let~ _ :=
                                 M.use
                                   (M.match_operator (|
@@ -14155,7 +14267,7 @@ Module str.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer 0);
+                                              ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
                                                   M.get_constant (|
@@ -14230,17 +14342,17 @@ Module str.
                                                                 test_chunk;
                                                                 Value.Tuple
                                                                   [
-                                                                    BinOp.Wrap.add
-                                                                      Integer.Usize
-                                                                      (M.read (| i |))
-                                                                      (BinOp.Wrap.mul
-                                                                        Integer.Usize
-                                                                        (M.read (| j |))
-                                                                        (M.read (|
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| i |),
+                                                                      BinOp.Wrap.mul (|
+                                                                        M.read (| j |),
+                                                                        M.read (|
                                                                           M.get_constant (|
                                                                             "core::core_simd::vector::LEN"
                                                                           |)
-                                                                        |)))
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   ]
                                                               ]
                                                             |)
@@ -14270,7 +14382,7 @@ Module str.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer 0);
+                                              ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
                                                   M.get_constant (|
@@ -14340,9 +14452,12 @@ Module str.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.ne
-                                                                        (M.read (| mask |))
-                                                                        (Value.Integer 0)
+                                                                      BinOp.ne (|
+                                                                        M.read (| mask |),
+                                                                        Value.Integer
+                                                                          IntegerKind.U16
+                                                                          0
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -14353,7 +14468,7 @@ Module str.
                                                                   let β := result in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Pure.bit_or
+                                                                    BinOp.bit_or
                                                                       (M.read (| β |))
                                                                       (M.call_closure (|
                                                                         M.get_trait_method (|
@@ -14383,17 +14498,17 @@ Module str.
                                                                           check_mask;
                                                                           Value.Tuple
                                                                             [
-                                                                              BinOp.Wrap.add
-                                                                                Integer.Usize
-                                                                                (M.read (| i |))
-                                                                                (BinOp.Wrap.mul
-                                                                                  Integer.Usize
-                                                                                  (M.read (| j |))
-                                                                                  (M.read (|
+                                                                              BinOp.Wrap.add (|
+                                                                                M.read (| i |),
+                                                                                BinOp.Wrap.mul (|
+                                                                                  M.read (| j |),
+                                                                                  M.read (|
                                                                                     M.get_constant (|
                                                                                       "core::core_simd::vector::LEN"
                                                                                     |)
-                                                                                  |)));
+                                                                                  |)
+                                                                                |)
+                                                                              |);
                                                                               M.read (| mask |);
                                                                               M.read (| result |)
                                                                             ]
@@ -14416,19 +14531,19 @@ Module str.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (BinOp.Wrap.mul
-                                      Integer.Usize
-                                      (M.read (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    BinOp.Wrap.mul (|
+                                      M.read (|
                                         M.get_constant (|
                                           "core::str::pattern::simd_contains::UNROLL"
                                         |)
-                                      |))
-                                      (M.read (|
+                                      |),
+                                      M.read (|
                                         M.get_constant (| "core::core_simd::vector::LEN" |)
-                                      |)))
+                                      |)
+                                    |)
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -14459,25 +14574,26 @@ Module str.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.and (|
-                                      BinOp.Pure.lt
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| i |))
-                                            (M.read (| last_byte_offset |)))
-                                          (M.read (|
+                                      BinOp.lt (|
+                                        BinOp.Wrap.add (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| i |),
+                                            M.read (| last_byte_offset |)
+                                          |),
+                                          M.read (|
                                             M.get_constant (| "core::core_simd::vector::LEN" |)
-                                          |)))
-                                        (M.call_closure (|
+                                          |)
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| haystack |) ]
-                                        |)),
-                                      ltac:(M.monadic (UnOp.Pure.not (M.read (| result |))))
+                                        |)
+                                      |),
+                                      ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -14507,7 +14623,10 @@ Module str.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.ne (M.read (| mask |)) (Value.Integer 0)
+                                              BinOp.ne (|
+                                                M.read (| mask |),
+                                                Value.Integer IntegerKind.U16 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -14518,7 +14637,7 @@ Module str.
                                           let β := result in
                                           M.write (|
                                             β,
-                                            BinOp.Pure.bit_or
+                                            BinOp.bit_or
                                               (M.read (| β |))
                                               (M.call_closure (|
                                                 M.get_trait_method (|
@@ -14563,12 +14682,10 @@ Module str.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (M.read (|
-                                      M.get_constant (| "core::core_simd::vector::LEN" |)
-                                    |))
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -14589,20 +14706,20 @@ Module str.
                   |) in
                 let~ i :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      BinOp.Wrap.sub (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                             "len",
                             []
                           |),
                           [ M.read (| haystack |) ]
-                        |))
-                        (M.read (| last_byte_offset |)))
-                      (M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |))
+                        |),
+                        M.read (| last_byte_offset |)
+                      |),
+                      M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
+                    |)
                   |) in
                 let~ mask :=
                   M.alloc (|
@@ -14625,14 +14742,16 @@ Module str.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.ne (M.read (| mask |)) (Value.Integer 0) |)) in
+                              (M.alloc (|
+                                BinOp.ne (| M.read (| mask |), Value.Integer IntegerKind.U16 0 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ :=
                             let β := result in
                             M.write (|
                               β,
-                              BinOp.Pure.bit_or
+                              BinOp.bit_or
                                 (M.read (| β |))
                                 (M.call_closure (|
                                   M.get_trait_method (|
@@ -14659,13 +14778,14 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
     
     Module simd_contains.
-      Definition value_UNROLL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+      Definition value_UNROLL : Value.t :=
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     End simd_contains.
     
     (*
@@ -14788,10 +14908,12 @@ Module str.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (BinOp.Pure.eq
-                                                      (M.read (| M.read (| left_val |) |))
-                                                      (M.read (| M.read (| right_val |) |)))
+                                                  UnOp.not (|
+                                                    BinOp.eq (|
+                                                      M.read (| M.read (| left_val |) |),
+                                                      M.read (| M.read (| right_val |) |)
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -14844,16 +14966,17 @@ Module str.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| x |) ]
-                                  |))
-                                  (Value.Integer 4)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -14984,9 +15107,10 @@ Module str.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.ne
-                                                                          (M.read (| b1 |))
-                                                                          (M.read (| b2 |))
+                                                                        BinOp.ne (|
+                                                                          M.read (| b1 |),
+                                                                          M.read (| b2 |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -15061,17 +15185,17 @@ Module str.
                                   |),
                                   [
                                     M.read (| px |);
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.call_closure (|
+                                    BinOp.Wrap.sub (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| x |) ]
-                                      |))
-                                      (Value.Integer 4)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 4
+                                    |)
                                   ]
                                 |);
                                 M.call_closure (|
@@ -15082,17 +15206,17 @@ Module str.
                                   |),
                                   [
                                     M.read (| py |);
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.call_closure (|
+                                    BinOp.Wrap.sub (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| y |) ]
-                                      |))
-                                      (Value.Integer 4)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 4
+                                    |)
                                   ]
                                 |)
                               ]
@@ -15115,9 +15239,10 @@ Module str.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.lt
-                                                      (M.read (| px |))
-                                                      (M.read (| pxend |))
+                                                    BinOp.lt (|
+                                                      M.read (| px |),
+                                                      M.read (| pxend |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -15155,9 +15280,10 @@ Module str.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.ne
-                                                                (M.read (| vx |))
-                                                                (M.read (| vy |))
+                                                              BinOp.ne (|
+                                                                M.read (| vx |),
+                                                                M.read (| vy |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -15185,7 +15311,10 @@ Module str.
                                                       "add",
                                                       []
                                                     |),
-                                                    [ M.read (| px |); Value.Integer 4 ]
+                                                    [
+                                                      M.read (| px |);
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -15197,7 +15326,10 @@ Module str.
                                                       "add",
                                                       []
                                                     |),
-                                                    [ M.read (| py |); Value.Integer 4 ]
+                                                    [
+                                                      M.read (| py |);
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -15241,14 +15373,14 @@ Module str.
                                       [ M.rust_cast (M.read (| pyend |)) ]
                                     |)
                                   |) in
-                                M.alloc (| BinOp.Pure.eq (M.read (| vx |)) (M.read (| vy |)) |)))
+                                M.alloc (| BinOp.eq (| M.read (| vx |), M.read (| vy |) |) |)))
                           ]
                         |)))
                   ]
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_small_slice_eq :

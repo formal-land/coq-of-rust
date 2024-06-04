@@ -41,10 +41,10 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.add
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| number |),
+                                      Value.Integer IntegerKind.I32 1
+                                    |)
                                   |)
                                 ]
                               |)
@@ -58,7 +58,7 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
@@ -103,10 +103,10 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| number |),
+                                      Value.Integer IntegerKind.I32 1
+                                    |)
                                   |)
                                 ]
                               |)
@@ -120,7 +120,7 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
@@ -174,7 +174,7 @@ match_args {increase|decrease} <integer>
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
@@ -264,7 +264,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 1
+                      |) in
                     let~ _ :=
                       let~ _ :=
                         M.alloc (|
@@ -299,7 +303,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 2
+                      |) in
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -327,7 +335,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     "index",
                                     []
                                   |),
-                                  [ args; Value.Integer 1 ]
+                                  [ args; Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               ]
                             |)
@@ -346,7 +354,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let _ :=
                               M.is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
-                                Value.Integer 42
+                                Value.Integer IntegerKind.I32 42
                               |) in
                             let~ _ :=
                               M.alloc (|
@@ -405,7 +413,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 3
+                      |) in
                     let~ cmd :=
                       M.alloc (|
                         M.call_closure (|
@@ -418,7 +430,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 1 ]
+                          [ args; Value.Integer IntegerKind.Usize 1 ]
                         |)
                       |) in
                     let~ num :=
@@ -433,7 +445,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 2 ]
+                          [ args; Value.Integer IntegerKind.Usize 2 ]
                         |)
                       |) in
                     let~ number :=
@@ -626,7 +638,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.

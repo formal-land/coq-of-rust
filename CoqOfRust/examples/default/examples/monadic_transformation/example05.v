@@ -21,11 +21,11 @@ Module Impl_example05_Foo.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Wrap.add
-          Integer.U32
-          (M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |))
-          (Value.Integer 1)))
-    | _, _ => M.impossible
+        BinOp.Wrap.add (|
+          M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
+          Value.Integer IntegerKind.U32 1
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
@@ -42,7 +42,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
+        let~ foo :=
+          M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer IntegerKind.U32 0 ] |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
@@ -52,7 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "example05::main" main.

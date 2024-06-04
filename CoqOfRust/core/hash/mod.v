@@ -79,7 +79,7 @@ Module hash.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_hash_slice : M.IsProvidedMethod "core::hash::Hash" "hash_slice" hash_slice.
@@ -100,7 +100,7 @@ Module hash.
               (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| i |) ] |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_u8 : M.IsProvidedMethod "core::hash::Hasher" "write_u8" write_u8.
@@ -124,7 +124,7 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_u16 : M.IsProvidedMethod "core::hash::Hasher" "write_u16" write_u16.
@@ -148,7 +148,7 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_u32 : M.IsProvidedMethod "core::hash::Hasher" "write_u32" write_u32.
@@ -172,7 +172,7 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_u64 : M.IsProvidedMethod "core::hash::Hasher" "write_u64" write_u64.
@@ -196,7 +196,7 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_u128 :
@@ -221,7 +221,7 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_usize :
@@ -236,7 +236,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_i8 : M.IsProvidedMethod "core::hash::Hasher" "write_i8" write_i8.
@@ -250,7 +250,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u16", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_i16 : M.IsProvidedMethod "core::hash::Hasher" "write_i16" write_i16.
@@ -264,7 +264,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u32", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_i32 : M.IsProvidedMethod "core::hash::Hasher" "write_i32" write_i32.
@@ -278,7 +278,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u64", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_i64 : M.IsProvidedMethod "core::hash::Hasher" "write_i64" write_i64.
@@ -292,7 +292,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u128", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_i128 :
@@ -307,7 +307,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_isize :
@@ -328,7 +328,7 @@ Module hash.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_length_prefix :
@@ -357,12 +357,12 @@ Module hash.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-                  [ M.read (| self |); Value.Integer 255 ]
+                  [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_str : M.IsProvidedMethod "core::hash::Hasher" "write_str" write_str.
@@ -386,7 +386,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "finish", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -405,7 +405,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -424,7 +424,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -443,7 +443,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -462,7 +462,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -481,7 +481,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -500,7 +500,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -519,7 +519,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -538,7 +538,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -557,7 +557,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -576,7 +576,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -595,7 +595,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -614,7 +614,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -633,7 +633,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -652,7 +652,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -671,7 +671,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -731,7 +731,7 @@ Module hash.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_hash_one :
@@ -779,7 +779,7 @@ Module hash.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -812,7 +812,7 @@ Module hash.
             M.get_trait_method (| "core::default::Default", H, [], "default", [] |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -845,7 +845,7 @@ Module hash.
           Value.StructTuple
             "core::hash::BuildHasherDefault"
             [ Value.StructTuple "core::marker::PhantomData" [] ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -873,7 +873,7 @@ Module hash.
           (Value.StructTuple
             "core::hash::BuildHasherDefault"
             [ Value.StructTuple "core::marker::PhantomData" [] ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -901,7 +901,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -940,7 +940,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -996,7 +996,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1026,7 +1026,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1082,7 +1082,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1112,7 +1112,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1168,7 +1168,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1198,7 +1198,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1254,7 +1254,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1284,7 +1284,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1340,7 +1340,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1370,7 +1370,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1426,7 +1426,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1456,7 +1456,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1512,7 +1512,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1542,7 +1542,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1598,7 +1598,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1628,7 +1628,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1684,7 +1684,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1714,7 +1714,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1770,7 +1770,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1800,7 +1800,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1856,7 +1856,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1886,7 +1886,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1942,7 +1942,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1972,7 +1972,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2001,7 +2001,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2036,7 +2036,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2065,7 +2065,7 @@ Module hash.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2087,7 +2087,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let _state := M.alloc (| _state |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2133,7 +2133,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2189,7 +2189,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2254,7 +2254,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2328,7 +2328,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2411,7 +2411,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2503,7 +2503,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2604,7 +2604,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2714,7 +2714,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2833,7 +2833,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2962,7 +2962,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3100,7 +3100,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3247,7 +3247,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3296,7 +3296,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3333,7 +3333,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3370,7 +3370,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3452,7 +3452,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3534,7 +3534,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

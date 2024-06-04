@@ -20,7 +20,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -41,7 +41,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -78,7 +78,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -99,7 +99,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -163,7 +163,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -216,7 +216,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
               ]
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -265,25 +265,25 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
         Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
-            BinOp.Wrap.add
-              Integer.Usize
-              (M.read (|
+            BinOp.Wrap.add (|
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   self,
                   "generics_phantom_type_test_case_unit_clarification::Length",
                   0
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   rhs,
                   "generics_phantom_type_test_case_unit_clarification::Length",
                   0
                 |)
-              |));
+              |)
+            |);
             Value.StructTuple "core::marker::PhantomData" []
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -468,7 +468,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_phantom_type_test_case_unit_clarification::main" main.

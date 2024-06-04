@@ -180,7 +180,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -249,7 +249,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -298,7 +298,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_addresses :
@@ -433,7 +433,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend :
@@ -710,7 +710,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_call :
@@ -757,7 +757,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -799,7 +799,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -832,7 +832,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -893,7 +893,7 @@ Module context.
             Value.StructTuple
               "revm::context::context_precompiles::ContextPrecompile::Ordinary"
               [ M.read (| p |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1043,44 +1043,46 @@ Module context.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let k := M.copy (| γ0_0 |) in
-                                          let v := M.copy (| γ0_1 |) in
-                                          Value.Tuple
-                                            [
-                                              M.read (| k |);
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::Into",
-                                                  Ty.path "revm_primitives::precompile::Precompile",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "revm::context::context_precompiles::ContextPrecompile")
-                                                      [ DB ]
-                                                  ],
-                                                  "into",
-                                                  []
-                                                |),
-                                                [ M.read (| v |) ]
-                                              |)
-                                            ]))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                            let k := M.copy (| γ0_0 |) in
+                                            let v := M.copy (| γ0_1 |) in
+                                            Value.Tuple
+                                              [
+                                                M.read (| k |);
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::Into",
+                                                    Ty.path
+                                                      "revm_primitives::precompile::Precompile",
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "revm::context::context_precompiles::ContextPrecompile")
+                                                        [ DB ]
+                                                    ],
+                                                    "into",
+                                                    []
+                                                  |),
+                                                  [ M.read (| v |) ]
+                                                |)
+                                              ]))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1237,57 +1239,59 @@ Module context.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let γ0_0 := M.read (| γ0_0 |) in
-                                          let k := M.copy (| γ0_0 |) in
-                                          let v := M.copy (| γ0_1 |) in
-                                          Value.Tuple
-                                            [
-                                              M.read (| k |);
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::convert::Into",
-                                                  Ty.path "revm_primitives::precompile::Precompile",
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                            let γ0_0 := M.read (| γ0_0 |) in
+                                            let k := M.copy (| γ0_0 |) in
+                                            let v := M.copy (| γ0_1 |) in
+                                            Value.Tuple
+                                              [
+                                                M.read (| k |);
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::Into",
+                                                    Ty.path
+                                                      "revm_primitives::precompile::Precompile",
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "revm::context::context_precompiles::ContextPrecompile")
+                                                        [ DB ]
+                                                    ],
+                                                    "into",
+                                                    []
+                                                  |),
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "revm::context::context_precompiles::ContextPrecompile")
-                                                      [ DB ]
-                                                  ],
-                                                  "into",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::clone::Clone",
-                                                      Ty.path
-                                                        "revm_primitives::precompile::Precompile",
-                                                      [],
-                                                      "clone",
-                                                      []
-                                                    |),
-                                                    [ M.read (| v |) ]
-                                                  |)
-                                                ]
-                                              |)
-                                            ]))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::clone::Clone",
+                                                        Ty.path
+                                                          "revm_primitives::precompile::Precompile",
+                                                        [],
+                                                        "clone",
+                                                        []
+                                                      |),
+                                                      [ M.read (| v |) ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

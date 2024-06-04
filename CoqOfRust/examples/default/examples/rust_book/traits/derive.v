@@ -29,14 +29,15 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
-          |))))
-    | _, _ => M.impossible
+          |)
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -70,7 +71,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -114,7 +115,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -153,16 +154,16 @@ Module Impl_derive_Inches.
                     Value.StructTuple
                       "derive::Centimeters"
                       [
-                        BinOp.Wrap.mul
-                          Integer.Usize
-                          (M.rust_cast (M.read (| inches |)))
-                          (M.read (| UnsupportedLiteral |))
+                        BinOp.Wrap.mul (|
+                          M.rust_cast (M.read (| inches |)),
+                          M.read (| UnsupportedLiteral |)
+                        |)
                       ]
                   |)))
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_to_centimeters :
@@ -208,8 +209,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
-        let~ foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
+        let~ _one_second :=
+          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer IntegerKind.I32 1 ] |) in
+        let~ foot :=
+          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer IntegerKind.I32 12 ] |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -335,7 +338,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "derive::main" main.

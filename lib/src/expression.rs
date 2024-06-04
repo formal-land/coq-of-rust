@@ -43,6 +43,7 @@ pub(crate) enum CallKind {
 
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) struct LiteralInteger {
+    pub(crate) kind: String,
     pub(crate) negative_sign: bool,
     pub(crate) value: u128,
 }
@@ -388,13 +389,17 @@ impl Literal {
             Literal::Bool(b) => coq::Expression::just_name("Value.Bool")
                 .apply(&coq::Expression::just_name(b.to_string().as_str())),
             Literal::Integer(LiteralInteger {
+                kind,
                 negative_sign,
                 value,
-            }) => coq::Expression::just_name("Value.Integer").apply(&if *negative_sign {
-                coq::Expression::just_name(format!("(-{value})").as_str())
-            } else {
-                coq::Expression::just_name(value.to_string().as_str())
-            }),
+            }) => coq::Expression::just_name("Value.Integer").apply_many(&[
+                coq::Expression::just_name(format!("IntegerKind.{kind}").as_str()),
+                if *negative_sign {
+                    coq::Expression::just_name(format!("(-{value})").as_str())
+                } else {
+                    coq::Expression::just_name(value.to_string().as_str())
+                },
+            ]),
             Literal::Char(c) => coq::Expression::just_name("Value.UnicodeChar").apply(
                 &coq::Expression::just_name((*c as u32).to_string().as_str()),
             ),
@@ -500,11 +505,15 @@ impl Expr {
                                         .map(|(name, _)| coq::Expression::name_pattern(name))
                                         .collect(),
                                 }],
-                                body.to_coq(),
+                                coq::Expression::monadic(&body.to_coq()),
                             ),
                             (
                                 vec![coq::Expression::Wild],
-                                coq::Expression::just_name("M.impossible").monadic_apply_empty(),
+                                coq::Expression::just_name("M.impossible").apply(
+                                    &coq::Expression::String(
+                                        "wrong number of arguments".to_string(),
+                                    ),
+                                ),
                             ),
                         ],
                     })),

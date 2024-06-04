@@ -18,7 +18,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ := InlineAssembly in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly::main" main.

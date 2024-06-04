@@ -46,7 +46,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.alloc (|
                           Value.Array
-                            [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
+                            [
+                              Value.Integer IntegerKind.U32 1;
+                              Value.Integer IntegerKind.U32 2;
+                              Value.Integer IntegerKind.U32 3;
+                              Value.Integer IntegerKind.U32 4
+                            ]
                         |)
                       ]
                     |)
@@ -122,8 +127,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -138,7 +143,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -180,7 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "calling_unsafe_functions::main" main.

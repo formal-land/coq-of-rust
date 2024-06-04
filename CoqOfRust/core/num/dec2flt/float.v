@@ -30,67 +30,62 @@ Module num.
         Definition value_NEG_NAN : Value.t :=
           M.run
             ltac:(M.monadic
-              (M.alloc (|
-                UnOp.Panic.neg (|
-                  Integer.Usize,
-                  M.read (| M.get_constant (| "core::f32::NAN" |) |)
-                |)
-              |))).
+              (M.alloc (| UnOp.neg (| M.read (| M.get_constant (| "core::f32::NAN" |) |) |) |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 23; *)
         (* Ty.path "usize" *)
         Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 23 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 23 |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -17; *)
         (* Ty.path "i32" *)
         Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-17) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-17) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 10; *)
         (* Ty.path "i32" *)
         Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -10; *)
         (* Ty.path "i64" *)
         Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-10) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-10) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 10; *)
         (* Ty.path "i64" *)
         Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 10 |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 17; *)
         (* Ty.path "i64" *)
         Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 17 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 17 |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -127; *)
         (* Ty.path "i32" *)
         Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-127) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-127) |))).
         
         (*     const INFINITE_POWER: i32 = 0xFF; *)
         (* Ty.path "i32" *)
         Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 255 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 255 |))).
         
         (*     const SIGN_INDEX: usize = 31; *)
         (* Ty.path "usize" *)
         Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 31 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 31 |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -65; *)
         (* Ty.path "i32" *)
         Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-65) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-65) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 38; *)
         (* Ty.path "i32" *)
         Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 38 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 38 |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -122,14 +117,16 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| v |))
-                                              (M.read (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.read (| v |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -158,7 +155,7 @@ Module num.
                   |) in
                 M.alloc (| M.rust_cast (M.read (| v |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -173,9 +170,12 @@ Module num.
               (let v := M.alloc (| v |) in
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
-                [ M.rust_cast (BinOp.Pure.bit_and (M.read (| v |)) (Value.Integer 4294967295)) ]
+                [
+                  M.rust_cast
+                    (BinOp.bit_and (M.read (| v |)) (Value.Integer IntegerKind.U64 4294967295))
+                ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -194,10 +194,12 @@ Module num.
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
-                  M.alloc (| BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer 15) |)
+                  M.alloc (|
+                    BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 15)
+                  |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -235,23 +237,27 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 31))
-                                    (Value.Integer 0)
+                                  BinOp.eq (|
+                                    BinOp.Wrap.shr (|
+                                      M.read (| bits |),
+                                      Value.Integer IntegerKind.I32 31
+                                    |),
+                                    Value.Integer IntegerKind.U32 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 1 |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer (-1) |)))
+                            M.alloc (| Value.Integer IntegerKind.I8 1 |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I8 (-1) |)))
                       ]
                     |)
                   |) in
                 let~ exponent :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 23))
-                        (Value.Integer 255))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
+                        (Value.Integer IntegerKind.U32 255))
                   |) in
                 let~ mantissa :=
                   M.copy (|
@@ -263,21 +269,29 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| exponent |)) (Value.Integer 0)
+                                  BinOp.eq (|
+                                    M.read (| exponent |),
+                                    Value.Integer IntegerKind.I16 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Wrap.shl
-                                (BinOp.Pure.bit_and (M.read (| bits |)) (Value.Integer 8388607))
-                                (Value.Integer 1)
+                              BinOp.Wrap.shl (|
+                                BinOp.bit_and
+                                  (M.read (| bits |))
+                                  (Value.Integer IntegerKind.U32 8388607),
+                                Value.Integer IntegerKind.I32 1
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Pure.bit_or
-                                (BinOp.Pure.bit_and (M.read (| bits |)) (Value.Integer 8388607))
-                                (Value.Integer 8388608)
+                              BinOp.bit_or
+                                (BinOp.bit_and
+                                  (M.read (| bits |))
+                                  (Value.Integer IntegerKind.U32 8388607))
+                                (Value.Integer IntegerKind.U32 8388608)
                             |)))
                       ]
                     |)
@@ -286,10 +300,13 @@ Module num.
                   let β := exponent in
                   M.write (|
                     β,
-                    BinOp.Wrap.sub
-                      Integer.I16
-                      (M.read (| β |))
-                      (BinOp.Wrap.add Integer.I16 (Value.Integer 127) (Value.Integer 23))
+                    BinOp.Wrap.sub (|
+                      M.read (| β |),
+                      BinOp.Wrap.add (|
+                        Value.Integer IntegerKind.I16 127,
+                        Value.Integer IntegerKind.I16 23
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -297,7 +314,7 @@ Module num.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -314,7 +331,7 @@ Module num.
                 M.get_associated_function (| Ty.path "f32", "classify", [] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -373,67 +390,62 @@ Module num.
         Definition value_NEG_NAN : Value.t :=
           M.run
             ltac:(M.monadic
-              (M.alloc (|
-                UnOp.Panic.neg (|
-                  Integer.Usize,
-                  M.read (| M.get_constant (| "core::f64::NAN" |) |)
-                |)
-              |))).
+              (M.alloc (| UnOp.neg (| M.read (| M.get_constant (| "core::f64::NAN" |) |) |) |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 52; *)
         (* Ty.path "usize" *)
         Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 52 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 52 |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -4; *)
         (* Ty.path "i32" *)
         Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-4) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-4) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 23; *)
         (* Ty.path "i32" *)
         Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 23 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 23 |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -22; *)
         (* Ty.path "i64" *)
         Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-22) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-22) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 22; *)
         (* Ty.path "i64" *)
         Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 22 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 22 |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 37; *)
         (* Ty.path "i64" *)
         Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 37 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 37 |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -1023; *)
         (* Ty.path "i32" *)
         Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-1023) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-1023) |))).
         
         (*     const INFINITE_POWER: i32 = 0x7FF; *)
         (* Ty.path "i32" *)
         Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 2047 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 2047 |))).
         
         (*     const SIGN_INDEX: usize = 63; *)
         (* Ty.path "usize" *)
         Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 63 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 63 |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -342; *)
         (* Ty.path "i32" *)
         Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-342) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 308; *)
         (* Ty.path "i32" *)
         Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer 308 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -465,14 +477,16 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| v |))
-                                              (M.read (|
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.read (| v |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -501,7 +515,7 @@ Module num.
                   |) in
                 M.alloc (| M.rust_cast (M.read (| v |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -518,7 +532,7 @@ Module num.
                 M.get_associated_function (| Ty.path "f64", "from_bits", [] |),
                 [ M.read (| v |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -538,10 +552,12 @@ Module num.
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
-                  M.alloc (| BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer 31) |)
+                  M.alloc (|
+                    BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 31)
+                  |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -582,23 +598,27 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 63))
-                                    (Value.Integer 0)
+                                  BinOp.eq (|
+                                    BinOp.Wrap.shr (|
+                                      M.read (| bits |),
+                                      Value.Integer IntegerKind.I32 63
+                                    |),
+                                    Value.Integer IntegerKind.U64 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 1 |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer (-1) |)))
+                            M.alloc (| Value.Integer IntegerKind.I8 1 |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I8 (-1) |)))
                       ]
                     |)
                   |) in
                 let~ exponent :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 52))
-                        (Value.Integer 2047))
+                      (BinOp.bit_and
+                        (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
+                        (Value.Integer IntegerKind.U64 2047))
                   |) in
                 let~ mantissa :=
                   M.copy (|
@@ -610,25 +630,29 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| exponent |)) (Value.Integer 0)
+                                  BinOp.eq (|
+                                    M.read (| exponent |),
+                                    Value.Integer IntegerKind.I16 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Wrap.shl
-                                (BinOp.Pure.bit_and
+                              BinOp.Wrap.shl (|
+                                BinOp.bit_and
                                   (M.read (| bits |))
-                                  (Value.Integer 4503599627370495))
-                                (Value.Integer 1)
+                                  (Value.Integer IntegerKind.U64 4503599627370495),
+                                Value.Integer IntegerKind.I32 1
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Pure.bit_or
-                                (BinOp.Pure.bit_and
+                              BinOp.bit_or
+                                (BinOp.bit_and
                                   (M.read (| bits |))
-                                  (Value.Integer 4503599627370495))
-                                (Value.Integer 4503599627370496)
+                                  (Value.Integer IntegerKind.U64 4503599627370495))
+                                (Value.Integer IntegerKind.U64 4503599627370496)
                             |)))
                       ]
                     |)
@@ -637,16 +661,19 @@ Module num.
                   let β := exponent in
                   M.write (|
                     β,
-                    BinOp.Wrap.sub
-                      Integer.I16
-                      (M.read (| β |))
-                      (BinOp.Wrap.add Integer.I16 (Value.Integer 1023) (Value.Integer 52))
+                    BinOp.Wrap.sub (|
+                      M.read (| β |),
+                      BinOp.Wrap.add (|
+                        Value.Integer IntegerKind.I16 1023,
+                        Value.Integer IntegerKind.I16 52
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   Value.Tuple [ M.read (| mantissa |); M.read (| exponent |); M.read (| sign |) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -663,7 +690,7 @@ Module num.
                 M.get_associated_function (| Ty.path "f64", "classify", [] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

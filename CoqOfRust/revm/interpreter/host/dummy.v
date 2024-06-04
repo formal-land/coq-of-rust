@@ -138,7 +138,7 @@ Module host.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -204,7 +204,7 @@ Module host.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -290,7 +290,7 @@ Module host.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -459,7 +459,7 @@ Module host.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -517,7 +517,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -557,7 +557,7 @@ Module host.
                 []
               |))
               [ ("env", M.read (| env |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -623,7 +623,7 @@ Module host.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -647,7 +647,7 @@ Module host.
               "revm_interpreter::host::dummy::DummyHost",
               "env"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -665,7 +665,7 @@ Module host.
               "revm_interpreter::host::dummy::DummyHost",
               "env"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -693,7 +693,7 @@ Module host.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -710,7 +710,7 @@ Module host.
             Value.StructTuple
               "core::option::Option::Some"
               [ M.read (| M.get_constant (| "alloy_primitives::bits::fixed::ZERO" |) |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -728,7 +728,7 @@ Module host.
               "core::option::Option::Some"
               [ Value.Tuple [ M.read (| M.get_constant (| "ruint::ZERO" |) |); Value.Bool false ]
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -760,7 +760,7 @@ Module host.
                     Value.Bool false
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -783,7 +783,7 @@ Module host.
                     Value.Bool false
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -894,7 +894,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1027,7 +1027,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1086,7 +1086,7 @@ Module host.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1130,7 +1130,7 @@ Module host.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1166,7 +1166,7 @@ Module host.
                 M.read (| log |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1203,7 +1203,7 @@ Module host.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

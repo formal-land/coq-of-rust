@@ -133,7 +133,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -191,7 +191,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -272,7 +272,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -370,7 +370,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -428,7 +428,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -484,21 +484,22 @@ Module db.
                     ]
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::db::states::changes::PlainStorageChangeset",
                           "wipe_storage"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::db::states::changes::PlainStorageChangeset",
                           "wipe_storage"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
@@ -535,7 +536,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -586,7 +587,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -648,7 +649,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -751,7 +752,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -809,7 +810,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -865,21 +866,22 @@ Module db.
                     ]
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::db::states::changes::PlainStorageRevert",
                           "wiped"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::db::states::changes::PlainStorageRevert",
                           "wiped"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
@@ -924,7 +926,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -975,7 +977,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1041,7 +1043,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1164,7 +1166,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1214,7 +1216,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1285,7 +1287,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1360,7 +1362,7 @@ Module db.
                       [ M.read (| capacity |) ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_capacity :

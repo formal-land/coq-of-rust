@@ -12,8 +12,8 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+      BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_add : M.IsFunction "documentation_testing::add" add.
@@ -41,7 +41,10 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
-                    M.use (M.alloc (| BinOp.Pure.eq (M.read (| b |)) (Value.Integer 0) |)) in
+                    M.use
+                      (M.alloc (|
+                        BinOp.eq (| M.read (| b |), Value.Integer IntegerKind.I32 0 |)
+                      |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -57,9 +60,9 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        M.alloc (| BinOp.Wrap.div Integer.I32 (M.read (| a |)) (M.read (| b |)) |)
+        M.alloc (| BinOp.Wrap.div (| M.read (| a |), M.read (| b |) |) |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_div : M.IsFunction "documentation_testing::div" div.

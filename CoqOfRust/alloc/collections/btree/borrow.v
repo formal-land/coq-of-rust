@@ -99,7 +99,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -134,7 +134,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_awaken :
@@ -169,7 +169,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reborrow :
@@ -204,7 +204,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reborrow_shared :

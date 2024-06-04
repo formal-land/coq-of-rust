@@ -29,7 +29,7 @@ Module sync.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -89,7 +89,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -117,7 +117,7 @@ Module sync.
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -142,7 +142,7 @@ Module sync.
                 "inner"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -164,7 +164,7 @@ Module sync.
               "core::sync::exclusive::Exclusive",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -211,7 +211,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_pin_mut :
@@ -231,7 +231,7 @@ Module sync.
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -283,7 +283,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_pin_mut :
@@ -315,7 +315,7 @@ Module sync.
               |),
               [ M.read (| t |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -360,7 +360,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -406,7 +406,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -451,7 +451,7 @@ Module sync.
                 M.read (| cx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -500,7 +500,7 @@ Module sync.
                 M.read (| arg |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

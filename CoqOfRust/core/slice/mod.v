@@ -110,7 +110,10 @@ Module slice.
                                               "checked_add",
                                               []
                                             |),
-                                            [ M.read (| M.read (| i |) |); Value.Integer 1 ]
+                                            [
+                                              M.read (| M.read (| i |) |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -207,7 +210,10 @@ Module slice.
                                               "checked_add",
                                               []
                                             |),
-                                            [ M.read (| M.read (| i |) |); Value.Integer 1 ]
+                                            [
+                                              M.read (| M.read (| i |) |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -306,7 +312,7 @@ Module slice.
                 |)
               ]))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_split_point_of : M.IsFunction "core::slice::split_point_of" split_point_of.
@@ -352,7 +358,7 @@ Module slice.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
@@ -368,13 +374,14 @@ Module slice.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
               [ M.read (| self |) ]
-            |))
-            (Value.Integer 0)))
-      | _, _ => M.impossible
+            |),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty :
@@ -411,7 +418,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_first :
@@ -448,7 +455,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_first_mut :
@@ -488,7 +495,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_first :
@@ -528,7 +535,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_first_mut :
@@ -568,7 +575,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_last :
@@ -608,7 +615,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_last_mut :
@@ -645,7 +652,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_last :
@@ -682,7 +689,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_last_mut :
@@ -715,16 +722,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::first_chunk::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::first_chunk::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -748,7 +756,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_first_chunk :
@@ -782,16 +790,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::first_chunk_mut::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::first_chunk_mut::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -815,7 +824,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_first_chunk_mut :
@@ -851,16 +860,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -911,7 +921,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_first_chunk :
@@ -950,18 +960,19 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.get_constant (| "core::slice::split_first_chunk_mut::N" |)
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1014,7 +1025,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_first_chunk_mut :
@@ -1050,16 +1061,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1075,17 +1087,17 @@ Module slice.
                           |),
                           [
                             M.read (| self |);
-                            BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.call_closure (|
+                            BinOp.Wrap.sub (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| self |) ]
-                              |))
-                              (M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
+                            |)
                           ]
                         |)
                       |),
@@ -1120,7 +1132,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_last_chunk :
@@ -1159,18 +1171,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (|
-                              M.get_constant (| "core::slice::split_last_chunk_mut::N" |)
-                            |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::split_last_chunk_mut::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1186,19 +1197,19 @@ Module slice.
                           |),
                           [
                             M.read (| self |);
-                            BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.call_closure (|
+                            BinOp.Wrap.sub (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| self |) ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.get_constant (| "core::slice::split_last_chunk_mut::N" |)
-                              |))
+                              |)
+                            |)
                           ]
                         |)
                       |),
@@ -1233,7 +1244,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_last_chunk_mut :
@@ -1270,16 +1281,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1297,17 +1309,17 @@ Module slice.
                               |),
                               [
                                 M.read (| self |);
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.call_closure (|
+                                BinOp.Wrap.sub (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |))
-                                  (M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |))
+                                  |),
+                                  M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
+                                |)
                               ]
                             |)
                           |),
@@ -1332,7 +1344,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_last_chunk :
@@ -1370,16 +1382,17 @@ Module slice.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
+                          BinOp.lt (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::slice::last_chunk_mut::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::slice::last_chunk_mut::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1398,19 +1411,19 @@ Module slice.
                                 |),
                                 [
                                   M.read (| self |);
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ T ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.read (|
+                                    |),
+                                    M.read (|
                                       M.get_constant (| "core::slice::last_chunk_mut::N" |)
-                                    |))
+                                    |)
+                                  |)
                                 ]
                               |)
                             |),
@@ -1436,7 +1449,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_last_chunk_mut :
@@ -1468,7 +1481,7 @@ Module slice.
             |),
             [ M.read (| index |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
@@ -1498,7 +1511,7 @@ Module slice.
             |),
             [ M.read (| index |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -1533,7 +1546,7 @@ Module slice.
             |),
             [ M.read (| index |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_unchecked :
@@ -1568,7 +1581,7 @@ Module slice.
             |),
             [ M.read (| index |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_unchecked_mut :
@@ -1587,7 +1600,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -1606,7 +1619,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_ptr :
@@ -1670,7 +1683,7 @@ Module slice.
                 [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ptr_range :
@@ -1722,7 +1735,7 @@ Module slice.
                 [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_ptr_range :
@@ -1764,7 +1777,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_swap :
@@ -1810,30 +1823,33 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.and (|
-                                        BinOp.Pure.lt
-                                          (M.read (| a |))
-                                          (M.call_closure (|
+                                    UnOp.not (|
+                                      LogicalOp.and (|
+                                        BinOp.lt (|
+                                          M.read (| a |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| self |) ]
-                                          |)),
+                                          |)
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.lt
-                                            (M.read (| b |))
-                                            (M.call_closure (|
+                                          (BinOp.lt (|
+                                            M.read (| b |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ T ],
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| self |) ]
-                                            |))))
-                                      |))
+                                            |)
+                                          |)))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1905,7 +1921,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_swap_unchecked :
@@ -1963,13 +1979,13 @@ Module slice.
           M.read (|
             let~ half_len :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.div (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (Value.Integer 2)
+                  |),
+                  Value.Integer IntegerKind.Usize 2
+                |)
               |) in
             M.match_operator (|
               M.alloc (|
@@ -2047,7 +2063,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reverse :
@@ -2073,7 +2089,7 @@ Module slice.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -2099,7 +2115,7 @@ Module slice.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter_mut :
@@ -2154,7 +2170,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_windows :
@@ -2184,8 +2200,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2226,7 +2246,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_chunks :
@@ -2256,8 +2276,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2298,7 +2322,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_chunks_mut :
@@ -2328,8 +2352,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2370,7 +2398,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_chunks_exact :
@@ -2400,8 +2428,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2442,7 +2474,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_chunks_exact_mut :
@@ -2485,34 +2517,37 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.and (|
-                                        BinOp.Pure.ne
-                                          (M.read (|
+                                    UnOp.not (|
+                                      LogicalOp.and (|
+                                        BinOp.ne (|
+                                          M.read (|
                                             M.get_constant (|
                                               "core::slice::as_chunks_unchecked::N"
                                             |)
-                                          |))
-                                          (Value.Integer 0),
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.eq
-                                            (BinOp.Wrap.rem
-                                              Integer.Usize
-                                              (M.call_closure (|
+                                          (BinOp.eq (|
+                                            BinOp.Wrap.rem (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ T ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| self |) ]
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::slice::as_chunks_unchecked::N"
                                                 |)
-                                              |)))
-                                            (Value.Integer 0)))
-                                      |))
+                                              |)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2597,7 +2632,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_chunks_unchecked :
@@ -2631,10 +2666,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2666,13 +2703,13 @@ Module slice.
               |) in
             let~ len :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.div (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |))
+                  |),
+                  M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |)
+                |)
               |) in
             M.match_operator (|
               M.alloc (|
@@ -2680,10 +2717,10 @@ Module slice.
                   M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "split_at", [] |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| len |))
-                      (M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |))
+                    BinOp.Wrap.mul (|
+                      M.read (| len |),
+                      M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |)
+                    |)
                   ]
                 |)
               |),
@@ -2709,7 +2746,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_chunks :
@@ -2743,10 +2780,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2778,13 +2817,13 @@ Module slice.
               |) in
             let~ len :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.div (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |))
+                  |),
+                  M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)
+                |)
               |) in
             M.match_operator (|
               M.alloc (|
@@ -2792,16 +2831,16 @@ Module slice.
                   M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "split_at", [] |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| self |) ]
-                      |))
-                      (BinOp.Wrap.mul
-                        Integer.Usize
-                        (M.read (| len |))
-                        (M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)))
+                      |),
+                      BinOp.Wrap.mul (|
+                        M.read (| len |),
+                        M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)
+                      |)
+                    |)
                   ]
                 |)
               |),
@@ -2827,7 +2866,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_rchunks :
@@ -2856,10 +2895,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::array_chunks::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::array_chunks::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2900,7 +2941,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_array_chunks :
@@ -2943,34 +2984,37 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.and (|
-                                        BinOp.Pure.ne
-                                          (M.read (|
+                                    UnOp.not (|
+                                      LogicalOp.and (|
+                                        BinOp.ne (|
+                                          M.read (|
                                             M.get_constant (|
                                               "core::slice::as_chunks_unchecked_mut::N"
                                             |)
-                                          |))
-                                          (Value.Integer 0),
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.eq
-                                            (BinOp.Wrap.rem
-                                              Integer.Usize
-                                              (M.call_closure (|
+                                          (BinOp.eq (|
+                                            BinOp.Wrap.rem (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ T ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| self |) ]
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::slice::as_chunks_unchecked_mut::N"
                                                 |)
-                                              |)))
-                                            (Value.Integer 0)))
-                                      |))
+                                              |)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 0
+                                          |)))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3055,7 +3099,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_chunks_unchecked_mut :
@@ -3089,10 +3133,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3124,13 +3170,13 @@ Module slice.
               |) in
             let~ len :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.div (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |))
+                  |),
+                  M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |)
+                |)
               |) in
             M.match_operator (|
               M.alloc (|
@@ -3142,10 +3188,10 @@ Module slice.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| len |))
-                      (M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |))
+                    BinOp.Wrap.mul (|
+                      M.read (| len |),
+                      M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |)
+                    |)
                   ]
                 |)
               |),
@@ -3171,7 +3217,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_chunks_mut :
@@ -3205,10 +3251,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3240,13 +3288,13 @@ Module slice.
               |) in
             let~ len :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.div (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |))
+                  |),
+                  M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)
+                |)
               |) in
             M.match_operator (|
               M.alloc (|
@@ -3258,16 +3306,16 @@ Module slice.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| self |) ]
-                      |))
-                      (BinOp.Wrap.mul
-                        Integer.Usize
-                        (M.read (| len |))
-                        (M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)))
+                      |),
+                      BinOp.Wrap.mul (|
+                        M.read (| len |),
+                        M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)
+                      |)
+                    |)
                   ]
                 |)
               |),
@@ -3293,7 +3341,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_rchunks_mut :
@@ -3322,12 +3370,14 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (|
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (|
                                   M.get_constant (| "core::slice::array_chunks_mut::N" |)
-                                |))
-                                (Value.Integer 0))
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3368,7 +3418,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_array_chunks_mut :
@@ -3397,10 +3447,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| M.get_constant (| "core::slice::array_windows::N" |) |))
-                                (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| M.get_constant (| "core::slice::array_windows::N" |) |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3441,7 +3493,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_array_windows :
@@ -3471,8 +3523,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3513,7 +3569,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rchunks :
@@ -3543,8 +3599,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3585,7 +3645,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rchunks_mut :
@@ -3615,8 +3675,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3657,7 +3721,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rchunks_exact :
@@ -3687,8 +3751,12 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne (M.read (| chunk_size |)) (Value.Integer 0))
+                            UnOp.not (|
+                              BinOp.ne (|
+                                M.read (| chunk_size |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3729,7 +3797,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rchunks_exact_mut :
@@ -3759,7 +3827,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_group_by :
@@ -3789,7 +3857,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_group_by_mut :
@@ -3821,17 +3889,19 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (| mid |))
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (| mid |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3856,7 +3926,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at :
@@ -3888,17 +3958,19 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (| mid |))
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (| mid |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3923,7 +3995,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at_mut :
@@ -3986,8 +4058,7 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.le (M.read (| mid |)) (M.read (| len |)))
+                                    UnOp.not (| BinOp.le (| M.read (| mid |), M.read (| len |) |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4048,13 +4119,13 @@ Module slice.
                         |),
                         [ M.read (| ptr |); M.read (| mid |) ]
                       |);
-                      BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
+                      BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |)
                     ]
                   |)
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at_unchecked :
@@ -4120,8 +4191,7 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.le (M.read (| mid |)) (M.read (| len |)))
+                                    UnOp.not (| BinOp.le (| M.read (| mid |), M.read (| len |) |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4178,13 +4248,13 @@ Module slice.
                         M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
                         [ M.read (| ptr |); M.read (| mid |) ]
                       |);
-                      BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
+                      BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |)
                     ]
                   |)
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_at_mut_unchecked :
@@ -4240,7 +4310,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_array_ref :
@@ -4300,7 +4370,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_array_mut :
@@ -4331,19 +4401,21 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (|
                                   M.get_constant (| "core::slice::rsplit_array_ref::N" |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4363,13 +4435,13 @@ Module slice.
                   M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "split_at", [] |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| self |) ]
-                      |))
-                      (M.read (| M.get_constant (| "core::slice::rsplit_array_ref::N" |) |))
+                      |),
+                      M.read (| M.get_constant (| "core::slice::rsplit_array_ref::N" |) |)
+                    |)
                   ]
                 |)
               |),
@@ -4398,7 +4470,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_array_ref :
@@ -4429,19 +4501,21 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (|
                                   M.get_constant (| "core::slice::rsplit_array_mut::N" |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4465,13 +4539,13 @@ Module slice.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| self |) ]
-                      |))
-                      (M.read (| M.get_constant (| "core::slice::rsplit_array_mut::N" |) |))
+                      |),
+                      M.read (| M.get_constant (| "core::slice::rsplit_array_mut::N" |) |)
+                    |)
                   ]
                 |)
               |),
@@ -4500,7 +4574,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_array_mut :
@@ -4530,7 +4604,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split :
@@ -4560,7 +4634,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_mut :
@@ -4590,7 +4664,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_inclusive :
@@ -4620,7 +4694,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_inclusive_mut :
@@ -4650,7 +4724,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit :
@@ -4680,7 +4754,7 @@ Module slice.
             |),
             [ M.read (| self |); M.read (| pred |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_mut :
@@ -4717,7 +4791,7 @@ Module slice.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_splitn :
@@ -4758,7 +4832,7 @@ Module slice.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_splitn_mut :
@@ -4795,7 +4869,7 @@ Module slice.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplitn :
@@ -4836,7 +4910,7 @@ Module slice.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplitn_mut :
@@ -4994,10 +5068,10 @@ Module slice.
                                 "core::ops::range::RangeFrom"
                                 [
                                   ("start",
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| index |))
-                                      (Value.Integer 1))
+                                    BinOp.Wrap.add (|
+                                      M.read (| index |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |))
                                 ]
                             ]
                           |)
@@ -5006,7 +5080,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_once :
@@ -5164,10 +5238,10 @@ Module slice.
                                 "core::ops::range::RangeFrom"
                                 [
                                   ("start",
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| index |))
-                                      (Value.Integer 1))
+                                    BinOp.Wrap.add (|
+                                      M.read (| index |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |))
                                 ]
                             ]
                           |)
@@ -5176,7 +5250,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_once :
@@ -5202,7 +5276,7 @@ Module slice.
             M.get_trait_method (| "core::slice::cmp::SliceContains", T, [], "slice_contains", [] |),
             [ M.read (| x |); M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_contains :
@@ -5235,12 +5309,13 @@ Module slice.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.ge
-                  (M.call_closure (|
+                BinOp.ge (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| n |)),
+                  |),
+                  M.read (| n |)
+                |),
                 ltac:(M.monadic
                   (M.call_closure (|
                     M.get_trait_method (|
@@ -5274,7 +5349,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_starts_with :
@@ -5321,7 +5396,7 @@ Module slice.
                     let n := M.copy (| γ0_1 |) in
                     M.alloc (|
                       LogicalOp.and (|
-                        BinOp.Pure.ge (M.read (| m |)) (M.read (| n |)),
+                        BinOp.ge (| M.read (| m |), M.read (| n |) |),
                         ltac:(M.monadic
                           (M.call_closure (|
                             M.get_trait_method (|
@@ -5352,10 +5427,7 @@ Module slice.
                                       "core::ops::range::RangeFrom"
                                       [
                                         ("start",
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| m |))
-                                            (M.read (| n |)))
+                                          BinOp.Wrap.sub (| M.read (| m |), M.read (| n |) |))
                                       ]
                                   ]
                                 |)
@@ -5367,7 +5439,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ends_with :
@@ -5424,16 +5496,17 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| n |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| n |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5507,7 +5580,7 @@ Module slice.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_strip_prefix :
@@ -5586,7 +5659,7 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.le (M.read (| n |)) (M.read (| len |))
+                                        BinOp.le (| M.read (| n |), M.read (| len |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -5603,10 +5676,7 @@ Module slice.
                                         |),
                                         [
                                           M.read (| self |);
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| len |))
-                                            (M.read (| n |))
+                                          BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |)
                                         ]
                                       |)
                                     |),
@@ -5672,7 +5742,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_strip_suffix :
@@ -5711,23 +5781,24 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let p := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                [ M.read (| p |); M.read (| x |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let p := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                                  [ M.read (| p |); M.read (| x |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_binary_search :
@@ -5793,7 +5864,7 @@ Module slice.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ left := M.alloc (| Value.Integer 0 |) in
+                let~ left := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ right := M.copy (| size |) in
                 let~ _ :=
                   M.loop (|
@@ -5806,7 +5877,7 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| left |)) (M.read (| right |))
+                                    BinOp.lt (| M.read (| left |), M.read (| right |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5815,13 +5886,13 @@ Module slice.
                                 |) in
                               let~ mid :=
                                 M.alloc (|
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| left |))
-                                    (BinOp.Wrap.div
-                                      Integer.Usize
-                                      (M.read (| size |))
-                                      (Value.Integer 2))
+                                  BinOp.Wrap.add (|
+                                    M.read (| left |),
+                                    BinOp.Wrap.div (|
+                                      M.read (| size |),
+                                      Value.Integer IntegerKind.Usize 2
+                                    |)
+                                  |)
                                 |) in
                               let~ cmp :=
                                 M.alloc (|
@@ -5885,10 +5956,10 @@ Module slice.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| mid |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| mid |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |)));
                                         fun γ => ltac:(M.monadic left)
                                       ]
@@ -5979,16 +6050,17 @@ Module slice.
                                                       []
                                                     |),
                                                     [
-                                                      BinOp.Pure.lt
-                                                        (M.read (| mid |))
-                                                        (M.call_closure (|
+                                                      BinOp.lt (|
+                                                        M.read (| mid |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [ T ],
                                                             "len",
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     ]
                                                   |)
                                                 |) in
@@ -6006,10 +6078,7 @@ Module slice.
                               let~ _ :=
                                 M.write (|
                                   size,
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| right |))
-                                    (M.read (| left |))
+                                  BinOp.Wrap.sub (| M.read (| right |), M.read (| left |) |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -6033,23 +6102,24 @@ Module slice.
                     M.call_closure (|
                       M.get_function (| "core::intrinsics::assume", [] |),
                       [
-                        BinOp.Pure.le
-                          (M.read (| left |))
-                          (M.call_closure (|
+                        BinOp.le (|
+                          M.read (| left |),
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ T ],
                               "len",
                               []
                             |),
                             [ M.read (| self |) ]
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| left |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_binary_search_by :
@@ -6090,37 +6160,38 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let k := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnMut",
-                                        F,
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                        "call_mut",
-                                        []
-                                      |),
-                                      [ f; Value.Tuple [ M.read (| k |) ] ]
-                                    |)
-                                  |);
-                                  M.read (| b |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let k := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+                                  [
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnMut",
+                                          F,
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                          "call_mut",
+                                          []
+                                        |),
+                                        [ f; Value.Tuple [ M.read (| k |) ] ]
+                                      |)
+                                    |);
+                                    M.read (| b |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_binary_search_by_key :
@@ -6162,7 +6233,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_unstable :
@@ -6204,65 +6275,67 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let a := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let b := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::cmp::PartialEq",
-                                                Ty.path "core::cmp::Ordering",
-                                                [ Ty.path "core::cmp::Ordering" ],
-                                                "eq",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let a := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let b := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.path "core::cmp::Ordering",
+                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply (Ty.path "&") [ T ];
+                                                              Ty.apply (Ty.path "&") [ T ]
+                                                            ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply (Ty.path "&") [ T ];
-                                                            Ty.apply (Ty.path "&") [ T ]
-                                                          ]
-                                                      ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      compare;
-                                                      Value.Tuple [ M.read (| a |); M.read (| b |) ]
-                                                    ]
+                                                        compare;
+                                                        Value.Tuple
+                                                          [ M.read (| a |); M.read (| b |) ]
+                                                      ]
+                                                    |)
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.StructTuple "core::cmp::Ordering::Less" []
                                                   |)
-                                                |);
-                                                M.alloc (|
-                                                  Value.StructTuple "core::cmp::Ordering::Less" []
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_unstable_by :
@@ -6305,65 +6378,68 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let a := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let b := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::cmp::PartialOrd",
-                                                K,
-                                                [ K ],
-                                                "lt",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let a := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let b := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialOrd",
+                                                  K,
+                                                  [ K ],
+                                                  "lt",
+                                                  []
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ f; Value.Tuple [ M.read (| a |) ] ]
+                                                    |)
+                                                  |);
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        F,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ f; Value.Tuple [ M.read (| b |) ] ]
+                                                    |)
                                                   |)
-                                                |);
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      F,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ f; Value.Tuple [ M.read (| b |) ] ]
-                                                  |)
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_unstable_by_key :
@@ -6401,7 +6477,7 @@ Module slice.
               M.get_trait_method (| "core::cmp::PartialOrd", T, [ T ], "lt", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_select_nth_unstable :
@@ -6446,62 +6522,63 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.path "core::cmp::Ordering",
-                                          [ Ty.path "core::cmp::Ordering" ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.path "core::cmp::Ordering",
+                                            [ Ty.path "core::cmp::Ordering" ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply (Ty.path "&") [ T ];
+                                                        Ty.apply (Ty.path "&") [ T ]
+                                                      ]
+                                                  ],
+                                                  "call_mut",
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [ T ];
-                                                      Ty.apply (Ty.path "&") [ T ]
-                                                    ]
-                                                ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                compare;
-                                                Value.Tuple [ M.read (| a |); M.read (| b |) ]
-                                              ]
+                                                  compare;
+                                                  Value.Tuple [ M.read (| a |); M.read (| b |) ]
+                                                ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              Value.StructTuple "core::cmp::Ordering::Less" []
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            Value.StructTuple "core::cmp::Ordering::Less" []
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_select_nth_unstable_by :
@@ -6547,62 +6624,63 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          K,
-                                          [ K ],
-                                          "lt",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| a |) ] ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
+                                            K,
+                                            [ K ],
+                                            "lt",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ f; Value.Tuple [ M.read (| a |) ] ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ f; Value.Tuple [ M.read (| b |) ] ]
+                                              |)
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ f; Value.Tuple [ M.read (| b |) ] ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_select_nth_unstable_by_key :
@@ -6640,37 +6718,38 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply (Ty.path "&mut") [ T ],
-                                          [ Ty.apply (Ty.path "&mut") [ T ] ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [ a; b ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.apply (Ty.path "&mut") [ T ],
+                                            [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [ a; b ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_partition_dedup :
@@ -6807,7 +6886,9 @@ Module slice.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| BinOp.Pure.le (M.read (| len |)) (Value.Integer 1) |)) in
+                              (M.alloc (|
+                                BinOp.le (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -6837,8 +6918,8 @@ Module slice.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ next_read := M.alloc (| Value.Integer 1 |) in
-                let~ next_write := M.alloc (| Value.Integer 1 |) in
+                let~ next_read := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
+                let~ next_write := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                 let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
@@ -6850,7 +6931,7 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt (M.read (| next_read |)) (M.read (| len |))
+                                    BinOp.lt (| M.read (| next_read |), M.read (| len |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6878,10 +6959,10 @@ Module slice.
                                     |),
                                     [
                                       M.read (| ptr |);
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| next_write |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| next_write |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -6894,8 +6975,8 @@ Module slice.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              UnOp.Pure.not
-                                                (M.call_closure (|
+                                              UnOp.not (|
+                                                M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
@@ -6917,7 +6998,8 @@ Module slice.
                                                         M.read (| prev_ptr_write |)
                                                       ]
                                                   ]
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -6933,9 +7015,10 @@ Module slice.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.ne
-                                                          (M.read (| next_read |))
-                                                          (M.read (| next_write |))
+                                                        BinOp.ne (|
+                                                          M.read (| next_read |),
+                                                          M.read (| next_write |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -6952,7 +7035,7 @@ Module slice.
                                                         |),
                                                         [
                                                           M.read (| prev_ptr_write |);
-                                                          Value.Integer 1
+                                                          Value.Integer IntegerKind.Usize 1
                                                         ]
                                                       |)
                                                     |) in
@@ -6978,10 +7061,10 @@ Module slice.
                                           let β := next_write in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| β |))
-                                              (Value.Integer 1)
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -6991,7 +7074,10 @@ Module slice.
                                 let β := next_read in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -7022,7 +7108,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_partition_dedup_by :
@@ -7062,62 +7148,63 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          K,
-                                          [ K ],
-                                          "eq",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ key; Value.Tuple [ M.read (| a |) ] ]
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            K,
+                                            [ K ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ key; Value.Tuple [ M.read (| a |) ] ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ key; Value.Tuple [ M.read (| b |) ] ]
+                                              |)
                                             |)
-                                          |);
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ key; Value.Tuple [ M.read (| b |) ] ]
-                                            |)
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_partition_dedup_by_key :
@@ -7154,17 +7241,19 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (| mid |))
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (| mid |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -7180,13 +7269,13 @@ Module slice.
               |) in
             let~ k :=
               M.alloc (|
-                BinOp.Wrap.sub
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.sub (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| mid |))
+                  |),
+                  M.read (| mid |)
+                |)
               |) in
             let~ p :=
               M.alloc (|
@@ -7215,7 +7304,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rotate_left :
@@ -7252,17 +7341,19 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.le
-                                (M.read (| k |))
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.le (|
+                                M.read (| k |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -7278,13 +7369,13 @@ Module slice.
               |) in
             let~ mid :=
               M.alloc (|
-                BinOp.Wrap.sub
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.sub (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| k |))
+                  |),
+                  M.read (| k |)
+                |)
               |) in
             let~ p :=
               M.alloc (|
@@ -7313,7 +7404,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rotate_right :
@@ -7351,7 +7442,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_fill :
@@ -7447,7 +7538,7 @@ Module slice.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_fill_with :
@@ -7485,7 +7576,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clone_from_slice :
@@ -7538,23 +7629,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ne
-                              (M.call_closure (|
+                            BinOp.ne (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| self |) ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| src |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -7619,7 +7711,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copy_from_slice :
@@ -7695,7 +7787,7 @@ Module slice.
                     let src_end := M.copy (| γ0_1 |) in
                     let~ count :=
                       M.alloc (|
-                        BinOp.Wrap.sub Integer.Usize (M.read (| src_end |)) (M.read (| src_start |))
+                        BinOp.Wrap.sub (| M.read (| src_end |), M.read (| src_start |) |)
                       |) in
                     let~ _ :=
                       M.match_operator (|
@@ -7706,20 +7798,22 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.le
-                                        (M.read (| dest |))
-                                        (BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.call_closure (|
+                                    UnOp.not (|
+                                      BinOp.le (|
+                                        M.read (| dest |),
+                                        BinOp.Wrap.sub (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| self |) ]
-                                          |))
-                                          (M.read (| count |))))
+                                          |),
+                                          M.read (| count |)
+                                        |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -7802,7 +7896,7 @@ Module slice.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copy_within :
@@ -7837,24 +7931,26 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.eq
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.eq (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| other |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -7919,7 +8015,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_swap_with_slice :
@@ -7974,44 +8070,44 @@ Module slice.
               M.copy (| M.get_constant (| "core::slice::align_to_offsets_discriminant" |) |) in
             let~ ts :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (| M.get_function (| "core::mem::size_of", [ U ] |), [] |))
-                  (M.read (| gcd |))
+                BinOp.Wrap.div (|
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [ U ] |), [] |),
+                  M.read (| gcd |)
+                |)
               |) in
             let~ us :=
               M.alloc (|
-                BinOp.Wrap.div
-                  Integer.Usize
-                  (M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |))
-                  (M.read (| gcd |))
+                BinOp.Wrap.div (|
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |),
+                  M.read (| gcd |)
+                |)
               |) in
             let~ us_len :=
               M.alloc (|
-                BinOp.Wrap.mul
-                  Integer.Usize
-                  (BinOp.Wrap.div
-                    Integer.Usize
-                    (M.call_closure (|
+                BinOp.Wrap.mul (|
+                  BinOp.Wrap.div (|
+                    M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| self |) ]
-                    |))
-                    (M.read (| ts |)))
-                  (M.read (| us |))
+                    |),
+                    M.read (| ts |)
+                  |),
+                  M.read (| us |)
+                |)
               |) in
             let~ ts_len :=
               M.alloc (|
-                BinOp.Wrap.rem
-                  Integer.Usize
-                  (M.call_closure (|
+                BinOp.Wrap.rem (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
-                  |))
-                  (M.read (| ts |))
+                  |),
+                  M.read (| ts |)
+                |)
               |) in
             M.alloc (| Value.Tuple [ M.read (| us_len |); M.read (| ts_len |) ] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_align_to_offsets :
@@ -8131,16 +8227,17 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| offset |))
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.read (| offset |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8233,17 +8330,17 @@ Module slice.
                                                         |),
                                                         [ M.read (| rest |) ]
                                                       |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.call_closure (|
+                                                      BinOp.Wrap.sub (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [ T ],
                                                             "len",
                                                             []
                                                           |),
                                                           [ M.read (| rest |) ]
-                                                        |))
-                                                        (M.read (| ts_len |))
+                                                        |),
+                                                        M.read (| ts_len |)
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| ts_len |)
@@ -8259,7 +8356,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_align_to :
@@ -8387,16 +8484,17 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (| offset |))
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.read (| offset |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8496,10 +8594,10 @@ Module slice.
                                                     |),
                                                     [
                                                       M.read (| mut_ptr |);
-                                                      BinOp.Wrap.sub
-                                                        Integer.Usize
-                                                        (M.read (| rest_len |))
-                                                        (M.read (| ts_len |))
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| rest_len |),
+                                                        M.read (| ts_len |)
+                                                      |)
                                                     ]
                                                   |);
                                                   M.read (| ts_len |)
@@ -8515,7 +8613,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_align_to_mut :
@@ -8586,10 +8684,12 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| left_val |) |))
-                                        (M.read (| M.read (| right_val |) |)))
+                                    UnOp.not (|
+                                      BinOp.eq (|
+                                        M.read (| M.read (| left_val |) |),
+                                        M.read (| M.read (| right_val |) |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8636,7 +8736,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_simd :
@@ -8707,10 +8807,12 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| left_val |) |))
-                                        (M.read (| M.read (| right_val |) |)))
+                                    UnOp.not (|
+                                      BinOp.eq (|
+                                        M.read (| M.read (| left_val |) |),
+                                        M.read (| M.read (| right_val |) |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8757,7 +8859,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_simd_mut :
@@ -8795,37 +8897,38 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialOrd",
-                                          T,
-                                          [ T ],
-                                          "partial_cmp",
-                                          []
-                                        |),
-                                        [ M.read (| a |); M.read (| b |) ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let a := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialOrd",
+                                            T,
+                                            [ T ],
+                                            "partial_cmp",
+                                            []
+                                          |),
+                                          [ M.read (| a |); M.read (| b |) ]
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sorted :
@@ -8875,59 +8978,60 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                              let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
-                              let a := M.alloc (| γ1_0 |) in
-                              let b := M.alloc (| γ1_1 |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    [ Ty.path "core::cmp::Ordering" ],
-                                  "map_or",
-                                  [
-                                    Ty.path "bool";
-                                    Ty.function [ Ty.path "core::cmp::Ordering" ] (Ty.path "bool")
-                                  ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::FnMut",
-                                      F,
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&") [ T ];
-                                            Ty.apply (Ty.path "&") [ T ]
-                                          ]
-                                      ],
-                                      "call_mut",
-                                      []
-                                    |),
-                                    [ compare; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                                  |);
-                                  Value.Bool false;
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                                let a := M.alloc (| γ1_0 |) in
+                                let b := M.alloc (| γ1_1 |) in
+                                M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::cmp::Ordering",
-                                    "is_le",
-                                    []
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      [ Ty.path "core::cmp::Ordering" ],
+                                    "map_or",
+                                    [
+                                      Ty.path "bool";
+                                      Ty.function [ Ty.path "core::cmp::Ordering" ] (Ty.path "bool")
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::function::FnMut",
+                                        F,
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [ T ];
+                                              Ty.apply (Ty.path "&") [ T ]
+                                            ]
+                                        ],
+                                        "call_mut",
+                                        []
+                                      |),
+                                      [ compare; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                    |);
+                                    Value.Bool false;
+                                    M.get_associated_function (|
+                                      Ty.path "core::cmp::Ordering",
+                                      "is_le",
+                                      []
+                                    |)
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sorted_by :
@@ -8966,7 +9070,7 @@ Module slice.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sorted_by_key :
@@ -9012,51 +9116,53 @@ Module slice.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  M.read (|
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [ pred; Value.Tuple [ M.read (| x |) ] ]
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Less" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              Value.StructTuple "core::cmp::Ordering::Greater" []
-                                            |)))
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    M.read (|
+                                      M.match_operator (|
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [ pred; Value.Tuple [ M.read (| x |) ] ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                Value.StructTuple "core::cmp::Ordering::Less" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (|
+                                                Value.StructTuple "core::cmp::Ordering::Greater" []
+                                              |)))
+                                        ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |);
@@ -9065,20 +9171,21 @@ Module slice.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.read (| i |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.read (| i |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_partition_point :
@@ -9201,16 +9308,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| split_index |))
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.read (| split_index |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| M.read (| self |) |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -9286,7 +9394,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take :
@@ -9412,16 +9520,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| split_index |))
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.read (| split_index |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| M.read (| self |) |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -9507,7 +9616,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_mut :
@@ -9622,7 +9731,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_first :
@@ -9745,7 +9854,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_first_mut :
@@ -9860,7 +9969,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_last :
@@ -9983,7 +10092,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_last_mut :
@@ -10065,7 +10174,7 @@ Module slice.
                         Value.StructRecord
                           "core::ops::range::Range"
                           [
-                            ("start", Value.Integer 0);
+                            ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
                               M.read (|
                                 M.get_constant (| "core::slice::get_many_unchecked_mut::N" |)
@@ -10174,7 +10283,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_many_unchecked_mut :
@@ -10213,8 +10322,8 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_function (| "core::slice::get_many_check_valid", [] |),
                                     [
                                       indices;
@@ -10227,7 +10336,8 @@ Module slice.
                                         [ M.read (| self |) ]
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10265,7 +10375,7 @@ Module slice.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_many_mut :
@@ -10383,7 +10493,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_flatten :
@@ -10496,7 +10606,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_flatten_mut :
@@ -10541,7 +10651,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_floats : M.IsAssociatedFunction Self "sort_floats" sort_floats.
@@ -10584,7 +10694,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sort_floats : M.IsAssociatedFunction Self "sort_floats" sort_floats.
@@ -10626,24 +10736,26 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.eq
-                                (M.call_closure (|
+                            UnOp.not (|
+                              BinOp.eq (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| src |) ]
-                                |)))
+                                |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -10715,7 +10827,7 @@ Module slice.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
+                        [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| len |)) ]
                     ]
                   |)
                 |),
@@ -10780,7 +10892,7 @@ Module slice.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10821,7 +10933,7 @@ Module slice.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10846,7 +10958,7 @@ Module slice.
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] => ltac:(M.monadic (* Unsize *) (M.pointer_coercion (M.alloc (| Value.Array [] |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10871,7 +10983,7 @@ Module slice.
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] => ltac:(M.monadic (* Unsize *) (M.pointer_coercion (M.alloc (| Value.Array [] |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10904,7 +11016,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10935,7 +11047,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11056,9 +11168,9 @@ Module slice.
                                       let β := valid in
                                       M.write (|
                                         β,
-                                        BinOp.Pure.bit_and
+                                        BinOp.bit_and
                                           (M.read (| β |))
-                                          (BinOp.Pure.lt (M.read (| idx |)) (M.read (| len |)))
+                                          (BinOp.lt (| M.read (| idx |), M.read (| len |) |))
                                       |) in
                                     M.use
                                       (M.match_operator (|
@@ -11145,11 +11257,12 @@ Module slice.
                                                               let β := valid in
                                                               M.write (|
                                                                 β,
-                                                                BinOp.Pure.bit_and
+                                                                BinOp.bit_and
                                                                   (M.read (| β |))
-                                                                  (BinOp.Pure.ne
-                                                                    (M.read (| idx |))
-                                                                    (M.read (| idx2 |)))
+                                                                  (BinOp.ne (|
+                                                                    M.read (| idx |),
+                                                                    M.read (| idx2 |)
+                                                                  |))
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)))
                                                       ]
@@ -11166,7 +11279,7 @@ Module slice.
               |)) in
           valid
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_get_many_check_valid :
@@ -11212,7 +11325,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11246,7 +11359,7 @@ Module slice.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

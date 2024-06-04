@@ -24,7 +24,7 @@ Module iter.
             Value.StructRecord
               "core::iter::sources::successors::Successors"
               [ ("next", M.read (| first |)); ("succ", M.read (| succ |)) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_successors :
@@ -80,7 +80,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -220,7 +220,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -262,21 +262,26 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
-                            [ Value.Integer 1; Value.StructTuple "core::option::Option::None" [] ]
+                            [
+                              Value.Integer IntegerKind.Usize 1;
+                              Value.StructTuple "core::option::Option::None" []
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -358,7 +363,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

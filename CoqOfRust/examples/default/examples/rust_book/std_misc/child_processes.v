@@ -69,56 +69,57 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    M.get_function (| "core::panicking::panic_fmt", [] |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          []
-                                        |),
-                                        [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "failed to execute process: "
-                                                  |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "std::io::error::Error" ]
-                                                    |),
-                                                    [ e ]
-                                                  |)
-                                                ]
-                                            |))
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  M.never_to_any (|
+                                    M.call_closure (|
+                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_v1",
+                                            []
+                                          |),
+                                          [
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String "failed to execute process: "
+                                                    |)
+                                                  ]
+                                              |));
+                                            (* Unsize *)
+                                            M.pointer_coercion
+                                              (M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "std::io::error::Error" ]
+                                                      |),
+                                                      [ e ]
+                                                    |)
+                                                  ]
+                                              |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
@@ -304,7 +305,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "child_processes::main" main.

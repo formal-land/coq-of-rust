@@ -138,7 +138,7 @@ Module interpreter.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -244,7 +244,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -335,7 +335,7 @@ Module interpreter.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -401,7 +401,7 @@ Module interpreter.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -518,7 +518,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_env : M.IsAssociatedFunction Self "new_env" new_env.
@@ -582,7 +582,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_with_context :
@@ -653,31 +653,32 @@ Module interpreter.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let i := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "revm_primitives::bytecode::legacy::jump_map::JumpTable",
-                                        "is_valid",
-                                        []
-                                      |),
-                                      [ M.read (| i |); M.read (| pos |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let i := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "revm_primitives::bytecode::legacy::jump_map::JumpTable",
+                                          "is_valid",
+                                          []
+                                        |),
+                                        [ M.read (| i |); M.read (| pos |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
                 Value.Bool false
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_valid_jump :

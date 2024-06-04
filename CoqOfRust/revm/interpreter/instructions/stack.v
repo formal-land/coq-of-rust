@@ -29,8 +29,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -48,7 +48,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -117,7 +118,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_pop : M.IsFunction "revm_interpreter::instructions::stack::pop" pop.
@@ -149,8 +150,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "revm_primitives::specification::Spec",
                                       SPEC,
@@ -163,7 +164,8 @@ Module instructions.
                                         "revm_primitives::specification::SpecId::SHANGHAI"
                                         []
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -197,8 +199,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -216,7 +218,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -286,7 +289,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_push0 : M.IsFunction "revm_interpreter::instructions::stack::push0" push0.
@@ -325,8 +328,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -344,7 +347,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -464,7 +468,7 @@ Module instructions.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_push : M.IsFunction "revm_interpreter::instructions::stack::push" push.
@@ -495,8 +499,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -514,7 +518,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -588,7 +593,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_dup : M.IsFunction "revm_interpreter::instructions::stack::dup" dup.
@@ -619,8 +624,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -638,7 +643,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -712,7 +718,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_swap : M.IsFunction "revm_interpreter::instructions::stack::swap" swap.
@@ -746,14 +752,15 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.read (|
+                                UnOp.not (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
                                       "revm_interpreter::interpreter::Interpreter",
                                       "is_eof"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -787,8 +794,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -806,7 +813,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -861,10 +869,10 @@ Module instructions.
                                     "revm_interpreter::interpreter::Interpreter",
                                     "stack"
                                   |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.rust_cast (M.read (| imm |)))
-                                    (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.rust_cast (M.read (| imm |)),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
                             |) in
@@ -909,14 +917,14 @@ Module instructions.
                             "instruction_pointer"
                           |)
                         |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Isize 1
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_dupn : M.IsFunction "revm_interpreter::instructions::stack::dupn" dupn.
@@ -950,14 +958,15 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.read (|
+                                UnOp.not (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
                                       "revm_interpreter::interpreter::Interpreter",
                                       "is_eof"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -991,8 +1000,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1010,7 +1019,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1065,10 +1075,10 @@ Module instructions.
                                     "revm_interpreter::interpreter::Interpreter",
                                     "stack"
                                   |);
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.rust_cast (M.read (| imm |)))
-                                    (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.rust_cast (M.read (| imm |)),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
                             |) in
@@ -1113,14 +1123,14 @@ Module instructions.
                             "instruction_pointer"
                           |)
                         |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Isize 1
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_swapn : M.IsFunction "revm_interpreter::instructions::stack::swapn" swapn.
@@ -1157,14 +1167,15 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.read (|
+                                UnOp.not (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
                                       "revm_interpreter::interpreter::Interpreter",
                                       "is_eof"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1198,8 +1209,8 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1217,7 +1228,8 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1254,17 +1266,17 @@ Module instructions.
                   |) in
                 let~ n :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.U8
-                      (BinOp.Wrap.shr (M.read (| imm |)) (Value.Integer 4))
-                      (Value.Integer 1)
+                    BinOp.Wrap.add (|
+                      BinOp.Wrap.shr (| M.read (| imm |), Value.Integer IntegerKind.I32 4 |),
+                      Value.Integer IntegerKind.U8 1
+                    |)
                   |) in
                 let~ m :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.U8
-                      (BinOp.Pure.bit_and (M.read (| imm |)) (Value.Integer 15))
-                      (Value.Integer 1)
+                    BinOp.Wrap.add (|
+                      BinOp.bit_and (M.read (| imm |)) (Value.Integer IntegerKind.U8 15),
+                      Value.Integer IntegerKind.U8 1
+                    |)
                   |) in
                 let~ _ :=
                   M.match_operator (|
@@ -1332,14 +1344,14 @@ Module instructions.
                             "instruction_pointer"
                           |)
                         |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Isize 1
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_exchange :

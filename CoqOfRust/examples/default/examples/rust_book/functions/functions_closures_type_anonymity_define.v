@@ -13,7 +13,10 @@ fn main() {
 }
 *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  match τ, α with
+  | [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define::main" main.
 
@@ -47,7 +50,7 @@ Module main.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define::main::apply" apply.

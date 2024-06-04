@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -50,7 +50,7 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -142,7 +142,7 @@ Module Impl_conditional_compilation_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -203,7 +203,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -234,7 +234,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -252,7 +252,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
@@ -270,7 +270,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
@@ -288,7 +288,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           [ ("value", M.read (| value |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
@@ -316,14 +316,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           let~ caller :=
             M.alloc (|
@@ -388,7 +389,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inherent_flip_foo :
@@ -463,14 +464,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           let~ _ :=
             M.alloc (|
@@ -514,7 +516,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inherent_flip_bar :
@@ -542,18 +544,19 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -573,7 +576,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             "value"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -655,7 +658,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

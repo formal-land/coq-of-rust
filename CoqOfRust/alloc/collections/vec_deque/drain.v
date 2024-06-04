@@ -70,13 +70,10 @@ Module collections.
                   |) in
                 let~ tail_len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| orig_len |))
-                        (M.read (| drain_start |)))
-                      (M.read (| drain_len |))
+                    BinOp.Wrap.sub (|
+                      BinOp.Wrap.sub (| M.read (| orig_len |), M.read (| drain_start |) |),
+                      M.read (| drain_len |)
+                    |)
                   |) in
                 M.alloc (|
                   Value.StructRecord
@@ -115,7 +112,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -181,22 +178,22 @@ Module collections.
                             |)
                           |));
                         ("end_",
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (|
+                          BinOp.Wrap.add (|
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
                               |)
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "remaining"
                               |)
-                            |)))
+                            |)
+                          |))
                       ]
                   |) in
                 M.match_operator (|
@@ -264,7 +261,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_as_slices :
@@ -376,7 +373,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -522,8 +519,8 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.ne
-                                (M.read (|
+                              BinOp.ne (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
@@ -535,8 +532,9 @@ Module collections.
                                     "alloc::collections::vec_deque::drain::Drain",
                                     "remaining"
                                   |)
-                                |))
-                                (Value.Integer 0)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -583,10 +581,9 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (| β |))
-                                      (M.call_closure (|
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
@@ -595,7 +592,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| front |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β :=
@@ -612,10 +610,9 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (| β |))
-                                      (M.call_closure (|
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
@@ -624,7 +621,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| front |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |) in
                                 let~ _ :=
                                   M.alloc (|
@@ -649,7 +647,7 @@ Module collections.
                                       "alloc::collections::vec_deque::drain::Drain",
                                       "remaining"
                                     |),
-                                    Value.Integer 0
+                                    Value.Integer IntegerKind.Usize 0
                                   |) in
                                 let~ _ :=
                                   M.alloc (|
@@ -668,7 +666,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -716,15 +714,16 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
                                         |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -791,7 +790,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     let~ _ :=
                       let β :=
@@ -802,7 +801,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -842,7 +841,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -874,7 +873,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -923,15 +922,16 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
                                         |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -959,7 +959,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     let~ wrapped_idx :=
                       M.alloc (|
@@ -990,22 +990,22 @@ Module collections.
                                 |)
                               ]
                             |);
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "idx"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "remaining"
                                 |)
-                              |))
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -1047,7 +1047,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

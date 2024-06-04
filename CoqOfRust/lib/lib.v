@@ -37,246 +37,159 @@ Definition mk_str (s : string) : M :=
   let* pointer := M.alloc (Value.String s) in
   M.alloc pointer.
 
-Module IntegerDescription.
-  Class C (Self : M.Integer.t) : Set := {
-    (** Apply the modulo operation in case of overflows. *)
-    normalize_wrap : Z -> Z;
-    min : Z;
-    max : Z;
-  }.
-End IntegerDescription.
-
 Module Integer.
-  Definition min (kind : Integer.t) : Z :=
+  Definition min (kind : IntegerKind.t) : Z :=
     match kind with
-    | Integer.U8 => 0
-    | Integer.U16 => 0
-    | Integer.U32 => 0
-    | Integer.U64 => 0
-    | Integer.U128 => 0
-    | Integer.Usize => 0
-    | Integer.I8 => -2^7
-    | Integer.I16 => -2^15
-    | Integer.I32 => -2^31
-    | Integer.I64 => -2^63
-    | Integer.I128 => -2^127
-    | Integer.Isize => -2^63
+    | IntegerKind.U8 => 0
+    | IntegerKind.U16 => 0
+    | IntegerKind.U32 => 0
+    | IntegerKind.U64 => 0
+    | IntegerKind.U128 => 0
+    | IntegerKind.Usize => 0
+    | IntegerKind.I8 => -2^7
+    | IntegerKind.I16 => -2^15
+    | IntegerKind.I32 => -2^31
+    | IntegerKind.I64 => -2^63
+    | IntegerKind.I128 => -2^127
+    | IntegerKind.Isize => -2^63
     end.
 
-  Definition max (kind : Integer.t) : Z :=
+  Definition max (kind : IntegerKind.t) : Z :=
     match kind with
-    | Integer.U8 => 2^8 - 1
-    | Integer.U16 => 2^16 - 1
-    | Integer.U32 => 2^32 - 1
-    | Integer.U64 => 2^64 - 1
-    | Integer.U128 => 2^128 - 1
-    | Integer.Usize => 2^64 - 1
-    | Integer.I8 => 2^7 - 1
-    | Integer.I16 => 2^15 - 1
-    | Integer.I32 => 2^31 - 1
-    | Integer.I64 => 2^63 - 1
-    | Integer.I128 => 2^127 - 1
-    | Integer.Isize => 2^63 - 1
+    | IntegerKind.U8 => 2^8 - 1
+    | IntegerKind.U16 => 2^16 - 1
+    | IntegerKind.U32 => 2^32 - 1
+    | IntegerKind.U64 => 2^64 - 1
+    | IntegerKind.U128 => 2^128 - 1
+    | IntegerKind.Usize => 2^64 - 1
+    | IntegerKind.I8 => 2^7 - 1
+    | IntegerKind.I16 => 2^15 - 1
+    | IntegerKind.I32 => 2^31 - 1
+    | IntegerKind.I64 => 2^63 - 1
+    | IntegerKind.I128 => 2^127 - 1
+    | IntegerKind.Isize => 2^63 - 1
     end.
 
-  Definition normalize_wrap (kind : Integer.t) (z : Z) : Z :=
+  Definition normalize_wrap (kind : IntegerKind.t) (z : Z) : Z :=
     match kind with
-    | Integer.U8 => Z.modulo z (2^8)
-    | Integer.U16 => Z.modulo z (2^16)
-    | Integer.U32 => Z.modulo z (2^32)
-    | Integer.U64 => Z.modulo z (2^64)
-    | Integer.U128 => Z.modulo z (2^128)
-    | Integer.Usize => Z.modulo z (2^64)
-    | Integer.I8 => Z.modulo (z + 2^7) (2^8) - 2^7
-    | Integer.I16 => Z.modulo (z + 2^15) (2^16) - 2^15
-    | Integer.I32 => Z.modulo (z + 2^31) (2^32) - 2^31
-    | Integer.I64 => Z.modulo (z + 2^63) (2^64) - 2^63
-    | Integer.I128 => Z.modulo (z + 2^127) (2^128) - 2^127
-    | Integer.Isize => Z.modulo (z + 2^63) (2^64) - 2^63
+    | IntegerKind.U8 => Z.modulo z (2^8)
+    | IntegerKind.U16 => Z.modulo z (2^16)
+    | IntegerKind.U32 => Z.modulo z (2^32)
+    | IntegerKind.U64 => Z.modulo z (2^64)
+    | IntegerKind.U128 => Z.modulo z (2^128)
+    | IntegerKind.Usize => Z.modulo z (2^64)
+    | IntegerKind.I8 => Z.modulo (z + 2^7) (2^8) - 2^7
+    | IntegerKind.I16 => Z.modulo (z + 2^15) (2^16) - 2^15
+    | IntegerKind.I32 => Z.modulo (z + 2^31) (2^32) - 2^31
+    | IntegerKind.I64 => Z.modulo (z + 2^63) (2^64) - 2^63
+    | IntegerKind.I128 => Z.modulo (z + 2^127) (2^128) - 2^127
+    | IntegerKind.Isize => Z.modulo (z + 2^63) (2^64) - 2^63
     end.
 
-  Definition normalize_with_error (kind : Integer.t) (z : Z) : Z + string :=
+  Definition normalize_option (kind : IntegerKind.t) (z : Z) : option Z :=
     if z <? min kind then
-      inr "underflow"
+      None
     else if max kind <? z then
-      inr "overflow"
+      None
     else
-      inl z.
+      Some z.
 End Integer.
 
-Module UnOp.
-  Module Pure.
-    Definition not (v : Value.t) : Value.t :=
-      match v with
-      | Value.Bool b => Value.Bool (negb b)
-      | Value.Integer i => Value.Integer (Z.lnot i)
-      | _ => Value.Error "unexpected parameter for not"
-      end.
-  End Pure.
+(** We define the operators for the release mode. That means that we make overflows on integers
+    instead of a panic in debug mode. *)
 
-  Module Panic.
-    Definition neg (kind : Integer.t) (v : Value.t) : M :=
-      match v with
-      | Value.Integer i =>
-        if Z.eqb i (Integer.min kind) then
-          M.panic "overflow"
-        else
-          M.pure (Value.Integer (- i))
-      | _ => M.panic "not implemented"
-      end.
-  End Panic.
+Module UnOp.
+  Definition not (v : Value.t) : M :=
+    match v with
+    | Value.Bool b => M.pure (Value.Bool (negb b))
+    | Value.Integer kind i => M.pure (Value.Integer kind (Z.lnot i))
+    | _ => M.impossible "unexpected parameter for not"
+    end.
+
+  Definition neg (v : Value.t) : M :=
+    match v with
+    | Value.Integer kind i =>
+      if Z.eqb i (Integer.min kind) then
+        M.pure v
+      else
+        M.pure (Value.Integer kind (- i))
+    | _ => M.impossible "unexpected parameter for neg"
+    end.
 End UnOp.
 
 Module BinOp.
-  Module Pure.
-    Parameter bit_xor : Value.t -> Value.t -> Value.t.
-    Parameter bit_and : Value.t -> Value.t -> Value.t.
-    Parameter bit_or : Value.t -> Value.t -> Value.t.
+  Parameter bit_xor : Value.t -> Value.t -> Value.t.
+  Parameter bit_and : Value.t -> Value.t -> Value.t.
+  Parameter bit_or : Value.t -> Value.t -> Value.t.
 
-    Definition eq (v1 v2 : Value.t) : Value.t :=
-      Value.Bool (Value.eqb v1 v2).
+  Definition eq : Value.t -> Value.t -> M :=
+    M.are_equal.
 
-    Definition ne (v1 v2 : Value.t) : Value.t :=
-      Value.Bool (negb (Value.eqb v1 v2)).
+  Definition ne (v1 v2 : Value.t) : M :=
+    let* are_equal := M.are_equal v1 v2 in
+    match are_equal with
+    | Value.Bool are_equal => M.pure (Value.Bool (negb are_equal))
+    | _ => M.impossible "expected a boolean for the equality"
+    end.
 
-    Definition lt (v1 v2 : Value.t) : Value.t :=
-      match v1, v2 with
-      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.ltb i1 i2)
-      | _, _ => Value.Error "unexpected parameter for lt"
-      end.
+  Definition lt (v1 v2 : Value.t) : M :=
+    match v1, v2 with
+    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.ltb i1 i2)))
+    | _, _ => M.impossible "unexpected parameter for lt"
+    end.
 
-    Definition le (v1 v2 : Value.t) : Value.t :=
-      match v1, v2 with
-      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.leb i1 i2)
-      | _, _ => Value.Error "unexpected parameter for le"
-      end.
+  Definition le (v1 v2 : Value.t) : M :=
+    match v1, v2 with
+    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.leb i1 i2)))
+    | _, _ => M.impossible "unexpected parameter for le"
+    end.
 
-    Definition ge (v1 v2 : Value.t) : Value.t :=
-      match v1, v2 with
-      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.geb i1 i2)
-      | _, _ => Value.Error "unexpected parameter for ge"
-      end.
+  Definition ge (v1 v2 : Value.t) : M :=
+    match v1, v2 with
+    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.geb i1 i2)))
+    | _, _ => M.impossible "unexpected parameter for ge"
+    end.
 
-    Definition gt (v1 v2 : Value.t) : Value.t :=
-      match v1, v2 with
-      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.gtb i1 i2)
-      | _, _ => Value.Error "unexpected parameter for gt"
-      end.
-  End Pure.
-
-  Module Error.
-    Definition make_arithmetic
-        (bin_op : Z -> Z -> Z)
-        (kind : Integer.t)
-        (v1 v2 : Value.t) :
-        Value.t + string :=
-      match v1, v2 with
-      | Value.Integer z1, Value.Integer z2 =>
-        match Integer.normalize_with_error kind (bin_op z1 z2) with
-        | inl v => inl (Value.Integer v)
-        | inr err => inr err
-        end
-      | _, _ => inr "expected integers"
-      end.
-
-    Definition add (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.add kind v1 v2.
-
-    Definition sub (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.sub kind v1 v2.
-
-    Definition mul (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.mul kind v1 v2.
-
-    Parameter div : Integer.t -> Value.t -> Value.t -> Value.t + string.
-    Parameter rem : Integer.t -> Value.t -> Value.t -> Value.t + string.
-    
-    Parameter shl : Value.t -> Value.t -> Value.t + string.
-    Parameter shr : Value.t -> Value.t -> Value.t + string.
-  End Error.
-
-  Module Panic.
-    Definition make_arithmetic (bin_op : Z -> Z -> Z) (kind : Integer.t) (v1 v2 : Value.t) : M :=
-      match Error.make_arithmetic bin_op kind v1 v2 with
-      | inl v => M.pure v
-      | inr err => M.panic err
-      end.
-
-    Definition add (kind : Integer.t) : Value.t -> Value.t -> M :=
-      make_arithmetic Z.add kind.
-
-    Definition sub (kind : Integer.t) : Value.t -> Value.t -> M :=
-      make_arithmetic Z.sub kind.
-
-    Definition mul (kind : Integer.t) : Value.t -> Value.t -> M :=
-      make_arithmetic Z.mul kind.
-
-    Parameter div : Integer.t -> Value.t -> Value.t -> M.
-    Parameter rem : Integer.t -> Value.t -> Value.t -> M.
-    
-    Parameter shl : Value.t -> Value.t -> M.
-    Parameter shr : Value.t -> Value.t -> M.
-  End Panic.
+  Definition gt (v1 v2 : Value.t) : M :=
+    match v1, v2 with
+    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.gtb i1 i2)))
+    | _, _ => M.impossible "unexpected parameter for gt"
+    end.
 
   Module Wrap.
     Definition make_arithmetic
         (bin_op : Z -> Z -> Z)
-        (kind : Integer.t)
         (v1 v2 : Value.t) :
-        Value.t :=
+        M :=
       match v1, v2 with
-      | Value.Integer v1, Value.Integer v2 =>
-        let z := Integer.normalize_wrap kind (bin_op v1 v2) in
-        Value.Integer z
-      | _, _ => Value.Error "expected integers"
+      | Value.Integer kind1 v1, Value.Integer kind2 v2 =>
+        if negb (IntegerKind.eqb kind1 kind2) then
+          M.impossible "expected the same kind of integers"
+        else
+          let z := Integer.normalize_wrap kind1 (bin_op v1 v2) in
+          M.pure (Value.Integer kind1 z)
+      | _, _ => M.impossible "expected integers"
       end.
 
-    Definition add (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.add kind v1 v2.
-
-    Definition sub (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.sub kind v1 v2.
-
-    Definition mul (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.mul kind v1 v2.
-
-    Parameter div : Integer.t -> Value.t -> Value.t -> Value.t.
-    Parameter rem : Integer.t -> Value.t -> Value.t -> Value.t.
-    
-    Parameter shl : Value.t -> Value.t -> Value.t.
-    Parameter shr : Value.t -> Value.t -> Value.t.
-  End Wrap.
-
-  Module Optimistic.
-    (** We assume that the operation will not overflow, and we do not check
-        for it. This is the optimistic approach. These operators can be used
-        in the simulations when possible, to simplify the proofs. *)
-    Definition make_arithmetic
-        (bin_op : Z -> Z -> Z)
-        (v1 v2 : Value.t) :
-        Value.t :=
-      match v1, v2 with
-      | Value.Integer v1, Value.Integer v2 =>
-        let z := bin_op v1 v2 in
-        Value.Integer z
-      | _, _ => Value.Error "expected integers"
-      end.
-
-    Definition add (v1 v2 : Value.t) : Value.t :=
+    Definition add (v1 v2 : Value.t) : M :=
       make_arithmetic Z.add v1 v2.
 
-    Definition sub (v1 v2 : Value.t) : Value.t :=
+    Definition sub (v1 v2 : Value.t) : M :=
       make_arithmetic Z.sub v1 v2.
 
-    Definition mul (v1 v2 : Value.t) : Value.t :=
+    Definition mul (v1 v2 : Value.t) : M :=
       make_arithmetic Z.mul v1 v2.
 
-    Parameter div : Value.t -> Value.t -> Value.t.
-    Parameter rem : Value.t -> Value.t -> Value.t.
+    Parameter div : Value.t -> Value.t -> M.
+    Parameter rem : Value.t -> Value.t -> M.
 
-    Parameter shl : Value.t -> Value.t -> Value.t.
-    Parameter shr : Value.t -> Value.t -> Value.t.
-  End Optimistic.
+    Parameter shl : Value.t -> Value.t -> M.
+    Parameter shr : Value.t -> Value.t -> M.
+  End Wrap.
 End BinOp.
 
 (** The evaluation of logical operators is lazy on the second parameter. *)
@@ -288,7 +201,7 @@ Module LogicalOp.
         rhs
       else
         M.pure (Value.Bool false)
-    | _ => M.impossible
+    | _ => M.impossible "expected a boolean"
     end.
 
   Definition or (lhs : Value.t) (rhs : M) : M :=
@@ -298,7 +211,7 @@ Module LogicalOp.
         M.pure (Value.Bool true)
       else
         rhs
-    | _ => M.impossible
+    | _ => M.impossible "expected a boolean"
     end.
 End LogicalOp.
 

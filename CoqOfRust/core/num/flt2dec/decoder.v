@@ -58,7 +58,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -132,7 +132,7 @@ Module num.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -168,90 +168,95 @@ Module num.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     LogicalOp.and (|
-                      BinOp.Pure.eq
-                        (M.read (|
+                      BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
-                        |)),
+                        |)
+                      |),
                       ltac:(M.monadic
-                        (BinOp.Pure.eq
-                          (M.read (|
+                        (BinOp.eq (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| other |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
-                          |))))
+                          |)
+                        |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -302,7 +307,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -370,7 +375,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -476,7 +481,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -531,7 +536,7 @@ Module num.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                    BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -576,7 +581,7 @@ Module num.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -613,7 +618,7 @@ Module num.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -639,7 +644,7 @@ Module num.
         Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
           match τ, α with
           | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f32::MIN_POSITIVE" |) |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -661,7 +666,7 @@ Module num.
         Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
           match τ, α with
           | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f64::MIN_POSITIVE" |) |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -743,9 +748,10 @@ Module num.
                       let sign := M.copy (| γ0_2 |) in
                       let~ even :=
                         M.alloc (|
-                          BinOp.Pure.eq
-                            (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer 1))
-                            (Value.Integer 0)
+                          BinOp.eq (|
+                            BinOp.bit_and (M.read (| mant |)) (Value.Integer IntegerKind.U64 1),
+                            Value.Integer IntegerKind.U64 0
+                          |)
                         |) in
                       let~ decoded :=
                         M.copy (|
@@ -802,8 +808,8 @@ Module num.
                                           "core::num::flt2dec::decoder::Decoded"
                                           [
                                             ("mant", M.read (| mant |));
-                                            ("minus", Value.Integer 1);
-                                            ("plus", Value.Integer 1);
+                                            ("minus", Value.Integer IntegerKind.U64 1);
+                                            ("plus", Value.Integer IntegerKind.U64 1);
                                             ("exp", M.read (| exp |));
                                             ("inclusive", M.read (| even |))
                                           ]
@@ -845,11 +851,12 @@ Module num.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| mant |))
-                                                  (M.read (|
+                                                BinOp.eq (|
+                                                  M.read (| mant |),
+                                                  M.read (|
                                                     M.SubPointer.get_tuple_field (| minnorm, 0 |)
-                                                  |))
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -864,16 +871,17 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Wrap.shl
-                                                        (M.read (| mant |))
-                                                        (Value.Integer 2));
-                                                    ("minus", Value.Integer 1);
-                                                    ("plus", Value.Integer 2);
+                                                      BinOp.Wrap.shl (|
+                                                        M.read (| mant |),
+                                                        Value.Integer IntegerKind.I32 2
+                                                      |));
+                                                    ("minus", Value.Integer IntegerKind.U64 1);
+                                                    ("plus", Value.Integer IntegerKind.U64 2);
                                                     ("exp",
-                                                      BinOp.Wrap.sub
-                                                        Integer.I16
-                                                        (M.read (| exp |))
-                                                        (Value.Integer 2));
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| exp |),
+                                                        Value.Integer IntegerKind.I16 2
+                                                      |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]
@@ -888,16 +896,17 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Wrap.shl
-                                                        (M.read (| mant |))
-                                                        (Value.Integer 1));
-                                                    ("minus", Value.Integer 1);
-                                                    ("plus", Value.Integer 1);
+                                                      BinOp.Wrap.shl (|
+                                                        M.read (| mant |),
+                                                        Value.Integer IntegerKind.I32 1
+                                                      |));
+                                                    ("minus", Value.Integer IntegerKind.U64 1);
+                                                    ("plus", Value.Integer IntegerKind.U64 1);
                                                     ("exp",
-                                                      BinOp.Wrap.sub
-                                                        Integer.I16
-                                                        (M.read (| exp |))
-                                                        (Value.Integer 1));
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| exp |),
+                                                        Value.Integer IntegerKind.I16 1
+                                                      |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]
@@ -910,14 +919,14 @@ Module num.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Pure.lt (M.read (| sign |)) (Value.Integer 0);
+                            BinOp.lt (| M.read (| sign |), Value.Integer IntegerKind.I8 0 |);
                             M.read (| decoded |)
                           ]
                       |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_decode : M.IsFunction "core::num::flt2dec::decoder::decode" decode.

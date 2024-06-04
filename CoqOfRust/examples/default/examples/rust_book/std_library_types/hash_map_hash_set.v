@@ -97,7 +97,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                                  Value.Array
+                                    [
+                                      Value.Integer IntegerKind.I32 1;
+                                      Value.Integer IntegerKind.I32 2;
+                                      Value.Integer IntegerKind.I32 3
+                                    ]
                                 |)
                               ]
                             |)
@@ -160,7 +165,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               |),
                               [
                                 M.alloc (|
-                                  Value.Array [ Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
+                                  Value.Array
+                                    [
+                                      Value.Integer IntegerKind.I32 2;
+                                      Value.Integer IntegerKind.I32 3;
+                                      Value.Integer IntegerKind.I32 4
+                                    ]
                                 |)
                               ]
                             |)
@@ -181,8 +191,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (M.call_closure (|
+                        UnOp.not (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::set::HashSet")
@@ -190,8 +200,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "insert",
                               []
                             |),
-                            [ a; Value.Integer 4 ]
-                          |))
+                            [ a; Value.Integer IntegerKind.I32 4 ]
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -214,8 +225,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        UnOp.Pure.not
-                          (M.call_closure (|
+                        UnOp.not (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::set::HashSet")
@@ -223,8 +234,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               "contains",
                               [ Ty.path "i32" ]
                             |),
-                            [ a; M.alloc (| Value.Integer 4 |) ]
-                          |))
+                            [ a; M.alloc (| Value.Integer IntegerKind.I32 4 |) ]
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -248,7 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "insert",
                 []
               |),
-              [ b; Value.Integer 5 ]
+              [ b; Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
         let~ _ :=
@@ -669,7 +681,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "hash_map_hash_set::main" main.

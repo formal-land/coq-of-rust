@@ -307,7 +307,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -332,7 +332,7 @@ Module precompile.
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple "revm_primitives::precompile::Precompile::Standard" [ M.read (| p |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -368,7 +368,7 @@ Module precompile.
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
           Value.StructTuple "revm_primitives::precompile::Precompile::Env" [ M.read (| p |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -410,7 +410,7 @@ Module precompile.
           Value.StructTuple
             "revm_primitives::precompile::Precompile::Stateful"
             [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -446,7 +446,7 @@ Module precompile.
           Value.StructTuple
             "revm_primitives::precompile::Precompile::StatefulMut"
             [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -568,7 +568,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -606,7 +606,7 @@ Module precompile.
                   [ M.read (| p |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_stateful : M.IsAssociatedFunction Self "new_stateful" new_stateful.
@@ -635,7 +635,7 @@ Module precompile.
                   [ M.read (| p |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_stateful_mut :
@@ -769,7 +769,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
@@ -1046,7 +1046,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1315,7 +1315,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1370,7 +1370,7 @@ Module precompile.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1415,7 +1415,7 @@ Module precompile.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1452,7 +1452,7 @@ Module precompile.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1521,7 +1521,7 @@ Module precompile.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1559,7 +1559,7 @@ Module precompile.
                 [ M.read (| err |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_other : M.IsAssociatedFunction Self "other" other.
@@ -1759,7 +1759,7 @@ Module precompile.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

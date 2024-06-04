@@ -32,7 +32,7 @@ Module db.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -79,7 +79,7 @@ Module db.
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -126,7 +126,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -155,7 +155,7 @@ Module db.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Bool true)) ] |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -199,7 +199,7 @@ Module db.
             (Value.StructRecord
               "revm::db::emptydb::EmptyDBTyped"
               [ ("_phantom", Value.StructTuple "core::marker::PhantomData" []) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -224,7 +224,7 @@ Module db.
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_keccak_block_hash :
@@ -261,7 +261,7 @@ Module db.
               |),
               [ M.read (| self |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -286,7 +286,7 @@ Module db.
               |),
               [ M.read (| self |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -312,7 +312,7 @@ Module db.
               |),
               [ M.read (| self |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -337,7 +337,7 @@ Module db.
               |),
               [ M.read (| self |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -378,7 +378,7 @@ Module db.
             Value.StructTuple
               "core::result::Result::Ok"
               [ Value.StructTuple "core::option::Option::None" [] ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -407,7 +407,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -437,7 +437,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -485,7 +485,7 @@ Module db.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

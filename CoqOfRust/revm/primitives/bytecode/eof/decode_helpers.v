@@ -80,13 +80,13 @@ Module bytecode.
                                 M.read (| input |);
                                 Value.StructRecord
                                   "core::ops::range::RangeFrom"
-                                  [ ("start", Value.Integer 1) ]
+                                  [ ("start", Value.Integer IntegerKind.Usize 1) ]
                               ]
                             |);
                             M.read (|
                               M.SubPointer.get_array_field (|
                                 M.read (| input |),
-                                M.alloc (| Value.Integer 0 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                               |)
                             |)
                           ]
@@ -94,7 +94,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_consume_u8 :
@@ -126,16 +126,17 @@ Module bytecode.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.call_closure (|
+                                  BinOp.lt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| input |) ]
-                                    |))
-                                    (Value.Integer 2)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -165,7 +166,7 @@ Module bytecode.
                           "split_at",
                           []
                         |),
-                        [ M.read (| input |); Value.Integer 2 ]
+                        [ M.read (| input |); Value.Integer IntegerKind.Usize 2 ]
                       |)
                     |),
                     [
@@ -194,13 +195,13 @@ Module bytecode.
                                             M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.read (| int_bytes |),
-                                                M.alloc (| Value.Integer 0 |)
+                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                               |)
                                             |);
                                             M.read (|
                                               M.SubPointer.get_array_field (|
                                                 M.read (| int_bytes |),
-                                                M.alloc (| Value.Integer 1 |)
+                                                M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                               |)
                                             |)
                                           ]
@@ -213,7 +214,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_consume_u16 :

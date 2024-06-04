@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -50,7 +50,7 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -136,7 +136,7 @@ Module Impl_updated_incrementer_Incrementer.
           |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -159,7 +159,7 @@ Module Impl_updated_incrementer_Incrementer.
             [ Value.String "Constructors are not called when upgrading using `set_code_hash`." ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -186,7 +186,7 @@ Module Impl_updated_incrementer_Incrementer.
                 "updated_incrementer::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 4) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -238,7 +238,7 @@ Module Impl_updated_incrementer_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -260,7 +260,7 @@ Module Impl_updated_incrementer_Incrementer.
             "count"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -317,29 +317,30 @@ Module Impl_updated_incrementer_Incrementer.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let err := M.copy (| γ |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "std::panicking::begin_panic",
+                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          |)
+                                        ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
@@ -386,7 +387,7 @@ Module Impl_updated_incrementer_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.

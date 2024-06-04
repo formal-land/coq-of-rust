@@ -59,7 +59,7 @@ Module handler.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_load_precompiles :
@@ -413,7 +413,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_load_accounts :
@@ -637,7 +637,7 @@ Module handler.
                                     "nonce"
                                   |)
                                 |);
-                                Value.Integer 1
+                                Value.Integer IntegerKind.U64 1
                               ]
                             |)
                           |) in
@@ -658,7 +658,7 @@ Module handler.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_deduct_caller_inner :
@@ -875,7 +875,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_deduct_caller :

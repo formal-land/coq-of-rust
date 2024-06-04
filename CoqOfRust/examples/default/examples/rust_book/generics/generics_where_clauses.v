@@ -64,7 +64,7 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -113,7 +113,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
                         |)
                       ]
                     |)
@@ -138,7 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_where_clauses::main" main.

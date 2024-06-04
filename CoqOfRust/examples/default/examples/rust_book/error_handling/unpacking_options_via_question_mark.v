@@ -34,7 +34,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -80,7 +80,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -271,7 +271,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_work_phone_area_code :
@@ -319,8 +319,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     ("area_code",
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.Integer 61 ]);
-                                    ("number", Value.Integer 439222222)
+                                        [ Value.Integer IntegerKind.U8 61 ]);
+                                    ("number", Value.Integer IntegerKind.U32 439222222)
                                   ]
                               ])
                         ]
@@ -342,7 +342,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ p ]
                     |)
                   |);
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 61 ] |)
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ Value.Integer IntegerKind.U8 61 ]
+                  |)
                 ]
             |),
             [
@@ -360,8 +364,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
@@ -371,7 +375,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -409,7 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "unpacking_options_via_question_mark::main" main.

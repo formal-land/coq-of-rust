@@ -34,7 +34,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -55,7 +55,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructTuple "boxing_errors::EmptyVec" []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -96,7 +96,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -202,31 +202,32 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::convert::Into",
-                                  Ty.path "boxing_errors::EmptyVec",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      [
-                                        Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                  "into",
-                                  []
-                                |),
-                                [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::convert::Into",
+                                    Ty.path "boxing_errors::EmptyVec",
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        [
+                                          Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                    "into",
+                                    []
+                                  |),
+                                  [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |);
@@ -235,127 +236,133 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let s := M.copy (| γ |) in
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                [
-                                  Ty.path "i32";
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    [
-                                      Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                                ],
-                              "map",
-                              [
-                                Ty.path "i32";
-                                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                              ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                  "map_err",
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let s := M.copy (| γ |) in
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
                                   [
+                                    Ty.path "i32";
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
                                       [
                                         Ty.dyn [ ("core::error::Error::Trait", []) ];
                                         Ty.path "alloc::alloc::Global"
-                                      ];
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
-                                      (Ty.apply
+                                      ]
+                                  ],
+                                "map",
+                                [
+                                  Ty.path "i32";
+                                  Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
+                                ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                                    "map_err",
+                                    [
+                                      Ty.apply
                                         (Ty.path "alloc::boxed::Box")
                                         [
                                           Ty.dyn [ ("core::error::Error::Trait", []) ];
                                           Ty.path "alloc::alloc::Global"
-                                        ])
+                                        ];
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
+                                        (Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ])
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "parse",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ M.read (| M.read (| s |) |) ]
+                                    |);
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let e := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::convert::Into",
+                                                          Ty.path "core::num::error::ParseIntError",
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::boxed::Box")
+                                                              [
+                                                                Ty.dyn
+                                                                  [
+                                                                    ("core::error::Error::Trait",
+                                                                      [])
+                                                                  ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ],
+                                                          "into",
+                                                          []
+                                                        |),
+                                                        [ M.read (| e |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
                                   ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "parse",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ M.read (| M.read (| s |) |) ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
+                                |);
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let e := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::convert::Into",
-                                                      Ty.path "core::num::error::ParseIntError",
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "alloc::boxed::Box")
-                                                          [
-                                                            Ty.dyn
-                                                              [ ("core::error::Error::Trait", []) ];
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ]
-                                                      ],
-                                                      "into",
-                                                      []
-                                                    |),
-                                                    [ M.read (| e |) ]
+                                                  (let i := M.copy (| γ |) in
+                                                  BinOp.Wrap.mul (|
+                                                    Value.Integer IntegerKind.I32 2,
+                                                    M.read (| i |)
                                                   |)))
                                             ]
-                                          |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |);
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let i := M.copy (| γ |) in
-                                              BinOp.Wrap.mul
-                                                Integer.I32
-                                                (Value.Integer 2)
-                                                (M.read (| i |))))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
-                                    end))
-                            ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end))
+                              ]
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
@@ -483,7 +490,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "boxing_errors::print" print.
@@ -631,7 +638,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "boxing_errors::main" main.

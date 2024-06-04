@@ -7,7 +7,10 @@ fn age() -> u32 {
 }
 *)
 Definition age (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 15)) | _, _ => M.impossible end.
+  match τ, α with
+  | [], [] => ltac:(M.monadic (Value.Integer IntegerKind.U32 15))
+  | _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Axiom Function_age : M.IsFunction "match_binding::age" age.
 
@@ -59,7 +62,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                (let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ |),
+                    Value.Integer IntegerKind.U32 0
+                  |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -230,7 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_binding::main" main.

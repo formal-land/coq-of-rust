@@ -19,7 +19,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           let~ val :=
-            M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2) |) in
+            M.alloc (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                Value.Integer IntegerKind.Usize 2
+              |)
+            |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -61,10 +66,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ val :=
           M.alloc (|
-            BinOp.Wrap.mul
-              Integer.Usize
-              (BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2))
-              (BinOp.Wrap.div Integer.Usize (Value.Integer 3) (Value.Integer 4))
+            BinOp.Wrap.mul (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                Value.Integer IntegerKind.Usize 2
+              |),
+              BinOp.Wrap.div (|
+                Value.Integer IntegerKind.Usize 3,
+                Value.Integer IntegerKind.Usize 4
+              |)
+            |)
           |) in
         let~ _ :=
           let~ _ :=
@@ -108,7 +119,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_dsl::main" main.

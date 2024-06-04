@@ -76,7 +76,7 @@ Module result.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -140,7 +140,7 @@ Module result.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -231,7 +231,7 @@ Module result.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -275,7 +275,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -482,7 +482,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -705,7 +705,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -760,7 +760,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -858,14 +858,16 @@ Module result.
                                         [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq
-                                          (M.read (| M.read (| __self_1 |) |))
-                                          (M.read (| M.read (| __arg1_1 |) |))))
+                                        (BinOp.eq (|
+                                          M.read (| M.read (| __self_1 |) |),
+                                          M.read (| M.read (| __arg1_1 |) |)
+                                        |)))
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| __self_2 |) |))
-                                        (M.read (| M.read (| __arg1_2 |) |))))
+                                      (BinOp.eq (|
+                                        M.read (| M.read (| __self_2 |) |),
+                                        M.read (| M.read (| __arg1_2 |) |)
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -944,9 +946,10 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                BinOp.eq (|
+                                  M.read (| M.read (| __self_0 |) |),
+                                  M.read (| M.read (| __arg1_0 |) |)
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
@@ -1007,9 +1010,10 @@ Module result.
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (BinOp.eq (|
+                                    M.read (| M.read (| __self_1 |) |),
+                                    M.read (| M.read (| __arg1_1 |) |)
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -1028,7 +1032,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1104,7 +1108,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1343,7 +1347,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1384,7 +1388,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_success : M.IsAssociatedFunction Self "is_success" is_success.
@@ -1413,7 +1417,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_halt : M.IsAssociatedFunction Self "is_halt" is_halt.
@@ -1478,7 +1482,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -1541,7 +1545,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_output : M.IsAssociatedFunction Self "into_output" into_output.
@@ -1598,7 +1602,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_logs : M.IsAssociatedFunction Self "logs" logs.
@@ -1652,7 +1656,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_logs : M.IsAssociatedFunction Self "into_logs" into_logs.
@@ -1714,12 +1718,15 @@ Module result.
                       M.closure
                         (fun γ =>
                           ltac:(M.monadic
-                            match γ with | [ gas_used ] => gas_used | _ => M.impossible (||) end))
+                            match γ with
+                            | [ gas_used ] => ltac:(M.monadic gas_used)
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas_used : M.IsAssociatedFunction Self "gas_used" gas_used.
@@ -1825,7 +1832,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1923,7 +1930,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1978,7 +1985,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2097,7 +2104,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2141,7 +2148,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2253,7 +2260,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2313,7 +2320,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_data : M.IsAssociatedFunction Self "into_data" into_data.
@@ -2366,7 +2373,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -2429,7 +2436,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -2580,7 +2587,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2708,7 +2715,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2768,7 +2775,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2918,7 +2925,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2985,7 +2992,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3119,7 +3126,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3213,7 +3220,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3451,7 +3458,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3481,7 +3488,7 @@ Module result.
           Value.StructTuple
             "revm_primitives::result::EVMError::Transaction"
             [ M.read (| value |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3510,7 +3517,7 @@ Module result.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructTuple "revm_primitives::result::EVMError::Header" [ M.read (| value |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4163,7 +4170,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4600,7 +4607,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4655,7 +4662,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -4768,13 +4775,15 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                BinOp.eq (|
+                                  M.read (| M.read (| __self_0 |) |),
+                                  M.read (| M.read (| __arg1_0 |) |)
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (BinOp.eq (|
+                                    M.read (| M.read (| __self_1 |) |),
+                                    M.read (| M.read (| __arg1_1 |) |)
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -4813,13 +4822,15 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                BinOp.eq (|
+                                  M.read (| M.read (| __self_0 |) |),
+                                  M.read (| M.read (| __arg1_0 |) |)
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (BinOp.eq (|
+                                    M.read (| M.read (| __self_1 |) |),
+                                    M.read (| M.read (| __arg1_1 |) |)
+                                  |)))
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -4829,7 +4840,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4880,7 +4891,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5057,7 +5068,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6160,7 +6171,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6232,7 +6243,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6264,7 +6275,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6317,9 +6328,9 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6351,7 +6362,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6391,7 +6402,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6506,7 +6517,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6592,7 +6603,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6613,7 +6624,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6677,9 +6688,9 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6711,7 +6722,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6751,7 +6762,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7232,7 +7243,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7258,7 +7269,7 @@ Module result.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7324,7 +7335,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7369,7 +7380,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7406,7 +7417,7 @@ Module result.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7475,7 +7486,7 @@ Module result.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7589,7 +7600,7 @@ Module result.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7621,7 +7632,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7674,9 +7685,9 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7708,7 +7719,7 @@ Module result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7748,7 +7759,7 @@ Module result.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

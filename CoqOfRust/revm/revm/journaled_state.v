@@ -158,7 +158,7 @@ Module journaled_state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -333,7 +333,7 @@ Module journaled_state.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -491,21 +491,22 @@ Module journaled_state.
                       |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::journaled_state::JournaledState",
                           "depth"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::journaled_state::JournaledState",
                           "depth"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
@@ -610,7 +611,7 @@ Module journaled_state.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -693,7 +694,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -846,11 +847,11 @@ Module journaled_state.
                       |))
                   ]
                 |));
-              ("depth", Value.Integer 0);
+              ("depth", Value.Integer IntegerKind.Usize 0);
               ("spec", M.read (| spec |));
               ("warm_preloaded_addresses", M.read (| warm_preloaded_addresses |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -870,7 +871,7 @@ Module journaled_state.
             "revm::journaled_state::JournaledState",
             "state"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_state : M.IsAssociatedFunction Self "state" state.
@@ -898,7 +899,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_spec_id : M.IsAssociatedFunction Self "set_spec_id" set_spec_id.
@@ -1038,7 +1039,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_touch : M.IsAssociatedFunction Self "touch" touch.
@@ -1067,15 +1068,16 @@ Module journaled_state.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "revm_primitives::state::Account",
                                 "is_touched",
                                 []
                               |),
                               [ M.read (| account |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
@@ -1115,7 +1117,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_touch_account :
@@ -1170,7 +1172,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -1347,7 +1349,7 @@ Module journaled_state.
                           ]
                         |)
                       |) in
-                    let~ _ := M.write (| M.read (| depth |), Value.Integer 0 |) in
+                    let~ _ := M.write (| M.read (| depth |), Value.Integer IntegerKind.Usize 0 |) in
                     let~ state :=
                       M.alloc (|
                         M.call_closure (|
@@ -1389,7 +1391,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_finalize : M.IsAssociatedFunction Self "finalize" finalize.
@@ -1440,7 +1442,7 @@ Module journaled_state.
               M.read (| Value.String "Account expected to be loaded" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_account : M.IsAssociatedFunction Self "account" account.
@@ -1463,7 +1465,7 @@ Module journaled_state.
                 "depth"
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_depth : M.IsAssociatedFunction Self "depth" depth.
@@ -1726,7 +1728,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
@@ -1803,8 +1805,8 @@ Module journaled_state.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (|
+                                BinOp.eq (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| account |),
@@ -1814,8 +1816,9 @@ Module journaled_state.
                                       "revm_primitives::state::AccountInfo",
                                       "nonce"
                                     |)
-                                  |))
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  |),
+                                  M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2006,7 +2009,10 @@ Module journaled_state.
                       "revm_primitives::state::AccountInfo",
                       "nonce"
                     |) in
-                  M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (Value.Integer 1) |) in
+                  M.write (|
+                    β,
+                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U64 1 |)
+                  |) in
                 M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
@@ -2026,7 +2032,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_inc_nonce : M.IsAssociatedFunction Self "inc_nonce" inc_nonce.
@@ -2696,7 +2702,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -2939,8 +2945,8 @@ Module journaled_state.
                                       ]
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ne
-                                        (M.read (|
+                                      (BinOp.ne (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| account |),
@@ -2950,8 +2956,9 @@ Module journaled_state.
                                             "revm_primitives::state::AccountInfo",
                                             "nonce"
                                           |)
-                                        |))
-                                        (Value.Integer 0)))
+                                        |),
+                                        Value.Integer IntegerKind.U64 0
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -3118,32 +3125,33 @@ Module journaled_state.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let slot := M.copy (| γ0_1 |) in
-                                        M.read (|
-                                          M.write (|
-                                            M.read (| slot |),
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::clone::Clone",
-                                                Ty.path "revm_primitives::state::StorageSlot",
-                                                [],
-                                                "clone",
-                                                []
-                                              |),
-                                              [ empty ]
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                          let slot := M.copy (| γ0_1 |) in
+                                          M.read (|
+                                            M.write (|
+                                              M.read (| slot |),
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::clone::Clone",
+                                                  Ty.path "revm_primitives::state::StorageSlot",
+                                                  [],
+                                                  "clone",
+                                                  []
+                                                |),
+                                                [ empty ]
+                                              |)
                                             |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -3241,7 +3249,7 @@ Module journaled_state.
                                         "revm_primitives::state::AccountInfo",
                                         "nonce"
                                       |),
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.U64 1
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3342,7 +3350,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_create_account_checkpoint :
@@ -4143,10 +4151,10 @@ Module journaled_state.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.sub
-                                                  Integer.U64
-                                                  (M.read (| β |))
-                                                  (Value.Integer 1)
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| β |),
+                                                  Value.Integer IntegerKind.U64 1
+                                                |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
                                         fun γ =>
@@ -4224,7 +4232,7 @@ Module journaled_state.
                                                   "revm_primitives::state::AccountInfo",
                                                   "nonce"
                                                 |),
-                                                Value.Integer 0
+                                                Value.Integer IntegerKind.U64 0
                                               |) in
                                             M.alloc (| Value.Tuple [] |)));
                                         fun γ =>
@@ -4588,7 +4596,7 @@ Module journaled_state.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_journal_revert :
@@ -4672,7 +4680,10 @@ Module journaled_state.
                   "revm::journaled_state::JournaledState",
                   "depth"
                 |) in
-              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+              |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
@@ -4717,7 +4728,7 @@ Module journaled_state.
               |) in
             checkpoint
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checkpoint : M.IsAssociatedFunction Self "checkpoint" checkpoint.
@@ -4740,10 +4751,13 @@ Module journaled_state.
                   "revm::journaled_state::JournaledState",
                   "depth"
                 |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checkpoint_commit :
@@ -4824,7 +4838,10 @@ Module journaled_state.
                   "revm::journaled_state::JournaledState",
                   "depth"
                 |) in
-              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+              |) in
             let~ leng :=
               M.alloc (|
                 M.call_closure (|
@@ -4984,16 +5001,16 @@ Module journaled_state.
                             |)
                           ]
                         |);
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (| leng |))
-                          (M.read (|
+                        BinOp.Wrap.sub (|
+                          M.read (| leng |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               checkpoint,
                               "revm::journaled_state::JournalCheckpoint",
                               "journal_i"
                             |)
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     M.closure
@@ -5001,41 +5018,42 @@ Module journaled_state.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let cs := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "revm::journaled_state::JournaledState",
-                                        "journal_revert",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| state |);
-                                        M.read (| transient_storage |);
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::mem::take",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                [
-                                                  Ty.path "revm::journaled_state::JournalEntry";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [ M.read (| cs |) ]
-                                        |);
-                                        M.read (| is_spurious_dragon_enabled |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let cs := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "revm::journaled_state::JournaledState",
+                                          "journal_revert",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| state |);
+                                          M.read (| transient_storage |);
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::mem::take",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  [
+                                                    Ty.path "revm::journaled_state::JournalEntry";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ]
+                                            |),
+                                            [ M.read (| cs |) ]
+                                          |);
+                                          M.read (| is_spurious_dragon_enabled |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
@@ -5107,7 +5125,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checkpoint_revert :
@@ -5587,8 +5605,7 @@ Module journaled_state.
                                       |),
                                       [ M.read (| acc |) ]
                                     |),
-                                    ltac:(M.monadic
-                                      (UnOp.Pure.not (M.read (| is_cancun_enabled |))))
+                                    ltac:(M.monadic (UnOp.not (| M.read (| is_cancun_enabled |) |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -5823,21 +5840,22 @@ Module journaled_state.
                               |)
                             |));
                           ("target_exists",
-                            UnOp.Pure.not
-                              (M.read (|
+                            UnOp.not (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   load_result,
                                   "revm_interpreter::host::LoadAccountResult",
                                   "is_empty"
                                 |)
-                              |)));
+                              |)
+                            |));
                           ("previously_destroyed", M.read (| previously_destroyed |))
                         ]
                     ]
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_selfdestruct : M.IsAssociatedFunction Self "selfdestruct" selfdestruct.
@@ -6120,29 +6138,30 @@ Module journaled_state.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let i := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::convert::Into",
-                                                              Ty.path
-                                                                "revm_primitives::state::AccountInfo",
-                                                              [
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let i := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::Into",
                                                                 Ty.path
-                                                                  "revm_primitives::state::Account"
-                                                              ],
-                                                              "into",
-                                                              []
-                                                            |),
-                                                            [ M.read (| i |) ]
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                                  "revm_primitives::state::AccountInfo",
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_primitives::state::Account"
+                                                                ],
+                                                                "into",
+                                                                []
+                                                              |),
+                                                              [ M.read (| i |) ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |);
@@ -6435,7 +6454,7 @@ Module journaled_state.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| account |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_initial_account_load :
@@ -6814,8 +6833,8 @@ Module journaled_state.
                               |) in
                             let~ is_cold :=
                               M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::set::HashSet")
@@ -6834,7 +6853,8 @@ Module journaled_state.
                                       |);
                                       address
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             M.alloc (|
                               Value.Tuple
@@ -6860,7 +6880,7 @@ Module journaled_state.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_load_account : M.IsAssociatedFunction Self "load_account" load_account.
@@ -7057,15 +7077,16 @@ Module journaled_state.
                                       |) in
                                     let~ is_not_touched :=
                                       M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "revm_primitives::state::Account",
                                               "is_touched",
                                               []
                                             |),
                                             [ M.read (| acc |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     M.alloc (|
                                       LogicalOp.and (|
@@ -7092,7 +7113,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_load_account_exist :
@@ -7517,7 +7538,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_load_code : M.IsAssociatedFunction Self "load_code" load_code.
@@ -7954,7 +7975,7 @@ Module journaled_state.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| load |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sload : M.IsAssociatedFunction Self "sload" sload.
@@ -8372,7 +8393,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sstore : M.IsAssociatedFunction Self "sstore" sstore.
@@ -8443,7 +8464,7 @@ Module journaled_state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_tload : M.IsAssociatedFunction Self "tload" tload.
@@ -8734,7 +8755,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_tstore : M.IsAssociatedFunction Self "tstore" tstore.
@@ -8778,7 +8799,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_log : M.IsAssociatedFunction Self "log" log.
@@ -9187,7 +9208,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9619,7 +9640,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9674,7 +9695,7 @@ Module journaled_state.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -9801,9 +9822,10 @@ Module journaled_state.
                                       |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_2 |) |))
-                                      (M.read (| M.read (| __arg1_2 |) |))))
+                                    (BinOp.eq (|
+                                      M.read (| M.read (| __self_2 |) |),
+                                      M.read (| M.read (| __arg1_2 |) |)
+                                    |)))
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -10226,7 +10248,7 @@ Module journaled_state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10284,7 +10306,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10708,7 +10730,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10765,7 +10787,7 @@ Module journaled_state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10802,7 +10824,7 @@ Module journaled_state.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10835,39 +10857,41 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::journaled_state::JournalCheckpoint",
                   "log_i"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm::journaled_state::JournalCheckpoint",
                   "log_i"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::journaled_state::JournalCheckpoint",
                     "journal_i"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm::journaled_state::JournalCheckpoint",
                     "journal_i"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10904,7 +10928,7 @@ Module journaled_state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

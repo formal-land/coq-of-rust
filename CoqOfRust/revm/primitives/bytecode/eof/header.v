@@ -132,7 +132,7 @@ Module bytecode.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -238,7 +238,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -331,7 +331,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -368,21 +368,22 @@ Module bytecode.
                   LogicalOp.and (|
                     LogicalOp.and (|
                       LogicalOp.and (|
-                        BinOp.Pure.eq
-                          (M.read (|
+                        BinOp.eq (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "revm_primitives::bytecode::eof::header::EofHeader",
                               "types_size"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| other |),
                               "revm_primitives::bytecode::eof::header::EofHeader",
                               "types_size"
                             |)
-                          |)),
+                          |)
+                        |),
                         ltac:(M.monadic
                           (M.call_closure (|
                             M.get_trait_method (|
@@ -442,57 +443,60 @@ Module bytecode.
                         |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm_primitives::bytecode::eof::header::EofHeader",
                             "data_size"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "revm_primitives::bytecode::eof::header::EofHeader",
                             "data_size"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm_primitives::bytecode::eof::header::EofHeader",
                           "sum_code_sizes"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm_primitives::bytecode::eof::header::EofHeader",
                           "sum_code_sizes"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::bytecode::eof::header::EofHeader",
                         "sum_container_sizes"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_primitives::bytecode::eof::header::EofHeader",
                         "sum_container_sizes"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -551,7 +555,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -698,7 +702,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -710,19 +714,19 @@ Module bytecode.
       End Impl_core_hash_Hash_for_revm_primitives_bytecode_eof_header_EofHeader.
       
       Definition value_KIND_TERMINAL : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
       
       Definition value_KIND_TYPES : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
       
       Definition value_KIND_CODE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
       
       Definition value_KIND_CONTAINER : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 3 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 3 |))).
       
       Definition value_KIND_DATA : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
       
       (*
       fn consume_header_section_size(input: &[u8]) -> Result<(&[u8], Vec<u16>, usize), EofDecodeError> {
@@ -871,9 +875,10 @@ Module bytecode.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq
-                                            (M.read (| num_sections |))
-                                            (Value.Integer 0)
+                                          BinOp.eq (|
+                                            M.read (| num_sections |),
+                                            Value.Integer IntegerKind.U16 0
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -901,10 +906,10 @@ Module bytecode.
                           let~ byte_size :=
                             M.alloc (|
                               M.rust_cast
-                                (BinOp.Wrap.mul
-                                  Integer.U16
-                                  (M.read (| num_sections |))
-                                  (Value.Integer 2))
+                                (BinOp.Wrap.mul (|
+                                  M.read (| num_sections |),
+                                  Value.Integer IntegerKind.U16 2
+                                |))
                             |) in
                           let~ _ :=
                             M.match_operator (|
@@ -915,16 +920,17 @@ Module bytecode.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.call_closure (|
+                                          BinOp.lt (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| input |) ]
-                                            |))
-                                            (M.read (| byte_size |))
+                                            |),
+                                            M.read (| byte_size |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -962,7 +968,7 @@ Module bytecode.
                                 [ M.rust_cast (M.read (| num_sections |)) ]
                               |)
                             |) in
-                          let~ sum := M.alloc (| Value.Integer 0 |) in
+                          let~ sum := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                           let~ _ :=
                             M.use
                               (M.match_operator (|
@@ -981,7 +987,7 @@ Module bytecode.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer 0);
+                                          ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_", M.rust_cast (M.read (| num_sections |)))
                                         ]
                                     ]
@@ -1044,10 +1050,12 @@ Module bytecode.
                                                                   M.SubPointer.get_array_field (|
                                                                     M.read (| input |),
                                                                     M.alloc (|
-                                                                      BinOp.Wrap.mul
-                                                                        Integer.Usize
-                                                                        (M.read (| i |))
-                                                                        (Value.Integer 2)
+                                                                      BinOp.Wrap.mul (|
+                                                                        M.read (| i |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |);
@@ -1055,13 +1063,17 @@ Module bytecode.
                                                                   M.SubPointer.get_array_field (|
                                                                     M.read (| input |),
                                                                     M.alloc (|
-                                                                      BinOp.Wrap.add
-                                                                        Integer.Usize
-                                                                        (BinOp.Wrap.mul
-                                                                          Integer.Usize
-                                                                          (M.read (| i |))
-                                                                          (Value.Integer 2))
-                                                                        (Value.Integer 1)
+                                                                      BinOp.Wrap.add (|
+                                                                        BinOp.Wrap.mul (|
+                                                                          M.read (| i |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)
@@ -1078,9 +1090,12 @@ Module bytecode.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.eq
-                                                                      (M.read (| code_size |))
-                                                                      (Value.Integer 0)
+                                                                    BinOp.eq (|
+                                                                      M.read (| code_size |),
+                                                                      Value.Integer
+                                                                        IntegerKind.U16
+                                                                        0
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -1111,10 +1126,10 @@ Module bytecode.
                                                       let β := sum in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| β |))
-                                                          (M.rust_cast (M.read (| code_size |)))
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          M.rust_cast (M.read (| code_size |))
+                                                        |)
                                                       |) in
                                                     let~ _ :=
                                                       M.alloc (|
@@ -1173,7 +1188,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_consume_header_section_size :
@@ -1229,16 +1244,14 @@ Module bytecode.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 0 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (Value.Integer 3)
-                                (BinOp.Wrap.mul
-                                  Integer.Usize
-                                  (M.call_closure (|
+                              BinOp.Wrap.add (|
+                                Value.Integer IntegerKind.Usize 3,
+                                BinOp.Wrap.mul (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1253,21 +1266,20 @@ Module bytecode.
                                         "container_sizes"
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 2))
+                                  |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |)
+                              |)
                             |)))
                       ]
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (BinOp.Wrap.add
-                      Integer.Usize
-                      (Value.Integer 13)
-                      (BinOp.Wrap.mul
-                        Integer.Usize
-                        (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.add (|
+                      Value.Integer IntegerKind.Usize 13,
+                      BinOp.Wrap.mul (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -1282,12 +1294,15 @@ Module bytecode.
                               "code_sizes"
                             |)
                           ]
-                        |))
-                        (Value.Integer 2)))
-                    (M.read (| optional_container_sizes |))
+                        |),
+                        Value.Integer IntegerKind.Usize 2
+                      |)
+                    |),
+                    M.read (| optional_container_sizes |)
+                  |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -1302,18 +1317,18 @@ Module bytecode.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.div
-                Integer.Usize
-                (M.rust_cast
+              BinOp.Wrap.div (|
+                M.rust_cast
                   (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::header::EofHeader",
                       "types_size"
                     |)
-                  |)))
-                (Value.Integer 4)))
-          | _, _ => M.impossible
+                  |)),
+                Value.Integer IntegerKind.Usize 4
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_types_count :
@@ -1329,33 +1344,33 @@ Module bytecode.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (BinOp.Wrap.add
-                  Integer.Usize
-                  (M.read (|
+              BinOp.Wrap.add (|
+                BinOp.Wrap.add (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::header::EofHeader",
                       "sum_code_sizes"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::header::EofHeader",
                       "sum_container_sizes"
                     |)
-                  |)))
-                (M.rust_cast
+                  |)
+                |),
+                M.rust_cast
                   (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::header::EofHeader",
                       "data_size"
                     |)
-                  |)))))
-          | _, _ => M.impossible
+                  |))
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_body_size : M.IsAssociatedFunction Self "body_size" body_size.
@@ -1370,25 +1385,25 @@ Module bytecode.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                     "size",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                     "body_size",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))))
-          | _, _ => M.impossible
+                |)
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_eof_size : M.IsAssociatedFunction Self "eof_size" eof_size.
@@ -1453,7 +1468,7 @@ Module bytecode.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [ Value.Integer 61184 ]
+                              [ Value.Integer IntegerKind.U16 61184 ]
                             |)
                           |))
                       ]
@@ -1469,7 +1484,7 @@ Module bytecode.
                         "push",
                         []
                       |),
-                      [ M.read (| buffer |); Value.Integer 1 ]
+                      [ M.read (| buffer |); Value.Integer IntegerKind.U8 1 ]
                     |)
                   |) in
                 let~ _ :=
@@ -1982,7 +1997,7 @@ Module bytecode.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -2211,7 +2226,10 @@ Module bytecode.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.ne (M.read (| kind |)) (Value.Integer 61184)
+                                            BinOp.ne (|
+                                              M.read (| kind |),
+                                              Value.Integer IntegerKind.U16 61184
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -2350,9 +2368,10 @@ Module bytecode.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.ne
-                                                      (M.read (| version |))
-                                                      (Value.Integer 1)
+                                                    BinOp.ne (|
+                                                      M.read (| version |),
+                                                      Value.Integer IntegerKind.U8 1
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -2496,13 +2515,14 @@ Module bytecode.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.Pure.ne
-                                                              (M.read (| kind_types |))
-                                                              (M.read (|
+                                                            BinOp.ne (|
+                                                              M.read (| kind_types |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "revm_primitives::bytecode::eof::header::KIND_TYPES"
                                                                 |)
-                                                              |))
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2660,18 +2680,23 @@ Module bytecode.
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.ne
-                                                                      (BinOp.Wrap.rem
-                                                                        Integer.U16
-                                                                        (M.read (|
+                                                                    BinOp.ne (|
+                                                                      BinOp.Wrap.rem (|
+                                                                        M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             header,
                                                                             "revm_primitives::bytecode::eof::header::EofHeader",
                                                                             "types_size"
                                                                           |)
-                                                                        |))
-                                                                        (Value.Integer 4))
-                                                                      (Value.Integer 0)
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.U16
+                                                                          4
+                                                                      |),
+                                                                      Value.Integer
+                                                                        IntegerKind.U16
+                                                                        0
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -2832,15 +2857,16 @@ Module bytecode.
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
-                                                                            BinOp.Pure.ne
-                                                                              (M.read (|
+                                                                            BinOp.ne (|
+                                                                              M.read (|
                                                                                 kind_types
-                                                                              |))
-                                                                              (M.read (|
+                                                                              |),
+                                                                              M.read (|
                                                                                 M.get_constant (|
                                                                                   "revm_primitives::bytecode::eof::header::KIND_CODE"
                                                                                 |)
-                                                                              |))
+                                                                              |)
+                                                                            |)
                                                                           |)) in
                                                                       let _ :=
                                                                         M.is_constant_or_break_match (|
@@ -3030,8 +3056,8 @@ Module bytecode.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    BinOp.Pure.gt
-                                                                                      (M.call_closure (|
+                                                                                    BinOp.gt (|
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3046,9 +3072,11 @@ Module bytecode.
                                                                                           []
                                                                                         |),
                                                                                         [ sizes ]
-                                                                                      |))
-                                                                                      (Value.Integer
-                                                                                        1024)
+                                                                                      |),
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        1024
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -3143,8 +3171,8 @@ Module bytecode.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    BinOp.Pure.ne
-                                                                                      (M.call_closure (|
+                                                                                    BinOp.ne (|
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3159,15 +3187,17 @@ Module bytecode.
                                                                                           []
                                                                                         |),
                                                                                         [ sizes ]
-                                                                                      |))
-                                                                                      (M.rust_cast
-                                                                                        (BinOp.Wrap.div
-                                                                                          Integer.U16
-                                                                                          (M.read (|
+                                                                                      |),
+                                                                                      M.rust_cast
+                                                                                        (BinOp.Wrap.div (|
+                                                                                          M.read (|
                                                                                             types_size
-                                                                                          |))
-                                                                                          (Value.Integer
-                                                                                            4)))
+                                                                                          |),
+                                                                                          Value.Integer
+                                                                                            IntegerKind.U16
+                                                                                            4
+                                                                                        |))
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -3369,6 +3399,7 @@ Module bytecode.
                                                                                               γ
                                                                                             |),
                                                                                             Value.Integer
+                                                                                              IntegerKind.U8
                                                                                               3
                                                                                           |) in
                                                                                         M.match_operator (|
@@ -3569,8 +3600,8 @@ Module bytecode.
                                                                                                                 γ :=
                                                                                                             M.use
                                                                                                               (M.alloc (|
-                                                                                                                BinOp.Pure.gt
-                                                                                                                  (M.call_closure (|
+                                                                                                                BinOp.gt (|
+                                                                                                                  M.call_closure (|
                                                                                                                     M.get_associated_function (|
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
@@ -3587,9 +3618,11 @@ Module bytecode.
                                                                                                                     [
                                                                                                                       sizes
                                                                                                                     ]
-                                                                                                                  |))
-                                                                                                                  (Value.Integer
-                                                                                                                    256)
+                                                                                                                  |),
+                                                                                                                  Value.Integer
+                                                                                                                    IntegerKind.Usize
+                                                                                                                    256
+                                                                                                                |)
                                                                                                               |)) in
                                                                                                           let
                                                                                                                 _ :=
@@ -3827,15 +3860,16 @@ Module bytecode.
                                                                                                                         γ :=
                                                                                                                     M.use
                                                                                                                       (M.alloc (|
-                                                                                                                        BinOp.Pure.ne
-                                                                                                                          (M.read (|
+                                                                                                                        BinOp.ne (|
+                                                                                                                          M.read (|
                                                                                                                             kind_data
-                                                                                                                          |))
-                                                                                                                          (M.read (|
+                                                                                                                          |),
+                                                                                                                          M.read (|
                                                                                                                             M.get_constant (|
                                                                                                                               "revm_primitives::bytecode::eof::header::KIND_DATA"
                                                                                                                             |)
-                                                                                                                          |))
+                                                                                                                          |)
+                                                                                                                        |)
                                                                                                                       |)) in
                                                                                                                   let
                                                                                                                         _ :=
@@ -3883,6 +3917,7 @@ Module bytecode.
                                                                                               γ
                                                                                             |),
                                                                                             Value.Integer
+                                                                                              IntegerKind.U8
                                                                                               4
                                                                                           |) in
                                                                                         M.alloc (|
@@ -4251,15 +4286,16 @@ Module bytecode.
                                                                                                             γ :=
                                                                                                         M.use
                                                                                                           (M.alloc (|
-                                                                                                            BinOp.Pure.ne
-                                                                                                              (M.read (|
+                                                                                                            BinOp.ne (|
+                                                                                                              M.read (|
                                                                                                                 terminator
-                                                                                                              |))
-                                                                                                              (M.read (|
+                                                                                                              |),
+                                                                                                              M.read (|
                                                                                                                 M.get_constant (|
                                                                                                                   "revm_primitives::bytecode::eof::header::KIND_TERMINAL"
                                                                                                                 |)
-                                                                                                              |))
+                                                                                                              |)
+                                                                                                            |)
                                                                                                           |)) in
                                                                                                       let
                                                                                                             _ :=
@@ -4329,7 +4365,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.

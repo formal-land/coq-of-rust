@@ -674,7 +674,7 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -706,7 +706,7 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -760,9 +760,9 @@ Module ascii.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -811,7 +811,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -866,7 +866,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -905,7 +905,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -941,7 +941,10 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.le (M.read (| b |)) (Value.Integer 127) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.le (| M.read (| b |), Value.Integer IntegerKind.U8 127 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -963,7 +966,7 @@ Module ascii.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
@@ -986,7 +989,7 @@ Module ascii.
               |),
               [ M.read (| b |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_u8_unchecked :
@@ -1014,7 +1017,10 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| d |)) (Value.Integer 10) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.lt (| M.read (| d |), Value.Integer IntegerKind.U8 10 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1036,7 +1042,7 @@ Module ascii.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_digit : M.IsAssociatedFunction Self "digit" digit.
@@ -1078,8 +1084,12 @@ Module ascii.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt (M.read (| d |)) (Value.Integer 10))
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.read (| d |),
+                                            Value.Integer IntegerKind.U8 10
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1119,7 +1129,7 @@ Module ascii.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_digit_unchecked :
@@ -1136,7 +1146,7 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_u8 : M.IsAssociatedFunction Self "to_u8" to_u8.
@@ -1152,7 +1162,7 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.rust_cast (M.read (| self |)))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_char : M.IsAssociatedFunction Self "to_char" to_char.
@@ -1183,7 +1193,7 @@ Module ascii.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1212,7 +1222,7 @@ Module ascii.
               let~ str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
               M.alloc (| M.read (| str_ptr |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1240,7 +1250,7 @@ Module ascii.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -1274,7 +1284,7 @@ Module ascii.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1453,15 +1463,16 @@ Module ascii.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "is_ascii_control",
                                                 []
                                               |),
                                               [ byte ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1484,7 +1495,7 @@ Module ascii.
                                                 "core::ascii::ascii_char::AsciiChar::Null"
                                                 []
                                             ];
-                                          Value.Integer 1
+                                          Value.Integer IntegerKind.U8 1
                                         ]
                                     |)));
                                 fun γ =>
@@ -1504,7 +1515,11 @@ Module ascii.
                                                 "from",
                                                 []
                                               |),
-                                              [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4)
+                                              [
+                                                BinOp.Wrap.shr (|
+                                                  M.read (| byte |),
+                                                  Value.Integer IntegerKind.I32 4
+                                                |)
                                               ]
                                             |)
                                           |)
@@ -1526,9 +1541,9 @@ Module ascii.
                                                 []
                                               |),
                                               [
-                                                BinOp.Pure.bit_and
+                                                BinOp.bit_and
                                                   (M.read (| byte |))
-                                                  (Value.Integer 15)
+                                                  (Value.Integer IntegerKind.U8 15)
                                               ]
                                             |)
                                           |)
@@ -1548,7 +1563,7 @@ Module ascii.
                                               M.read (| hi |);
                                               M.read (| lo |)
                                             ];
-                                          Value.Integer 4
+                                          Value.Integer IntegerKind.U8 4
                                         ]
                                     |)))
                               ]
@@ -1843,7 +1858,7 @@ Module ascii.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

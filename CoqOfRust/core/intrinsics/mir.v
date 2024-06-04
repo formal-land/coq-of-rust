@@ -54,7 +54,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_UnwindContinue :
@@ -74,7 +74,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_UnwindUnreachable :
@@ -92,7 +92,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_UnwindTerminate :
@@ -110,7 +110,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_UnwindCleanup :
@@ -127,7 +127,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Return : M.IsFunction "core::intrinsics::mir::Return" value_Return.
@@ -144,7 +144,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Goto : M.IsFunction "core::intrinsics::mir::Goto" value_Goto.
@@ -160,7 +160,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Unreachable :
@@ -180,7 +180,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Drop : M.IsFunction "core::intrinsics::mir::Drop" value_Drop.
@@ -199,7 +199,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Call : M.IsFunction "core::intrinsics::mir::Call" value_Call.
@@ -215,7 +215,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_UnwindResume :
@@ -233,7 +233,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_StorageLive :
@@ -251,7 +251,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_StorageDead :
@@ -269,7 +269,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Deinit : M.IsFunction "core::intrinsics::mir::Deinit" value_Deinit.
@@ -286,7 +286,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Checked : M.IsFunction "core::intrinsics::mir::Checked" value_Checked.
@@ -303,7 +303,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Len : M.IsFunction "core::intrinsics::mir::Len" value_Len.
@@ -320,7 +320,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_CopyForDeref :
@@ -338,7 +338,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Retag : M.IsFunction "core::intrinsics::mir::Retag" value_Retag.
@@ -355,7 +355,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Move : M.IsFunction "core::intrinsics::mir::Move" value_Move.
@@ -372,7 +372,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Static : M.IsFunction "core::intrinsics::mir::Static" value_Static.
@@ -389,7 +389,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_StaticMut :
@@ -407,7 +407,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Discriminant :
@@ -426,7 +426,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_SetDiscriminant :
@@ -445,7 +445,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Offset : M.IsFunction "core::intrinsics::mir::Offset" value_Offset.
@@ -463,7 +463,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Field : M.IsFunction "core::intrinsics::mir::Field" value_Field.
@@ -481,7 +481,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_Variant : M.IsFunction "core::intrinsics::mir::Variant" value_Variant.
@@ -498,7 +498,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_value_CastTransmute :
@@ -519,7 +519,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function___internal_make_place :
@@ -538,7 +538,7 @@ Module intrinsics.
               []
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function___debuginfo : M.IsFunction "core::intrinsics::mir::__debuginfo" __debuginfo.

@@ -24,7 +24,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "basic", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -39,7 +39,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "code_by_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -55,7 +55,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "storage", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -70,7 +70,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "block_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -107,7 +107,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "basic", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -122,7 +122,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "code_by_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -138,7 +138,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "storage", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -153,7 +153,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::Database", T, [], "block_hash", [] |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -186,7 +186,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseCommit", T, [], "commit", [] |),
               [ M.read (| M.read (| self |) |); M.read (| changes |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -213,7 +213,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseCommit", T, [], "commit", [] |),
               [ M.read (| M.read (| self |) |); M.read (| changes |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -242,7 +242,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -263,7 +263,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -279,7 +279,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -300,7 +300,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -336,7 +336,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -357,7 +357,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -373,7 +373,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -394,7 +394,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -431,7 +431,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "basic_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -452,7 +452,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| code_hash |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -468,7 +468,7 @@ Module db.
               M.get_trait_method (| "revm_primitives::db::DatabaseRef", T, [], "storage_ref", [] |),
               [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| index |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -489,7 +489,7 @@ Module db.
               |),
               [ M.read (| M.read (| self |) |); M.read (| number |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -538,7 +538,7 @@ Module db.
                 M.read (| address |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -571,7 +571,7 @@ Module db.
                 M.read (| code_hash |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -600,7 +600,7 @@ Module db.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -633,7 +633,7 @@ Module db.
                 M.read (| number |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -682,7 +682,7 @@ Module db.
                 M.read (| address |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -715,7 +715,7 @@ Module db.
                 M.read (| code_hash |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -744,7 +744,7 @@ Module db.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&, &mut, Box, Rc, Arc)] *)
@@ -777,7 +777,7 @@ Module db.
                 M.read (| number |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -843,7 +843,7 @@ Module db.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -900,7 +900,7 @@ Module db.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -930,7 +930,7 @@ Module db.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -982,7 +982,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1024,7 +1024,7 @@ Module db.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1064,7 +1064,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1103,7 +1103,7 @@ Module db.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1138,7 +1138,7 @@ Module db.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1166,7 +1166,7 @@ Module db.
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
           Value.StructTuple "revm_primitives::db::WrapDatabaseRef" [ M.read (| f |) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1211,7 +1211,7 @@ Module db.
               M.read (| address |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1243,7 +1243,7 @@ Module db.
               M.read (| code_hash |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1271,7 +1271,7 @@ Module db.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1303,7 +1303,7 @@ Module db.
               M.read (| number |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1349,7 +1349,7 @@ Module db.
               M.read (| changes |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1390,7 +1390,7 @@ Module db.
           Value.StructRecord
             "revm_primitives::db::RefDBWrapper"
             [ ("db", (* Unsize *) M.pointer_coercion (M.read (| db |))) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : forall (E : Ty.t), M.IsAssociatedFunction (Self E) "new" (new E).
@@ -1434,7 +1434,7 @@ Module db.
               M.read (| address |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1468,7 +1468,7 @@ Module db.
               M.read (| code_hash |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1504,7 +1504,7 @@ Module db.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1538,7 +1538,7 @@ Module db.
               M.read (| number |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

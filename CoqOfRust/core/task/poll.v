@@ -77,7 +77,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -145,7 +145,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -185,7 +185,7 @@ Module task.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -244,7 +244,7 @@ Module task.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -289,7 +289,7 @@ Module task.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -385,7 +385,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -481,7 +481,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -551,7 +551,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -620,7 +620,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map :
@@ -655,7 +655,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ready :
@@ -673,16 +673,17 @@ Module task.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.not (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [ T ],
                   "is_ready",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
-        | _, _ => M.impossible
+              |)
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pending :
@@ -781,7 +782,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_ok :
@@ -873,7 +874,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_err :
@@ -1011,7 +1012,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_ok :
@@ -1138,7 +1139,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_err :
@@ -1161,7 +1162,7 @@ Module task.
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| t |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1208,7 +1209,7 @@ Module task.
               |),
               [ M.read (| c |); M.constructor_as_closure "core::result::Result::Ok" ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1281,7 +1282,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1354,7 +1355,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1425,35 +1426,36 @@ Module task.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ T ],
-                                    "map",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::option::Option") [ T ],
+                                      "map",
+                                      [
+                                        Ty.apply (Ty.path "core::result::Result") [ T; E ];
+                                        Ty.function
+                                          [ T ]
+                                          (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                                      ]
+                                    |),
                                     [
-                                      Ty.apply (Ty.path "core::result::Result") [ T; E ];
-                                      Ty.function
-                                        [ T ]
-                                        (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                                      M.read (| x |);
+                                      M.constructor_as_closure "core::result::Result::Ok"
                                     ]
-                                  |),
-                                  [
-                                    M.read (| x |);
-                                    M.constructor_as_closure "core::result::Result::Ok"
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1561,7 +1563,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1642,7 +1644,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

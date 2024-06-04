@@ -76,42 +76,43 @@ Module vec.
                           |) in
                         let step_expand := M.copy (| γ1_0 |) in
                         M.alloc (|
-                          BinOp.Pure.ge
-                            (BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.call_closure (|
+                          BinOp.ge (|
+                            BinOp.Wrap.mul (|
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ SRC ] |),
                                 []
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_merge |) ]
-                              |)))
-                            (BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.call_closure (|
+                              |)
+                            |),
+                            BinOp.Wrap.mul (|
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ DEST ] |),
                                 []
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_expand |) ]
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_in_place_collectible :
@@ -166,7 +167,10 @@ Module vec.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0)
+                                    BinOp.gt (|
+                                      M.read (| src_cap |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)
                                 |)
                               |)
@@ -195,29 +199,30 @@ Module vec.
                     |) in
                   M.return_ (|
                     LogicalOp.and (|
-                      BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0),
+                      BinOp.gt (| M.read (| src_cap |), Value.Integer IntegerKind.Usize 0 |),
                       ltac:(M.monadic
-                        (BinOp.Pure.ne
-                          (BinOp.Wrap.mul
-                            Integer.Usize
-                            (M.read (| src_cap |))
-                            (M.call_closure (|
+                        (BinOp.ne (|
+                          BinOp.Wrap.mul (|
+                            M.read (| src_cap |),
+                            M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ SRC ] |),
                               []
-                            |)))
-                          (BinOp.Wrap.mul
-                            Integer.Usize
-                            (M.read (| dst_cap |))
-                            (M.call_closure (|
+                            |)
+                          |),
+                          BinOp.Wrap.mul (|
+                            M.read (| dst_cap |),
+                            M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ DEST ] |),
                               []
-                            |)))))
+                            |)
+                          |)
+                        |)))
                     |)
                   |)
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_needs_realloc :
@@ -464,25 +469,25 @@ Module vec.
                                 "end"
                               |)
                             |));
-                          BinOp.Wrap.div
-                            Integer.Usize
-                            (BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.read (|
+                          BinOp.Wrap.div (|
+                            BinOp.Wrap.mul (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| inner |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "cap"
                                 |)
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                 []
-                              |)))
-                            (M.call_closure (|
+                              |)
+                            |),
+                            M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ T ] |),
                               []
-                            |))
+                            |)
+                          |)
                         ]
                     |),
                     [
@@ -593,12 +598,12 @@ Module vec.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not
-                                                              (BinOp.Pure.eq
-                                                                (M.read (| M.read (| left_val |) |))
-                                                                (M.read (|
-                                                                  M.read (| right_val |)
-                                                                |)))
+                                                            UnOp.not (|
+                                                              BinOp.eq (|
+                                                                M.read (| M.read (| left_val |) |),
+                                                                M.read (| M.read (| right_val |) |)
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -659,15 +664,16 @@ Module vec.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.ne
-                                            (M.read (|
+                                          BinOp.ne (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| src |),
                                                 "alloc::vec::into_iter::IntoIter",
                                                 "ptr"
                                               |)
-                                            |))
-                                            (M.read (| src_ptr |))
+                                            |),
+                                            M.read (| src_ptr |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -695,9 +701,9 @@ Module vec.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              UnOp.Pure.not
-                                                                (BinOp.Pure.le
-                                                                  (M.rust_cast
+                                                              UnOp.not (|
+                                                                BinOp.le (|
+                                                                  M.rust_cast
                                                                     (M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.apply
@@ -710,14 +716,16 @@ Module vec.
                                                                         M.read (| dst_buf |);
                                                                         M.read (| len |)
                                                                       ]
-                                                                    |)))
-                                                                  (M.read (|
+                                                                    |)),
+                                                                  M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
                                                                       M.read (| src |),
                                                                       "alloc::vec::into_iter::IntoIter",
                                                                       "ptr"
                                                                     |)
-                                                                  |)))
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -832,7 +840,12 @@ Module vec.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
-                                                      [ src_cap; M.alloc (| Value.Integer 0 |) ]
+                                                      [
+                                                        src_cap;
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      ]
                                                   |),
                                                   [
                                                     fun γ =>
@@ -851,13 +864,14 @@ Module vec.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.read (| left_val |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.read (| right_val |)
-                                                                        |))
+                                                                        |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -922,7 +936,12 @@ Module vec.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
-                                                      [ dst_cap; M.alloc (| Value.Integer 0 |) ]
+                                                      [
+                                                        dst_cap;
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      ]
                                                   |),
                                                   [
                                                     fun γ =>
@@ -941,13 +960,14 @@ Module vec.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.read (| left_val |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.read (| right_val |)
-                                                                        |))
+                                                                        |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -1153,28 +1173,28 @@ Module vec.
                                                     Value.Tuple
                                                       [
                                                         M.alloc (|
-                                                          BinOp.Wrap.mul
-                                                            Integer.Usize
-                                                            (M.read (| src_cap |))
-                                                            (M.call_closure (|
+                                                          BinOp.Wrap.mul (|
+                                                            M.read (| src_cap |),
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ Ty.associated ]
                                                               |),
                                                               []
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |);
                                                         M.alloc (|
-                                                          BinOp.Wrap.mul
-                                                            Integer.Usize
-                                                            (M.read (| dst_cap |))
-                                                            (M.call_closure (|
+                                                          BinOp.Wrap.mul (|
+                                                            M.read (| dst_cap |),
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ T ]
                                                               |),
                                                               []
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                   |),
@@ -1195,14 +1215,16 @@ Module vec.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      UnOp.Pure.not
-                                                                        (BinOp.Pure.eq
-                                                                          (M.read (|
+                                                                      UnOp.not (|
+                                                                        BinOp.eq (|
+                                                                          M.read (|
                                                                             M.read (| left_val |)
-                                                                          |))
-                                                                          (M.read (|
+                                                                          |),
+                                                                          M.read (|
                                                                             M.read (| right_val |)
-                                                                          |)))
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -1286,7 +1308,7 @@ Module vec.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1327,157 +1349,161 @@ Module vec.
               ltac:(M.monadic
                 match γ with
                 | [ α0; α1 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let sink := M.copy (| γ |) in
-                          M.match_operator (|
-                            M.alloc (| α1 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let item := M.copy (| γ |) in
-                                  M.read (|
-                                    let~ _ :=
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let sink := M.copy (| γ |) in
+                            M.match_operator (|
+                              M.alloc (| α1 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let item := M.copy (| γ |) in
+                                    M.read (|
                                       let~ _ :=
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (BinOp.Pure.le
-                                                                    (M.rust_cast
-                                                                      (* MutToConstPointer *)
-                                                                      (M.pointer_coercion
-                                                                        (M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            sink,
-                                                                            "alloc::vec::in_place_drop::InPlaceDrop",
-                                                                            "dst"
-                                                                          |)
-                                                                        |))))
-                                                                    (M.read (| src_end |)))
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::panicking::panic_fmt",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::Arguments",
-                                                                      "new_const",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "InPlaceIterable contract violation"
-                                                                              |)
-                                                                            ]
-                                                                        |))
-                                                                    ]
+                                        let~ _ :=
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (| Value.Tuple [] |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ :=
+                                                              M.use
+                                                                (M.alloc (|
+                                                                  UnOp.not (|
+                                                                    BinOp.le (|
+                                                                      M.rust_cast
+                                                                        (* MutToConstPointer *)
+                                                                        (M.pointer_coercion
+                                                                          (M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              sink,
+                                                                              "alloc::vec::in_place_drop::InPlaceDrop",
+                                                                              "dst"
+                                                                            |)
+                                                                          |))),
+                                                                      M.read (| src_end |)
+                                                                    |)
                                                                   |)
-                                                                ]
+                                                                |)) in
+                                                            let _ :=
+                                                              M.is_constant_or_break_match (|
+                                                                M.read (| γ |),
+                                                                Value.Bool true
+                                                              |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.call_closure (|
+                                                                  M.get_function (|
+                                                                    "core::panicking::panic_fmt",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_const",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        (* Unsize *)
+                                                                        M.pointer_coercion
+                                                                          (M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "InPlaceIterable contract violation"
+                                                                                |)
+                                                                              ]
+                                                                          |))
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |) in
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "core::ptr::write", [ T ] |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  sink,
-                                                  "alloc::vec::in_place_drop::InPlaceDrop",
-                                                  "dst"
-                                                |)
-                                              |);
-                                              M.read (| item |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (| Value.Tuple [] |)))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            sink,
-                                            "alloc::vec::in_place_drop::InPlaceDrop",
-                                            "dst"
-                                          |),
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ T ],
-                                              "add",
-                                              []
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::ptr::write", [ T ] |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    sink,
+                                                    "alloc::vec::in_place_drop::InPlaceDrop",
+                                                    "dst"
+                                                  |)
+                                                |);
+                                                M.read (| item |)
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              sink,
+                                              "alloc::vec::in_place_drop::InPlaceDrop",
+                                              "dst"
                                             |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  sink,
-                                                  "alloc::vec::in_place_drop::InPlaceDrop",
-                                                  "dst"
-                                                |)
-                                              |);
-                                              Value.Integer 1
-                                            ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |) in
-                                    M.alloc (|
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [ M.read (| sink |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*mut") [ T ],
+                                                "add",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    sink,
+                                                    "alloc::vec::in_place_drop::InPlaceDrop",
+                                                    "dst"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |) in
+                                      M.alloc (|
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [ M.read (| sink |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_write_in_place_with_drop :
@@ -1613,7 +1639,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1692,7 +1718,10 @@ Module vec.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 0);
+                              ("end_", M.read (| len |))
+                            ]
                         ]
                       |)
                     |),
@@ -1767,13 +1796,15 @@ Module vec.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.le
-                                                                      (M.rust_cast
+                                                                  UnOp.not (|
+                                                                    BinOp.le (|
+                                                                      M.rust_cast
                                                                         (* MutToConstPointer *)
                                                                         (M.pointer_coercion
-                                                                          (M.read (| dst |))))
-                                                                      (M.read (| end_ |)))
+                                                                          (M.read (| dst |))),
+                                                                      M.read (| end_ |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1855,7 +1886,8 @@ Module vec.
                                                 "add",
                                                 []
                                               |),
-                                              [ M.read (| dst |); Value.Integer 1 ]
+                                              [ M.read (| dst |); Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
@@ -1877,7 +1909,7 @@ Module vec.
                 |) in
               len
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

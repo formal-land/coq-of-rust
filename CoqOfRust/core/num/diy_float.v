@@ -43,7 +43,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -93,7 +93,7 @@ Module num.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -133,19 +133,20 @@ Module num.
             M.read (|
               let~ a :=
                 M.alloc (|
-                  BinOp.Wrap.shr
-                    (M.read (|
+                  BinOp.Wrap.shr (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
-                    |))
-                    (Value.Integer 32)
+                    |),
+                    Value.Integer IntegerKind.I32 32
+                  |)
                 |) in
               let~ b :=
                 M.alloc (|
-                  BinOp.Pure.bit_and
+                  BinOp.bit_and
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -157,19 +158,20 @@ Module num.
                 |) in
               let~ c :=
                 M.alloc (|
-                  BinOp.Wrap.shr
-                    (M.read (|
+                  BinOp.Wrap.shr (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
-                    |))
-                    (Value.Integer 32)
+                    |),
+                    Value.Integer IntegerKind.I32 32
+                  |)
                 |) in
               let~ d :=
                 M.alloc (|
-                  BinOp.Pure.bit_and
+                  BinOp.bit_and
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
@@ -179,65 +181,64 @@ Module num.
                     |))
                     (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
                 |) in
-              let~ ac :=
-                M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| a |)) (M.read (| c |)) |) in
-              let~ bc :=
-                M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| b |)) (M.read (| c |)) |) in
-              let~ ad :=
-                M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| a |)) (M.read (| d |)) |) in
-              let~ bd :=
-                M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| b |)) (M.read (| d |)) |) in
+              let~ ac := M.alloc (| BinOp.Wrap.mul (| M.read (| a |), M.read (| c |) |) |) in
+              let~ bc := M.alloc (| BinOp.Wrap.mul (| M.read (| b |), M.read (| c |) |) |) in
+              let~ ad := M.alloc (| BinOp.Wrap.mul (| M.read (| a |), M.read (| d |) |) |) in
+              let~ bd := M.alloc (| BinOp.Wrap.mul (| M.read (| b |), M.read (| d |) |) |) in
               let~ tmp :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.U64
-                    (BinOp.Wrap.add
-                      Integer.U64
-                      (BinOp.Wrap.add
-                        Integer.U64
-                        (BinOp.Wrap.shr (M.read (| bd |)) (Value.Integer 32))
-                        (BinOp.Pure.bit_and
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.add (|
+                      BinOp.Wrap.add (|
+                        BinOp.Wrap.shr (| M.read (| bd |), Value.Integer IntegerKind.I32 32 |),
+                        BinOp.bit_and
                           (M.read (| ad |))
-                          (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))))
-                      (BinOp.Pure.bit_and
+                          (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                      |),
+                      BinOp.bit_and
                         (M.read (| bc |))
-                        (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))))
-                    (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 31))
+                        (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                    |),
+                    BinOp.Wrap.shl (|
+                      Value.Integer IntegerKind.U64 1,
+                      Value.Integer IntegerKind.I32 31
+                    |)
+                  |)
                 |) in
               let~ f :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.U64
-                    (BinOp.Wrap.add
-                      Integer.U64
-                      (BinOp.Wrap.add
-                        Integer.U64
-                        (M.read (| ac |))
-                        (BinOp.Wrap.shr (M.read (| ad |)) (Value.Integer 32)))
-                      (BinOp.Wrap.shr (M.read (| bc |)) (Value.Integer 32)))
-                    (BinOp.Wrap.shr (M.read (| tmp |)) (Value.Integer 32))
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.add (|
+                      BinOp.Wrap.add (|
+                        M.read (| ac |),
+                        BinOp.Wrap.shr (| M.read (| ad |), Value.Integer IntegerKind.I32 32 |)
+                      |),
+                      BinOp.Wrap.shr (| M.read (| bc |), Value.Integer IntegerKind.I32 32 |)
+                    |),
+                    BinOp.Wrap.shr (| M.read (| tmp |), Value.Integer IntegerKind.I32 32 |)
+                  |)
                 |) in
               let~ e :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.I16
-                    (BinOp.Wrap.add
-                      Integer.I16
-                      (M.read (|
+                  BinOp.Wrap.add (|
+                    BinOp.Wrap.add (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::diy_float::Fp",
                           "e"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::diy_float::Fp",
                           "e"
                         |)
-                      |)))
-                    (Value.Integer 64)
+                      |)
+                    |),
+                    Value.Integer IntegerKind.I16 64
+                  |)
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -245,7 +246,7 @@ Module num.
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_mul : M.IsAssociatedFunction Self "mul" mul.
@@ -313,25 +314,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub
-                                    Integer.I32
-                                    (Value.Integer 64)
-                                    (Value.Integer 32)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 32
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 32) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 32 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 32)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 32 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -346,25 +352,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub
-                                    Integer.I32
-                                    (Value.Integer 64)
-                                    (Value.Integer 16)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 16
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 16) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 16 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 16)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 16 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -379,22 +390,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 8)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 8
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 8) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 8 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 8)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 8 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -409,22 +428,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 4)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 4
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 4) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 4 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 4)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 4 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -439,22 +466,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 2)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 2
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 2) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 2)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 2 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -469,22 +504,30 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Wrap.shr
-                                  (M.read (| f |))
-                                  (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 1)))
-                                (Value.Integer 0)
+                              BinOp.eq (|
+                                BinOp.Wrap.shr (|
+                                  M.read (| f |),
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.I32 64,
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.U64 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
                           let β := f in
-                          M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 1) |) in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.shl (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                          |) in
                         let~ _ :=
                           let β := e in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I16 1 |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -508,10 +551,15 @@ Module num.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.ge
-                                            (M.read (| f |))
-                                            (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 63)))
+                                        UnOp.not (|
+                                          BinOp.ge (|
+                                            M.read (| f |),
+                                            BinOp.Wrap.shl (|
+                                              Value.Integer IntegerKind.U64 1,
+                                              Value.Integer IntegerKind.I32 63
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -543,7 +591,7 @@ Module num.
                   [ ("f", M.read (| f |)); ("e", M.read (| e |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_normalize : M.IsAssociatedFunction Self "normalize" normalize.
@@ -566,16 +614,16 @@ Module num.
             M.read (|
               let~ edelta :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.I16
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::diy_float::Fp",
                         "e"
                       |)
-                    |))
-                    (M.read (| e |))
+                    |),
+                    M.read (| e |)
+                  |)
                 |) in
               let~ _ :=
                 M.match_operator (|
@@ -586,7 +634,9 @@ Module num.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not (BinOp.Pure.ge (M.read (| edelta |)) (Value.Integer 0))
+                              UnOp.not (|
+                                BinOp.ge (| M.read (| edelta |), Value.Integer IntegerKind.I16 0 |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -608,17 +658,19 @@ Module num.
                     Value.Tuple
                       [
                         M.alloc (|
-                          BinOp.Wrap.shr
-                            (BinOp.Wrap.shl
-                              (M.read (|
+                          BinOp.Wrap.shr (|
+                            BinOp.Wrap.shl (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::num::diy_float::Fp",
                                   "f"
                                 |)
-                              |))
-                              (M.read (| edelta |)))
-                            (M.read (| edelta |))
+                              |),
+                              M.read (| edelta |)
+                            |),
+                            M.read (| edelta |)
+                          |)
                         |);
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -642,10 +694,12 @@ Module num.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.eq
-                                          (M.read (| M.read (| left_val |) |))
-                                          (M.read (| M.read (| right_val |) |)))
+                                      UnOp.not (|
+                                        BinOp.eq (|
+                                          M.read (| M.read (| left_val |) |),
+                                          M.read (| M.read (| right_val |) |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -686,20 +740,21 @@ Module num.
                   "core::num::diy_float::Fp"
                   [
                     ("f",
-                      BinOp.Wrap.shl
-                        (M.read (|
+                      BinOp.Wrap.shl (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::diy_float::Fp",
                             "f"
                           |)
-                        |))
-                        (M.read (| edelta |)));
+                        |),
+                        M.read (| edelta |)
+                      |));
                     ("e", M.read (| e |))
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_normalize_to :

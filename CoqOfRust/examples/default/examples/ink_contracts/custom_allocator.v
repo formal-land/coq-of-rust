@@ -58,7 +58,7 @@ Module Impl_custom_allocator_CustomAllocator.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -81,7 +81,7 @@ Module Impl_custom_allocator_CustomAllocator.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
@@ -115,11 +115,11 @@ Module Impl_custom_allocator_CustomAllocator.
                     "custom_allocator::CustomAllocator",
                     "value"
                   |);
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 ]
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
@@ -136,14 +136,15 @@ Module Impl_custom_allocator_CustomAllocator.
                         "custom_allocator::CustomAllocator",
                         "value"
                       |);
-                      Value.Integer 0
+                      Value.Integer IntegerKind.Usize 0
                     ]
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -175,11 +176,11 @@ Module Impl_custom_allocator_CustomAllocator.
                 "custom_allocator::CustomAllocator",
                 "value"
               |);
-              Value.Integer 0
+              Value.Integer IntegerKind.Usize 0
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

@@ -62,20 +62,20 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 "iterators::Fibonacci",
                 "next"
               |),
-              BinOp.Wrap.add
-                Integer.U32
-                (M.read (| current |))
-                (M.read (|
+              BinOp.Wrap.add (|
+                M.read (| current |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "iterators::Fibonacci",
                     "next"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| current |) ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -97,8 +97,8 @@ Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (Value.StructRecord
         "iterators::Fibonacci"
-        [ ("curr", Value.Integer 0); ("next", Value.Integer 1) ]))
-  | _, _ => M.impossible
+        [ ("curr", Value.Integer IntegerKind.U32 0); ("next", Value.Integer IntegerKind.U32 1) ]))
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
@@ -151,7 +151,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
-              [ ("start", Value.Integer 0); ("end_", Value.Integer 3) ]
+              [
+                ("start", Value.Integer IntegerKind.I32 0);
+                ("end_", Value.Integer IntegerKind.I32 3)
+              ]
           |) in
         let~ _ :=
           let~ _ :=
@@ -420,7 +423,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 0); ("end_", Value.Integer 3) ]
+                      [
+                        ("start", Value.Integer IntegerKind.I32 0);
+                        ("end_", Value.Integer IntegerKind.I32 3)
+                      ]
                   ]
                 |)
               |),
@@ -561,7 +567,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (| M.get_function (| "iterators::fibonacci", [] |), [] |);
-                        Value.Integer 4
+                        Value.Integer IntegerKind.Usize 4
                       ]
                     |)
                   ]
@@ -724,10 +730,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_function (| "iterators::fibonacci", [] |),
                               []
                             |);
-                            Value.Integer 4
+                            Value.Integer IntegerKind.Usize 4
                           ]
                         |);
-                        Value.Integer 4
+                        Value.Integer IntegerKind.Usize 4
                       ]
                     |)
                   ]
@@ -827,7 +833,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)) in
         let~ array :=
           M.alloc (|
-            Value.Array [ Value.Integer 1; Value.Integer 3; Value.Integer 3; Value.Integer 7 ]
+            Value.Array
+              [
+                Value.Integer IntegerKind.U32 1;
+                Value.Integer IntegerKind.U32 3;
+                Value.Integer IntegerKind.U32 3;
+                Value.Integer IntegerKind.U32 7
+              ]
           |) in
         let~ _ :=
           let~ _ :=
@@ -983,7 +995,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "iterators::main" main.

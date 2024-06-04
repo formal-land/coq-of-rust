@@ -28,7 +28,10 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
@@ -37,13 +40,14 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
                 ]
               |) in
             M.alloc (|
-              BinOp.Pure.eq
-                (BinOp.Wrap.rem Integer.U32 (M.read (| lhs |)) (M.read (| rhs |)))
-                (Value.Integer 0)
+              BinOp.eq (|
+                BinOp.Wrap.rem (| M.read (| lhs |), M.read (| rhs |) |),
+                Value.Integer IntegerKind.U32 0
+              |)
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
@@ -77,7 +81,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                     (M.alloc (|
                       M.call_closure (|
                         M.get_function (| "functions::is_divisible_by", [] |),
-                        [ M.read (| n |); Value.Integer 15 ]
+                        [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -119,7 +123,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "functions::is_divisible_by", [] |),
-                                [ M.read (| n |); Value.Integer 3 ]
+                                [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |)) in
                         let _ :=
@@ -162,7 +166,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
                                     (M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "functions::is_divisible_by", [] |),
-                                        [ M.read (| n |); Value.Integer 5 ]
+                                        [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -250,7 +254,7 @@ Definition fizzbuzz (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
@@ -286,7 +290,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer 1; M.read (| n |) ]
+                    [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
                   |)
                 ]
               |)
@@ -342,7 +346,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
@@ -362,12 +366,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions::fizzbuzz_to", [] |),
-              [ Value.Integer 100 ]
+              [ Value.Integer IntegerKind.U32 100 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions::main" main.

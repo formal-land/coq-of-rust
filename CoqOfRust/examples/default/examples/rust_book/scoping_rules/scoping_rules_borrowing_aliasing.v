@@ -74,7 +74,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
-              [ ("x", Value.Integer 0); ("y", Value.Integer 0); ("z", Value.Integer 0) ]
+              [
+                ("x", Value.Integer IntegerKind.I32 0);
+                ("y", Value.Integer IntegerKind.I32 0);
+                ("z", Value.Integer IntegerKind.I32 0)
+              ]
           |) in
         let~ borrowed_point := M.alloc (| point |) in
         let~ another_borrow := M.alloc (| point |) in
@@ -238,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "x"
             |),
-            Value.Integer 5
+            Value.Integer IntegerKind.I32 5
           |) in
         let~ _ :=
           M.write (|
@@ -247,7 +251,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "y"
             |),
-            Value.Integer 2
+            Value.Integer IntegerKind.I32 2
           |) in
         let~ _ :=
           M.write (|
@@ -256,7 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               "scoping_rules_borrowing_aliasing::Point",
               "z"
             |),
-            Value.Integer 1
+            Value.Integer IntegerKind.I32 1
           |) in
         let~ _ :=
           let~ _ :=
@@ -413,7 +417,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_aliasing::main" main.

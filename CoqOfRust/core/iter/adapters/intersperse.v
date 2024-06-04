@@ -65,7 +65,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -137,7 +137,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -182,7 +182,7 @@ Module iter.
                   ("separator", M.read (| separator |));
                   ("needs_sep", Value.Bool false)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -328,7 +328,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -384,24 +384,25 @@ Module iter.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          Ty.associated,
-                                          [],
-                                          "clone",
-                                          []
-                                        |),
-                                        [ separator ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            Ty.associated,
+                                            [],
+                                            "clone",
+                                            []
+                                          |),
+                                          [ separator ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end));
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -414,7 +415,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -448,7 +449,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -568,7 +569,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -648,7 +649,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -693,7 +694,7 @@ Module iter.
                   ("separator", M.read (| separator |));
                   ("needs_sep", Value.Bool false)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -840,7 +841,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -891,7 +892,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -925,7 +926,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -983,7 +984,7 @@ Module iter.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo := M.copy (| γ0_0 |) in
                       let hi := M.copy (| γ0_1 |) in
-                      let~ next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
+                      let~ next_is_elem := M.alloc (| UnOp.not (| M.read (| needs_sep |) |) |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -1019,36 +1020,37 @@ Module iter.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let hi := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "usize",
-                                                    "checked_add",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "usize",
-                                                        "saturating_sub",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| hi |);
-                                                        M.rust_cast (M.read (| next_is_elem |))
-                                                      ]
-                                                    |);
-                                                    M.read (| hi |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let hi := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "usize",
+                                                      "checked_add",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "usize",
+                                                          "saturating_sub",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| hi |);
+                                                          M.rust_cast (M.read (| next_is_elem |))
+                                                        ]
+                                                      |);
+                                                      M.read (| hi |)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -1057,7 +1059,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_intersperse_size_hint :
@@ -1114,8 +1116,7 @@ Module iter.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use (M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |)) in
+                            (let γ := M.use (M.alloc (| UnOp.not (| M.read (| needs_sep |) |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
@@ -1187,81 +1188,82 @@ Module iter.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let accum := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let x := M.copy (| γ |) in
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [
-                                                              M.read (| accum |);
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::function::FnMut",
-                                                                  G,
-                                                                  [ Ty.tuple [] ],
-                                                                  "call_mut",
-                                                                  []
-                                                                |),
-                                                                [ separator; Value.Tuple [] ]
-                                                              |)
-                                                            ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      accum,
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::function::FnMut",
-                                                          F,
-                                                          [ Ty.tuple [ B; Ty.associated ] ],
-                                                          "call_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          f;
-                                                          Value.Tuple
-                                                            [ M.read (| accum |); M.read (| x |) ]
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  accum
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let accum := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let x := M.copy (| γ |) in
+                                                  M.read (|
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        accum,
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::FnMut",
+                                                            F,
+                                                            [ Ty.tuple [ B; Ty.associated ] ],
+                                                            "call_mut",
+                                                            []
+                                                          |),
+                                                          [
+                                                            f;
+                                                            Value.Tuple
+                                                              [
+                                                                M.read (| accum |);
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::function::FnMut",
+                                                                    G,
+                                                                    [ Ty.tuple [] ],
+                                                                    "call_mut",
+                                                                    []
+                                                                  |),
+                                                                  [ separator; Value.Tuple [] ]
+                                                                |)
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        accum,
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::FnMut",
+                                                            F,
+                                                            [ Ty.tuple [ B; Ty.associated ] ],
+                                                            "call_mut",
+                                                            []
+                                                          |),
+                                                          [
+                                                            f;
+                                                            Value.Tuple
+                                                              [ M.read (| accum |); M.read (| x |) ]
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    accum
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_intersperse_fold :

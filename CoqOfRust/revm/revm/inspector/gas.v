@@ -25,7 +25,7 @@ Module inspector.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -86,7 +86,7 @@ Module inspector.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -131,7 +131,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -162,7 +162,7 @@ Module inspector.
                 "gas_remaining"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_gas_remaining :
@@ -185,7 +185,7 @@ Module inspector.
                 "last_gas_cost"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_last_gas_cost :
@@ -237,7 +237,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -282,7 +282,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -354,7 +354,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -441,7 +441,7 @@ Module inspector.
                               "revm::inspector::gas::GasInspector",
                               "gas_remaining"
                             |),
-                            Value.Integer 0
+                            Value.Integer IntegerKind.U64 0
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -449,7 +449,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -536,7 +536,7 @@ Module inspector.
                               "revm::inspector::gas::GasInspector",
                               "gas_remaining"
                             |),
-                            Value.Integer 0
+                            Value.Integer IntegerKind.U64 0
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -544,7 +544,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

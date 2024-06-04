@@ -40,37 +40,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.I8
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -111,37 +109,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.I8
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -184,43 +180,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "i8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "i8",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -263,43 +260,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "i8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "i8",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i8" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -340,37 +338,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.I16
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -411,37 +407,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.I16
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -484,43 +478,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "i16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "i16",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -563,43 +558,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "i16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "i16",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i16" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -640,37 +636,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.I32
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -711,37 +705,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.I32
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -784,43 +776,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "i32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "i32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -863,43 +856,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "i32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "i32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -940,37 +934,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.I64
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1011,37 +1003,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.I64
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1084,43 +1074,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "i64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "i64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1163,43 +1154,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "i64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "i64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i64" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1240,37 +1232,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.I128
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1311,37 +1301,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.I128
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1384,43 +1372,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.I128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "i128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "i128",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1463,43 +1452,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.I128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "i128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "i128",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "i128" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1540,37 +1530,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Isize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.Isize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1611,37 +1599,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Isize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.Isize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1684,43 +1670,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Isize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "isize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "isize",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1763,43 +1750,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Isize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "isize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "isize",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "isize" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1840,37 +1828,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1911,37 +1897,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.U8
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1984,43 +1968,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U8 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "u8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "u8",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2063,43 +2048,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U8 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "u8",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "u8",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2140,37 +2126,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.U16
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2211,37 +2195,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.U16
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2284,43 +2266,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U16 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "u16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "u16",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2363,43 +2346,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U16 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "u16",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "u16",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u16" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2440,37 +2424,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.U32
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2511,37 +2493,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.U32
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2584,43 +2564,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U32 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "u32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "u32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2663,43 +2644,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U32 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "u32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "u32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2740,37 +2722,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.U64
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2811,37 +2791,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.U64
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2884,43 +2862,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U64 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "u64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "u64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2963,43 +2942,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U64 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "u64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "u64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u64" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3040,37 +3020,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.U128
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3111,37 +3089,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.U128
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3184,43 +3160,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.U128 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "u128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "u128",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3263,43 +3240,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.U128 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "u128",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "u128",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "u128" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3340,37 +3318,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3411,37 +3387,35 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Usize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3484,43 +3458,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 0;
+                  Value.Integer IntegerKind.Usize 0;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "usize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "usize",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3563,43 +3538,44 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer 1;
+                  Value.Integer IntegerKind.Usize 1;
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "usize",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "usize",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3649,49 +3625,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i8" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i8" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3741,49 +3720,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i8" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i8" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3836,53 +3818,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i8" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i8" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3941,53 +3926,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i8" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i8" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4043,49 +4031,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i16" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i16" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4135,49 +4126,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i16" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i16" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4230,53 +4224,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i16" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i16" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4335,53 +4332,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i16" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i16" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4437,49 +4437,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i32" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i32" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4529,49 +4532,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i32" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i32" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4624,53 +4630,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i32" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i32" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4729,53 +4738,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i32" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i32" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4831,49 +4843,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i64" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i64" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4923,49 +4938,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i64" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i64" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5018,53 +5036,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i64" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i64" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5123,53 +5144,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i64" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i64" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5225,49 +5249,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i128" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i128" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5317,49 +5344,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "i128" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "i128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "i128" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5415,53 +5445,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i128" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i128" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5523,53 +5556,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.I128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "i128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "i128" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "i128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "i128" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5625,49 +5661,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "isize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "isize" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "isize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "isize" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5717,49 +5756,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "isize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "isize" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "isize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "isize" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5815,53 +5857,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "isize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "isize" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "isize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "isize" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5923,53 +5968,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Isize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "isize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "isize" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "isize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "isize" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6025,49 +6073,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u8" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u8" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6117,49 +6168,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u8" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u8" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6212,53 +6266,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u8" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u8" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6317,53 +6374,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U8 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u8" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u8" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u8" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u8" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6419,49 +6479,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u16" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u16" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6511,49 +6574,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u16" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u16" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6606,53 +6672,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u16" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u16" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6711,53 +6780,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U16 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u16" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u16" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u16" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u16" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6813,49 +6885,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u32" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u32" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6905,49 +6980,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u32" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u32" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7000,53 +7078,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u32" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7105,53 +7186,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U32 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u32" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u32" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u32" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7207,49 +7291,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u64" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7299,49 +7386,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u64" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7394,53 +7484,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u64" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u64" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7499,53 +7592,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U64 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u64" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u64" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u64" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u64" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7601,49 +7697,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u128" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u128" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7693,49 +7792,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "u128" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "u128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "u128" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7791,53 +7893,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u128" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u128" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7899,53 +8004,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.U128 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "u128" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "u128" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "u128" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "u128" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8001,49 +8109,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "usize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "usize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8093,49 +8204,52 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "usize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
                                                   (Ty.path "core::num::wrapping::Wrapping")
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  [ Ty.path "usize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::num::wrapping::Wrapping")
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8191,53 +8305,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 0 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "usize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "usize" ]
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "usize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "usize" ]
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8299,53 +8416,56 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 1 ];
+                  Value.StructTuple
+                    "core::num::wrapping::Wrapping"
+                    [ Value.Integer IntegerKind.Usize 1 ];
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.apply
-                                                (Ty.path "core::num::wrapping::Wrapping")
-                                                [ Ty.path "usize" ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
                                                 Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::num::wrapping::Wrapping")
-                                                      [ Ty.path "usize" ]
-                                                  ]
-                                              ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  (Ty.path "core::num::wrapping::Wrapping")
+                                                  [ Ty.path "usize" ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::num::wrapping::Wrapping")
+                                                        [ Ty.path "usize" ]
+                                                    ]
+                                                ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8398,31 +8518,29 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8469,31 +8587,29 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8542,37 +8658,38 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "f32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "f32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8621,37 +8738,38 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "f32",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "f32",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "f32" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8698,31 +8816,29 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8769,31 +8885,29 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          BinOp.Wrap.mul
-                                            Integer.Usize
-                                            (M.read (| a |))
-                                            (M.read (| b |))))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8842,37 +8956,38 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.path "f64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
-                                              "add",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
+                                                Ty.path "f64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8921,37 +9036,38 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let b := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Mul",
-                                              Ty.path "f64",
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
-                                              "mul",
-                                              []
-                                            |),
-                                            [ M.read (| a |); M.read (| b |) ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let b := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Mul",
+                                                Ty.path "f64",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ],
+                                                "mul",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9013,36 +9129,37 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let i := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::GenericShunt")
-                                        [
-                                          I;
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            [ Ty.path "core::convert::Infallible"; E ]
-                                        ],
-                                      [],
-                                      "sum",
-                                      [ T ]
-                                    |),
-                                    [ M.read (| i |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let i := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::GenericShunt")
+                                          [
+                                            I;
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [ Ty.path "core::convert::Infallible"; E ]
+                                          ],
+                                        [],
+                                        "sum",
+                                        [ T ]
+                                      |),
+                                      [ M.read (| i |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9106,36 +9223,37 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let i := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::GenericShunt")
-                                        [
-                                          I;
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            [ Ty.path "core::convert::Infallible"; E ]
-                                        ],
-                                      [],
-                                      "product",
-                                      [ T ]
-                                    |),
-                                    [ M.read (| i |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let i := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::GenericShunt")
+                                          [
+                                            I;
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              [ Ty.path "core::convert::Infallible"; E ]
+                                          ],
+                                        [],
+                                        "product",
+                                        [ T ]
+                                      |),
+                                      [ M.read (| i |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9199,36 +9317,37 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let i := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::GenericShunt")
-                                        [
-                                          I;
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            [ Ty.path "core::convert::Infallible" ]
-                                        ],
-                                      [],
-                                      "sum",
-                                      [ T ]
-                                    |),
-                                    [ M.read (| i |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let i := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::GenericShunt")
+                                          [
+                                            I;
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [ Ty.path "core::convert::Infallible" ]
+                                          ],
+                                        [],
+                                        "sum",
+                                        [ T ]
+                                      |),
+                                      [ M.read (| i |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9292,36 +9411,37 @@ Module iter.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let i := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::iter::adapters::GenericShunt")
-                                        [
-                                          I;
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            [ Ty.path "core::convert::Infallible" ]
-                                        ],
-                                      [],
-                                      "product",
-                                      [ T ]
-                                    |),
-                                    [ M.read (| i |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let i := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::GenericShunt")
+                                          [
+                                            I;
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [ Ty.path "core::convert::Infallible" ]
+                                          ],
+                                        [],
+                                        "product",
+                                        [ T ]
+                                      |),
+                                      [ M.read (| i |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

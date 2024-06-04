@@ -1,12 +1,14 @@
-examples/default/examples/ink_contracts/proofs/erc20.v
-examples/default/examples/ink_contracts/proofs/lib.v
-examples/default/examples/ink_contracts/simulations/erc20.v
-examples/default/examples/ink_contracts/simulations/erc721.v
+# TODO: fix the files below
+core/links/clone.v
+core/ops/links/function.v
+core/links/default.v
+lib/proofs/lib.v
+core/links/cmp.v
+revm/interpreter/links/gas.v
+# TODO: understand why the following file does not work
 revm/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)
 revm/interpreter/opcode.v
-examples/default/examples/ink_contracts/proofs/erc721.v
-move/
 core/any.v
 core/array/mod.v
 core/cmp/bytewise.v
@@ -17,3 +19,11 @@ core/net/ip_addr.v
 examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
+examples/default/examples/ink_contracts/lib.v
+examples/default/examples/ink_contracts/proofs/erc20.v
+examples/default/examples/ink_contracts/proofs/erc721.v
+examples/default/examples/ink_contracts/proofs/lib.v
+examples/default/examples/ink_contracts/simulations/erc20.v
+examples/default/examples/ink_contracts/simulations/erc721.v
+move/
+token-2022/

@@ -87,7 +87,7 @@ Module panic.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -136,7 +136,7 @@ Module panic.
                 ("can_unwind", M.read (| can_unwind |));
                 ("force_no_backtrace", M.read (| force_no_backtrace |))
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_internal_constructor :
@@ -165,7 +165,7 @@ Module panic.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_payload : M.IsAssociatedFunction Self "set_payload" set_payload.
@@ -191,7 +191,7 @@ Module panic.
                     "payload"
                   |)
                 |)))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
@@ -213,7 +213,7 @@ Module panic.
                 "message"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
@@ -241,7 +241,7 @@ Module panic.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
@@ -263,7 +263,7 @@ Module panic.
                 "can_unwind"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_can_unwind : M.IsAssociatedFunction Self "can_unwind" can_unwind.
@@ -285,7 +285,7 @@ Module panic.
                 "force_no_backtrace"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_force_no_backtrace :
@@ -858,7 +858,7 @@ Module panic.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

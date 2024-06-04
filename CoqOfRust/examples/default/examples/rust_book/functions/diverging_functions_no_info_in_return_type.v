@@ -7,7 +7,10 @@ fn some_fn() {
 }
 *)
 Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  match τ, α with
+  | [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Axiom Function_some_fn : M.IsFunction "diverging_functions_no_info_in_return_type::some_fn" some_fn.
 
@@ -55,7 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_no_info_in_return_type::main" main.

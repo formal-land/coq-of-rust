@@ -61,7 +61,7 @@ Definition red (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "red" |))) ] |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
@@ -77,7 +77,7 @@ Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
       M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ] |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
@@ -211,7 +211,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.

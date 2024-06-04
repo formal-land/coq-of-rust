@@ -27,9 +27,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ long_lived_binding := M.alloc (| Value.Integer 1 |) in
+        let~ long_lived_binding := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
         let~ _ :=
-          let~ short_lived_binding := M.alloc (| Value.Integer 2 |) in
+          let~ short_lived_binding := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -113,7 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scope::main" main.

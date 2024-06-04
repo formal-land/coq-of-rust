@@ -23,7 +23,7 @@ Module Impl_associated_functions_and_methods_Point.
         (Value.StructRecord
           "associated_functions_and_methods::Point"
           [ ("y", M.read (| UnsupportedLiteral |)); ("x", M.read (| UnsupportedLiteral |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
@@ -42,7 +42,7 @@ Module Impl_associated_functions_and_methods_Point.
         Value.StructRecord
           "associated_functions_and_methods::Point"
           [ ("x", M.read (| x |)); ("y", M.read (| y |)) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -79,7 +79,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             "p1"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
@@ -151,10 +151,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "f64", "abs", [] |),
                               [
-                                BinOp.Wrap.mul
-                                  Integer.Usize
-                                  (BinOp.Wrap.sub Integer.Usize (M.read (| x1 |)) (M.read (| x2 |)))
-                                  (BinOp.Wrap.sub Integer.Usize (M.read (| y1 |)) (M.read (| y2 |)))
+                                BinOp.Wrap.mul (|
+                                  BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |),
+                                  BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |)
+                                |)
                               ]
                             |)
                           |)))
@@ -163,7 +163,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
@@ -229,28 +229,26 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           let x2 := M.copy (| γ0_0 |) in
                           let y2 := M.copy (| γ0_1 |) in
                           M.alloc (|
-                            BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.read (| UnsupportedLiteral |))
-                              (BinOp.Wrap.add
-                                Integer.Usize
-                                (M.call_closure (|
+                            BinOp.Wrap.mul (|
+                              M.read (| UnsupportedLiteral |),
+                              BinOp.Wrap.add (|
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "f64", "abs", [] |),
-                                  [ BinOp.Wrap.sub Integer.Usize (M.read (| x1 |)) (M.read (| x2 |))
-                                  ]
-                                |))
-                                (M.call_closure (|
+                                  [ BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |) ]
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (| Ty.path "f64", "abs", [] |),
-                                  [ BinOp.Wrap.sub Integer.Usize (M.read (| y1 |)) (M.read (| y2 |))
-                                  ]
-                                |)))
+                                  [ BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |) ]
+                                |)
+                              |)
+                            |)
                           |)))
                     ]
                   |)))
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
@@ -283,7 +281,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "x"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| x |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |) in
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -295,7 +293,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "x"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| x |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |) in
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -307,7 +305,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "y"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| y |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |) in
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -319,10 +317,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "y"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| y |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
@@ -442,7 +440,7 @@ Module Impl_associated_functions_and_methods_Pair.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
@@ -665,7 +663,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.I32 1 ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -675,7 +673,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer 2 ]
+                  [ Value.Integer IntegerKind.I32 2 ]
                 |)
               ]
           |) in
@@ -692,7 +690,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.

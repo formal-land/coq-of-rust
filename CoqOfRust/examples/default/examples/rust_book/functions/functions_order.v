@@ -38,7 +38,7 @@ Module Impl_functions_order_SomeType.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
@@ -50,7 +50,7 @@ Module Impl_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
@@ -97,7 +97,7 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_depends_on_trait_impl :
@@ -129,7 +129,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
           |),
           [ M.read (| self |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*     fn some_trait_bar(&self) {} *)
@@ -139,7 +139,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -164,7 +164,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*     fn some_trait_bar(&self) {} *)
@@ -174,7 +174,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -207,14 +207,17 @@ Module inner_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
   
   (*     fn tar() {} *)
   Definition tar (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    match τ, α with
+    | [], [] => ltac:(M.monadic (Value.Tuple []))
+    | _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
   
@@ -238,14 +241,17 @@ Module inner_mod.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
     
     (*         fn tack() {} *)
     Definition tack (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+      match τ, α with
+      | [], [] => ltac:(M.monadic (Value.Tuple []))
+      | _, _ => M.impossible "wrong number of arguments"
+      end.
     
     Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
   End nested_mod.
@@ -274,18 +280,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [] |),
-              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer 0 ] ]
+              [ Value.StructTuple "functions_order::SomeType" [ Value.Integer IntegerKind.U32 0 ] ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_order::main" main.
 
 (* fn foo() {} *)
 Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  match τ, α with
+  | [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Axiom Function_foo : M.IsFunction "functions_order::foo" foo.

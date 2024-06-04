@@ -52,7 +52,7 @@ Module collections.
                   M.read (| state |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -107,7 +107,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -175,7 +175,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -226,7 +226,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -276,7 +276,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -320,7 +320,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -415,7 +415,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -473,7 +473,7 @@ Module collections.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -531,7 +531,7 @@ Module collections.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -792,7 +792,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -855,7 +855,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -930,7 +930,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1187,7 +1187,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1250,7 +1250,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1325,7 +1325,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1338,7 +1338,7 @@ Module collections.
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_btree_set_Union_T.
       
       Definition value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -1375,7 +1375,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -1413,7 +1413,7 @@ Module collections.
                       [ M.read (| alloc |) ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_in :
@@ -1459,7 +1459,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_range :
@@ -1786,24 +1786,27 @@ Module collections.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [] =>
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "alloc::collections::btree::set::DifferenceInner::Iterate"
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::set::BTreeSet")
-                                                                            [ T; A ],
-                                                                          "iter",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| self |) ]
-                                                                      |)
-                                                                    ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    Value.StructTuple
+                                                                      "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::collections::btree::set::BTreeSet")
+                                                                              [ T; A ],
+                                                                            "iter",
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| self |) ]
+                                                                        |)
+                                                                      ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |)));
                                                   fun γ =>
@@ -1902,8 +1905,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -1913,10 +1916,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1926,12 +1928,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2014,7 +2018,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_difference :
@@ -2070,7 +2074,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_symmetric_difference :
@@ -2369,16 +2373,19 @@ Module collections.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [] =>
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "alloc::collections::btree::set::IntersectionInner::Answer"
-                                                                    [
-                                                                      Value.StructTuple
-                                                                        "core::option::Option::None"
-                                                                        []
-                                                                    ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    Value.StructTuple
+                                                                      "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                                      [
+                                                                        Value.StructTuple
+                                                                          "core::option::Option::None"
+                                                                          []
+                                                                      ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |)));
                                                   fun γ =>
@@ -2425,8 +2432,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2436,10 +2443,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2449,12 +2455,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2484,8 +2492,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2495,10 +2503,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| other |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2508,12 +2515,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2582,7 +2591,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_intersection :
@@ -2635,7 +2644,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_union :
@@ -2672,7 +2681,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_clear :
@@ -2712,7 +2721,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_contains :
@@ -2754,7 +2763,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_get :
@@ -2810,7 +2819,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_disjoint :
@@ -2895,8 +2904,8 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.call_closure (|
+                                    BinOp.gt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2905,8 +2914,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| self |) ]
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2915,7 +2924,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| other |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3207,8 +3217,8 @@ Module collections.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.le
-                                                      (M.call_closure (|
+                                                    BinOp.le (|
+                                                      M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::iter::traits::exact_size::ExactSizeIterator",
                                                           Ty.apply
@@ -3220,10 +3230,9 @@ Module collections.
                                                           []
                                                         |),
                                                         [ self_iter ]
-                                                      |))
-                                                      (BinOp.Wrap.div
-                                                        Integer.Usize
-                                                        (M.call_closure (|
+                                                      |),
+                                                      BinOp.Wrap.div (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -3233,12 +3242,14 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| other |) ]
-                                                        |))
-                                                        (M.read (|
+                                                        |),
+                                                        M.read (|
                                                           M.get_constant (|
                                                             "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                           |)
-                                                        |)))
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -3318,8 +3329,8 @@ Module collections.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.call_closure (|
+                                                                                    UnOp.not (|
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3337,7 +3348,8 @@ Module collections.
                                                                                             next
                                                                                           |)
                                                                                         ]
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -3492,35 +3504,38 @@ Module collections.
                                                                       ltac:(M.monadic
                                                                         match γ with
                                                                         | [ α0 ] =>
-                                                                          M.match_operator (|
-                                                                            M.alloc (| α0 |),
-                                                                            [
-                                                                              fun γ =>
-                                                                                ltac:(M.monadic
-                                                                                  (let other1 :=
-                                                                                    M.copy (|
-                                                                                      γ
-                                                                                    |) in
-                                                                                  M.call_closure (|
-                                                                                    M.get_trait_method (|
-                                                                                      "core::cmp::Ord",
-                                                                                      T,
-                                                                                      [],
-                                                                                      "cmp",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        self1
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        other1
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)))
-                                                                            ]
-                                                                          |)
-                                                                        | _ => M.impossible (||)
+                                                                          ltac:(M.monadic
+                                                                            (M.match_operator (|
+                                                                              M.alloc (| α0 |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let other1 :=
+                                                                                      M.copy (|
+                                                                                        γ
+                                                                                      |) in
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::cmp::Ord",
+                                                                                        T,
+                                                                                        [],
+                                                                                        "cmp",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          self1
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          other1
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)))
+                                                                              ]
+                                                                            |)))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
                                                                         end))
                                                                 ]
                                                               |)
@@ -3602,7 +3617,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_subset :
@@ -3632,7 +3647,7 @@ Module collections.
                 |),
                 [ M.read (| other |); M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_superset :
@@ -3707,22 +3722,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_first :
@@ -3797,22 +3813,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_last :
@@ -3872,20 +3889,21 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let kv := M.copy (| γ |) in
-                                  M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let kv := M.copy (| γ |) in
+                                    M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_pop_first :
@@ -3945,20 +3963,21 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let kv := M.copy (| γ |) in
-                                  M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let kv := M.copy (| γ |) in
+                                    M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_pop_last :
@@ -4020,7 +4039,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert :
@@ -4061,7 +4080,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_replace :
@@ -4114,7 +4133,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_remove :
@@ -4156,7 +4175,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take :
@@ -4216,26 +4235,28 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let v := M.copy (| γ |) in
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                  "call_mut",
-                                                  []
-                                                |),
-                                                [ f; Value.Tuple [ M.read (| v |) ] ]
-                                              |))))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let v := M.copy (| γ |) in
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                    "call_mut",
+                                                    []
+                                                  |),
+                                                  [ f; Value.Tuple [ M.read (| v |) ] ]
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |);
@@ -4245,7 +4266,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_retain :
@@ -4295,7 +4316,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_append :
@@ -4340,7 +4361,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_split_off :
@@ -4403,7 +4424,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_extract_if :
@@ -4442,7 +4463,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter :
@@ -4476,7 +4497,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_len :
@@ -4494,17 +4515,18 @@ Module collections.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (Value.Integer 0)))
-          | _, _ => M.impossible
+                |),
+                Value.Integer IntegerKind.Usize 0
+              |)))
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_empty :
@@ -4548,30 +4570,31 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let k := M.copy (| γ |) in
-                                        Value.Tuple
-                                          [
-                                            M.read (| k |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::default::Default",
-                                                Ty.path
-                                                  "alloc::collections::btree::set_val::SetValZST",
-                                                [],
-                                                "default",
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let k := M.copy (| γ |) in
+                                          Value.Tuple
+                                            [
+                                              M.read (| k |);
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::default::Default",
+                                                  Ty.path
+                                                    "alloc::collections::btree::set_val::SetValZST",
+                                                  [],
+                                                  "default",
+                                                  []
+                                                |),
                                                 []
-                                              |),
-                                              []
-                                            |)
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                              |)
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -4605,7 +4628,7 @@ Module collections.
                     [ ("map", M.read (| map |)) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_from_sorted_iter :
@@ -4771,7 +4794,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4821,11 +4844,12 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (|
                                         M.get_constant (| "alloc::collections::btree::set::N" |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4897,30 +4921,31 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let k := M.copy (| γ |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| k |);
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::default::Default",
-                                                    Ty.path
-                                                      "alloc::collections::btree::set_val::SetValZST",
-                                                    [],
-                                                    "default",
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let k := M.copy (| γ |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| k |);
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::default::Default",
+                                                      Ty.path
+                                                        "alloc::collections::btree::set_val::SetValZST",
+                                                      [],
+                                                      "default",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                  |)
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -4960,7 +4985,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5019,7 +5044,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5068,7 +5093,7 @@ Module collections.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5200,19 +5225,21 @@ Module collections.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                              let k := M.copy (| γ0_0 |) in
-                                              M.read (| k |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                let k := M.copy (| γ0_0 |) in
+                                                M.read (| k |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -5221,7 +5248,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5269,33 +5296,35 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let k := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _v := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| k |) ] ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let k := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _v := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| k |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
                 M.alloc (|
@@ -5364,24 +5393,25 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let k := M.copy (| γ0_0 |) in
-                                      M.read (| k |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                        let k := M.copy (| γ0_0 |) in
+                                        M.read (| k |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5411,7 +5441,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5486,39 +5516,40 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let elem := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::set::BTreeSet")
-                                                    [ T; A ],
-                                                  "insert",
-                                                  []
-                                                |),
-                                                [ M.read (| self |); M.read (| elem |) ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let elem := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ _ :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::btree::set::BTreeSet")
+                                                      [ T; A ],
+                                                    "insert",
+                                                    []
+                                                  |),
+                                                  [ M.read (| self |); M.read (| elem |) ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5547,7 +5578,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5622,7 +5653,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5662,7 +5693,7 @@ Module collections.
                       |)))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5704,7 +5735,7 @@ Module collections.
                 |),
                 []
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5802,7 +5833,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5913,7 +5944,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6021,7 +6052,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6129,7 +6160,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6206,7 +6237,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6256,7 +6287,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6304,7 +6335,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6336,7 +6367,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6360,7 +6391,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6387,7 +6418,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6414,7 +6445,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6467,7 +6498,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6512,7 +6543,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6596,22 +6627,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6643,7 +6675,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6691,7 +6723,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6759,22 +6791,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6819,7 +6852,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6875,7 +6908,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6925,7 +6958,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7011,22 +7044,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7050,7 +7084,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7077,7 +7111,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7104,7 +7138,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7194,22 +7228,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7265,7 +7300,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7439,7 +7474,7 @@ Module collections.
                       |)
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7652,30 +7687,31 @@ Module collections.
                                                   ltac:(M.monadic
                                                     match γ with
                                                     | [ α0 ] =>
-                                                      M.match_operator (|
-                                                        M.alloc (| α0 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let other_next := M.copy (| γ |) in
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::cmp::Ord",
-                                                                  T,
-                                                                  [],
-                                                                  "cmp",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| self_next |);
-                                                                  M.read (|
-                                                                    M.read (| other_next |)
-                                                                  |)
-                                                                ]
-                                                              |)))
-                                                        ]
-                                                      |)
-                                                    | _ => M.impossible (||)
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let other_next := M.copy (| γ |) in
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::cmp::Ord",
+                                                                    T,
+                                                                    [],
+                                                                    "cmp",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (| self_next |);
+                                                                    M.read (|
+                                                                      M.read (| other_next |)
+                                                                    |)
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             ]
                                           |)
@@ -7964,8 +8000,8 @@ Module collections.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    UnOp.Pure.not
-                                                      (M.call_closure (|
+                                                    UnOp.not (|
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -7978,7 +8014,8 @@ Module collections.
                                                           M.read (| M.read (| other_set |) |);
                                                           M.read (| self_next |)
                                                         ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -8029,7 +8066,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8174,7 +8211,7 @@ Module collections.
                                   |),
                                   [ M.read (| iter |) ]
                                 |);
-                                Value.Integer 0
+                                Value.Integer IntegerKind.Usize 0
                               ]
                           |)))
                     ]
@@ -8205,7 +8242,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8229,7 +8266,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8297,7 +8334,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8447,7 +8484,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8495,21 +8532,16 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| a_len |))
-                                    (M.read (| b_len |))
-                                ]
+                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8533,7 +8565,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8708,7 +8740,7 @@ Module collections.
                       |)
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9350,7 +9382,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9399,7 +9431,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9448,7 +9480,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9480,8 +9512,10 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)));
                     fun γ =>
@@ -9502,14 +9536,16 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 1;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
+                              Value.Integer IntegerKind.Usize 1;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 1 ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9533,7 +9569,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9601,7 +9637,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9688,7 +9724,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9740,18 +9776,13 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| a_len |))
-                                    (M.read (| b_len |))
-                                ]
+                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9775,7 +9806,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

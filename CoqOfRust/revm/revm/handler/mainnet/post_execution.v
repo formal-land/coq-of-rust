@@ -19,7 +19,7 @@ Module handler.
             (let _context := M.alloc (| _context |) in
             let evm_output := M.alloc (| evm_output |) in
             M.read (| evm_output |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_end_ : M.IsFunction "revm::handler::mainnet::post_execution::end" end_.
@@ -97,7 +97,7 @@ Module handler.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_clear : M.IsFunction "revm::handler::mainnet::post_execution::clear" clear.
@@ -477,17 +477,16 @@ Module handler.
                                           [ Ty.path "u64" ]
                                         |),
                                         [
-                                          BinOp.Wrap.sub
-                                            Integer.U64
-                                            (M.call_closure (|
+                                          BinOp.Wrap.sub (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "revm_interpreter::gas::Gas",
                                                 "spent",
                                                 []
                                               |),
                                               [ M.read (| gas |) ]
-                                            |))
-                                            (M.rust_cast
+                                            |),
+                                            M.rust_cast
                                               (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "revm_interpreter::gas::Gas",
@@ -495,7 +494,8 @@ Module handler.
                                                   []
                                                 |),
                                                 [ M.read (| gas |) ]
-                                              |)))
+                                              |))
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -510,7 +510,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_reward_beneficiary :
@@ -793,17 +793,16 @@ Module handler.
                                           [ Ty.path "u64" ]
                                         |),
                                         [
-                                          BinOp.Wrap.add
-                                            Integer.U64
-                                            (M.call_closure (|
+                                          BinOp.Wrap.add (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "revm_interpreter::gas::Gas",
                                                 "remaining",
                                                 []
                                               |),
                                               [ M.read (| gas |) ]
-                                            |))
-                                            (M.rust_cast
+                                            |),
+                                            M.rust_cast
                                               (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "revm_interpreter::gas::Gas",
@@ -811,7 +810,8 @@ Module handler.
                                                   []
                                                 |),
                                                 [ M.read (| gas |) ]
-                                              |)))
+                                              |))
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -826,7 +826,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_reimburse_caller :
@@ -1016,9 +1016,8 @@ Module handler.
                     |) in
                   let~ final_gas_used :=
                     M.alloc (|
-                      BinOp.Wrap.sub
-                        Integer.U64
-                        (M.call_closure (|
+                      BinOp.Wrap.sub (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
@@ -1034,8 +1033,9 @@ Module handler.
                               [ result ]
                             |)
                           ]
-                        |))
-                        (M.read (| gas_refunded |))
+                        |),
+                        M.read (| gas_refunded |)
+                      |)
                     |) in
                   let~ output :=
                     M.alloc (|
@@ -1222,74 +1222,75 @@ Module handler.
                                             ltac:(M.monadic
                                               match γ with
                                               | [] =>
-                                                M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::panicking::panic_fmt",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::Arguments",
-                                                            "new_v1",
-                                                            []
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "Encountered unexpected internal return flag: "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        " with instruction result: "
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    M.never_to_any (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::panicking::panic_fmt",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "Encountered unexpected internal return flag: "
+                                                                      |);
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          " with instruction result: "
+                                                                      |)
+                                                                    ]
+                                                                |));
+                                                              (* Unsize *)
+                                                              M.pointer_coercion
+                                                                (M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "revm_interpreter::instruction_result::SuccessOrHalt"
-                                                                        ]
-                                                                      |),
-                                                                      [ flag ]
-                                                                    |);
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::instruction_result::SuccessOrHalt"
+                                                                          ]
+                                                                        |),
+                                                                        [ flag ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
                                                                           Ty.path
-                                                                            "revm_interpreter::interpreter::InterpreterResult"
-                                                                        ]
-                                                                      |),
-                                                                      [ instruction_result ]
-                                                                    |)
-                                                                  ]
-                                                              |))
-                                                          ]
-                                                        |)
-                                                      ]
+                                                                            "core::fmt::rt::Argument",
+                                                                          "new_debug",
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::interpreter::InterpreterResult"
+                                                                          ]
+                                                                        |),
+                                                                        [ instruction_result ]
+                                                                      |)
+                                                                    ]
+                                                                |))
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
-                                                  |)
-                                                |)
-                                              | _ => M.impossible (||)
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       |)))
                                 ]
@@ -1308,7 +1309,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_output : M.IsFunction "revm::handler::mainnet::post_execution::output" output.

@@ -76,7 +76,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -186,7 +186,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -241,7 +241,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -266,7 +266,7 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         Value.StructTuple "wrapping_errors::DoubleError::Parse" [ M.read (| err |) ]))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -480,11 +480,11 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| parsed |)) ]
+                [ BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| parsed |) |) ]
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_double_first : M.IsFunction "wrapping_errors::double_first" double_first.
@@ -689,7 +689,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print : M.IsFunction "wrapping_errors::print" print.
@@ -837,7 +837,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "wrapping_errors::main" main.

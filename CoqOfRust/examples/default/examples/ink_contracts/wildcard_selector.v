@@ -28,7 +28,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   Definition new (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
     | [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -143,7 +143,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
@@ -202,7 +202,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_wildcard_complement :

@@ -84,7 +84,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new :
@@ -199,7 +199,7 @@ Module handler.
                   []
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_mainnet :
@@ -231,7 +231,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_optimism :
@@ -280,19 +280,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::FrontierSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::FrontierSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -322,19 +324,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::HomesteadSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::HomesteadSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -421,19 +425,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::PetersburgSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::PetersburgSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -463,19 +469,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::IstanbulSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::IstanbulSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -529,19 +537,21 @@ Module handler.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
-                                    "mainnet",
-                                    [ Ty.path "revm_primitives::specification::LondonSpec" ]
-                                  |),
-                                  []
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "revm::handler::Handler")
+                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                        ],
+                                      "mainnet",
+                                      [ Ty.path "revm_primitives::specification::LondonSpec" ]
+                                    |),
+                                    []
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -630,7 +640,7 @@ Module handler.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_mainnet_with_spec :
@@ -655,7 +665,7 @@ Module handler.
               "cfg"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cfg :
@@ -693,7 +703,7 @@ Module handler.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_instruction_table :
@@ -724,7 +734,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_instruction_table :
@@ -747,7 +757,7 @@ Module handler.
             "revm::handler::Handler",
             "pre_execution"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pre_execution :
@@ -770,7 +780,7 @@ Module handler.
             "revm::handler::Handler",
             "post_execution"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_post_execution :
@@ -793,7 +803,7 @@ Module handler.
             "revm::handler::Handler",
             "execution"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_execution :
@@ -816,7 +826,7 @@ Module handler.
             "revm::handler::Handler",
             "validation"
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_validation :
@@ -873,7 +883,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_handler_register :
@@ -930,7 +940,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_handler_register_plain :
@@ -1014,7 +1024,7 @@ Module handler.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_handler_register_box :
@@ -1244,7 +1254,7 @@ Module handler.
               |) in
             out
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pop_handle_register :
@@ -1395,7 +1405,7 @@ Module handler.
                 |)) in
             base_handler
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_create_handle_generic :
@@ -1633,7 +1643,7 @@ Module handler.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_spec_id :

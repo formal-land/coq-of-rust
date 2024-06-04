@@ -58,7 +58,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer 20 ]
+                    [ Value.Integer IntegerKind.U8 20 ]
                   |))
               ]
           |) in
@@ -237,7 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
@@ -295,7 +295,7 @@ Module main.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

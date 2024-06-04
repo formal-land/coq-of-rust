@@ -171,7 +171,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -288,7 +288,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -347,21 +347,22 @@ Module db.
                             ]
                           |),
                           ltac:(M.monadic
-                            (BinOp.Pure.eq
-                              (M.read (|
+                            (BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "revm::db::states::state_builder::StateBuilder",
                                   "with_state_clear"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| other |),
                                   "revm::db::states::state_builder::StateBuilder",
                                   "with_state_clear"
                                 |)
-                              |))))
+                              |)
+                            |)))
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
@@ -422,38 +423,40 @@ Module db.
                         |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm::db::states::state_builder::StateBuilder",
                             "with_bundle_update"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "revm::db::states::state_builder::StateBuilder",
                             "with_bundle_update"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::db::states::state_builder::StateBuilder",
                           "with_background_transition_merge"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::db::states::state_builder::StateBuilder",
                           "with_background_transition_merge"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
@@ -492,7 +495,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -566,7 +569,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -615,7 +618,7 @@ Module db.
                 |),
                 []
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -648,7 +651,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -708,7 +711,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_with_database :
@@ -790,7 +793,7 @@ Module db.
                       |)
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database :
@@ -823,7 +826,7 @@ Module db.
                   Value.StructTuple "revm_primitives::db::WrapDatabaseRef" [ M.read (| database |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database_ref :
@@ -864,7 +867,7 @@ Module db.
                 |),
                 [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| database |)) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database_boxed :
@@ -888,7 +891,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_state_clear", Value.Bool false) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_without_state_clear :
@@ -916,7 +919,7 @@ Module db.
                   ("with_bundle_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| bundle |) ])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_bundle_prestate :
@@ -940,7 +943,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_bundle_update", Value.Bool true) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_bundle_update :
@@ -968,7 +971,7 @@ Module db.
                   ("with_cache_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| cache |) ])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_cached_prestate :
@@ -996,7 +999,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_background_transition_merge", Value.Bool true) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_background_transition_merge :
@@ -1024,7 +1027,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_block_hashes", M.read (| block_hashes |)) ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_block_hashes :
@@ -1150,30 +1153,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "revm::db::states::cache::CacheState",
-                                                "new",
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "revm::db::states::state_builder::StateBuilder",
-                                                    "with_state_clear"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "revm::db::states::cache::CacheState",
+                                                  "new",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "revm::db::states::state_builder::StateBuilder",
+                                                      "with_state_clear"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |));
@@ -1245,7 +1249,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_build :

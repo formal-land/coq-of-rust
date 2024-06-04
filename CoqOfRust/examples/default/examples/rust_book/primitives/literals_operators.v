@@ -60,7 +60,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.add Integer.U32 (Value.Integer 1) (Value.Integer 2)
+                                    BinOp.Wrap.add (|
+                                      Value.Integer IntegerKind.U32 1,
+                                      Value.Integer IntegerKind.U32 2
+                                    |)
                                   |)
                                 ]
                               |)
@@ -101,7 +104,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Wrap.sub Integer.I32 (Value.Integer 1) (Value.Integer 2)
+                                    BinOp.Wrap.sub (|
+                                      Value.Integer IntegerKind.I32 1,
+                                      Value.Integer IntegerKind.I32 2
+                                    |)
                                   |)
                                 ]
                               |)
@@ -237,7 +243,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "bool" ]
                                 |),
-                                [ M.alloc (| UnOp.Pure.not (Value.Bool true) |) ]
+                                [ M.alloc (| UnOp.not (| Value.Bool true |) |) ]
                               |)
                             ]
                         |))
@@ -283,7 +289,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_and (Value.Integer 3) (Value.Integer 5)
+                                    BinOp.bit_and
+                                      (Value.Integer IntegerKind.U32 3)
+                                      (Value.Integer IntegerKind.U32 5)
                                   |)
                                 ]
                               |)
@@ -301,12 +309,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 8;
+                                  Value.Integer IntegerKind.U32 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 4 ]
                                 ]
                               |)
                             ]
@@ -361,7 +371,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_or (Value.Integer 3) (Value.Integer 5)
+                                    BinOp.bit_or
+                                      (Value.Integer IntegerKind.U32 3)
+                                      (Value.Integer IntegerKind.U32 5)
                                   |)
                                 ]
                               |)
@@ -379,12 +391,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 8;
+                                  Value.Integer IntegerKind.U32 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 4 ]
                                 ]
                               |)
                             ]
@@ -439,7 +453,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Pure.bit_xor (Value.Integer 3) (Value.Integer 5)
+                                    BinOp.bit_xor
+                                      (Value.Integer IntegerKind.U32 3)
+                                      (Value.Integer IntegerKind.U32 5)
                                   |)
                                 ]
                               |)
@@ -457,12 +473,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer 0;
+                                  Value.Integer IntegerKind.Usize 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer 8;
+                                  Value.Integer IntegerKind.U32 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 4 ]
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 4 ]
                                 ]
                               |)
                             ]
@@ -509,7 +527,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u32" ]
                                 |),
-                                [ M.alloc (| BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 5) |) ]
+                                [
+                                  M.alloc (|
+                                    BinOp.Wrap.shl (|
+                                      Value.Integer IntegerKind.U32 1,
+                                      Value.Integer IntegerKind.I32 5
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                         |))
@@ -549,7 +574,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_lower_hex",
                                   [ Ty.path "u32" ]
                                 |),
-                                [ M.alloc (| BinOp.Wrap.shr (Value.Integer 128) (Value.Integer 2) |)
+                                [
+                                  M.alloc (|
+                                    BinOp.Wrap.shr (|
+                                      Value.Integer IntegerKind.U32 128,
+                                      Value.Integer IntegerKind.I32 2
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -596,7 +627,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "literals_operators::main" main.

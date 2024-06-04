@@ -73,7 +73,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
@@ -169,7 +169,10 @@ Module tests.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 0); ("end_", Value.Integer 5) ]
+                      [
+                        ("start", Value.Integer IntegerKind.I32 0);
+                        ("end_", Value.Integer IntegerKind.I32 5)
+                      ]
                   ]
                 |)
               |),
@@ -251,7 +254,7 @@ Module tests.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
@@ -346,7 +349,10 @@ Module tests.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 0); ("end_", Value.Integer 5) ]
+                      [
+                        ("start", Value.Integer IntegerKind.I32 0);
+                        ("end_", Value.Integer IntegerKind.I32 5)
+                      ]
                   ]
                 |)
               |),
@@ -428,7 +434,7 @@ Module tests.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_test_file_also :

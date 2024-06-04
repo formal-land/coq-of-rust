@@ -158,7 +158,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -205,7 +205,7 @@ Module db.
                 |),
                 []
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_builder : M.IsAssociatedFunction Self "builder" builder.
@@ -240,7 +240,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_bundle_size_hint :
@@ -373,9 +373,10 @@ Module db.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.eq
-                                                                (M.read (| balance |))
-                                                                (Value.Integer 0)
+                                                              BinOp.eq (|
+                                                                M.read (| balance |),
+                                                                Value.Integer IntegerKind.U128 0
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -599,7 +600,7 @@ Module db.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_increment_balances :
@@ -955,7 +956,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_drain_balances :
@@ -995,7 +996,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_set_state_clear_flag :
@@ -1029,7 +1030,7 @@ Module db.
                   M.read (| address |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_not_existing :
@@ -1065,7 +1066,7 @@ Module db.
                   M.read (| info |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_account :
@@ -1109,7 +1110,7 @@ Module db.
                   M.read (| storage |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_account_with_storage :
@@ -1180,7 +1181,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_apply_transition :
@@ -1296,7 +1297,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_merge_transitions :
@@ -1776,7 +1777,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_load_cache_account :
@@ -1807,7 +1808,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take_bundle :
@@ -1877,27 +1878,28 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let a := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "revm::db::states::cache_account::CacheAccount",
-                                      "account_info",
-                                      []
-                                    |),
-                                    [ M.read (| a |) ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let a := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm::db::states::cache_account::CacheAccount",
+                                        "account_info",
+                                        []
+                                      |),
+                                      [ M.read (| a |) ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2267,7 +2269,7 @@ Module db.
                     res
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2475,283 +2477,289 @@ Module db.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let account :=
-                                                                          M.copy (| γ |) in
-                                                                        M.read (|
-                                                                          M.match_operator (|
-                                                                            M.alloc (|
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "std::collections::hash::map::HashMap")
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
-                                                                                      Ty.path
-                                                                                        "std::hash::random::RandomState"
-                                                                                    ],
-                                                                                  "entry",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (|
-                                                                                      account
-                                                                                    |),
-                                                                                    "revm::db::states::plain_account::PlainAccount",
-                                                                                    "storage"
-                                                                                  |);
-                                                                                  M.read (| index |)
-                                                                                ]
-                                                                              |)
-                                                                            |),
-                                                                            [
-                                                                              fun γ =>
-                                                                                ltac:(M.monadic
-                                                                                  (let γ0_0 :=
-                                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                                      γ,
-                                                                                      "std::collections::hash::map::Entry::Occupied",
-                                                                                      0
-                                                                                    |) in
-                                                                                  let entry :=
-                                                                                    M.copy (|
-                                                                                      γ0_0
-                                                                                    |) in
-                                                                                  M.alloc (|
-                                                                                    Value.StructTuple
-                                                                                      "core::result::Result::Ok"
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    M.alloc (| α0 |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let account :=
+                                                                            M.copy (| γ |) in
+                                                                          M.read (|
+                                                                            M.match_operator (|
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "std::collections::hash::map::HashMap")
                                                                                       [
-                                                                                        M.read (|
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "std::collections::hash::map::OccupiedEntry")
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint";
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint"
-                                                                                                ],
-                                                                                              "get",
-                                                                                              []
-                                                                                            |),
-                                                                                            [ entry
-                                                                                            ]
-                                                                                          |)
-                                                                                        |)
-                                                                                      ]
-                                                                                  |)));
-                                                                              fun γ =>
-                                                                                ltac:(M.monadic
-                                                                                  (let γ0_0 :=
-                                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                                      γ,
-                                                                                      "std::collections::hash::map::Entry::Vacant",
-                                                                                      0
-                                                                                    |) in
-                                                                                  let entry :=
-                                                                                    M.copy (|
-                                                                                      γ0_0
-                                                                                    |) in
-                                                                                  let~ value :=
-                                                                                    M.copy (|
-                                                                                      M.match_operator (|
-                                                                                        M.alloc (|
-                                                                                          Value.Tuple
-                                                                                            []
-                                                                                        |),
+                                                                                        Ty.path
+                                                                                          "ruint::Uint";
+                                                                                        Ty.path
+                                                                                          "ruint::Uint";
+                                                                                        Ty.path
+                                                                                          "std::hash::random::RandomState"
+                                                                                      ],
+                                                                                    "entry",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.read (|
+                                                                                        account
+                                                                                      |),
+                                                                                      "revm::db::states::plain_account::PlainAccount",
+                                                                                      "storage"
+                                                                                    |);
+                                                                                    M.read (|
+                                                                                      index
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let γ0_0 :=
+                                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                                        γ,
+                                                                                        "std::collections::hash::map::Entry::Occupied",
+                                                                                        0
+                                                                                      |) in
+                                                                                    let entry :=
+                                                                                      M.copy (|
+                                                                                        γ0_0
+                                                                                      |) in
+                                                                                    M.alloc (|
+                                                                                      Value.StructTuple
+                                                                                        "core::result::Result::Ok"
                                                                                         [
-                                                                                          fun γ =>
-                                                                                            ltac:(M.monadic
-                                                                                              (let
-                                                                                                    γ :=
-                                                                                                M.use
-                                                                                                  is_storage_known in
-                                                                                              let
-                                                                                                    _ :=
-                                                                                                M.is_constant_or_break_match (|
-                                                                                                  M.read (|
-                                                                                                    γ
-                                                                                                  |),
-                                                                                                  Value.Bool
-                                                                                                    true
-                                                                                                |) in
-                                                                                              M.get_constant (|
-                                                                                                "ruint::ZERO"
-                                                                                              |)));
-                                                                                          fun γ =>
-                                                                                            ltac:(M.monadic
-                                                                                              (M.match_operator (|
-                                                                                                M.alloc (|
-                                                                                                  M.call_closure (|
-                                                                                                    M.get_trait_method (|
-                                                                                                      "core::ops::try_trait::Try",
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "core::result::Result")
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "ruint::Uint";
-                                                                                                          Ty.associated
-                                                                                                        ],
-                                                                                                      [],
-                                                                                                      "branch",
-                                                                                                      []
+                                                                                          M.read (|
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "std::collections::hash::map::OccupiedEntry")
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "ruint::Uint";
+                                                                                                    Ty.path
+                                                                                                      "ruint::Uint"
+                                                                                                  ],
+                                                                                                "get",
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                entry
+                                                                                              ]
+                                                                                            |)
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)));
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let γ0_0 :=
+                                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                                        γ,
+                                                                                        "std::collections::hash::map::Entry::Vacant",
+                                                                                        0
+                                                                                      |) in
+                                                                                    let entry :=
+                                                                                      M.copy (|
+                                                                                        γ0_0
+                                                                                      |) in
+                                                                                    let~ value :=
+                                                                                      M.copy (|
+                                                                                        M.match_operator (|
+                                                                                          M.alloc (|
+                                                                                            Value.Tuple
+                                                                                              []
+                                                                                          |),
+                                                                                          [
+                                                                                            fun γ =>
+                                                                                              ltac:(M.monadic
+                                                                                                (let
+                                                                                                      γ :=
+                                                                                                  M.use
+                                                                                                    is_storage_known in
+                                                                                                let
+                                                                                                      _ :=
+                                                                                                  M.is_constant_or_break_match (|
+                                                                                                    M.read (|
+                                                                                                      γ
                                                                                                     |),
-                                                                                                    [
-                                                                                                      M.call_closure (|
-                                                                                                        M.get_trait_method (|
-                                                                                                          "revm_primitives::db::Database",
-                                                                                                          DB,
-                                                                                                          [],
-                                                                                                          "storage",
-                                                                                                          []
-                                                                                                        |),
-                                                                                                        [
-                                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                                    Value.Bool
+                                                                                                      true
+                                                                                                  |) in
+                                                                                                M.get_constant (|
+                                                                                                  "ruint::ZERO"
+                                                                                                |)));
+                                                                                            fun γ =>
+                                                                                              ltac:(M.monadic
+                                                                                                (M.match_operator (|
+                                                                                                  M.alloc (|
+                                                                                                    M.call_closure (|
+                                                                                                      M.get_trait_method (|
+                                                                                                        "core::ops::try_trait::Try",
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::result::Result")
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "ruint::Uint";
+                                                                                                            Ty.associated
+                                                                                                          ],
+                                                                                                        [],
+                                                                                                        "branch",
+                                                                                                        []
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_trait_method (|
+                                                                                                            "revm_primitives::db::Database",
+                                                                                                            DB,
+                                                                                                            [],
+                                                                                                            "storage",
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                                              M.read (|
+                                                                                                                self
+                                                                                                              |),
+                                                                                                              "revm::db::states::state::State",
+                                                                                                              "database"
+                                                                                                            |);
                                                                                                             M.read (|
-                                                                                                              self
-                                                                                                            |),
-                                                                                                            "revm::db::states::state::State",
-                                                                                                            "database"
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            address
-                                                                                                          |);
-                                                                                                          M.read (|
-                                                                                                            index
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                |),
-                                                                                                [
-                                                                                                  fun
-                                                                                                      γ =>
-                                                                                                    ltac:(M.monadic
-                                                                                                      (let
-                                                                                                            γ0_0 :=
-                                                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                                                          γ,
-                                                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                                                          0
-                                                                                                        |) in
-                                                                                                      let
-                                                                                                            residual :=
-                                                                                                        M.copy (|
-                                                                                                          γ0_0
-                                                                                                        |) in
-                                                                                                      M.alloc (|
-                                                                                                        M.never_to_any (|
-                                                                                                          M.read (|
-                                                                                                            M.return_ (|
-                                                                                                              M.call_closure (|
-                                                                                                                M.get_trait_method (|
-                                                                                                                  "core::ops::try_trait::FromResidual",
-                                                                                                                  Ty.apply
-                                                                                                                    (Ty.path
-                                                                                                                      "core::result::Result")
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "ruint::Uint";
-                                                                                                                      Ty.associated
-                                                                                                                    ],
-                                                                                                                  [
+                                                                                                              address
+                                                                                                            |);
+                                                                                                            M.read (|
+                                                                                                              index
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
+                                                                                                  |),
+                                                                                                  [
+                                                                                                    fun
+                                                                                                        γ =>
+                                                                                                      ltac:(M.monadic
+                                                                                                        (let
+                                                                                                              γ0_0 :=
+                                                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                                                            γ,
+                                                                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                                                                            0
+                                                                                                          |) in
+                                                                                                        let
+                                                                                                              residual :=
+                                                                                                          M.copy (|
+                                                                                                            γ0_0
+                                                                                                          |) in
+                                                                                                        M.alloc (|
+                                                                                                          M.never_to_any (|
+                                                                                                            M.read (|
+                                                                                                              M.return_ (|
+                                                                                                                M.call_closure (|
+                                                                                                                  M.get_trait_method (|
+                                                                                                                    "core::ops::try_trait::FromResidual",
                                                                                                                     Ty.apply
                                                                                                                       (Ty.path
                                                                                                                         "core::result::Result")
                                                                                                                       [
                                                                                                                         Ty.path
-                                                                                                                          "core::convert::Infallible";
+                                                                                                                          "ruint::Uint";
                                                                                                                         Ty.associated
-                                                                                                                      ]
-                                                                                                                  ],
-                                                                                                                  "from_residual",
-                                                                                                                  []
-                                                                                                                |),
-                                                                                                                [
-                                                                                                                  M.read (|
-                                                                                                                    residual
-                                                                                                                  |)
-                                                                                                                ]
+                                                                                                                      ],
+                                                                                                                    [
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "core::result::Result")
+                                                                                                                        [
+                                                                                                                          Ty.path
+                                                                                                                            "core::convert::Infallible";
+                                                                                                                          Ty.associated
+                                                                                                                        ]
+                                                                                                                    ],
+                                                                                                                    "from_residual",
+                                                                                                                    []
+                                                                                                                  |),
+                                                                                                                  [
+                                                                                                                    M.read (|
+                                                                                                                      residual
+                                                                                                                    |)
+                                                                                                                  ]
+                                                                                                                |)
                                                                                                               |)
                                                                                                             |)
                                                                                                           |)
-                                                                                                        |)
-                                                                                                      |)));
-                                                                                                  fun
-                                                                                                      γ =>
-                                                                                                    ltac:(M.monadic
-                                                                                                      (let
-                                                                                                            γ0_0 :=
-                                                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                                                          γ,
-                                                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                                                          0
-                                                                                                        |) in
-                                                                                                      let
-                                                                                                            val :=
-                                                                                                        M.copy (|
-                                                                                                          γ0_0
-                                                                                                        |) in
-                                                                                                      val))
-                                                                                                ]
-                                                                                              |)))
-                                                                                        ]
-                                                                                      |)
-                                                                                    |) in
-                                                                                  let~ _ :=
+                                                                                                        |)));
+                                                                                                    fun
+                                                                                                        γ =>
+                                                                                                      ltac:(M.monadic
+                                                                                                        (let
+                                                                                                              γ0_0 :=
+                                                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                                                            γ,
+                                                                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                                                                            0
+                                                                                                          |) in
+                                                                                                        let
+                                                                                                              val :=
+                                                                                                          M.copy (|
+                                                                                                            γ0_0
+                                                                                                          |) in
+                                                                                                        val))
+                                                                                                  ]
+                                                                                                |)))
+                                                                                          ]
+                                                                                        |)
+                                                                                      |) in
+                                                                                    let~ _ :=
+                                                                                      M.alloc (|
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "std::collections::hash::map::VacantEntry")
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "ruint::Uint";
+                                                                                                Ty.path
+                                                                                                  "ruint::Uint"
+                                                                                              ],
+                                                                                            "insert",
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              entry
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              value
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      |) in
                                                                                     M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "std::collections::hash::map::VacantEntry")
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "ruint::Uint";
-                                                                                              Ty.path
-                                                                                                "ruint::Uint"
-                                                                                            ],
-                                                                                          "insert",
-                                                                                          []
-                                                                                        |),
+                                                                                      Value.StructTuple
+                                                                                        "core::result::Result::Ok"
                                                                                         [
-                                                                                          M.read (|
-                                                                                            entry
-                                                                                          |);
                                                                                           M.read (|
                                                                                             value
                                                                                           |)
                                                                                         ]
-                                                                                      |)
-                                                                                    |) in
-                                                                                  M.alloc (|
-                                                                                    Value.StructTuple
-                                                                                      "core::result::Result::Ok"
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          value
-                                                                                        |)
-                                                                                      ]
-                                                                                  |)))
-                                                                            ]
-                                                                          |)
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                                    |)))
+                                                                              ]
+                                                                            |)
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       ]
                                                     |)
@@ -2863,7 +2871,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3135,8 +3143,8 @@ Module db.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.lt
-                                                          (M.read (|
+                                                        BinOp.lt (|
+                                                          M.read (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
@@ -3153,8 +3161,8 @@ Module db.
                                                               |),
                                                               [ entry ]
                                                             |)
-                                                          |))
-                                                          (M.call_closure (|
+                                                          |),
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "u64",
                                                               "saturating_sub",
@@ -3169,7 +3177,8 @@ Module db.
                                                                   |)
                                                                 |))
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -3226,7 +3235,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3294,7 +3303,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

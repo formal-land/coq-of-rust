@@ -32,7 +32,7 @@ Module ops.
             |),
             [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
@@ -71,31 +71,32 @@ Module ops.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            Value.StructTuple
-                              "core::ops::try_trait::NeverShortCircuit"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnMut",
-                                    impl_FnMut_A__arrow_T,
-                                    [ Ty.tuple [ A ] ],
-                                    "call_mut",
-                                    []
-                                  |),
-                                  [ f; Value.Tuple [ M.read (| a |) ] ]
-                                |)
-                              ]))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              Value.StructTuple
+                                "core::ops::try_trait::NeverShortCircuit"
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::FnMut",
+                                      impl_FnMut_A__arrow_T,
+                                      [ Ty.tuple [ A ] ],
+                                      "call_mut",
+                                      []
+                                    |),
+                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                                  |)
+                                ]))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap_mut_1 :
@@ -118,39 +119,40 @@ Module ops.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    Value.StructTuple
-                                      "core::ops::try_trait::NeverShortCircuit"
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_A__B__arrow_T,
-                                            [ Ty.tuple [ A; B ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                                        |)
-                                      ]))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      Value.StructTuple
+                                        "core::ops::try_trait::NeverShortCircuit"
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              impl_FnMut_A__B__arrow_T,
+                                              [ Ty.tuple [ A; B ] ],
+                                              "call_mut",
+                                              []
+                                            |),
+                                            [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                          |)
+                                        ]))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap_mut_2 :
@@ -199,7 +201,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -214,7 +216,7 @@ Module ops.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple "core::ops::try_trait::NeverShortCircuit" [ M.read (| x |) ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -248,7 +250,7 @@ Module ops.
           ltac:(M.monadic
             (let never := M.alloc (| never |) in
             M.never_to_any (| M.read (| M.match_operator (| never, [] |) |) |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -315,7 +317,7 @@ Module ops.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

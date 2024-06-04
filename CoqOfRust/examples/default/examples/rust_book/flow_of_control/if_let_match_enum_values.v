@@ -65,7 +65,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ b := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
         let~ c :=
           M.alloc (|
-            Value.StructTuple "if_let_match_enum_values::Foo::Qux" [ Value.Integer 100 ]
+            Value.StructTuple
+              "if_let_match_enum_values::Foo::Qux"
+              [ Value.Integer IntegerKind.U32 100 ]
           |) in
         let~ _ :=
           M.match_operator (|
@@ -216,7 +218,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let value := M.copy (| γ0_0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 100 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.U32 100
+                  |) in
                 let~ _ :=
                   let~ _ :=
                     M.alloc (|
@@ -247,7 +253,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "if_let_match_enum_values::main" main.

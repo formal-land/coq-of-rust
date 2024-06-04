@@ -20,9 +20,9 @@ Module tuple.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         let x := M.alloc (| x |) in
-        BinOp.Pure.eq
-          (M.rust_cast (M.read (| x |)))
-          (M.read (|
+        BinOp.eq (|
+          M.rust_cast (M.read (| x |)),
+          M.read (|
             M.match_operator (|
               c,
               [
@@ -39,11 +39,12 @@ Module tuple.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer 2 |)))
+                    M.alloc (| Value.Integer IntegerKind.I8 2 |)))
               ]
             |)
-          |))))
-    | _, _ => M.impossible
+          |)
+        |)))
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ordering_is_some : M.IsFunction "core::tuple::ordering_is_some" ordering_is_some.
@@ -70,7 +71,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -92,7 +93,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -170,7 +171,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -192,7 +193,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -214,7 +215,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -236,7 +237,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -258,7 +259,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -299,7 +300,7 @@ Module tuple.
               M.SubPointer.get_tuple_field (| M.read (| other |), 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -337,7 +338,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -376,7 +377,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -415,7 +416,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -459,7 +460,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -491,7 +492,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -610,7 +611,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -644,11 +645,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -671,7 +673,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -705,11 +707,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -732,7 +735,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -766,11 +769,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -793,7 +797,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -827,11 +831,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -854,7 +859,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -919,7 +924,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -967,7 +972,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1008,7 +1013,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1049,7 +1054,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1103,7 +1108,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1145,7 +1150,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1296,7 +1301,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1330,11 +1335,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1369,14 +1375,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1408,7 +1415,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1442,11 +1449,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1481,14 +1489,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1520,7 +1529,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1554,11 +1563,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1593,14 +1603,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1635,7 +1646,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1669,11 +1680,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1708,14 +1720,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1750,7 +1763,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1835,7 +1848,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1893,7 +1906,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1939,7 +1952,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1985,7 +1998,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2049,7 +2062,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2101,7 +2114,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2285,7 +2298,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2319,11 +2332,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2358,14 +2372,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2401,8 +2416,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -2411,7 +2426,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2451,7 +2467,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2485,11 +2501,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2524,14 +2541,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2567,8 +2585,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -2577,7 +2595,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2617,7 +2636,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2651,11 +2670,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2690,14 +2710,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2736,8 +2757,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -2746,7 +2767,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2786,7 +2808,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2820,11 +2842,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2859,14 +2882,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2905,8 +2929,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -2915,7 +2939,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2955,7 +2980,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3061,7 +3086,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3129,7 +3154,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3182,7 +3207,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3235,7 +3260,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3309,7 +3334,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3371,7 +3396,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3598,7 +3623,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3632,11 +3657,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -3671,14 +3697,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3714,8 +3741,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -3724,7 +3751,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3766,8 +3794,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -3778,7 +3806,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -3829,7 +3858,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3863,11 +3892,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -3902,14 +3932,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3945,8 +3976,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -3955,7 +3986,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3997,8 +4029,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -4009,7 +4041,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4060,7 +4093,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4094,11 +4127,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4133,14 +4167,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4179,8 +4214,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -4189,7 +4224,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4231,8 +4267,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -4243,7 +4279,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4296,7 +4333,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -4330,11 +4367,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4369,14 +4407,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4415,8 +4454,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -4425,7 +4464,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4467,8 +4507,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -4479,7 +4519,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4532,7 +4573,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4680,7 +4721,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4758,7 +4799,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4814,7 +4855,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4870,7 +4911,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4954,7 +4995,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5026,7 +5067,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5297,7 +5338,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5331,11 +5372,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -5370,14 +5412,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5413,8 +5456,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -5423,7 +5466,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -5465,8 +5509,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -5477,7 +5521,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -5528,8 +5573,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -5540,7 +5585,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -5595,7 +5641,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5629,11 +5675,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -5668,14 +5715,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5711,8 +5759,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -5721,7 +5769,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -5763,8 +5812,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -5775,7 +5824,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -5826,8 +5876,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -5838,7 +5888,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -5893,7 +5944,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5927,11 +5978,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -5966,14 +6018,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6012,8 +6065,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -6022,7 +6075,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -6064,8 +6118,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -6076,7 +6130,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -6129,8 +6184,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -6141,7 +6196,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -6196,7 +6252,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6230,11 +6286,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -6269,14 +6326,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6315,8 +6373,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -6325,7 +6383,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -6367,8 +6426,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -6379,7 +6438,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -6432,8 +6492,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -6444,7 +6504,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -6499,7 +6560,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6683,7 +6744,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6771,7 +6832,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6830,7 +6891,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6889,7 +6950,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6983,7 +7044,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7065,7 +7126,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7378,7 +7439,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7412,11 +7473,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -7451,14 +7513,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7494,8 +7557,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -7504,7 +7567,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7546,8 +7610,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -7558,7 +7622,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -7609,8 +7674,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -7621,7 +7686,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -7674,8 +7740,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -7686,7 +7752,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -7743,7 +7810,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7777,11 +7844,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -7816,14 +7884,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7859,8 +7928,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -7869,7 +7938,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7911,8 +7981,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -7923,7 +7993,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -7974,8 +8045,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -7986,7 +8057,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -8039,8 +8111,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -8051,7 +8123,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -8108,7 +8181,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8142,11 +8215,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -8181,14 +8255,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8227,8 +8302,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -8237,7 +8312,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -8279,8 +8355,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -8291,7 +8367,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -8344,8 +8421,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -8356,7 +8433,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -8409,8 +8487,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -8421,7 +8499,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -8478,7 +8557,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8512,11 +8591,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -8551,14 +8631,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8597,8 +8678,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -8607,7 +8688,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -8649,8 +8731,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -8661,7 +8743,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -8714,8 +8797,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -8726,7 +8809,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -8779,8 +8863,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -8791,7 +8875,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -8848,7 +8933,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9068,7 +9153,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9166,7 +9251,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9228,7 +9313,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9290,7 +9375,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9394,7 +9479,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9486,7 +9571,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9842,7 +9927,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9876,11 +9961,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -9915,14 +10001,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9958,8 +10045,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -9968,7 +10055,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -10010,8 +10098,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -10022,7 +10110,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -10073,8 +10162,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -10085,7 +10174,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -10138,8 +10228,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -10150,7 +10240,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -10203,8 +10294,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -10215,7 +10306,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -10274,7 +10366,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -10308,11 +10400,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -10347,14 +10440,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10390,8 +10484,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -10400,7 +10494,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -10442,8 +10537,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -10454,7 +10549,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -10505,8 +10601,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -10517,7 +10613,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -10570,8 +10667,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -10582,7 +10679,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -10635,8 +10733,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -10647,7 +10745,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -10706,7 +10805,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -10740,11 +10839,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -10779,14 +10879,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10825,8 +10926,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -10835,7 +10936,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -10877,8 +10979,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -10889,7 +10991,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -10942,8 +11045,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -10954,7 +11057,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -11007,8 +11111,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -11019,7 +11123,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -11072,8 +11177,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -11084,7 +11189,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -11143,7 +11249,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -11177,11 +11283,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -11216,14 +11323,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11262,8 +11370,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -11272,7 +11380,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -11314,8 +11423,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -11326,7 +11435,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -11379,8 +11489,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -11391,7 +11501,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -11444,8 +11555,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -11456,7 +11567,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -11509,8 +11621,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -11521,7 +11633,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -11580,7 +11693,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11837,7 +11950,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11945,7 +12058,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12010,7 +12123,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12075,7 +12188,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12189,7 +12302,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -12291,7 +12404,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12694,7 +12807,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -12728,11 +12841,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -12767,14 +12881,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12810,8 +12925,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -12820,7 +12935,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -12862,8 +12978,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -12874,7 +12990,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -12925,8 +13042,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -12937,7 +13054,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -12990,8 +13108,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -13002,7 +13120,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -13055,8 +13174,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -13067,7 +13186,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -13120,8 +13240,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -13134,7 +13254,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -13199,7 +13320,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -13233,11 +13354,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -13272,14 +13394,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13315,8 +13438,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -13325,7 +13448,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -13367,8 +13491,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -13379,7 +13503,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -13430,8 +13555,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -13442,7 +13567,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -13495,8 +13621,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -13507,7 +13633,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -13560,8 +13687,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -13572,7 +13699,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -13625,8 +13753,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -13639,7 +13767,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -13704,7 +13833,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -13738,11 +13867,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -13777,14 +13907,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13823,8 +13954,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -13833,7 +13964,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -13875,8 +14007,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -13887,7 +14019,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -13940,8 +14073,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -13952,7 +14085,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -14005,8 +14139,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -14017,7 +14151,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -14070,8 +14205,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -14082,7 +14217,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -14135,8 +14271,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -14149,7 +14285,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -14214,7 +14351,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -14248,11 +14385,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -14287,14 +14425,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -14333,8 +14472,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -14343,7 +14482,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -14385,8 +14525,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -14397,7 +14537,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -14450,8 +14591,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -14462,7 +14603,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -14515,8 +14657,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -14527,7 +14669,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -14580,8 +14723,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -14592,7 +14735,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -14645,8 +14789,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -14659,7 +14803,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -14724,7 +14869,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15022,7 +15167,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15140,7 +15285,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15208,7 +15353,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15276,7 +15421,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15401,7 +15546,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -15513,7 +15658,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -15970,7 +16115,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -16004,11 +16149,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -16043,14 +16189,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16086,8 +16233,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -16096,7 +16243,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -16138,8 +16286,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -16150,7 +16298,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -16201,8 +16350,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -16213,7 +16362,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -16266,8 +16416,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -16278,7 +16428,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -16331,8 +16482,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -16343,7 +16494,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -16396,8 +16548,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -16410,7 +16562,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -16469,8 +16622,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -16483,7 +16636,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -16555,7 +16709,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -16589,11 +16743,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -16628,14 +16783,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16671,8 +16827,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -16681,7 +16837,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -16723,8 +16880,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -16735,7 +16892,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -16786,8 +16944,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -16798,7 +16956,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -16851,8 +17010,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -16863,7 +17022,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -16916,8 +17076,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -16928,7 +17088,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -16981,8 +17142,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -16995,7 +17156,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -17054,8 +17216,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -17068,7 +17230,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -17140,7 +17303,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -17174,11 +17337,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -17213,14 +17377,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17259,8 +17424,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -17269,7 +17434,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -17311,8 +17477,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -17323,7 +17489,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -17376,8 +17543,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -17388,7 +17555,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -17441,8 +17609,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -17453,7 +17621,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -17506,8 +17675,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -17518,7 +17687,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -17571,8 +17741,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -17585,7 +17755,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -17644,8 +17815,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -17658,7 +17829,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -17730,7 +17902,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -17764,11 +17936,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -17803,14 +17976,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17849,8 +18023,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -17859,7 +18033,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -17901,8 +18076,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -17913,7 +18088,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -17966,8 +18142,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -17978,7 +18154,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -18031,8 +18208,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -18043,7 +18220,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -18096,8 +18274,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -18108,7 +18286,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -18161,8 +18340,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -18175,7 +18354,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -18234,8 +18414,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -18248,7 +18428,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -18320,7 +18501,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18662,7 +18843,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18791,7 +18972,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18862,7 +19043,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18933,7 +19114,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -19074,7 +19255,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -19202,7 +19383,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -19712,7 +19893,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -19746,11 +19927,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -19785,14 +19967,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19828,8 +20011,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -19838,7 +20021,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -19880,8 +20064,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -19892,7 +20076,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -19943,8 +20128,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -19955,7 +20140,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -20008,8 +20194,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -20020,7 +20206,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -20073,8 +20260,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -20085,7 +20272,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -20138,8 +20326,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -20152,7 +20340,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -20211,8 +20400,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -20225,7 +20414,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -20291,8 +20481,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -20305,7 +20495,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -20381,7 +20572,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -20415,11 +20606,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -20454,14 +20646,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -20497,8 +20690,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -20507,7 +20700,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -20549,8 +20743,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -20561,7 +20755,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -20612,8 +20807,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -20624,7 +20819,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -20677,8 +20873,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -20689,7 +20885,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -20742,8 +20939,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -20754,7 +20951,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -20807,8 +21005,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -20821,7 +21019,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -20880,8 +21079,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -20894,7 +21093,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -20960,8 +21160,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -20974,7 +21174,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -21050,7 +21251,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -21084,11 +21285,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -21123,14 +21325,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -21169,8 +21372,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -21179,7 +21382,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -21221,8 +21425,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -21233,7 +21437,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -21286,8 +21491,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -21298,7 +21503,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -21351,8 +21557,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -21363,7 +21569,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -21416,8 +21623,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -21428,7 +21635,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -21481,8 +21689,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -21495,7 +21703,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -21554,8 +21763,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -21568,7 +21777,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -21634,8 +21844,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -21648,7 +21858,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -21724,7 +21935,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -21758,11 +21969,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -21797,14 +22009,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -21843,8 +22056,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -21853,7 +22066,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -21895,8 +22109,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -21907,7 +22121,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -21960,8 +22175,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -21972,7 +22187,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -22025,8 +22241,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -22037,7 +22253,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -22090,8 +22307,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -22102,7 +22319,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -22155,8 +22373,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -22169,7 +22387,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -22228,8 +22447,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -22242,7 +22461,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -22308,8 +22528,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -22322,7 +22542,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -22398,7 +22619,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -22785,7 +23006,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -22924,7 +23145,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -22998,7 +23219,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -23072,7 +23293,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -23235,7 +23456,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -23385,7 +23606,7 @@ Module tuple.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -23955,7 +24176,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -23989,11 +24210,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -24028,14 +24250,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24071,8 +24294,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -24081,7 +24304,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -24123,8 +24347,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -24135,7 +24359,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -24186,8 +24411,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -24198,7 +24423,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -24251,8 +24477,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -24263,7 +24489,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -24316,8 +24543,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -24328,7 +24555,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -24381,8 +24609,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -24395,7 +24623,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -24454,8 +24683,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -24468,7 +24697,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -24534,8 +24764,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -24548,7 +24778,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -24618,8 +24849,8 @@ Module tuple.
                                                                                                           γ :=
                                                                                                       M.use
                                                                                                         (M.alloc (|
-                                                                                                          UnOp.Pure.not
-                                                                                                            (M.call_closure (|
+                                                                                                          UnOp.not (|
+                                                                                                            M.call_closure (|
                                                                                                               M.get_function (|
                                                                                                                 "core::tuple::ordering_is_some",
                                                                                                                 []
@@ -24632,7 +24863,8 @@ Module tuple.
                                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                                   []
                                                                                                               ]
-                                                                                                            |))
+                                                                                                            |)
+                                                                                                          |)
                                                                                                         |)) in
                                                                                                     let
                                                                                                           _ :=
@@ -24712,7 +24944,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -24746,11 +24978,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -24785,14 +25018,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24828,8 +25062,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -24838,7 +25072,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -24880,8 +25115,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -24892,7 +25127,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -24943,8 +25179,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -24955,7 +25191,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -25008,8 +25245,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -25020,7 +25257,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -25073,8 +25311,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -25085,7 +25323,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -25138,8 +25377,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -25152,7 +25391,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -25211,8 +25451,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -25225,7 +25465,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -25291,8 +25532,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -25305,7 +25546,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -25375,8 +25617,8 @@ Module tuple.
                                                                                                           γ :=
                                                                                                       M.use
                                                                                                         (M.alloc (|
-                                                                                                          UnOp.Pure.not
-                                                                                                            (M.call_closure (|
+                                                                                                          UnOp.not (|
+                                                                                                            M.call_closure (|
                                                                                                               M.get_function (|
                                                                                                                 "core::tuple::ordering_is_some",
                                                                                                                 []
@@ -25389,7 +25631,8 @@ Module tuple.
                                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                                   []
                                                                                                               ]
-                                                                                                            |))
+                                                                                                            |)
+                                                                                                          |)
                                                                                                         |)) in
                                                                                                     let
                                                                                                           _ :=
@@ -25469,7 +25712,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -25503,11 +25746,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -25542,14 +25786,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -25588,8 +25833,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -25598,7 +25843,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -25640,8 +25886,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -25652,7 +25898,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -25705,8 +25952,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -25717,7 +25964,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -25770,8 +26018,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -25782,7 +26030,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -25835,8 +26084,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -25847,7 +26096,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -25900,8 +26150,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -25914,7 +26164,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -25973,8 +26224,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -25987,7 +26238,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -26053,8 +26305,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -26067,7 +26319,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -26137,8 +26390,8 @@ Module tuple.
                                                                                                           γ :=
                                                                                                       M.use
                                                                                                         (M.alloc (|
-                                                                                                          UnOp.Pure.not
-                                                                                                            (M.call_closure (|
+                                                                                                          UnOp.not (|
+                                                                                                            M.call_closure (|
                                                                                                               M.get_function (|
                                                                                                                 "core::tuple::ordering_is_some",
                                                                                                                 []
@@ -26151,7 +26404,8 @@ Module tuple.
                                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                                   []
                                                                                                               ]
-                                                                                                            |))
+                                                                                                            |)
+                                                                                                          |)
                                                                                                         |)) in
                                                                                                     let
                                                                                                           _ :=
@@ -26231,7 +26485,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -26265,11 +26519,12 @@ Module tuple.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.not (|
+                            M.call_closure (|
                               M.get_function (| "core::tuple::ordering_is_some", [] |),
                               [ M.read (| c |); Value.StructTuple "core::cmp::Ordering::Equal" [] ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -26304,14 +26559,15 @@ Module tuple.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_function (| "core::tuple::ordering_is_some", [] |),
                                       [
                                         M.read (| c |);
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -26350,8 +26606,8 @@ Module tuple.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::tuple::ordering_is_some",
                                                 []
@@ -26360,7 +26616,8 @@ Module tuple.
                                                 M.read (| c |);
                                                 Value.StructTuple "core::cmp::Ordering::Equal" []
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -26402,8 +26659,8 @@ Module tuple.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (M.call_closure (|
+                                                  UnOp.not (|
+                                                    M.call_closure (|
                                                       M.get_function (|
                                                         "core::tuple::ordering_is_some",
                                                         []
@@ -26414,7 +26671,8 @@ Module tuple.
                                                           "core::cmp::Ordering::Equal"
                                                           []
                                                       ]
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -26467,8 +26725,8 @@ Module tuple.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_function (|
                                                                 "core::tuple::ordering_is_some",
                                                                 []
@@ -26479,7 +26737,8 @@ Module tuple.
                                                                   "core::cmp::Ordering::Equal"
                                                                   []
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -26532,8 +26791,8 @@ Module tuple.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.call_closure (|
+                                                                  UnOp.not (|
+                                                                    M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::tuple::ordering_is_some",
                                                                         []
@@ -26544,7 +26803,8 @@ Module tuple.
                                                                           "core::cmp::Ordering::Equal"
                                                                           []
                                                                       ]
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -26597,8 +26857,8 @@ Module tuple.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          UnOp.Pure.not
-                                                                            (M.call_closure (|
+                                                                          UnOp.not (|
+                                                                            M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::tuple::ordering_is_some",
                                                                                 []
@@ -26609,7 +26869,8 @@ Module tuple.
                                                                                   "core::cmp::Ordering::Equal"
                                                                                   []
                                                                               ]
-                                                                            |))
+                                                                            |)
+                                                                          |)
                                                                         |)) in
                                                                     let _ :=
                                                                       M.is_constant_or_break_match (|
@@ -26662,8 +26923,8 @@ Module tuple.
                                                                             (let γ :=
                                                                               M.use
                                                                                 (M.alloc (|
-                                                                                  UnOp.Pure.not
-                                                                                    (M.call_closure (|
+                                                                                  UnOp.not (|
+                                                                                    M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::tuple::ordering_is_some",
                                                                                         []
@@ -26676,7 +26937,8 @@ Module tuple.
                                                                                           "core::cmp::Ordering::Equal"
                                                                                           []
                                                                                       ]
-                                                                                    |))
+                                                                                    |)
+                                                                                  |)
                                                                                 |)) in
                                                                             let _ :=
                                                                               M.is_constant_or_break_match (|
@@ -26735,8 +26997,8 @@ Module tuple.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
-                                                                                          UnOp.Pure.not
-                                                                                            (M.call_closure (|
+                                                                                          UnOp.not (|
+                                                                                            M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::tuple::ordering_is_some",
                                                                                                 []
@@ -26749,7 +27011,8 @@ Module tuple.
                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                   []
                                                                                               ]
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         |)) in
                                                                                     let _ :=
                                                                                       M.is_constant_or_break_match (|
@@ -26815,8 +27078,8 @@ Module tuple.
                                                                                                   γ :=
                                                                                               M.use
                                                                                                 (M.alloc (|
-                                                                                                  UnOp.Pure.not
-                                                                                                    (M.call_closure (|
+                                                                                                  UnOp.not (|
+                                                                                                    M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::tuple::ordering_is_some",
                                                                                                         []
@@ -26829,7 +27092,8 @@ Module tuple.
                                                                                                           "core::cmp::Ordering::Equal"
                                                                                                           []
                                                                                                       ]
-                                                                                                    |))
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 |)) in
                                                                                             let _ :=
                                                                                               M.is_constant_or_break_match (|
@@ -26899,8 +27163,8 @@ Module tuple.
                                                                                                           γ :=
                                                                                                       M.use
                                                                                                         (M.alloc (|
-                                                                                                          UnOp.Pure.not
-                                                                                                            (M.call_closure (|
+                                                                                                          UnOp.not (|
+                                                                                                            M.call_closure (|
                                                                                                               M.get_function (|
                                                                                                                 "core::tuple::ordering_is_some",
                                                                                                                 []
@@ -26913,7 +27177,8 @@ Module tuple.
                                                                                                                   "core::cmp::Ordering::Equal"
                                                                                                                   []
                                                                                                               ]
-                                                                                                            |))
+                                                                                                            |)
+                                                                                                          |)
                                                                                                         |)) in
                                                                                                     let
                                                                                                           _ :=
@@ -26993,7 +27258,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -27427,7 +27692,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -27576,7 +27841,7 @@ Module tuple.
                 x
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -27653,7 +27918,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -27730,7 +27995,7 @@ Module tuple.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

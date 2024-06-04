@@ -46,7 +46,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     M.read (| slice |),
-                                    M.alloc (| Value.Integer 0 |)
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                   |)
                                 ]
                               |)
@@ -111,7 +111,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
@@ -173,10 +173,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let~ xs :=
           M.alloc (|
             Value.Array
-              [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3;
+                Value.Integer IntegerKind.I32 4;
+                Value.Integer IntegerKind.I32 5
               ]
           |) in
-        let~ ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
+        let~ ys := M.alloc (| repeat (Value.Integer IntegerKind.I32 0) 500 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -210,7 +215,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     xs,
-                                    M.alloc (| Value.Integer 0 |)
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                   |)
                                 ]
                               |)
@@ -255,7 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     xs,
-                                    M.alloc (| Value.Integer 1 |)
+                                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                   |)
                                 ]
                               |)
@@ -437,7 +442,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ys;
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 1); ("end_", Value.Integer 4) ]
+                      [
+                        ("start", Value.Integer IntegerKind.Usize 1);
+                        ("end_", Value.Integer IntegerKind.Usize 4)
+                      ]
                   ]
                 |)
               ]
@@ -464,8 +472,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -480,7 +488,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -558,8 +567,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -574,7 +583,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -629,19 +639,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.StructRecord
                     "core::ops::range::Range"
                     [
-                      ("start", Value.Integer 0);
+                      ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_",
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.call_closure (|
+                        BinOp.Wrap.add (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                               "len",
                               []
                             |),
                             [ (* Unsize *) M.pointer_coercion xs ]
-                          |))
-                          (Value.Integer 1))
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |))
                     ]
                 ]
               |)
@@ -815,7 +825,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.

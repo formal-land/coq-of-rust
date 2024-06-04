@@ -109,7 +109,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -188,7 +188,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -261,7 +261,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -356,7 +356,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -391,7 +391,7 @@ Module collections.
                   ("b", M.read (| b |));
                   ("peeked", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -738,7 +738,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| a_next |); M.read (| b_next |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_nexts :
@@ -788,10 +788,9 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (Value.Integer 1)
-                                (M.call_closure (|
+                              BinOp.Wrap.add (|
+                                Value.Integer IntegerKind.Usize 1,
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -806,7 +805,8 @@ Module collections.
                                       "a"
                                     |)
                                   ]
-                                |));
+                                |)
+                              |);
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
@@ -858,10 +858,9 @@ Module collections.
                                   |)
                                 ]
                               |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (Value.Integer 1)
-                                (M.call_closure (|
+                              BinOp.Wrap.add (|
+                                Value.Integer IntegerKind.Usize 1,
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -876,7 +875,8 @@ Module collections.
                                       "b"
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -921,7 +921,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_lens :

@@ -182,7 +182,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_validate_env :
@@ -516,7 +516,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_validate_tx_against_state :
@@ -689,9 +689,9 @@ Module handler.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.read (| initial_gas_spend |))
-                                    (M.read (|
+                                  BinOp.gt (|
+                                    M.read (| initial_gas_spend |),
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| env |),
@@ -701,7 +701,8 @@ Module handler.
                                         "revm_primitives::env::TxEnv",
                                         "gas_limit"
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -743,7 +744,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_validate_initial_tx_gas :

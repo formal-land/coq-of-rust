@@ -71,7 +71,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -132,7 +132,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -172,7 +172,12 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not (BinOp.Pure.ne (M.read (| step |)) (Value.Integer 0))
+                                UnOp.not (|
+                                  BinOp.ne (|
+                                    M.read (| step |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -205,12 +210,13 @@ Module iter.
                     "core::iter::adapters::step_by::StepBy"
                     [
                       ("iter", M.read (| iter |));
-                      ("step", BinOp.Wrap.sub Integer.Usize (M.read (| step |)) (Value.Integer 1));
+                      ("step",
+                        BinOp.Wrap.sub (| M.read (| step |), Value.Integer IntegerKind.Usize 1 |));
                       ("first_take", Value.Bool true)
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -231,9 +237,8 @@ Module iter.
               M.read (|
                 let~ rem :=
                   M.alloc (|
-                    BinOp.Wrap.rem
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.rem (|
+                      M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -248,17 +253,18 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |))
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      |),
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::step_by::StepBy",
                             "step"
                           |)
-                        |))
-                        (Value.Integer 1))
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -282,7 +288,10 @@ Module iter.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.eq (M.read (| rem |)) (Value.Integer 0)
+                                      BinOp.eq (|
+                                        M.read (| rem |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -297,7 +306,10 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| rem |)) (Value.Integer 1)
+                                  BinOp.Wrap.sub (|
+                                    M.read (| rem |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)))
                           ]
                         |)));
@@ -305,7 +317,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_next_back_index :
@@ -341,7 +353,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -365,7 +377,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -390,7 +402,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -420,7 +432,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -449,7 +461,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| acc |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -495,7 +507,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -520,7 +532,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -550,7 +562,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -580,7 +592,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -630,7 +642,7 @@ Module iter.
               (let inner := M.alloc (| inner |) in
               let _step := M.alloc (| _step |) in
               M.read (| inner |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -685,7 +697,7 @@ Module iter.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 0 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.SubPointer.get_struct_record_field (|
@@ -725,7 +737,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -896,7 +908,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1009,7 +1021,10 @@ Module iter.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0)
+                                              BinOp.eq (|
+                                                M.read (| n |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -1028,7 +1043,10 @@ Module iter.
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.sub (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1036,16 +1054,16 @@ Module iter.
                       |) in
                     let~ step :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (|
+                        BinOp.Wrap.add (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::step_by::StepBy",
                               "step"
                             |)
-                          |))
-                          (Value.Integer 1)
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
                       |) in
                     let~ _ :=
                       M.match_operator (|
@@ -1056,9 +1074,10 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| n |))
-                                      (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                    BinOp.eq (|
+                                      M.read (| n |),
+                                      M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1081,10 +1100,10 @@ Module iter.
                                         "core::iter::adapters::step_by::StepBy",
                                         "iter"
                                       |);
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| step |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| step |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1095,7 +1114,10 @@ Module iter.
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)))
                         ]
@@ -1164,9 +1186,8 @@ Module iter.
                                                       "core::iter::adapters::step_by::StepBy",
                                                       "iter"
                                                     |);
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.call_closure (|
+                                                    BinOp.Wrap.sub (|
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -1175,8 +1196,9 @@ Module iter.
                                                           []
                                                         |),
                                                         [ M.read (| mul |) ]
-                                                      |))
-                                                      (Value.Integer 1)
+                                                      |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   ]
                                                 |)
                                               |)
@@ -1188,28 +1210,25 @@ Module iter.
                                 |) in
                               let~ div_n :=
                                 M.alloc (|
-                                  BinOp.Wrap.div
-                                    Integer.Usize
-                                    (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                                    (M.read (| n |))
+                                  BinOp.Wrap.div (|
+                                    M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                    M.read (| n |)
+                                  |)
                                 |) in
                               let~ div_step :=
                                 M.alloc (|
-                                  BinOp.Wrap.div
-                                    Integer.Usize
-                                    (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                                    (M.read (| step |))
+                                  BinOp.Wrap.div (|
+                                    M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                    M.read (| step |)
+                                  |)
                                 |) in
                               let~ nth_n :=
                                 M.alloc (|
-                                  BinOp.Wrap.mul Integer.Usize (M.read (| div_n |)) (M.read (| n |))
+                                  BinOp.Wrap.mul (| M.read (| div_n |), M.read (| n |) |)
                                 |) in
                               let~ nth_step :=
                                 M.alloc (|
-                                  BinOp.Wrap.mul
-                                    Integer.Usize
-                                    (M.read (| div_step |))
-                                    (M.read (| step |))
+                                  BinOp.Wrap.mul (| M.read (| div_step |), M.read (| step |) |)
                                 |) in
                               let~ nth :=
                                 M.copy (|
@@ -1221,9 +1240,10 @@ Module iter.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.gt
-                                                  (M.read (| nth_n |))
-                                                  (M.read (| nth_step |))
+                                                BinOp.gt (|
+                                                  M.read (| nth_n |),
+                                                  M.read (| nth_step |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1234,10 +1254,10 @@ Module iter.
                                             let β := step in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.sub
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (M.read (| div_n |))
+                                              BinOp.Wrap.sub (|
+                                                M.read (| β |),
+                                                M.read (| div_n |)
+                                              |)
                                             |) in
                                           nth_n));
                                       fun γ =>
@@ -1246,10 +1266,10 @@ Module iter.
                                             let β := n in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.sub
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (M.read (| div_step |))
+                                              BinOp.Wrap.sub (|
+                                                M.read (| β |),
+                                                M.read (| div_step |)
+                                              |)
                                             |) in
                                           nth_step))
                                     ]
@@ -1271,10 +1291,10 @@ Module iter.
                                         "core::iter::adapters::step_by::StepBy",
                                         "iter"
                                       |);
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| nth |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| nth |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1285,7 +1305,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1522,7 +1542,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1683,7 +1703,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1745,7 +1765,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1775,16 +1795,16 @@ Module iter.
                           M.get_associated_function (| Ty.path "usize", "saturating_mul", [] |),
                           [
                             M.read (| n |);
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.call_closure (|
@@ -1818,7 +1838,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2012,7 +2032,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2132,7 +2152,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2204,7 +2224,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2267,16 +2287,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -2303,7 +2323,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U8 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2346,7 +2366,10 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U8 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U8 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
@@ -2357,7 +2380,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2395,7 +2418,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2517,7 +2540,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2683,7 +2706,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2734,16 +2757,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -2790,7 +2813,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| remaining |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.U8 0);
+                                ("end_", M.read (| remaining |))
+                              ]
                           ]
                         |)
                       |),
@@ -2873,7 +2899,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2959,7 +2985,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3022,16 +3048,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -3058,7 +3084,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U16 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3101,7 +3127,10 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U16 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U16 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
@@ -3112,7 +3141,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3150,7 +3179,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3272,7 +3301,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3438,7 +3467,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3489,16 +3518,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -3545,7 +3574,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| remaining |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.U16 0);
+                                ("end_", M.read (| remaining |))
+                              ]
                           ]
                         |)
                       |),
@@ -3628,7 +3660,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3714,7 +3746,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3777,16 +3809,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -3813,7 +3845,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U32 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3856,7 +3888,10 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U32 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U32 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
@@ -3867,7 +3902,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3905,7 +3940,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4027,7 +4062,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4193,7 +4228,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4244,16 +4279,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -4300,7 +4335,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| remaining |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.U32 0);
+                                ("end_", M.read (| remaining |))
+                              ]
                           ]
                         |)
                       |),
@@ -4383,7 +4421,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4469,7 +4507,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4532,16 +4570,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -4568,7 +4606,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U64 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4611,7 +4649,10 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U64 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U64 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
@@ -4622,7 +4663,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4660,7 +4701,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4782,7 +4823,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4948,7 +4989,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -4999,16 +5040,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -5055,7 +5096,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| remaining |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.U64 0);
+                                ("end_", M.read (| remaining |))
+                              ]
                           ]
                         |)
                       |),
@@ -5138,7 +5182,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5224,7 +5268,7 @@ Module iter.
                   |) in
                 r
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5287,16 +5331,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -5323,7 +5367,10 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (|
+                                M.read (| remaining |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5366,7 +5413,10 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.Usize (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
@@ -5377,7 +5427,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5413,7 +5463,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5535,7 +5585,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5701,7 +5751,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5752,16 +5802,16 @@ Module iter.
                             []
                           |),
                           [
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::iter::adapters::step_by::StepBy",
                                   "step"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           ]
                         |);
                         M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -5808,7 +5858,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| remaining |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| remaining |))
+                              ]
                           ]
                         |)
                       |),
@@ -5891,7 +5944,7 @@ Module iter.
                     |)) in
                 acc
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5954,16 +6007,16 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      (BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::step_by::StepBy",
                             "step"
                           |)
-                        |))
-                        (Value.Integer 1))
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -5985,7 +6038,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U8 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6012,22 +6065,25 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U8 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U8 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
-                              BinOp.Wrap.add
-                                Integer.U8
-                                (M.read (| start |))
-                                (BinOp.Wrap.mul
-                                  Integer.U8
-                                  (M.read (| step |))
-                                  (BinOp.Wrap.sub
-                                    Integer.U8
-                                    (M.read (| remaining |))
-                                    (Value.Integer 1)))
+                              BinOp.Wrap.add (|
+                                M.read (| start |),
+                                BinOp.Wrap.mul (|
+                                  M.read (| step |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| remaining |),
+                                    Value.Integer IntegerKind.U8 1
+                                  |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -6036,7 +6092,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6131,7 +6187,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6298,7 +6354,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6390,7 +6446,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6438,16 +6494,16 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      (BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::step_by::StepBy",
                             "step"
                           |)
-                        |))
-                        (Value.Integer 1))
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -6469,7 +6525,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U16 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6496,22 +6552,25 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U16 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U16 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
-                              BinOp.Wrap.add
-                                Integer.U16
-                                (M.read (| start |))
-                                (BinOp.Wrap.mul
-                                  Integer.U16
-                                  (M.read (| step |))
-                                  (BinOp.Wrap.sub
-                                    Integer.U16
-                                    (M.read (| remaining |))
-                                    (Value.Integer 1)))
+                              BinOp.Wrap.add (|
+                                M.read (| start |),
+                                BinOp.Wrap.mul (|
+                                  M.read (| step |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| remaining |),
+                                    Value.Integer IntegerKind.U16 1
+                                  |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -6520,7 +6579,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6615,7 +6674,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6782,7 +6841,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6874,7 +6933,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6922,16 +6981,16 @@ Module iter.
                 let~ step :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      (BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::step_by::StepBy",
                             "step"
                           |)
-                        |))
-                        (Value.Integer 1))
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |))
                   |) in
                 let~ remaining :=
                   M.copy (|
@@ -6953,7 +7012,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (| M.read (| remaining |), Value.Integer IntegerKind.U32 0 |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6980,22 +7039,25 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.U32 (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.U32 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
-                              BinOp.Wrap.add
-                                Integer.U32
-                                (M.read (| start |))
-                                (BinOp.Wrap.mul
-                                  Integer.U32
-                                  (M.read (| step |))
-                                  (BinOp.Wrap.sub
-                                    Integer.U32
-                                    (M.read (| remaining |))
-                                    (Value.Integer 1)))
+                              BinOp.Wrap.add (|
+                                M.read (| start |),
+                                BinOp.Wrap.mul (|
+                                  M.read (| step |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| remaining |),
+                                    Value.Integer IntegerKind.U32 1
+                                  |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -7004,7 +7066,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7099,7 +7161,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7266,7 +7328,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7358,7 +7420,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7407,16 +7469,16 @@ Module iter.
                   M.copy (|
                     M.use
                       (M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (|
+                        BinOp.Wrap.add (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::step_by::StepBy",
                               "step"
                             |)
-                          |))
-                          (Value.Integer 1)
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
                       |))
                   |) in
                 let~ remaining :=
@@ -7439,7 +7501,10 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| remaining |)) (Value.Integer 0)
+                              BinOp.gt (|
+                                M.read (| remaining |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7466,22 +7531,25 @@ Module iter.
                               "core::ops::range::Range",
                               "end"
                             |),
-                            BinOp.Wrap.sub Integer.Usize (M.read (| remaining |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| remaining |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (| start |))
-                                (BinOp.Wrap.mul
-                                  Integer.Usize
-                                  (M.read (| step |))
-                                  (BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| remaining |))
-                                    (Value.Integer 1)))
+                              BinOp.Wrap.add (|
+                                M.read (| start |),
+                                BinOp.Wrap.mul (|
+                                  M.read (| step |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| remaining |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -7490,7 +7558,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7585,7 +7653,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7752,7 +7820,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7844,7 +7912,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

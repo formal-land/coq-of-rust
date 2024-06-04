@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
+Require core.links.cmp.
+Require core.links.default.
 Require Import revm.interpreter.gas.
 
 Import Run.
@@ -76,21 +78,74 @@ Module Gas.
 End Gas.
 
 Module Impl_Clone.
-  Definition run_impl : clone.Clone.RunImpl Gas.t (Φ Gas.t).
+  Definition run_clone : clone.Clone.Run_clone Gas.t (Φ Gas.t).
+  Proof.
+    eexists; split.
+    { eapply IsTraitMethod.Explicit.
+      { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
+      { reflexivity. }
+    }
+    { intros.
+      run_symbolic.
+    }
+  Defined.
+
+  Definition run : clone.Clone.Run Gas.t (Φ Gas.t).
   Proof.
     constructor.
     { (* clone *)
-      eexists; split.
-      { eapply IsTraitMethod.Explicit.
-        { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
-        { reflexivity. }
-      }
-      { intros.
-        run_symbolic.
-      }
+      exact run_clone.
     }
   Defined.
 End Impl_Clone.
+
+Module Impl_Default.
+  Definition run_default : default.Default.Run_default Gas.t (Φ Gas.t).
+  Proof.
+    eexists; split.
+    { eapply IsTraitMethod.Explicit.
+      { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements. }
+      { reflexivity. }
+    }
+    { intros; cbn.
+      destruct default.Impl_Default_for_u64.run_default
+        as [default_u64 [H_default_u64 run_default_u64]].
+      destruct default.Impl_Default_for_i64.run_default
+        as [default_i64 [H_default_i64 run_default_i64]].
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_u64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_u64.
+      }
+      intros; cbn.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_u64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_u64.
+      }
+      intros; cbn.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_i64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_i64.
+      }
+      intros; cbn.
+      run_symbolic.
+      now instantiate (1 := Gas.Build_t _ _ _).
+    }
+  Defined.
+
+  Definition run : default.Default.Run Gas.t (Φ Gas.t).
+  Proof.
+    constructor.
+    { (* default *)
+      exact run_default.
+    }
+  Defined.
+End Impl_Default.
 
 Module Impl_revm_interpreter_gas_Gas.
   Definition Self : Set := Gas.t.
@@ -294,4 +349,45 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros; run_symbolic.
   Defined.
+
+  (*
+      pub fn set_final_refund(&mut self, is_london: bool) {
+          let max_refund_quotient = if is_london { 5 } else { 2 };
+          self.refunded = (self.refunded() as u64).min(self.spent() / max_refund_quotient) as i64;
+      }
+  *)
+  Definition run_set_final_refund (self : Ref.t Self) (is_london : bool) :
+    {{
+      gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [φ self; φ is_london] ⇓
+      fun (v : unit) => inl (φ v)
+    }}.
+  Proof.
+    run_symbolic.
+    eapply Run.Let with (output_to_value' := fun (v : Ref.t Z) => inl (φ v)). {
+      run_symbolic.
+      destruct value; cbn.
+      { eapply Run.CallPrimitiveStateAlloc with (A := Z); [reflexivity |]; intros.
+        run_symbolic.
+      }
+      { eapply Run.CallPrimitiveStateAlloc with (A := Z); [reflexivity |]; intros.
+        run_symbolic.
+      }
+    }
+    intros.
+    eapply Run.Let. {
+      run_symbolic.
+      run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+
+    }
+    intros; run_symbolic.
+    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+    }
+    intros; run_symbolic.
 End Impl_revm_interpreter_gas_Gas.

@@ -68,7 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
                                         []
                                       |),
-                                      [ Value.Integer 9 ]
+                                      [ Value.Integer IntegerKind.U32 9 ]
                                     |)
                                   |)
                                 ]
@@ -83,7 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
@@ -114,7 +114,7 @@ Module main.
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let~ acc := M.alloc (| Value.Integer 0 |) in
+          let~ acc := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
           let~ _ :=
             M.use
               (M.match_operator (|
@@ -130,7 +130,7 @@ Module main.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [ ("start", Value.Integer 0); ("end_", M.read (| up_to |)) ]
+                        [ ("start", Value.Integer IntegerKind.U32 0); ("end_", M.read (| up_to |)) ]
                     ]
                   |)
                 |),
@@ -173,12 +173,13 @@ Module main.
                                       M.copy (|
                                         M.match_operator (|
                                           M.alloc (|
-                                            BinOp.Pure.eq
-                                              (BinOp.Wrap.rem
-                                                Integer.U32
-                                                (M.read (| i |))
-                                                (Value.Integer 2))
-                                              (Value.Integer 1)
+                                            BinOp.eq (|
+                                              BinOp.Wrap.rem (|
+                                                M.read (| i |),
+                                                Value.Integer IntegerKind.U32 2
+                                              |),
+                                              Value.Integer IntegerKind.U32 1
+                                            |)
                                           |),
                                           [
                                             fun γ =>
@@ -206,10 +207,7 @@ Module main.
                                       let β := acc in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add
-                                          Integer.U32
-                                          (M.read (| β |))
-                                          (M.read (| addition |))
+                                        BinOp.Wrap.add (| M.read (| β |), M.read (| addition |) |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]
@@ -220,7 +218,7 @@ Module main.
               |)) in
           acc
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_sum_odd_numbers :

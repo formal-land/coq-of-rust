@@ -104,7 +104,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -152,51 +152,52 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
                                 let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "std::io::stdio::_print", [] |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "Providing lemon as fallback
+                                  let~ _ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_const",
+                                              []
+                                            |),
+                                            [
+                                              (* Unsize *)
+                                              M.pointer_coercion
+                                                (M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String "Providing lemon as fallback
 "
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
-                                  []
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                                      |)
+                                                    ]
+                                                |))
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |) in
+                                M.alloc (|
+                                  Value.StructTuple
+                                    "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
+                                    []
+                                |)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ first_available_fruit :=
@@ -433,7 +434,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main :

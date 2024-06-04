@@ -106,7 +106,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -164,7 +164,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -271,23 +271,24 @@ Module db.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm::db::states::cache::CacheState",
                         "has_state_clear"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm::db::states::cache::CacheState",
                         "has_state_clear"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -338,7 +339,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -370,7 +371,7 @@ Module db.
                 |),
                 [ Value.Bool true ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -437,7 +438,7 @@ Module db.
                     |));
                   ("has_state_clear", M.read (| has_state_clear |))
                 ]))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -465,7 +466,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_set_state_clear_flag :
@@ -559,52 +560,31 @@ Module db.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let address := M.copy (| γ0_0 |) in
-                                  let account := M.copy (| γ0_1 |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [
-                                              Ty.path
-                                                "revm::db::states::plain_account::PlainAccount"
-                                            ]
-                                        ],
-                                      "map",
-                                      [
-                                        Ty.tuple
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let address := M.copy (| γ0_0 |) in
+                                    let account := M.copy (| γ0_1 |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
                                           [
-                                            Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.apply
                                               (Ty.path "&")
                                               [
                                                 Ty.path
                                                   "revm::db::states::plain_account::PlainAccount"
                                               ]
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  [
-                                                    Ty.path
-                                                      "revm::db::states::plain_account::PlainAccount"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple
+                                          ],
+                                        "map",
+                                        [
+                                          Ty.tuple
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.apply
@@ -613,58 +593,81 @@ Module db.
                                                   Ty.path
                                                     "revm::db::states::plain_account::PlainAccount"
                                                 ]
-                                            ])
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
+                                            ];
+                                          Ty.function
                                             [
-                                              Ty.path
-                                                "revm::db::states::plain_account::PlainAccount"
-                                            ],
-                                          "as_ref",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account |),
-                                            "revm::db::states::cache_account::CacheAccount",
-                                            "account"
-                                          |)
-                                        ]
-                                      |);
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
+                                              Ty.tuple
                                                 [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let plain_acc := M.copy (| γ |) in
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (| M.read (| address |) |);
-                                                          M.read (| plain_acc |)
-                                                        ]))
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    [
+                                                      Ty.path
+                                                        "revm::db::states::plain_account::PlainAccount"
+                                                    ]
                                                 ]
-                                              |)
-                                            | _ => M.impossible (||)
-                                            end))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path "alloy_primitives::bits::address::Address";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  [
+                                                    Ty.path
+                                                      "revm::db::states::plain_account::PlainAccount"
+                                                  ]
+                                              ])
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [
+                                                Ty.path
+                                                  "revm::db::states::plain_account::PlainAccount"
+                                              ],
+                                            "as_ref",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| account |),
+                                              "revm::db::states::cache_account::CacheAccount",
+                                              "account"
+                                            |)
+                                          ]
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let plain_acc := M.copy (| γ |) in
+                                                          Value.Tuple
+                                                            [
+                                                              M.read (| M.read (| address |) |);
+                                                              M.read (| plain_acc |)
+                                                            ]))
+                                                    ]
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
+                                              end))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_trie_account :
@@ -717,7 +720,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_not_existing :
@@ -751,15 +754,16 @@ Module db.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_primitives::state::AccountInfo",
                                         "is_empty",
                                         []
                                       |),
                                       [ info ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -850,7 +854,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_account :
@@ -890,15 +894,16 @@ Module db.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_primitives::state::AccountInfo",
                                         "is_empty",
                                         []
                                       |),
                                       [ info ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -954,7 +959,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert_account_with_storage :
@@ -1152,7 +1157,7 @@ Module db.
                     |)) in
                 transitions
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_apply_evm_state :
@@ -1229,15 +1234,16 @@ Module db.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "revm_primitives::state::Account",
                                           "is_touched",
                                           []
                                         |),
                                         [ account ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1506,7 +1512,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_apply_account_state :

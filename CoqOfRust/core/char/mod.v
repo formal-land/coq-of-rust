@@ -2,21 +2,26 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module char.
-  Definition value_TAG_CONT : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+  Definition value_TAG_CONT : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
   
-  Definition value_TAG_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
+  Definition value_TAG_TWO_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
   
   Definition value_TAG_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 224 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
   
-  Definition value_TAG_FOUR_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 240 |))).
+  Definition value_TAG_FOUR_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
   
-  Definition value_MAX_ONE_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+  Definition value_MAX_ONE_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
   
-  Definition value_MAX_TWO_B : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2048 |))).
+  Definition value_MAX_TWO_B : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
   
   Definition value_MAX_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 65536 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
   
   Definition value_MAX : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::MAX" |))).
@@ -41,7 +46,7 @@ Module char.
           M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
           [ M.read (| iter |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
@@ -60,7 +65,7 @@ Module char.
           M.get_function (| "core::char::convert::from_u32", [] |),
           [ M.read (| i |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
@@ -80,7 +85,7 @@ Module char.
           M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
           [ M.read (| i |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_u32_unchecked :
@@ -101,7 +106,7 @@ Module char.
           M.get_function (| "core::char::convert::from_digit", [] |),
           [ M.read (| num |); M.read (| radix |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
@@ -142,7 +147,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -183,7 +188,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -236,7 +241,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -284,7 +289,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -322,7 +327,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -339,7 +344,7 @@ Module char.
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeUnicode", 0 |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -376,7 +381,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -405,7 +410,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -447,7 +452,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -503,7 +508,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -550,7 +555,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -591,7 +596,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -633,7 +638,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
@@ -673,7 +678,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
@@ -695,7 +700,7 @@ Module char.
                 M.SubPointer.get_struct_tuple_field (| esc, "core::char::EscapeUnicode", 0 |)
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_unicode : M.IsAssociatedFunction Self "from_unicode" from_unicode.
@@ -743,7 +748,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -781,7 +786,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -798,7 +803,7 @@ Module char.
             M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::char::EscapeDefault", 0 |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -835,7 +840,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -864,7 +869,7 @@ Module char.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -906,7 +911,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -962,7 +967,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1009,7 +1014,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1050,7 +1055,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1149,7 +1154,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1225,7 +1230,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1252,7 +1257,7 @@ Module char.
           Value.StructTuple
             "core::char::EscapeDebug"
             [ Value.StructTuple "core::char::EscapeDebugInner::Char" [ M.read (| chr |) ] ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
@@ -1295,7 +1300,7 @@ Module char.
                 [ Value.StructTuple "core::char::EscapeDebugInner::Bytes" [ M.read (| iter |) ] ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
@@ -1321,7 +1326,7 @@ Module char.
                   |)
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_unicode : M.IsAssociatedFunction Self "from_unicode" from_unicode.
@@ -1360,7 +1365,7 @@ Module char.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -1457,7 +1462,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1491,7 +1496,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1514,7 +1519,7 @@ Module char.
             |),
             [ self ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1586,11 +1591,11 @@ Module char.
                         "core::char::EscapeDebugInner::Char",
                         0
                       |) in
-                    M.alloc (| Value.Integer 1 |)))
+                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1694,7 +1699,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1742,7 +1747,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1782,7 +1787,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1825,7 +1830,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1854,7 +1859,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1899,7 +1904,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1969,7 +1974,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2009,7 +2014,7 @@ Module char.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2052,7 +2057,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2081,7 +2086,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2126,7 +2131,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2316,7 +2321,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2477,7 +2482,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2518,14 +2523,15 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.read (|
+                          BinOp.eq (|
+                            M.read (|
                               M.SubPointer.get_array_field (|
                                 chars,
-                                M.alloc (| Value.Integer 2 |)
+                                M.alloc (| Value.Integer IntegerKind.Usize 2 |)
                               |)
-                            |))
-                            (Value.UnicodeChar 0)
+                            |),
+                            Value.UnicodeChar 0
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
@@ -2536,14 +2542,15 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.eq (|
+                                    M.read (|
                                       M.SubPointer.get_array_field (|
                                         chars,
-                                        M.alloc (| Value.Integer 1 |)
+                                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                       |)
-                                    |))
-                                    (Value.UnicodeChar 0)
+                                    |),
+                                    Value.UnicodeChar 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2554,7 +2561,7 @@ Module char.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer 0 |)
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                     |)
                                   |)
                                 ]
@@ -2568,13 +2575,13 @@ Module char.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer 0 |)
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                     |)
                                   |);
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       chars,
-                                      M.alloc (| Value.Integer 1 |)
+                                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
                                     |)
                                   |)
                                 ]
@@ -2588,20 +2595,29 @@ Module char.
                         "core::char::CaseMappingIter::Three"
                         [
                           M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 0 |) |)
+                            M.SubPointer.get_array_field (|
+                              chars,
+                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 1 |) |)
+                            M.SubPointer.get_array_field (|
+                              chars,
+                              M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                            |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 2 |) |)
+                            M.SubPointer.get_array_field (|
+                              chars,
+                              M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                            |)
                           |)
                         ]
                     |)))
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2722,7 +2738,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2751,12 +2767,12 @@ Module char.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Three" |) in
-                        M.alloc (| Value.Integer 3 |)));
+                        M.alloc (| Value.Integer IntegerKind.Usize 3 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Two" |) in
-                        M.alloc (| Value.Integer 2 |)));
+                        M.alloc (| Value.Integer IntegerKind.Usize 2 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2766,12 +2782,12 @@ Module char.
                             "core::char::CaseMappingIter::One",
                             0
                           |) in
-                        M.alloc (| Value.Integer 1 |)));
+                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                        M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
@@ -2783,7 +2799,7 @@ Module char.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2911,7 +2927,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3276,7 +3292,7 @@ Module char.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3318,7 +3334,7 @@ Module char.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3360,7 +3376,7 @@ Module char.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3408,7 +3424,7 @@ Module char.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3445,7 +3461,7 @@ Module char.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3492,7 +3508,7 @@ Module char.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3529,7 +3545,7 @@ Module char.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3559,7 +3575,7 @@ Module char.
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
             [ M.read (| Value.String "unicode code point out of range" |); M.read (| fmt |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -108,7 +108,7 @@ Module future.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_output :
@@ -304,7 +304,7 @@ Module future.
                   M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

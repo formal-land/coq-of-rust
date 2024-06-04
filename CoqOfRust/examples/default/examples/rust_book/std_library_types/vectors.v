@@ -75,7 +75,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 Value.StructRecord
                   "core::ops::range::Range"
-                  [ ("start", Value.Integer 0); ("end_", Value.Integer 10) ]
+                  [
+                    ("start", Value.Integer IntegerKind.I32 0);
+                    ("end_", Value.Integer IntegerKind.I32 10)
+                  ]
               ]
             |)
           |) in
@@ -148,7 +151,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
                         |)
                       ]
                     |)
@@ -231,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 []
               |),
-              [ xs; Value.Integer 4 ]
+              [ xs; Value.Integer IntegerKind.I32 4 ]
             |)
           |) in
         let~ _ :=
@@ -369,7 +377,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "index",
                                       []
                                     |),
-                                    [ xs; Value.Integer 1 ]
+                                    [ xs; Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 ]
                               |)
@@ -811,7 +819,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     let β := M.read (| x |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.mul Integer.I32 (M.read (| β |)) (Value.Integer 3)
+                                      BinOp.Wrap.mul (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.I32 3
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
                             ]
@@ -866,7 +877,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "vectors::main" main.

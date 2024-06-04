@@ -42,7 +42,7 @@ Module utilities.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_right_pad_with_offset :
@@ -90,7 +90,7 @@ Module utilities.
             M.read (| len |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_right_pad_with_offset_vec :
@@ -182,7 +182,7 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (Value.Integer 0) LEN |) in
+                  (let~ padded := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) LEN |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -228,7 +228,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_right_pad : M.IsFunction "revm_precompile::utilities::right_pad" right_pad.
@@ -284,7 +284,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
-                        [ Value.Integer 0; M.read (| len |) ]
+                        [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -334,7 +334,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_right_pad_vec :
@@ -426,7 +426,7 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (Value.Integer 0) LEN |) in
+                  (let~ padded := M.alloc (| repeat (Value.Integer IntegerKind.U8 0) LEN |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -451,21 +451,21 @@ Module utilities.
                                 "core::ops::range::RangeFrom"
                                 [
                                   ("start",
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (|
+                                    BinOp.Wrap.sub (|
+                                      M.read (|
                                         M.get_constant (|
                                           "revm_precompile::utilities::left_pad::LEN"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| data |) ]
-                                      |)))
+                                      |)
+                                    |))
                                 ]
                             ]
                           |);
@@ -479,7 +479,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_left_pad : M.IsFunction "revm_precompile::utilities::left_pad" left_pad.
@@ -535,7 +535,7 @@ Module utilities.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
-                        [ Value.Integer 0; M.read (| len |) ]
+                        [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -564,17 +564,17 @@ Module utilities.
                                 "core::ops::range::RangeFrom"
                                 [
                                   ("start",
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.read (| len |))
-                                      (M.call_closure (|
+                                    BinOp.Wrap.sub (|
+                                      M.read (| len |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| data |) ]
-                                      |)))
+                                      |)
+                                    |))
                                 ]
                             ]
                           |);
@@ -588,7 +588,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_left_pad_vec :
@@ -623,7 +623,7 @@ Module utilities.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_bool_to_bytes32 :
@@ -660,7 +660,7 @@ Module utilities.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_bool_to_b256 :

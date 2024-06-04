@@ -82,7 +82,7 @@ Module vec.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -125,7 +125,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -185,21 +185,22 @@ Module vec.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.lt
-                                        (M.read (|
+                                      BinOp.lt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "alloc::vec::extract_if::ExtractIf",
                                             "idx"
                                           |)
-                                        |))
-                                        (M.read (|
+                                        |),
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "alloc::vec::extract_if::ExtractIf",
                                             "old_len"
                                           |)
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -278,7 +279,10 @@ Module vec.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -303,10 +307,10 @@ Module vec.
                                                   |) in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
                                                 |) in
                                               M.return_ (|
                                                 Value.StructTuple
@@ -336,15 +340,16 @@ Module vec.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.gt
-                                                        (M.read (|
+                                                      BinOp.gt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "alloc::vec::extract_if::ExtractIf",
                                                             "del"
                                                           |)
-                                                        |))
-                                                        (Value.Integer 0)
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 0
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -371,10 +376,10 @@ Module vec.
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| v |),
                                                       M.alloc (|
-                                                        BinOp.Wrap.sub
-                                                          Integer.Usize
-                                                          (M.read (| i |))
-                                                          (M.read (| del |))
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| i |),
+                                                          M.read (| del |)
+                                                        |)
                                                       |)
                                                     |)
                                                   |) in
@@ -388,7 +393,7 @@ Module vec.
                                                       [
                                                         M.read (| src |);
                                                         M.read (| dst |);
-                                                        Value.Integer 1
+                                                        Value.Integer IntegerKind.Usize 1
                                                       ]
                                                     |)
                                                   |) in
@@ -417,7 +422,7 @@ Module vec.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -433,29 +438,29 @@ Module vec.
             (let self := M.alloc (| self |) in
             Value.Tuple
               [
-                Value.Integer 0;
+                Value.Integer IntegerKind.Usize 0;
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.sub (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::extract_if::ExtractIf",
                           "old_len"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::extract_if::ExtractIf",
                           "idx"
                         |)
-                      |))
+                      |)
+                    |)
                   ]
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -513,31 +518,33 @@ Module vec.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.lt
-                                  (M.read (|
+                                BinOp.lt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "idx"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "old_len"
                                     |)
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.gt
-                                    (M.read (|
+                                  (BinOp.gt (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "alloc::vec::extract_if::ExtractIf",
                                         "del"
                                       |)
-                                    |))
-                                    (Value.Integer 0)))
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)))
                               |)
                             |)) in
                         let _ :=
@@ -603,22 +610,22 @@ Module vec.
                           |) in
                         let~ tail_len :=
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.sub (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "old_len"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "idx"
                                 |)
-                              |))
+                              |)
+                            |)
                           |) in
                         let~ _ :=
                           M.alloc (|
@@ -651,28 +658,28 @@ Module vec.
                           "vec"
                         |)
                       |);
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (|
+                      BinOp.Wrap.sub (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::vec::extract_if::ExtractIf",
                             "old_len"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::vec::extract_if::ExtractIf",
                             "del"
                           |)
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -51,7 +51,7 @@ Module db.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -150,7 +150,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -228,7 +228,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -284,7 +284,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -340,7 +340,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -396,7 +396,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -481,7 +481,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -537,7 +537,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -593,7 +593,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -649,7 +649,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -707,7 +707,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

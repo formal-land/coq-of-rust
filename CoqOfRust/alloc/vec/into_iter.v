@@ -74,7 +74,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -123,7 +123,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -149,7 +149,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_slice :
@@ -183,7 +183,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -226,7 +226,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_raw_mut_slice :
@@ -281,7 +281,7 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "cap"
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 |) in
               let~ _ :=
                 M.write (|
@@ -374,7 +374,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_forget_allocation_drop_remaining :
@@ -415,7 +415,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_forget_remaining_elements :
@@ -516,7 +516,7 @@ Module vec.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
                                   M.call_closure (|
                                     M.get_trait_method (|
@@ -683,7 +683,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_vecdeque :
@@ -714,7 +714,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -793,21 +793,22 @@ Module vec.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "ptr"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "end"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -847,7 +848,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
@@ -892,7 +893,7 @@ Module vec.
                                           "ptr"
                                         |)
                                       |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
@@ -911,7 +912,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1019,7 +1020,7 @@ Module vec.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1189,7 +1190,7 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| step_size |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -1197,7 +1198,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1221,7 +1222,7 @@ Module vec.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1323,13 +1324,14 @@ Module vec.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.lt
-                                                      (M.read (| len |))
-                                                      (M.read (|
+                                                    BinOp.lt (|
+                                                      M.read (| len |),
+                                                      M.read (|
                                                         M.get_constant (|
                                                           "alloc::vec::into_iter::next_chunk::N"
                                                         |)
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1371,7 +1373,10 @@ Module vec.
                                                               Value.StructRecord
                                                                 "core::ops::range::Range"
                                                                 [
-                                                                  ("start", Value.Integer 0);
+                                                                  ("start",
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0);
                                                                   ("end_", M.read (| len |))
                                                                 ]
                                                             ]
@@ -1460,11 +1465,12 @@ Module vec.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1539,7 +1545,7 @@ Module vec.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_", M.read (| len |))
                                                 ]
                                             ]
@@ -1650,7 +1656,7 @@ Module vec.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1717,7 +1723,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1774,21 +1780,22 @@ Module vec.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "end"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "ptr"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -1828,7 +1835,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
@@ -1865,7 +1872,7 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
@@ -1892,7 +1899,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2062,7 +2069,7 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| step_size |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -2070,7 +2077,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2101,22 +2108,23 @@ Module vec.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "alloc::vec::into_iter::IntoIter",
                   "ptr"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "alloc::vec::into_iter::IntoIter",
                   "end"
                 |)
-              |))))
-        | _, _ => M.impossible
+              |)
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2205,7 +2213,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2317,7 +2325,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2396,7 +2404,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2425,7 +2433,7 @@ Module vec.
                   "new",
                   []
                 |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.Usize 1 ]
               |)
             |))).
       
@@ -2442,7 +2450,7 @@ Module vec.
                   "new",
                   []
                 |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.Usize 1 ]
               |)
             |))).
       
@@ -2479,7 +2487,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2514,7 +2522,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

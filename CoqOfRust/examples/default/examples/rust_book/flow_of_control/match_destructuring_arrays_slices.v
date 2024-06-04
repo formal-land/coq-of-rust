@@ -46,7 +46,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ array :=
-          M.alloc (| Value.Array [ Value.Integer 1; Value.Integer (-2); Value.Integer 6 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 (-2);
+                Value.Integer IntegerKind.I32 6
+              ]
+          |) in
         M.match_operator (|
           array,
           [
@@ -55,7 +62,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.I32 0
+                  |) in
                 let second := M.copy (| γ0_1 |) in
                 let third := M.copy (| γ0_2 |) in
                 let~ _ :=
@@ -115,7 +126,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.I32 1
+                  |) in
                 let third := M.copy (| γ0_2 |) in
                 let~ _ :=
                   M.alloc (|
@@ -165,7 +180,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer (-1) |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.I32 (-1)
+                  |) in
                 let second := M.copy (| γ0_1 |) in
                 let~ _ :=
                   M.alloc (|
@@ -217,7 +236,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.I32 3
+                  |) in
                 let second := M.copy (| γ0_1 |) in
                 let tail := M.copy (| γ0_rest |) in
                 let~ _ :=
@@ -344,7 +367,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_arrays_slices::main" main.

@@ -49,7 +49,7 @@ Module char.
               M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
               [ M.read (| iter |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_decode_utf16 :
@@ -69,7 +69,7 @@ Module char.
               M.get_function (| "core::char::convert::from_u32", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_u32 : M.IsAssociatedFunction Self "from_u32" from_u32.
@@ -89,7 +89,7 @@ Module char.
               M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_u32_unchecked :
@@ -110,7 +110,7 @@ Module char.
               M.get_function (| "core::char::convert::from_digit", [] |),
               [ M.read (| num |); M.read (| radix |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_digit : M.IsAssociatedFunction Self "from_digit" from_digit.
@@ -141,7 +141,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_digit : M.IsAssociatedFunction Self "is_digit" is_digit.
@@ -187,7 +187,10 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 10)
+                                  BinOp.gt (|
+                                    M.read (| radix |),
+                                    Value.Integer IntegerKind.U32 10
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -200,10 +203,12 @@ Module char.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (BinOp.Pure.le
-                                                (M.read (| radix |))
-                                                (Value.Integer 36))
+                                            UnOp.not (|
+                                              BinOp.le (|
+                                                M.read (| radix |),
+                                                Value.Integer IntegerKind.U32 36
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -251,7 +256,10 @@ Module char.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| digit |)) (Value.Integer 10)
+                                            BinOp.lt (|
+                                              M.read (| digit |),
+                                              Value.Integer IntegerKind.U32 10
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -289,13 +297,13 @@ Module char.
                                         []
                                       |),
                                       [
-                                        BinOp.Pure.bit_or
+                                        BinOp.bit_or
                                           (M.rust_cast (M.read (| self |)))
-                                          (Value.Integer 32);
+                                          (Value.Integer IntegerKind.U32 32);
                                         M.rust_cast (Value.UnicodeChar 97)
                                       ]
                                     |);
-                                    Value.Integer 10
+                                    Value.Integer IntegerKind.U32 10
                                   ]
                                 |)
                               |) in
@@ -311,7 +319,7 @@ Module char.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt (M.read (| digit |)) (M.read (| radix |))
+                                BinOp.lt (| M.read (| digit |), M.read (| radix |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -325,7 +333,7 @@ Module char.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_digit : M.IsAssociatedFunction Self "to_digit" to_digit.
@@ -344,7 +352,7 @@ Module char.
               M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_unicode :
@@ -572,7 +580,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_debug_ext :
@@ -595,7 +603,7 @@ Module char.
                 M.read (| M.get_constant (| "core::char::methods::ESCAPE_ALL" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_debug :
@@ -700,37 +708,38 @@ Module char.
                             ltac:(M.monadic
                               match γ with
                               | [] =>
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::char::EscapeDefault",
-                                      "backslash",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                          "unwrap",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "char",
-                                              "as_ascii",
-                                              []
-                                            |),
-                                            [ self ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::char::EscapeDefault",
+                                        "backslash",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                            "unwrap",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "char",
+                                                "as_ascii",
+                                                []
+                                              |),
+                                              [ self ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ =>
@@ -781,7 +790,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_default :
@@ -801,7 +810,7 @@ Module char.
               M.get_function (| "core::char::methods::len_utf8", [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len_utf8 : M.IsAssociatedFunction Self "len_utf8" len_utf8.
@@ -827,17 +836,18 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (BinOp.Pure.bit_and (M.read (| ch |)) (Value.Integer 65535))
-                              (M.read (| ch |))
+                            BinOp.eq (|
+                              BinOp.bit_and (M.read (| ch |)) (Value.Integer IntegerKind.U32 65535),
+                              M.read (| ch |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.Integer 1 |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
+                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 2 |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len_utf16 : M.IsAssociatedFunction Self "len_utf16" len_utf16.
@@ -863,7 +873,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_encode_utf8 : M.IsAssociatedFunction Self "encode_utf8" encode_utf8.
@@ -883,7 +893,7 @@ Module char.
               M.get_function (| "core::char::methods::encode_utf16_raw", [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_encode_utf16 :
@@ -918,8 +928,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ =>
@@ -927,7 +937,7 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -941,7 +951,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_alphabetic :
@@ -970,7 +980,7 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -984,7 +994,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_lowercase :
@@ -1013,7 +1023,7 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -1027,7 +1037,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_uppercase :
@@ -1069,8 +1079,8 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ =>
@@ -1078,7 +1088,7 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (|
@@ -1092,7 +1102,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_whitespace :
@@ -1119,7 +1129,7 @@ Module char.
                   [ M.read (| self |) ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_alphanumeric :
@@ -1139,7 +1149,7 @@ Module char.
               M.get_function (| "core::unicode::unicode_data::cc::lookup", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_control : M.IsAssociatedFunction Self "is_control" is_control.
@@ -1158,7 +1168,7 @@ Module char.
               M.get_function (| "core::unicode::unicode_data::grapheme_extend::lookup", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_grapheme_extended :
@@ -1187,7 +1197,7 @@ Module char.
                       (let c := M.copy (| γ |) in
                       M.alloc (|
                         LogicalOp.and (|
-                          BinOp.Pure.gt (M.read (| c |)) (Value.UnicodeChar 127),
+                          BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               M.get_function (| "core::unicode::unicode_data::n::lookup", [] |),
@@ -1198,7 +1208,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_numeric : M.IsAssociatedFunction Self "is_numeric" is_numeric.
@@ -1226,7 +1236,7 @@ Module char.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_lowercase :
@@ -1255,7 +1265,7 @@ Module char.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_uppercase :
@@ -1271,8 +1281,11 @@ Module char.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.le (M.rust_cast (M.read (| M.read (| self |) |))) (Value.Integer 127)))
-        | _, _ => M.impossible
+            BinOp.le (|
+              M.rust_cast (M.read (| M.read (| self |) |)),
+              Value.Integer IntegerKind.U32 127
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -1327,7 +1340,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -1380,7 +1393,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_ascii_uppercase :
@@ -1434,7 +1447,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_ascii_lowercase :
@@ -1451,16 +1464,17 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
                 [ M.read (| self |) ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
                 [ M.read (| other |) ]
-              |))))
-        | _, _ => M.impossible
+              |)
+            |)))
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -1487,7 +1501,7 @@ Module char.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
@@ -1514,7 +1528,7 @@ Module char.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
@@ -1546,15 +1560,15 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_alphabetic :
@@ -1579,7 +1593,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_uppercase :
@@ -1604,7 +1618,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_lowercase :
@@ -1620,8 +1634,8 @@ Module char.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
+            BinOp.bit_or
+              (BinOp.bit_or
                 (M.read (|
                   M.match_operator (|
                     M.read (| self |),
@@ -1649,7 +1663,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_alphanumeric :
@@ -1674,7 +1688,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_digit :
@@ -1699,7 +1713,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_octdigit :
@@ -1715,8 +1729,8 @@ Module char.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
+            BinOp.bit_or
+              (BinOp.bit_or
                 (M.read (|
                   M.match_operator (|
                     M.read (| self |),
@@ -1744,7 +1758,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_hexdigit :
@@ -1763,9 +1777,9 @@ Module char.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.bit_or
-              (BinOp.Pure.bit_or
-                (BinOp.Pure.bit_or
+            BinOp.bit_or
+              (BinOp.bit_or
+                (BinOp.bit_or
                   (M.read (|
                     M.match_operator (|
                       M.read (| self |),
@@ -1802,7 +1816,7 @@ Module char.
                   ]
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_punctuation :
@@ -1827,7 +1841,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_graphic :
@@ -1897,15 +1911,15 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_whitespace :
@@ -1944,15 +1958,15 @@ Module char.
                           (fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
-                              | _ => M.impossible (||)
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii_control :
@@ -2026,12 +2040,13 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.read (| code |))
-                            (M.read (| M.get_constant (| "core::char::MAX_ONE_B" |) |))
+                          BinOp.lt (|
+                            M.read (| code |),
+                            M.read (| M.get_constant (| "core::char::MAX_ONE_B" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer 1 |)));
+                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2042,13 +2057,14 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.read (| code |))
-                                    (M.read (| M.get_constant (| "core::char::MAX_TWO_B" |) |))
+                                  BinOp.lt (|
+                                    M.read (| code |),
+                                    M.read (| M.get_constant (| "core::char::MAX_TWO_B" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 2 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 2 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -2059,19 +2075,21 @@ Module char.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (| code |))
-                                            (M.read (|
+                                          BinOp.lt (|
+                                            M.read (| code |),
+                                            M.read (|
                                               M.get_constant (| "core::char::MAX_THREE_B" |)
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer 3 |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 4 |)))
+                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |)))
                               ]
                             |)))
                       ]
@@ -2079,7 +2097,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_len_utf8 : M.IsFunction "core::char::methods::len_utf8" len_utf8.
@@ -2154,7 +2172,10 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer IntegerKind.Usize 1
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
@@ -2166,7 +2187,10 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 2 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer IntegerKind.Usize 2
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2176,19 +2200,24 @@ Module char.
                       let~ _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
-                                (Value.Integer 31)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 6
+                                |))
+                                (Value.Integer IntegerKind.U32 31)))
                             (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (M.read (| code |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2197,7 +2226,10 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer IntegerKind.Usize 3
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2209,29 +2241,37 @@ Module char.
                       let~ _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 12))
-                                (Value.Integer 15)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 12
+                                |))
+                                (Value.Integer IntegerKind.U32 15)))
                             (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
-                                (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 6
+                                |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| c |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (M.read (| code |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2240,7 +2280,10 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 4 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ0_0 |),
+                          Value.Integer IntegerKind.Usize 4
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2254,39 +2297,50 @@ Module char.
                       let~ _ :=
                         M.write (|
                           M.read (| a |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 18))
-                                (Value.Integer 7)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 18
+                                |))
+                                (Value.Integer IntegerKind.U32 7)))
                             (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| b |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 12))
-                                (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 12
+                                |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| c |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
-                                (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (BinOp.Wrap.shr (|
+                                  M.read (| code |),
+                                  Value.Integer IntegerKind.I32 6
+                                |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let~ _ :=
                         M.write (|
                           M.read (| d |),
-                          BinOp.Pure.bit_or
+                          BinOp.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
+                              (BinOp.bit_and
+                                (M.read (| code |))
+                                (Value.Integer IntegerKind.U32 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2380,7 +2434,7 @@ Module char.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_encode_utf8_raw :
@@ -2427,19 +2481,23 @@ Module char.
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.Pure.eq
-                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 65535))
-                              (M.read (| code |)),
+                            BinOp.eq (|
+                              BinOp.bit_and
+                                (M.read (| code |))
+                                (Value.Integer IntegerKind.U32 65535),
+                              M.read (| code |)
+                            |),
                             ltac:(M.monadic
-                              (UnOp.Pure.not
-                                (M.call_closure (|
+                              (UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
                                     "is_empty",
                                     []
                                   |),
                                   [ M.read (| dst |) ]
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2453,7 +2511,7 @@ Module char.
                                 "get_unchecked_mut",
                                 [ Ty.path "usize" ]
                               |),
-                              [ M.read (| dst |); Value.Integer 0 ]
+                              [ M.read (| dst |); Value.Integer IntegerKind.Usize 0 ]
                             |),
                             M.rust_cast (M.read (| code |))
                           |) in
@@ -2472,7 +2530,7 @@ Module char.
                                 |),
                                 [ M.read (| dst |) ]
                               |);
-                              Value.Integer 1
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |)
@@ -2488,16 +2546,17 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge
-                                    (M.call_closure (|
+                                  BinOp.ge (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| dst |) ]
-                                    |))
-                                    (Value.Integer 2)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2507,10 +2566,10 @@ Module char.
                                   let β := code in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub
-                                      Integer.U32
-                                      (M.read (| β |))
-                                      (Value.Integer 65536)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U32 65536
+                                    |)
                                   |) in
                                 let~ _ :=
                                   M.write (|
@@ -2520,12 +2579,15 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer 0 ]
+                                      [ M.read (| dst |); Value.Integer IntegerKind.Usize 0 ]
                                     |),
-                                    BinOp.Pure.bit_or
-                                      (Value.Integer 55296)
+                                    BinOp.bit_or
+                                      (Value.Integer IntegerKind.U16 55296)
                                       (M.rust_cast
-                                        (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 10)))
+                                        (BinOp.Wrap.shr (|
+                                          M.read (| code |),
+                                          Value.Integer IntegerKind.I32 10
+                                        |)))
                                   |) in
                                 let~ _ :=
                                   M.write (|
@@ -2535,13 +2597,13 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer 1 ]
+                                      [ M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                                     |),
-                                    BinOp.Pure.bit_or
-                                      (Value.Integer 56320)
-                                      (BinOp.Pure.bit_and
+                                    BinOp.bit_or
+                                      (Value.Integer IntegerKind.U16 56320)
+                                      (BinOp.bit_and
                                         (M.rust_cast (M.read (| code |)))
-                                        (Value.Integer 1023))
+                                        (Value.Integer IntegerKind.U16 1023))
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -2558,7 +2620,7 @@ Module char.
                                         |),
                                         [ M.read (| dst |) ]
                                       |);
-                                      Value.Integer 2
+                                      Value.Integer IntegerKind.Usize 2
                                     ]
                                   |)
                                 |)
@@ -2663,7 +2725,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_encode_utf16_raw :

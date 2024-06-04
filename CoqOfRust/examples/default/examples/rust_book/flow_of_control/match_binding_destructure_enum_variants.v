@@ -8,8 +8,10 @@ fn some_number() -> Option<u32> {
 *)
 Definition some_number (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ Value.Integer 42 ]))
-  | _, _ => M.impossible
+  | [], [] =>
+    ltac:(M.monadic
+      (Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.U32 42 ]))
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_some_number :
@@ -46,7 +48,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 42 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.U32 42
+                  |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -142,7 +148,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.

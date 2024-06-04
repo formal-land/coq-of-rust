@@ -63,19 +63,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     LogicalOp.and (|
-                                      BinOp.Pure.eq
-                                        (BinOp.Wrap.add
-                                          Integer.I32
-                                          (Value.Integer 1)
-                                          (Value.Integer 1))
-                                        (Value.Integer 2),
+                                      BinOp.eq (|
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.I32 1,
+                                          Value.Integer IntegerKind.I32 1
+                                        |),
+                                        Value.Integer IntegerKind.I32 2
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq
-                                          (BinOp.Wrap.mul
-                                            Integer.I32
-                                            (Value.Integer 2)
-                                            (Value.Integer 2))
-                                          (Value.Integer 4)))
+                                        (BinOp.eq (|
+                                          BinOp.Wrap.mul (|
+                                            Value.Integer IntegerKind.I32 2,
+                                            Value.Integer IntegerKind.I32 2
+                                          |),
+                                          Value.Integer IntegerKind.I32 4
+                                        |)))
                                     |)
                                   |)
                                 ]
@@ -155,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_overload::main" main.

@@ -23,7 +23,7 @@ Module future.
           (Value.StructRecord
             "core::future::pending::Pending"
             [ ("_data", Value.StructTuple "core::marker::PhantomData" []) ]))
-      | _, _ => M.impossible
+      | _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_pending : M.IsFunction "core::future::pending::pending" pending.
@@ -51,7 +51,7 @@ Module future.
               β1,
               [ fun γ => ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [])) ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -99,7 +99,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -127,7 +127,7 @@ Module future.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (| M.get_function (| "core::future::pending::pending", [ T ] |), [] |)))
-        | _, _ => M.impossible
+        | _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

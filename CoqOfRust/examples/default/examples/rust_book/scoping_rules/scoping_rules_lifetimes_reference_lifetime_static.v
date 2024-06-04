@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 18 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 18 |) |))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -24,7 +24,7 @@ Definition coerce_static (τ : list Ty.t) (α : list Value.t) : M :=
               |)))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_coerce_static :
@@ -103,7 +103,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
-          let~ lifetime_num := M.alloc (| Value.Integer 9 |) in
+          let~ lifetime_num := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
           let~ coerced_static :=
             M.alloc (|
               M.call_closure (|
@@ -203,7 +203,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.

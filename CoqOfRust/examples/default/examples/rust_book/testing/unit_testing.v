@@ -12,8 +12,8 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+      BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_add : M.IsFunction "unit_testing::add" add.
@@ -29,8 +29,8 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Wrap.sub Integer.I32 (M.read (| a |)) (M.read (| b |))))
-  | _, _ => M.impossible
+      BinOp.Wrap.sub (| M.read (| a |), M.read (| b |) |)))
+  | _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_bad_add : M.IsFunction "unit_testing::bad_add" bad_add.
@@ -54,10 +54,10 @@ Module tests.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "unit_testing::add", [] |),
-                        [ Value.Integer 1; Value.Integer 2 ]
+                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                       |)
                     |);
-                    M.alloc (| Value.Integer 3 |)
+                    M.alloc (| Value.Integer IntegerKind.I32 3 |)
                   ]
               |),
               [
@@ -75,10 +75,12 @@ Module tests.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.not (|
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -113,7 +115,7 @@ Module tests.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_test_add : M.IsFunction "unit_testing::tests::test_add'1" test_add.
@@ -138,10 +140,10 @@ Module tests.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "unit_testing::bad_add", [] |),
-                        [ Value.Integer 1; Value.Integer 2 ]
+                        [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                       |)
                     |);
-                    M.alloc (| Value.Integer 3 |)
+                    M.alloc (| Value.Integer IntegerKind.I32 3 |)
                   ]
               |),
               [
@@ -159,10 +161,12 @@ Module tests.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| left_val |) |))
-                                      (M.read (| M.read (| right_val |) |)))
+                                  UnOp.not (|
+                                    BinOp.eq (|
+                                      M.read (| M.read (| left_val |) |),
+                                      M.read (| M.read (| right_val |) |)
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -197,7 +201,7 @@ Module tests.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_test_bad_add : M.IsFunction "unit_testing::tests::test_bad_add'1" test_bad_add.
