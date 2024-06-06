@@ -1,5 +1,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
+Module Lens.
+  Record t {Big_A A : Set} : Set := {
+    read : Big_A -> A;
+    write : Big_A -> A -> Big_A
+  }.
+  Arguments t : clear implicits.
+End Lens.
+
 (** ** Monads that are useful for the definition of simulations. *)
 
 Module Error.
@@ -41,6 +49,14 @@ Module StateError.
   Definition lift_from_error {State Error A : Set} (value : Error.t Error A) : t State Error A :=
     fun state =>
     (value, state).
+
+  Definition lift_lens {Big_State State Error A : Set}
+      (lens : Lens.t Big_State State)
+      (value : t State Error A) :
+      t Big_State Error A :=
+    fun big_state =>
+      let (value, state) := value (lens.(Lens.read) big_state) in
+      (value, lens.(Lens.write) big_state state).
 End StateError.
 
 Module Notations.
@@ -75,4 +91,6 @@ Module Notations.
   Notation "panicS?" := StateError.panic.
 
   Notation "return?toS?" := StateError.lift_from_error.
+
+  Notation "liftS?" := StateError.lift_lens.
 End Notations.
