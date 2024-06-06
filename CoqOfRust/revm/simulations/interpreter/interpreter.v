@@ -12,23 +12,11 @@ Require Import CoqOfRust.revm.links.interpreter.interpreter.function_stack.
 Require Import CoqOfRust.revm.links.interpreter.interpreter_action.
 Require Import CoqOfRust.revm.links.interpreter.interpreter.
 
-
 Module Interpreter.
-  Definition update_gas
-    {A : Set}
-    (m : MS? Gas.t string A) :
-    MS? Interpreter.t string A :=
-  letS? interp := readS? in
-  let gas := Interpreter.gas interp in
-  match m gas with
-  | (result, state) =>
-    match result with
-    | inr e => panicS? e
-    | inl result =>
-      letS? _ := writeS? (interp <|
-        Interpreter.gas := state
-      |>) in
-      returnS? result
-    end
-  end.
+  Module Lens.
+    Definition gas : Lens.t Interpreter.t Gas.t := {|
+      Lens.read interp := Interpreter.gas interp;
+      Lens.write interp gas := interp <| Interpreter.gas := gas |>
+    |}.
+  End Lens.
 End Interpreter.

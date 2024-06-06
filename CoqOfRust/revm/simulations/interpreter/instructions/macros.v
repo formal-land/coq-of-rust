@@ -28,7 +28,7 @@ Require Import CoqOfRust.revm.simulations.interpreter.interpreter.gas.
 Definition gas_macro (gas : Z) :
     MS? Interpreter.t string unit :=
   letS? interp := readS? in
-  letS? success := Interpreter.update_gas (Gas.record_cost gas) in
+  letS? success := liftS? Interpreter.Lens.gas (Gas.record_cost gas) in
   if negb success
   then
     letS? _ := writeS? (interp <|
