@@ -1,9 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.simulations.bool.
-Require Import CoqOfRust.core.simulations.array.
-Require Import CoqOfRust.revm.simulations.dependencies.
-Require Import CoqOfRust.revm.simulations.primitives.bytecode.eof.type_section.
+Require Import CoqOfRust.core.links.bool.
+Require Import CoqOfRust.core.links.array.
+Require Import CoqOfRust.revm.links.dependencies.
+Require Import CoqOfRust.revm.links.primitives.bytecode.eof.type_section.
 
 (*
   /// EOF Body, contains types, code, container and data sections.

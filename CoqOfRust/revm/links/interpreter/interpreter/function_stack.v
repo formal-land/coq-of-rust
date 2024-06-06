@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.simulations.array.
+Require Import CoqOfRust.core.links.array.
 
 (*
   /// Function return frame.

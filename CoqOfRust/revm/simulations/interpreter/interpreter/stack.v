@@ -3,32 +3,11 @@ Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
 Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.array.
-Require Import CoqOfRust.revm.simulations.dependencies.
-Require Import CoqOfRust.revm.simulations.interpreter.interpreter.instruction_result.
-
-(*
-  /// EVM stack with [STACK_LIMIT] capacity of words.
-  #[derive(Debug, PartialEq, Eq, Hash)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize))]
-  pub struct Stack {
-      /// The underlying data of the stack.
-      data: Vec<U256>,
-  }
-*)
+Require Import CoqOfRust.revm.links.dependencies.
+Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
+Require Import CoqOfRust.revm.links.interpreter.interpreter.stack.
 
 Module Stack.
-  Inductive t : Set :=
-  | data : list U256 -> t.
-
-  Global Instance IsToTy : ToTy t := {
-    Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
-    φ '(data x) := 
-      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [("data", φ x)]
-  }.
-          
   (*
     /// Returns the length of the stack in words.
     #[inline]
@@ -36,7 +15,7 @@ Module Stack.
         self.data.len()
     }
   *)
-  Definition len '(data stack) : Z :=
+  Definition len '(Stack.data stack) : Z :=
     Z.of_nat (List.length stack).
 
   (*
@@ -48,12 +27,12 @@ Module Stack.
     }
   *)
   Definition pop :
-      MS? t string (U256 + InstructionResult.t) :=
-    letS? '(data stack) := readS? in
+      MS? Stack.t string (U256 + InstructionResult.t) :=
+    letS? '(Stack.data stack) := readS? in
     match stack with
     | [] => returnS? (inr InstructionResult.StackUnderflow)
     | x :: xs => 
-      letS? _ := writeS? (data xs) in
+      letS? _ := writeS? (Stack.data xs) in
       returnS? (inl x)
     end.
 
@@ -69,7 +48,7 @@ Module Stack.
     }
   *)
   Definition pop_unsafe :
-      MS? t string U256 :=
+      MS? Stack.t string U256 :=
     letS? result := pop in
     match result with
     | inl x => returnS? x
@@ -89,8 +68,8 @@ Module Stack.
       }
   *)
   Definition top_unsafe :
-      MS? t string U256 :=
-    letS? '(data stack) := readS? in
+      MS? Stack.t string U256 :=
+    letS? '(Stack.data stack) := readS? in
     match stack with
     | [] => panicS? "Stack underflow"
     | x :: _ => returnS? x
@@ -110,7 +89,7 @@ Module Stack.
       }
   *)
   Definition pop_top_unsafe :
-      MS? t string (U256 * U256) :=
+      MS? Stack.t string (U256 * U256) :=
     letS? pop := pop_unsafe in
     letS? top := top_unsafe in
     returnS? (pop, top).
@@ -131,7 +110,7 @@ Module Stack.
     }
   *)
   Definition pop2_top_unsafe :
-      MS? t string (U256 * U256 * U256) :=
+      MS? Stack.t string (U256 * U256 * U256) :=
     letS? pop1 := pop_unsafe in
     letS? pop2 := pop_unsafe in
     letS? top := top_unsafe in

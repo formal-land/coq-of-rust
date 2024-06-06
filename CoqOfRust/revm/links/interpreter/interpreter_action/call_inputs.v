@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.simulations.bool.
-Require Import CoqOfRust.revm.simulations.dependencies.
+Require Import CoqOfRust.core.links.bool.
+Require Import CoqOfRust.revm.links.dependencies.
 
 (*
   /// Call value.

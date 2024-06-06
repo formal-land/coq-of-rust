@@ -2,9 +2,12 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
 Import simulations.M.Notations.
+Require Import CoqOfRust.revm.links.interpreter.interpreter.
+Require Import CoqOfRust.revm.links.interpreter.interpreter.gas.
+Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.gas.
-Require Import CoqOfRust.revm.simulations.interpreter.interpreter.instruction_result.
+
 
 (*
   /// Records a `gas` cost and fails the instruction if it would exceed the available gas.

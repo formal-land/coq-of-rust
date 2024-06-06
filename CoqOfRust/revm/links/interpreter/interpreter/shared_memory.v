@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.simulations.option.
-Require Import CoqOfRust.core.simulations.array.
+Require Import CoqOfRust.core.links.option.
+Require Import CoqOfRust.core.links.array.
 
 (*
   /// A sequential memory shared between calls, which uses

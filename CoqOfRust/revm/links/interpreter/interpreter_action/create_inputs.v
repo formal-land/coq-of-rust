@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.simulations.dependencies.
-Require Import CoqOfRust.revm.simulations.primitives.env.
+Require Import CoqOfRust.revm.links.dependencies.
+Require Import CoqOfRust.revm.links.primitives.env.
 
 (*
   /// Inputs for a create call.

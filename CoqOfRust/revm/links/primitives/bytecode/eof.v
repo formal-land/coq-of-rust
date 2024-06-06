@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.simulations.dependencies.
-Require Import CoqOfRust.revm.simulations.primitives.bytecode.eof.header.
-Require Import CoqOfRust.revm.simulations.primitives.bytecode.eof.body.
+Require Import CoqOfRust.revm.links.dependencies.
+Require Import CoqOfRust.revm.links.primitives.bytecode.eof.header.
+Require Import CoqOfRust.revm.links.primitives.bytecode.eof.body.
 
 (*
   /// EOF - Ethereum Object Format.
