@@ -1,7 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import simulations.M.
-Require CoqOfRust.core.simulations.default.
-Import simulations.M.Notations.
+Require Import links.M.
 
 Module Result.
   Global Instance IsToTy (A B : Set) (_ : ToTy A) (_ : ToTy B) : ToTy (A + B) := {

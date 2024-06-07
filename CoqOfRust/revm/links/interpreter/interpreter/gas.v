@@ -1,19 +1,25 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
-Require Import revm.interpreter.gas.
+Require Import revm.translations.interpreter.gas.
 
 Import Run.
 
-Module Gas.
-  (* pub struct Gas {
+(*
+  /// Represents the state of gas during execution.
+  #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+  pub struct Gas {
       /// The initial gas limit. This is constant throughout execution.
       limit: u64,
       /// The remaining gas.
       remaining: u64,
       /// Refunded gas. This is used only at the end of execution.
       refunded: i64,
-  } *)
+  }
+*)
+
+Module Gas.
   Record t : Set := {
     limit : Z;
     remaining : Z;
@@ -33,6 +39,7 @@ Module Gas.
       ];
   }.
 
+  
   Module SubPointer.
     Definition get_limit : SubPointer.Runner.t t Z := {|
       SubPointer.Runner.index :=

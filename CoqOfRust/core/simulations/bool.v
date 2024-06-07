@@ -1,17 +1,8 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 Module Bool.
-  Global Instance IsToTy : ToTy bool := {
-    Φ := Ty.path "bool";
-  }.
-
-  Global Instance IsToValue : ToValue bool := {
-    φ := Value.Bool;
-  }.
-
   Definition and {State Error} (x y : MS? State Error bool) : MS? State Error bool :=
     letS? a := x in
     if negb a

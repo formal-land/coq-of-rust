@@ -2,9 +2,9 @@ examples/default/examples/ink_contracts/proofs/erc20.v
 examples/default/examples/ink_contracts/proofs/lib.v
 examples/default/examples/ink_contracts/simulations/erc20.v
 examples/default/examples/ink_contracts/simulations/erc721.v
-revm/precompile/utilities.v
+revm/translations/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)
-revm/interpreter/opcode.v
+revm/translations/interpreter/opcode.v
 examples/default/examples/ink_contracts/proofs/erc721.v
 move/
 core/any.v
