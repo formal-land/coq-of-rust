@@ -5,6 +5,8 @@ Import simulations.M.Notations.
 Require Import CoqOfRust.revm.links.dependencies.
 Require Import CoqOfRust.revm.links.interpreter.interpreter.
 Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
+Require Import CoqOfRust.revm.links.primitives.specification.
+Require Import CoqOfRust.revm.simulations.interpreter.gas.calc.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.gas.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.stack.
@@ -161,4 +163,20 @@ Definition mulmod :
   letS? '(op1, op2, op3) := pop_top_macro3 in
   liftS? Interpreter.Lens.stack (
     Stack.top_unsafe_write (U256.mul_mod op1 op2 op3)
+  ).
+
+(*
+  pub fn exp<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
+      pop_top!(interpreter, op1, op2);
+      gas_or_fail!(interpreter, gas::exp_cost(SPEC::SPEC_ID, *op2));
+      *op2 = op1.pow( *op2 );
+  }
+*)
+
+Definition exp (SPEC : Spec.t) :
+    MS? Interpreter.t string unit :=
+  letS? '(op1, op2) := pop_top_macro2 in
+  letS? _ := gas_or_fail_macro (exp_cost (Spec.SPEC_ID SPEC) op2) in
+  liftS? Interpreter.Lens.stack (
+    Stack.top_unsafe_write (U256.wrapping_pow op1 op2)
   ).

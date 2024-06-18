@@ -41,6 +41,34 @@ Definition gas_macro (gas : Z) :
     returnS? tt.
 
 (*
+  /// Same as [`gas!`], but with `gas` as an option.
+  #[macro_export]
+  macro_rules! gas_or_fail {
+      ($interp:expr, $gas:expr) => {
+          match $gas {
+              Some(gas_used) => $crate::gas!($interp, gas_used),
+              None => {
+                  $interp.instruction_result = $crate::InstructionResult::OutOfGas;
+                  return;
+              }
+          }
+      };
+  }
+*)
+
+Definition gas_or_fail_macro (gas : option Z) :
+    MS? Interpreter.t string unit :=
+  match gas with
+  | Some gas_used => gas_macro gas_used
+  | None =>
+    letS? interp := readS? in
+    letS? _ := writeS? (interp <|
+      Interpreter.instruction_result := InstructionResult.OutOfGas
+    |>) in
+    returnS? tt
+  end.
+
+(*
   /// Pops `U256` values from the stack, and returns a reference to the top of the stack.
   /// Fails the instruction if the stack is too small.
   #[macro_export]
