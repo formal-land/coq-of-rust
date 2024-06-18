@@ -181,3 +181,37 @@ Definition exp (SPEC : Spec.t) :
   liftS? Interpreter.Lens.stack (
     Stack.top_unsafe_write (U256.wrapping_pow op1 op2)
   ).
+
+(*
+  pub fn signextend<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
+      gas!(interpreter, gas::LOW);
+      pop_top!(interpreter, ext, x);
+      // For 31 we also don't need to do anything.
+      if ext < U256::from(31) {
+          let ext = ext.as_limbs()[0];
+          let bit_index = (8 * ext + 7) as usize;
+          let bit = x.bit(bit_index);
+          let mask = (U256::from(1) << bit_index) - U256::from(1);
+          *x = if bit { *x | !mask } else { *x & mask };
+      }
+  }
+*)
+
+Definition signextend :
+    MS? Interpreter.t string unit :=
+  letS? _ := gas_macro Gas.LOW in
+  letS? '(ext, x) := pop_top_macro2 in
+  let ext := hd 0 (U256.as_limbs ext) in
+  let bit_index := (8 * ext + 7)%Z in
+  let bit := U256.bit x bit_index in
+  let mask :=
+    U256.wrapping_sub
+      (U256.shl (U256.from 1) bit_index)
+      (U256.from 1) in
+  liftS? Interpreter.Lens.stack (
+    Stack.top_unsafe_write (
+      if bit
+      then U256.or x (U256.not mask)
+      else U256.and x mask
+    )
+  ).
