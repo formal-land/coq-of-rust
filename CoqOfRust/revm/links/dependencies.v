@@ -79,6 +79,10 @@ Module Uint (S : UintSig).
   Parameter from : Z -> t.
 
   Parameter eq : t -> t -> bool.
+  Parameter lt : t -> t -> bool.
+  Parameter gt : t -> t -> bool.
+  Parameter le : t -> t -> bool.
+  Parameter ge : t -> t -> bool.
 
   Parameter wrapping_add : t -> t -> t.
   Parameter wrapping_mul : t -> t -> t.
