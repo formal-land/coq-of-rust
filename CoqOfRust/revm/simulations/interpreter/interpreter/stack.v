@@ -75,6 +75,14 @@ Module Stack.
     | x :: _ => returnS? x
     end.
 
+  Definition top_unsafe_write (a : U256) :
+      MS? Stack.t string unit :=
+    letS? '(Stack.data stack) := readS? in
+    match stack with
+    | [] => panicS? "Stack underflow"
+    | _ :: xs => writeS? (Stack.data (a :: xs))
+    end.
+
   (*
       /// Pop the topmost value, returning the value and the new topmost value.
       ///
