@@ -1,3 +1,4 @@
+Require Import Coq.Lists.List.
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.

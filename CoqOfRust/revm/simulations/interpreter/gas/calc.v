@@ -24,4 +24,4 @@ Require Import CoqOfRust.revm.links.primitives.specification.
 *)
 
 (* TODO *)
-Parameter exp_cost : SpecId.t -> U256 -> option Z.
+Parameter exp_cost : SpecId.t -> U256.t -> option Z.

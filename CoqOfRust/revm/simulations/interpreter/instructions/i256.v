@@ -32,7 +32,7 @@ Require Import CoqOfRust.revm.links.dependencies.
 *)
 
 (* TODO *)
-Parameter i256_div : U256 -> U256 -> U256.
+Parameter i256_div : U256.t -> U256.t -> U256.t.
 
 (*
     #[inline]
@@ -61,4 +61,4 @@ Parameter i256_div : U256 -> U256 -> U256.
 *)
 
 (* TODO *)
-Parameter i256_mod : U256 -> U256 -> U256.
+Parameter i256_mod : U256.t -> U256.t -> U256.t.

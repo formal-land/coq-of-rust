@@ -101,7 +101,7 @@ Definition gas_or_fail_macro (gas : option Z) :
 *)
 
 Definition pop_top_macro1 :
-  MS? Interpreter.t string U256 :=
+  MS? Interpreter.t string U256.t :=
   letS? interp := readS? in
   if Stack.len (Interpreter.stack interp) <? 1
   then
@@ -113,7 +113,7 @@ Definition pop_top_macro1 :
     liftS? Interpreter.Lens.stack Stack.top_unsafe.
 
 Definition pop_top_macro2 :
-  MS? Interpreter.t string (U256 * U256) :=
+  MS? Interpreter.t string (U256.t * U256.t) :=
   letS? interp := readS? in
   if Stack.len (Interpreter.stack interp) <? 2
   then
@@ -125,7 +125,7 @@ Definition pop_top_macro2 :
     liftS? Interpreter.Lens.stack Stack.pop_top_unsafe.
 
 Definition pop_top_macro3 :
-  MS? Interpreter.t string (U256 * U256 * U256) :=
+  MS? Interpreter.t string (U256.t * U256.t * U256.t) :=
   letS? interp := readS? in
   if Stack.len (Interpreter.stack interp) <? 3
   then

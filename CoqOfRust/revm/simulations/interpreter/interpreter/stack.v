@@ -27,7 +27,7 @@ Module Stack.
     }
   *)
   Definition pop :
-      MS? Stack.t string (U256 + InstructionResult.t) :=
+      MS? Stack.t string (U256.t + InstructionResult.t) :=
     letS? '(Stack.data stack) := readS? in
     match stack with
     | [] => returnS? (inr InstructionResult.StackUnderflow)
@@ -48,7 +48,7 @@ Module Stack.
     }
   *)
   Definition pop_unsafe :
-      MS? Stack.t string U256 :=
+      MS? Stack.t string U256.t :=
     letS? result := pop in
     match result with
     | inl x => returnS? x
@@ -68,14 +68,14 @@ Module Stack.
       }
   *)
   Definition top_unsafe :
-      MS? Stack.t string U256 :=
+      MS? Stack.t string U256.t :=
     letS? '(Stack.data stack) := readS? in
     match stack with
     | [] => panicS? "Stack underflow"
     | x :: _ => returnS? x
     end.
 
-  Definition top_unsafe_write (a : U256) :
+  Definition top_unsafe_write (a : U256.t) :
       MS? Stack.t string unit :=
     letS? '(Stack.data stack) := readS? in
     match stack with
@@ -97,7 +97,7 @@ Module Stack.
       }
   *)
   Definition pop_top_unsafe :
-      MS? Stack.t string (U256 * U256) :=
+      MS? Stack.t string (U256.t * U256.t) :=
     letS? pop := pop_unsafe in
     letS? top := top_unsafe in
     returnS? (pop, top).
@@ -118,7 +118,7 @@ Module Stack.
     }
   *)
   Definition pop2_top_unsafe :
-      MS? Stack.t string (U256 * U256 * U256) :=
+      MS? Stack.t string (U256.t * U256.t * U256.t) :=
     letS? pop1 := pop_unsafe in
     letS? pop2 := pop_unsafe in
     letS? top := top_unsafe in

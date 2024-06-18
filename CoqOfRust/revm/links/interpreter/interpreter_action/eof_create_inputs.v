@@ -28,7 +28,7 @@ Module EOFCreateInput.
   Record t : Set := {
     caller : Address.t;
     created_address : Address.t;
-    value : U256;
+    value : U256.t;
     eof_init_code : Eof.t;
     gas_limit : Z;
     return_memory_range : (Z * Z);
