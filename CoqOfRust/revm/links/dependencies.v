@@ -43,3 +43,7 @@ End FixedBytes.
 
 Definition B256 := FixedBytes.t.
 Definition U256 := FixedBytes.t.
+
+Parameter wrapping_add :  U256 -> U256 -> U256.
+Parameter wrapping_mul :  U256 -> U256 -> U256.
+Parameter wrapping_sub :  U256 -> U256 -> U256.
