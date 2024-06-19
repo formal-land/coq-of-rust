@@ -7,6 +7,7 @@ Require Import CoqOfRust.revm.links.dependencies.
 Require Import CoqOfRust.revm.links.interpreter.interpreter.
 Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
 Require Import CoqOfRust.revm.links.primitives.specification.
+Require Import CoqOfRust.revm.simulations.dependencies.
 Require Import CoqOfRust.revm.simulations.interpreter.gas.calc.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.
 Require Import CoqOfRust.revm.simulations.interpreter.interpreter.gas.
