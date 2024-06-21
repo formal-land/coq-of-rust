@@ -12,6 +12,11 @@ Module U256.
   Definition ZERO : t := 0.
   Definition from : Z -> t := id.
 
+  Definition u64_try_from (a : t) : option Z :=
+    if a <? 2 ^ BITS
+    then Some a
+    else None.
+
   Definition eq : t -> t -> bool := Z.eqb.
   Definition lt : t -> t -> bool := Z.ltb.
   Definition gt : t -> t -> bool := Z.gtb.
@@ -25,8 +30,22 @@ Module U256.
   Definition wrapping_rem (a b : t) : t := (Z.rem a b) mod size.
   Definition wrapping_pow (a b : t) : t := (Z.pow a b) mod size.
 
+  Definition log2floor : t -> Z := Z.log2.
+
   Definition add_mod (a b m : t) : t := ((a + b) mod m) mod size.
   Definition mul_mod (a b m : t) : t := ((a * b) mod m) mod size.
+
+  Definition checked_add (a b : t) : option t :=
+    let r := (a + b)%Z in
+    if r <? 2 ^ BITS
+    then Some r
+    else None.
+  
+  Definition checked_mul (a b : t) : option t :=
+    let r := (a * b)%Z in
+    if r <? 2 ^ BITS
+    then Some r
+    else None.
 
   (* bit operations *)
   Definition bit : t -> Z -> bool := Z.testbit.
