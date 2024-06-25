@@ -4,6 +4,186 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* 
+pub struct CompiledModule {
+    /// Version number found during deserialization
+    pub version: u32,
+    /// Handle to self.
+    pub self_module_handle_idx: ModuleHandleIndex,
+    /// Handles to external dependency modules and self.
+    pub module_handles: Vec<ModuleHandle>,
+    /// Handles to external and internal types.
+    pub struct_handles: Vec<StructHandle>,
+    /// Handles to external and internal functions.
+    pub function_handles: Vec<FunctionHandle>,
+    /// Handles to fields.
+    pub field_handles: Vec<FieldHandle>,
+    /// Friend declarations, represented as a collection of handles to external friend modules.
+    pub friend_decls: Vec<ModuleHandle>,
+
+    /// Struct instantiations.
+    pub struct_def_instantiations: Vec<StructDefInstantiation>,
+    /// Function instantiations.
+    pub function_instantiations: Vec<FunctionInstantiation>,
+    /// Field instantiations.
+    pub field_instantiations: Vec<FieldInstantiation>,
+
+    /// Locals signature pool. The signature for all locals of the functions defined in the module.
+    pub signatures: SignaturePool,
+
+    /// All identifiers used in this module.
+    pub identifiers: IdentifierPool,
+    /// All address identifiers used in this module.
+    pub address_identifiers: AddressIdentifierPool,
+    /// Constant pool. The constant values used in the module.
+    pub constant_pool: ConstantPool,
+
+    pub metadata: Vec<Metadata>,
+
+    /// Types defined in this module.
+    pub struct_defs: Vec<StructDefinition>,
+    /// Function defined in this module.
+    pub function_defs: Vec<FunctionDefinition>,
+}
+*)
+Module CompiledModule.
+(* TODO: Implement the struct *)
+  Record t : Set := { 
+  }.
+End CompiledModule.
+
+(* 
+pub enum SignatureToken {
+    /// Boolean, `true` or `false`.
+    Bool,
+    /// Unsigned integers, 8 bits length.
+    U8,
+    /// Unsigned integers, 64 bits length.
+    U64,
+    /// Unsigned integers, 128 bits length.
+    U128,
+    /// Address, a 16 bytes immutable type.
+    Address,
+    /// Signer, a 16 bytes immutable type representing the capability to publish at an address
+    Signer,
+    /// Vector
+    Vector(Box<SignatureToken>),
+    /// User defined type
+    Struct(StructHandleIndex),
+    StructInstantiation(Box<(StructHandleIndex, Vec<SignatureToken>)>),
+    /// Reference to a type.
+    Reference(Box<SignatureToken>),
+    /// Mutable reference to a type.
+    MutableReference(Box<SignatureToken>),
+    /// Type parameter.
+    TypeParameter(TypeParameterIndex),
+    /// Unsigned integers, 16 bits length.
+    U16,
+    /// Unsigned integers, 32 bits length.
+    U32,
+    /// Unsigned integers, 256 bits length.
+    U256,
+}
+*)
+
+Definition TableIndex := Z.
+Definition TypeParameterIndex := Z.
+
+(* 
+gy@TODO:
+- figure out how to write impl function code
+- how to deal with the `Box`?
+- fill in missing dependencies...
+*)
+
+(* Template for `define_index!` macro
+
+pub struct $name(pub TableIndex);
+
+/// Returns an instance of the given `Index`.
+impl $name {
+    pub fn new(idx: TableIndex) -> Self {
+        Self(idx)
+    }
+}
+
+impl ::std::fmt::Display for $name {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl ::std::fmt::Debug for $name {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{}({})", stringify!($name), self.0)
+    }
+}
+
+impl ModuleIndex for $name {
+    const KIND: IndexKind = IndexKind::$kind;
+
+    #[inline]
+    fn into_index(self) -> usize {
+        self.0 as usize
+    }
+}
+*)
+
+(* Example Impl code
+Module Impl_move_binary_format_errors_PartialVMError.
+Definition Self : Set :=
+  move_binary_format.errors.PartialVMError.t.
+
+  Parameter new : move_core_types.vm_status.StatusCode.t -> Self.
+
+  Parameter with_message :
+    Self ->
+    string ->
+    Self.
+
+  Parameter at_code_offset :
+    Self ->
+    move_binary_format.file_format.FunctionDefinitionIndex.t ->
+    move_binary_format.file_format.CodeOffset ->
+    Self.
+End Impl_move_binary_format_errors_PartialVMError. *)
+
+Module SignatureToken.
+  Inductive t : Set := 
+  | Bool
+  | U8
+  | U64
+  | U128
+  | Address
+  | Signer
+  (* TODO: Implement below *)
+  (* | Vector : SignatureToken -> t *)
+  (* | Struct : StructHandleIndex -> t *)
+  (* | StructInstantiation : (StructHandleIndex, Vec SignatureToken) -> t *)
+  (* | Reference : SignatureToken -> t *)
+  (* | MutableReference : SignatureToken -> t *)
+  (* | TypeParameter : TypeParameterIndex -> t *)
+  | U16
+  | U32
+  | U256
+  .
+End SignatureToken.
+
+(* 
+pub struct Signature(
+    #[cfg_attr(
+        any(test, feature = "fuzzing"),
+        proptest(strategy = "vec(any::<SignatureToken>(), 0..=params)")
+    )]
+    pub Vec<SignatureToken>,
+);
+*)
+Module Signature.
+  Record t : Set := {
+    _ : list SignatureToken.t;
+  }.
+End Signature.
+
 Module SignatureIndex.
   Inductive t : Set :=
   | Make (_ : Z).
