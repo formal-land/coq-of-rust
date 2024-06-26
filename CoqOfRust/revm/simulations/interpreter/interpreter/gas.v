@@ -32,4 +32,8 @@ Module Gas.
       else returnS? tt
     in
     returnS? success.
+
+  Definition VERYLOW : Z := 3.
+  Definition LOW : Z := 5.
+  Definition MID : Z := 8.
 End Gas.

@@ -19,8 +19,8 @@ Require Import CoqOfRust.revm.links.dependencies.
 
 Module CallValue.
   Inductive t : Set :=
-  | Transfer : Z -> t
-  | Apparent : Z -> t.
+  | Transfer : U256.t -> t
+  | Apparent : U256.t -> t.
 
   Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue";

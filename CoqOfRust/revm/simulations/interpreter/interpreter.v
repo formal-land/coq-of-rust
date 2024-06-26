@@ -18,5 +18,10 @@ Module Interpreter.
       Lens.read interp := Interpreter.gas interp;
       Lens.write interp gas := interp <| Interpreter.gas := gas |>
     |}.
+
+    Definition stack: Lens.t Interpreter.t Stack.t := {|
+      Lens.read interp := Interpreter.stack interp;
+      Lens.write interp stack := interp <| Interpreter.stack := stack |>
+    |}.
   End Lens.
 End Interpreter.

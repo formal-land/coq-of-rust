@@ -25,7 +25,7 @@ Module CreateInputs.
   Record t : Set := {
     caller : Address.t;
     scheme : CreateScheme.t;
-    value : U256;
+    value : U256.t;
     init_code : Bytes.t;
     gas_limit : Z;
   }.

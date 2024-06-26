@@ -15,7 +15,7 @@ Require Import CoqOfRust.revm.links.dependencies.
 
 Module Stack.
   Inductive t : Set :=
-  | data : list U256 -> t.
+  | data : list U256.t -> t.
 
   Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";

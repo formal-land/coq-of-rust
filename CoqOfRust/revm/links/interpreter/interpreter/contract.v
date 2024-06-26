@@ -29,10 +29,10 @@ Module Contract.
   Record t : Set := {
     input : Bytes.t;
     bytecode : Bytecode.t;
-    hash : option B256;
+    hash : option B256.t;
     target_address : Address.t;
     caller : Address.t;
-    call_value : Z;
+    call_value : U256.t;
   }.
 
   Global Instance IsToTy : ToTy t := {

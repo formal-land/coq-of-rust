@@ -41,5 +41,26 @@ Module FixedBytes.
   Admitted.
 End FixedBytes.
 
-Definition B256 := FixedBytes.t.
-Definition U256 := FixedBytes.t.
+Module U256.
+  Definition t : Set := Z.
+  Definition size : Z := 256.
+
+  Global Instance IsToTy : ToTy t := {
+    Φ := Ty.path "ruint::Uint";
+  }.
+
+  Global Instance IsToValue : ToValue t.
+  Admitted.
+End U256.
+
+Module B256.
+  Inductive t : Set :=
+  | make : U256.t -> t.
+
+  Global Instance IsToTy : ToTy t := {
+    Φ := Ty.path "ruint::Bits";
+  }.
+
+  Global Instance IsToValue : ToValue t.
+  Admitted.
+End B256.

@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import CoqOfRust.revm.links.dependencies.
 
 (*
   /// Create scheme.
@@ -19,7 +20,7 @@ Require Import CoqOfRust.links.M.
 Module CreateScheme.
   Inductive t : Set :=
   | Create
-  | Create2 : Z -> t.
+  | Create2 : U256.t -> t.
 
   Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "revm_primitives::env::CreateScheme";
