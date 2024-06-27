@@ -4,6 +4,81 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+
+(* 
+TODO:
+- fill in missing dependencies...
+- delete related comments after correctly implemented the code sections
+*)
+
+Module FieldHandleIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End FieldHandleIndex.
+
+Module SignatureIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End SignatureIndex.
+
+Module ConstantPoolIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End ConstantPoolIndex.
+
+Module FunctionHandleIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End FunctionHandleIndex.
+
+Module FunctionInstantiationIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End FunctionInstantiationIndex.
+
+Module StructDefinitionIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End StructDefinitionIndex.
+
+Module StructDefInstantiationIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End StructDefInstantiationIndex.
+
+Module FieldInstantiationIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End FieldInstantiationIndex.
+
+Module FunctionDefinitionIndex.
+  Inductive t : Set :=
+  | Make (_ : Z).
+End FunctionDefinitionIndex.
+
+Module FieldInstantiation.
+  Record t : Set := {
+    handle : FieldHandleIndex.t;
+    type_parameters : list SignatureIndex.t;
+  }.
+End FieldInstantiation.
+
+Module FunctionInstantiation.
+  Record t : Set := {
+    handle : FunctionHandleIndex.t;
+    type_parameters : list SignatureIndex.t;
+  }.
+End FunctionInstantiation.
+
+Module StructDefInstantiation.
+  Record t : Set := {
+    def : StructDefinitionIndex.t;
+    type_parameters : SignatureIndex.t;
+  }.
+End StructDefInstantiation.
+
+Definition CodeOffset : Set := Z.
+
 (* 
 pub struct CompiledModule {
     /// Version number found during deserialization
@@ -49,6 +124,23 @@ pub struct CompiledModule {
 Module CompiledModule.
 (* TODO: Implement the struct *)
   Record t : Set := { 
+  version : Z;
+  (* self_module_handle_idx : ModuleHandleIndex; *)
+  (* module_handles : list ModuleHandle; *)
+  (* struct_handles : list StructHandle; *)
+  (* function_handles : list FunctionHandle; *)
+  (* field_handles : list FieldHandle; *)
+  (* friend_decls : list ModuleHandle; *)
+  (* struct_def_instantiations : list StructDefInstantiation; *)
+  (* function_instantiations : list FunctionInstantiation; *)
+  (* field_instantiations : list FieldInstantiation; *)
+  (* signatures : SignaturePool; *)
+  (* identifiers : IdentifierPool; *)
+  (* address_identifiers : AddressIdentifierPool; *)
+  (* constant_pool : ConstantPool; *)
+  (* metadata : list Metadata; *)
+  (* struct_defs : list StructDefinition; *)
+  (* function_defs : list FunctionDefinition; *)
   }.
 End CompiledModule.
 
@@ -89,12 +181,6 @@ pub enum SignatureToken {
 Definition TableIndex := Z.
 Definition TypeParameterIndex := Z.
 
-(* 
-gy@TODO:
-- figure out how to write impl function code
-- fill in missing dependencies...
-*)
-
 (* Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
@@ -128,24 +214,16 @@ impl ModuleIndex for $name {
 }
 *)
 
-(* Example Impl code
-Module Impl_move_binary_format_errors_PartialVMError.
-Definition Self : Set :=
-  move_binary_format.errors.PartialVMError.t.
-
-  Parameter new : move_core_types.vm_status.StatusCode.t -> Self.
-
-  Parameter with_message :
-    Self ->
-    string ->
-    Self.
-
-  Parameter at_code_offset :
-    Self ->
-    move_binary_format.file_format.FunctionDefinitionIndex.t ->
-    move_binary_format.file_format.CodeOffset ->
-    Self.
-End Impl_move_binary_format_errors_PartialVMError. *)
+(* 
+define_index! {
+    name: StructHandleIndex,
+    kind: StructHandle,
+    doc: "Index into the `StructHandle` table.",
+}
+*)
+Module StructHandleIndex.
+  Inductive t : Set := .
+End StructHandleIndex.
 
 Module SignatureToken.
   Inductive t : Set := 
@@ -155,13 +233,12 @@ Module SignatureToken.
   | U128
   | Address
   | Signer
-  (* TODO: Implement below *)
-  (* | Vector : SignatureToken -> t *)
-  (* | Struct : StructHandleIndex -> t *)
-  (* | StructInstantiation : (StructHandleIndex * (list SignatureToken)) -> t *)
-  (* | Reference : SignatureToken -> t *)
-  (* | MutableReference : SignatureToken -> t *)
-  (* | TypeParameter : TypeParameterIndex -> t *)
+  | Vector : t -> t
+  | Struct : StructHandleIndex.t -> t
+  | StructInstantiation : (StructHandleIndex.t * (list t)) -> t
+  | Reference : t -> t
+  | MutableReference : t -> t
+  | TypeParameter : TypeParameterIndex -> t
   | U16
   | U32
   | U256
@@ -184,51 +261,6 @@ Module Signature.
 
   Definition len (self : t) : Z := Z.of_nat (List.length self.(a0)).
 End Signature.
-
-Module SignatureIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End SignatureIndex.
-
-Module ConstantPoolIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End ConstantPoolIndex.
-
-Module FunctionHandleIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FunctionHandleIndex.
-
-Module FunctionInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FunctionInstantiationIndex.
-
-Module StructDefinitionIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End StructDefinitionIndex.
-
-Module StructDefInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End StructDefInstantiationIndex.
-
-Module FieldHandleIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FieldHandleIndex.
-
-Module FieldInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FieldInstantiationIndex.
-
-Module FunctionDefinitionIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FunctionDefinitionIndex.
 
 Module Bytecode.
   Inductive t : Set :=
@@ -317,26 +349,3 @@ Module CodeUnit.
     code : list Bytecode.t;
   }.
 End CodeUnit.
-
-Module FieldInstantiation.
-  Record t : Set := {
-    handle : FieldHandleIndex.t;
-    type_parameters : list SignatureIndex.t;
-  }.
-End FieldInstantiation.
-
-Module FunctionInstantiation.
-  Record t : Set := {
-    handle : FunctionHandleIndex.t;
-    type_parameters : list SignatureIndex.t;
-  }.
-End FunctionInstantiation.
-
-Module StructDefInstantiation.
-  Record t : Set := {
-    def : StructDefinitionIndex.t;
-    type_parameters : SignatureIndex.t;
-  }.
-End StructDefInstantiation.
-
-Definition CodeOffset : Set := Z.
