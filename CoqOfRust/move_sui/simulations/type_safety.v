@@ -31,6 +31,7 @@ Require CoqOfRust.move_sui.simulations.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
+ - CREATE CORRECT FOLDERS FOR THE FILES
  - Check if `impl` functions has been correctly simulated
  - Check how to implement dyn(?) types
  - Check how to deal with stateful functions
@@ -42,6 +43,11 @@ Module FunctionContext := absint.FunctionContext.
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
 Definition AbstractStack_new : Set. Admitted.
+
+(* TODO: Implement file_format::LocalIndex *)
+Module LocalIndex. 
+Inductive t : Set := .
+End LocalIndex.
 
 (* struct Locals<'a> {
     param_count: usize,
