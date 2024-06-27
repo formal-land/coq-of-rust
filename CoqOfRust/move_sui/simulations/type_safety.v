@@ -69,11 +69,11 @@ Module Locals.
     }
     *)
 
-    Definition new (parameters locals : t) : Self :=
+    Definition new (parameters locals : Signature.t) : Self :=
       {|
-        Self.param_count : Signature.len parameters;
-        Self.parameters : parameters;
-        Self.locals : locals;
+        Locals.param_count := Signature.len parameters;
+        Locals.parameters := parameters;
+        Locals.locals := locals;
       |}.
 
     (* 
@@ -132,10 +132,10 @@ Module TypeSafetyChecker.
     let locals := Locals.new (FunctionContext.parameters function_context) 
                   (FunctionContext.locals function_context) in
     {|
-      TypeSafetyChecker.module : module;
-      TypeSafetyChecker.function_context : function_context; 
-      TypeSafetyChecker.locals : locals;
-      TypeSafetyChecker.stack : AbstractStack_new;
+      TypeSafetyChecker.module := module;
+      TypeSafetyChecker.function_context := function_context; 
+      TypeSafetyChecker.locals := locals;
+      TypeSafetyChecker.stack := AbstractStack_new;
     |}.
 
     (* 

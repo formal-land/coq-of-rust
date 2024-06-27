@@ -4,7 +4,6 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-
 (* 
 TODO:
 - fill in missing dependencies...
