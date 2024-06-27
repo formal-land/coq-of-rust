@@ -39,6 +39,7 @@ Module FunctionContext := absint.FunctionContext.
 
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
+Definition AbstractStack_new : Set. Admitted.
 
 (* struct Locals<'a> {
     param_count: usize,
@@ -121,19 +122,39 @@ Module TypeSafetyChecker.
         }
     }
   *)
-  Definition new : Self. Admitted.
+  Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
+    (* TODO: Implement 
+    - FunctionContext.parameters
+    - FunctionContext.locals
+    - AbstractStack.new *)
+    let locals := Locals.new (FunctionContext.parameters function_context) 
+                  (FunctionContext.locals function_context) in
+    {|
+      TypeSafetyChecker.module : module;
+      TypeSafetyChecker.function_context : function_context; 
+      TypeSafetyChecker.locals : locals;
+      TypeSafetyChecker.stack : AbstractStack_new;
+    |}.
+
+    (* 
+      fn local_at(&self, i: LocalIndex) -> &SignatureToken {
+          self.locals.local_at(i)
+      }
+    *)
+    (* TODO: Implement local_at *)
+    Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t. Admitted.
+
+    (* 
+    fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
+        self.module
+            .abilities(t, self.function_context.type_parameters())
+    }
+    *)
+    Definition abilities : Set. Admitted.
 
   End Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
   (* 
     impl<'a> TypeSafetyChecker<'a> {
-      fn local_at(&self, i: LocalIndex) -> &SignatureToken {
-          self.locals.local_at(i)
-      }
-
-      fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
-          self.module
-              .abilities(t, self.function_context.type_parameters())
-      }
 
       fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
           PartialVMError::new(status).at_code_offset(
