@@ -32,6 +32,8 @@ Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
  - Check if `impl` functions has been correctly simulated
+ - Check how to implement dyn(?) types
+ - Check how to deal with stateful functions
  - Implement missing dependencies or axiomatize them
  - Rest of the file
  - Remove comments after the related code are completely translated
@@ -150,30 +152,39 @@ Module TypeSafetyChecker.
             .abilities(t, self.function_context.type_parameters())
     }
     *)
-    Definition abilities : Set. Admitted.
+    (* TODO: Implement PartialVMResult AbilitySet *)
+    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult AbilitySet. Admitted.
+
+    (* 
+    fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
+      PartialVMError::new(status).at_code_offset(
+          self.function_context
+              .index()
+              .unwrap_or(FunctionDefinitionIndex(0)),
+          offset,
+      )
+    }
+    *)
+    (* TODO: Implement PartialVMError *)
+    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
+
+    (* 
+    fn push(
+        &mut self,
+        meter: &mut (impl Meter + ?Sized),
+        ty: SignatureToken,
+    ) -> PartialVMResult<()> {
+        self.charge_ty(meter, &ty)?;
+        safe_unwrap_err!(self.stack.push(ty));
+        Ok(())
+    }
+    *)
+    (* TODO: "&mut (impl Meter + ?Sized)" *)
+    Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
 
   End Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
   (* 
     impl<'a> TypeSafetyChecker<'a> {
-
-      fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
-          PartialVMError::new(status).at_code_offset(
-              self.function_context
-                  .index()
-                  .unwrap_or(FunctionDefinitionIndex(0)),
-              offset,
-          )
-      }
-
-      fn push(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          ty: SignatureToken,
-      ) -> PartialVMResult<()> {
-          self.charge_ty(meter, &ty)?;
-          safe_unwrap_err!(self.stack.push(ty));
-          Ok(())
-      }
 
       fn push_n(
           &mut self,
