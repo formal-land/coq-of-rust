@@ -31,7 +31,7 @@ Require CoqOfRust.move_sui.simulations.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
- - Figure out way to write `impl` functions 
+ - Check if `impl` functions has been correctly simulated
  - Implement missing dependencies or axiomatize them
  - Rest of the file
  - Remove comments after the related code are completely translated
@@ -57,25 +57,35 @@ Module Locals.
       move_sui.simulations.type_safety.Locals.t.
 
     (* 
-    impl<'a> Locals<'a> {
-        fn new(parameters: &'a Signature, locals: &'a Signature) -> Self {
-            Self {
-                param_count: parameters.len(),
-                parameters,
-                locals,
-            }
-        }
-
-        fn local_at(&self, i: LocalIndex) -> &SignatureToken {
-            let idx = i as usize;
-            if idx < self.param_count {
-                &self.parameters.0[idx]
-            } else {
-                &self.locals.0[idx - self.param_count]
-            }
+    fn new(parameters: &'a Signature, locals: &'a Signature) -> Self {
+        Self {
+            param_count: parameters.len(),
+            parameters,
+            locals,
         }
     }
     *)
+
+    Definition new (parameters locals : t) : Self :=
+      {|
+        Self.param_count : Signature.len parameters;
+        Self.parameters : parameters;
+        Self.locals : locals;
+      |}.
+
+    (* 
+    fn local_at(&self, i: LocalIndex) -> &SignatureToken {
+        let idx = i as usize;
+        if idx < self.param_count {
+            &self.parameters.0[idx]
+        } else {
+            &self.locals.0[idx - self.param_count]
+        }
+    }
+    *)
+    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t.
+    Admitted.
+
   End Impl_move_sui_simulations_type_safety_Locals.
 End Locals.
 
@@ -97,18 +107,25 @@ Module TypeSafetyChecker.
     locals : Locals.t;
     stack : AbstractStack SignatureToken.t;
   }.
+  Module Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
+    Definition Self : Set := 
+      move_sui.simulations.type_safety.TypeSafetyChecker.t.
+  (* 
+    fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
+        let locals = Locals::new(function_context.parameters(), function_context.locals());
+        Self {
+            module,
+            function_context,
+            locals,
+            stack: AbstractStack::new(),
+        }
+    }
+  *)
+  Definition new : Self. Admitted.
+
+  End Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
   (* 
     impl<'a> TypeSafetyChecker<'a> {
-      fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
-          let locals = Locals::new(function_context.parameters(), function_context.locals());
-          Self {
-              module,
-              function_context,
-              locals,
-              stack: AbstractStack::new(),
-          }
-      }
-
       fn local_at(&self, i: LocalIndex) -> &SignatureToken {
           self.locals.local_at(i)
       }
