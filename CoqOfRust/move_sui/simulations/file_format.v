@@ -92,7 +92,6 @@ Definition TypeParameterIndex := Z.
 (* 
 gy@TODO:
 - figure out how to write impl function code
-- how to deal with the `Box`?
 - fill in missing dependencies...
 *)
 
@@ -159,7 +158,7 @@ Module SignatureToken.
   (* TODO: Implement below *)
   (* | Vector : SignatureToken -> t *)
   (* | Struct : StructHandleIndex -> t *)
-  (* | StructInstantiation : (StructHandleIndex, Vec SignatureToken) -> t *)
+  (* | StructInstantiation : (StructHandleIndex * (list SignatureToken)) -> t *)
   (* | Reference : SignatureToken -> t *)
   (* | MutableReference : SignatureToken -> t *)
   (* | TypeParameter : TypeParameterIndex -> t *)
@@ -180,8 +179,10 @@ pub struct Signature(
 *)
 Module Signature.
   Record t : Set := {
-    _ : list SignatureToken.t;
+    a0 : list SignatureToken.t;
   }.
+
+  Definition len (self : t) : Z := Z.of_nat (List.length self.(a0)).
 End Signature.
 
 Module SignatureIndex.
