@@ -22,16 +22,17 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.file_format.
+Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module SignatureToken := file_format.SignatureToken.
 Module CompiledModule := file_format.CompiledModule.
 
-Require CoqOfRust.move_sui.simulations.absint.
+Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
 
 (* TODO(progress): 
+ - CREATE CORRECT FOLDERS FOR THE FILES
  - Implement PartialVMResult 
  - Implement AbilitySet
  - Check how to implement dyn(?) types
@@ -62,9 +63,9 @@ Module Locals.
     locals : Signature.t;
   }.
 
-  Module Impl_move_sui_simulations_type_safety_Locals.
+  Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Set := 
-      move_sui.simulations.type_safety.Locals.t.
+      move_sui.simulations.move_bytecode_verifier.type_safety.Locals.t.
 
     (* 
     fn new(parameters: &'a Signature, locals: &'a Signature) -> Self {
@@ -96,7 +97,7 @@ Module Locals.
     Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t.
     Admitted.
 
-  End Impl_move_sui_simulations_type_safety_Locals.
+  End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
 
 Definition TYPE_NODE_COST : Z := 30.
@@ -117,9 +118,9 @@ Module TypeSafetyChecker.
     locals : Locals.t;
     stack : AbstractStack SignatureToken.t;
   }.
-  Module Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
+  Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
-      move_sui.simulations.type_safety.TypeSafetyChecker.t.
+      move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
   (* 
     fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
         let locals = Locals::new(function_context.parameters(), function_context.locals());
@@ -133,9 +134,9 @@ Module TypeSafetyChecker.
   *)
   Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
     (* TODO: Implement AbstractStack.new *)
-    let locals := Locals.Impl_move_sui_simulations_type_safety_Locals.new 
-    (FunctionContext.Impl_move_sui_simulations_absint_FunctionContext.parameters function_context) 
-    (FunctionContext.Impl_move_sui_simulations_absint_FunctionContext.locals function_context) in
+    let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
+    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
+    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
     {|
       TypeSafetyChecker.module := module;
       TypeSafetyChecker.function_context := function_context; 
@@ -149,7 +150,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
-      Locals.Impl_move_sui_simulations_type_safety_Locals.local_at
+      Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
 
     (* 
@@ -188,7 +189,7 @@ Module TypeSafetyChecker.
     (* TODO: "&mut (impl Meter + ?Sized)" *)
     Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
 
-  End Impl_move_sui_simulations_type_safety_TypeSafetyChecker.
+  End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
   (* 
     impl<'a> TypeSafetyChecker<'a> {
 
