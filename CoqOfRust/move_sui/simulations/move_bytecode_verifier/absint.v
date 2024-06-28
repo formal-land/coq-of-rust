@@ -4,7 +4,7 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.file_format.
+Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 
 (* pub struct FunctionContext<'a> {
@@ -28,9 +28,9 @@ Module FunctionContext.
     (* cfg : VMControlFlowGraph; *)
   }.
 
-  Module Impl_move_sui_simulations_absint_FunctionContext.
+  Module Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
     Definition Self : Set := 
-      move_sui.simulations.absint.FunctionContext.t.
+      move_sui.simulations.move_bytecode_verifier.absint.FunctionContext.t.
     
     (* 
     pub fn parameters(&self) -> &Signature {
@@ -45,7 +45,7 @@ Module FunctionContext.
     }
     *)
     Definition locals (self : Self) : Signature.t := self.(locals).
-  End Impl_move_sui_simulations_absint_FunctionContext.
+  End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
   (* 
   impl<'a> FunctionContext<'a> {
       // Creates a `FunctionContext` for a module function.
