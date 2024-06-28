@@ -30,9 +30,11 @@ Module CompiledModule := file_format.CompiledModule.
 Require CoqOfRust.move_sui.simulations.absint.
 Module FunctionContext := absint.FunctionContext.
 
+
 (* TODO(progress): 
  - CREATE CORRECT FOLDERS FOR THE FILES
- - Check if `impl` functions has been correctly simulated
+ - Implement PartialVMResult 
+ - Implement AbilitySet
  - Check how to implement dyn(?) types
  - Check how to deal with stateful functions
  - Implement missing dependencies or axiomatize them
@@ -42,7 +44,7 @@ Module FunctionContext := absint.FunctionContext.
 
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
-Definition AbstractStack_new : Set. Admitted.
+Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 
 (* TODO: Implement file_format::LocalIndex *)
 Module LocalIndex. 
@@ -131,12 +133,10 @@ Module TypeSafetyChecker.
     }
   *)
   Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
-    (* TODO: Implement 
-    - FunctionContext.parameters
-    - FunctionContext.locals
-    - AbstractStack.new *)
-    let locals := Locals.new (FunctionContext.parameters function_context) 
-                  (FunctionContext.locals function_context) in
+    (* TODO: Implement AbstractStack.new *)
+    let locals := Locals.Impl_move_sui_simulations_type_safety_Locals.new 
+    (FunctionContext.Impl_move_sui_simulations_absint_FunctionContext.parameters function_context) 
+    (FunctionContext.Impl_move_sui_simulations_absint_FunctionContext.locals function_context) in
     {|
       TypeSafetyChecker.module := module;
       TypeSafetyChecker.function_context := function_context; 
@@ -149,8 +149,9 @@ Module TypeSafetyChecker.
           self.locals.local_at(i)
       }
     *)
-    (* TODO: Implement local_at *)
-    Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t. Admitted.
+    Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
+      Locals.Impl_move_sui_simulations_type_safety_Locals.local_at
+        self.(locals) i.
 
     (* 
     fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
