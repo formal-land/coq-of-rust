@@ -67,21 +67,19 @@ Module Stack.
           self.data.get_unchecked_mut(len - 1)
       }
   *)
-  Definition top_unsafe :
-      MS? Stack.t string U256.t :=
-    letS? '(Stack.data stack) := readS? in
-    match stack with
-    | [] => panicS? "Stack underflow"
-    | x :: _ => returnS? x
-    end.
 
-  Definition top_unsafe_write (a : U256.t) :
-      MS? Stack.t string unit :=
-    letS? '(Stack.data stack) := readS? in
-    match stack with
-    | [] => panicS? "Stack underflow"
-    | _ :: xs => writeS? (Stack.data (a :: xs))
-    end.
+  Definition top_unsafe : LensPanic.t string Stack.t U256.t := {|
+    LensPanic.read '(Stack.data stack) :=
+      match stack with
+      | [] => panic!? "Stack underflow"
+      | x :: _ => return!? x
+      end;
+    LensPanic.write '(Stack.data stack) x :=
+      match stack with
+      | [] => panic!? "Stack underflow"
+      | _ :: xs => return!? (Stack.data (x :: xs))
+      end
+  |}.
 
   (*
       /// Pop the topmost value, returning the value and the new topmost value.
@@ -97,10 +95,9 @@ Module Stack.
       }
   *)
   Definition pop_top_unsafe :
-      MS? Stack.t string (U256.t * U256.t) :=
+      MS? Stack.t string (U256.t * LensPanic.t string Stack.t U256.t) :=
     letS? pop := pop_unsafe in
-    letS? top := top_unsafe in
-    returnS? (pop, top).
+    returnS? (pop, top_unsafe).
   
   (*
     /// Pops 2 values from the stack and returns them, in addition to the new topmost value.
@@ -118,9 +115,8 @@ Module Stack.
     }
   *)
   Definition pop2_top_unsafe :
-      MS? Stack.t string (U256.t * U256.t * U256.t) :=
+      MS? Stack.t string (U256.t * U256.t * LensPanic.t string Stack.t U256.t) :=
     letS? pop1 := pop_unsafe in
     letS? pop2 := pop_unsafe in
-    letS? top := top_unsafe in
-    returnS? (pop1, pop2, top).
+    returnS? (pop1, pop2, top_unsafe).
 End Stack.
