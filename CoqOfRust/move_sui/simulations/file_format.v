@@ -178,6 +178,7 @@ pub enum SignatureToken {
 *)
 
 Definition TableIndex := Z.
+Definition LocalIndex := Z.
 Definition TypeParameterIndex := Z.
 
 (* Template for `define_index!` macro
