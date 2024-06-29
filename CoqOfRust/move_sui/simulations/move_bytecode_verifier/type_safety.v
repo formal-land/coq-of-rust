@@ -30,10 +30,9 @@ Module CompiledModule := file_format.CompiledModule.
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
-
 (* TODO(progress): 
  - CREATE CORRECT FOLDERS FOR THE FILES
- - Implement PartialVMResult 
+ - Implement PartialVMResult as std Result type
  - Implement AbilitySet
  - Check how to implement dyn(?) types
  - Check how to deal with stateful functions
@@ -172,7 +171,7 @@ Module TypeSafetyChecker.
       )
     }
     *)
-    (* TODO: Implement PartialVMError *)
+    (* TODO: Implement StatusCode & PartialVMError *)
     Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
 
     (* 
