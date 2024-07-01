@@ -1,96 +1,246 @@
 Require Import CoqOfRust.CoqOfRust.
 
-Module Lens.
-  Record t {Big_A A : Set} : Set := {
-    read : Big_A -> A;
-    write : Big_A -> A -> Big_A
-  }.
-  Arguments t : clear implicits.
-End Lens.
-
 (** ** Monads that are useful for the definition of simulations. *)
 
-Module Error.
-  Definition t (Error A : Set) : Set := A + Error.
+Module Option.
+  Definition t (A : Set) : Set := option A.
 
-  Definition return_ {Error A : Set} (value : A) : t Error A := inl value.
+  Definition return_ {A : Set} (value : A) : t A := Some value.
+
+  Definition bind {A B : Set} (value : t A) (f : A -> t B) : t B :=
+    match value with
+    | Some value => f value
+    | None => None
+    end.
+End Option.
+
+Module OptionNotations.
+  Notation "M?" := Option.t.
+
+  Notation "return?" := Option.return_.
+
+  Notation "'let?' x ':=' X 'in' Y" :=
+    (Option.bind X (fun x => Y))
+    (at level 200, x name, X at level 100, Y at level 200).
+
+  Notation "'let?' ' x ':=' X 'in' Y" :=
+    (Option.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
+End OptionNotations.
+
+Module Result.
+  Inductive t (A Error : Set) : Set :=
+  | Ok : A -> t A Error
+  | Err : Error -> t A Error.
+
+  Arguments Ok {A Error}%type_scope.
+  Arguments Err {A Error}%type_scope.
+
+  Definition return_ {A Error : Set} (value : A) : t A Error := Ok value.
+
+  Definition bind {Error A B : Set} (value : t A Error) (f : A -> t B Error) : t B Error :=
+    match value with
+    | Ok value => f value
+    | Err error => Err error
+    end.
+End Result.
+
+Module ResultNotations.
+  Notation "M??" := Result.t.
+
+  Notation "return??" := Result.return_.
+
+  Notation "'let??' x ':=' X 'in' Y" :=
+    (Result.bind X (fun x => Y))
+    (at level 200, x name, X at level 100, Y at level 200).
+
+  Notation "'let??' ' x ':=' X 'in' Y" :=
+    (Result.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
+End ResultNotations.
+
+Module Panic.
+  Inductive t (Error A : Set) : Set :=
+  | Value : A -> t Error A
+  | Panic : Error -> t Error A.
+
+  Arguments Value {Error A}%type_scope.
+  Arguments Panic {Error A}%type_scope.
+
+  Definition return_ {Error A : Set} (value : A) : t Error A := Value value.
+  Definition panic {Error A : Set} (error : Error) : t Error A := Panic error.
 
   Definition bind {Error A B : Set} (value : t Error A) (f : A -> t Error B) : t Error B :=
     match value with
-    | inl value => f value
-    | inr error => inr error
+    | Value value => f value
+    | Panic error => Panic error
     end.
-End Error.
+End Panic.
 
-Module StateError.
-  Definition t (State Error A : Set) : Set := State -> (A + Error) * State.
+Module PanicNotations.
+  Notation "M!?" := Panic.t.
+
+  Notation "return!?" := Panic.return_.
+  Notation "panic!?" := Panic.Panic.
+
+  Notation "'let!?' x ':=' X 'in' Y" :=
+    (Panic.bind X (fun x => Y))
+    (at level 200, x name, X at level 100, Y at level 200).
+
+  Notation "'let!?' ' x ':=' X 'in' Y" :=
+    (Panic.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
+End PanicNotations.
+
+Module StatePanic.
+  Import OptionNotations.
+  Import PanicNotations.
+
+  Definition t (State Error A : Set) : Set := State -> Panic.t Error A * State.
 
   Definition return_ {State Error A : Set} (value : A) : t State Error A :=
-    fun state => (inl value, state).
+    fun state => (return!? value, state).
 
   Definition bind {State Error A B : Set} (value : t State Error A) (f : A -> t State Error B) :
       t State Error B :=
     fun state =>
       let (value, state) := value state in
       match value with
-      | inl value => f value state
-      | inr error => (inr error, state)
+      | Panic.Value value => f value state
+      | Panic.Panic error => (Panic.Panic error, state)
       end.
 
   Definition read {State Error : Set} : t State Error State :=
-    fun state => (inl state, state).
+    fun state => (return!? state, state).
 
   Definition write {State Error : Set} (state : State) : t State Error unit :=
-    fun _ => (inl tt, state).
+    fun _ => (return!? tt, state).
 
   Definition panic {State A : Set} (msg : string) : t State string A :=
-    fun state => (inr msg, state).
+    fun state => (panic!? msg, state).
 
-  Definition lift_from_error {State Error A : Set} (value : Error.t Error A) : t State Error A :=
-    fun state =>
-    (value, state).
+  Definition lift_from_panic {State Error A : Set} (value : M!? Error A) : t State Error A :=
+    fun state => (value, state).
+End StatePanic.
 
-  Definition lift_lens {Big_State State Error A : Set}
-      (lens : Lens.t Big_State State)
-      (value : t State Error A) :
-      t Big_State Error A :=
-    fun big_state =>
-      let (value, state) := value (lens.(Lens.read) big_state) in
-      (value, lens.(Lens.write) big_state state).
-End StateError.
+Module StatePanicNotations.
+  Notation "MS?" := StatePanic.t.
 
-Module Notations.
-  Notation "M?" := Error.t.
-
-  Notation "return?" := Error.return_.
-
-  Notation "'let?' x ':=' X 'in' Y" :=
-    (Error.bind X (fun x => Y))
-    (at level 200, x name, X at level 100, Y at level 200).
-
-  Notation "'let?' ' x ':=' X 'in' Y" :=
-    (Error.bind X (fun x => Y))
-    (at level 200, x pattern, X at level 100, Y at level 200).
-
-  Notation "MS?" := StateError.t.
-
-  Notation "returnS?" := StateError.return_.
+  Notation "returnS?" := StatePanic.return_.
 
   Notation "'letS?' x ':=' X 'in' Y" :=
-    (StateError.bind X (fun x => Y))
+    (StatePanic.bind X (fun x => Y))
     (at level 200, x name, X at level 100, Y at level 200).
 
   Notation "'letS?' ' x ':=' X 'in' Y" :=
-    (StateError.bind X (fun x => Y))
+    (StatePanic.bind X (fun x => Y))
     (at level 200, x pattern, X at level 100, Y at level 200).
 
-  Notation "readS?" := StateError.read.
+  Notation "readS?" := StatePanic.read.
 
-  Notation "writeS?" := StateError.write.
+  Notation "writeS?" := StatePanic.write.
 
-  Notation "panicS?" := StateError.panic.
+  Notation "panicS?" := StatePanic.panic.
 
-  Notation "return?toS?" := StateError.lift_from_error.
+  Notation "return!?toS?" := StatePanic.lift_from_panic.
+End StatePanicNotations.
 
-  Notation "liftS?" := StateError.lift_lens.
+(** ** Lens that are useful for the definition of simulations. *)
+
+Module Lens.
+  Import StatePanicNotations.
+
+  Record t {Big_A A : Set} : Set := {
+    read : Big_A -> A;
+    write : Big_A -> A -> Big_A
+  }.
+  Arguments t : clear implicits.
+
+  Definition lift {Big_State State Error A : Set}
+      (lens : t Big_State State)
+      (value : MS? State Error A) :
+      MS? Big_State Error A :=
+    fun big_state =>
+      let (value, state) := value (lens.(read) big_state) in
+      (value, lens.(write) big_state state).
+End Lens.
+
+Module LensOption.
+  Import PanicNotations.
+  Import StatePanicNotations.
+
+  Record t {Big_A A : Set} : Set := {
+    read : Big_A -> option A;
+    write : Big_A -> A -> option Big_A
+  }.
+  Arguments t : clear implicits.
+
+  Definition of_lens {Big_A A : Set}
+      (lens : Lens.t Big_A A) : t Big_A A :=
+    {|
+      read big_a := Some (lens.(Lens.read) big_a);
+      write big_a a := Some (lens.(Lens.write) big_a a)
+    |}.
+
+  Definition lift {Big_State State Error A : Set}
+      (lens : t Big_State State)
+      (value : MS? State Error (option A)) :
+      MS? Big_State Error (option A) :=
+    fun big_state =>
+      match lens.(read) big_state with
+      | Some result =>
+        let (value, state) := value result in
+        match lens.(write) big_state state with
+        | Some result => (value, result)
+        | None => (return!? None, big_state)
+        end
+      | None => (return!? None, big_state)
+      end.
+End LensOption.
+
+Module LensPanic.
+  Import PanicNotations.
+  Import StatePanicNotations.
+
+  Record t {Error Big_A A : Set} : Set := {
+    read : Big_A -> M!? Error A;
+    write : Big_A -> A -> M!? Error Big_A
+  }.
+  Arguments t : clear implicits.
+
+  Definition of_lens {Error Big_A A : Set}
+      (lens : Lens.t Big_A A) : t Error Big_A A :=
+    {|
+      read big_a := return!? (lens.(Lens.read) big_a);
+      write big_a a := return!? (lens.(Lens.write) big_a a)
+    |}.
+
+  Definition lift {Big_State State Error A : Set}
+    (lens : t Error Big_State State)
+    (value : MS? State Error A) :
+    MS? Big_State Error A :=
+  fun big_state =>
+    match lens.(read) big_state with
+    | Panic.Value result =>
+      let (value, state) := value result in
+      match lens.(write) big_state state with
+      | Panic.Value result => (value, result)
+      | Panic.Panic error => (panic!? error, big_state)
+      end
+    | Panic.Panic error => (panic!? error, big_state)
+    end.
+End LensPanic.
+
+Module LensNoatations.
+  Notation "liftS?" := Lens.lift.
+  Notation "liftS?of?" := LensOption.lift.
+  Notation "liftS?of!?" := LensPanic.lift.
+End LensNoatations.
+
+Module Notations.
+  Include OptionNotations.
+  Include ResultNotations.
+  Include PanicNotations.
+  Include StatePanicNotations.
+  Include LensNoatations.
 End Notations.

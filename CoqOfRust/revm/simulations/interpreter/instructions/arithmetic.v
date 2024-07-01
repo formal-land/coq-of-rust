@@ -26,9 +26,12 @@ Require Import CoqOfRust.revm.simulations.interpreter.instructions.i256.
 Definition add :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.VERYLOW in
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_add op1 op2)
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      writeS? (U256.wrapping_add op1 op2)
+    )
   ).
 
 (*
@@ -42,9 +45,12 @@ Definition add :
 Definition mul :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_mul op1 op2)
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      writeS? (U256.wrapping_mul op1 op2)
+    )
   ).
 
 (*
@@ -58,9 +64,12 @@ Definition mul :
 Definition sub :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.VERYLOW in
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_sub op1 op2)
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      writeS? (U256.wrapping_sub op1 op2)
+    )
   ).
 
 (*
@@ -76,11 +85,14 @@ Definition sub :
 Definition div :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(op1, op2) := pop_top_macro2 in
-  if U256.eq op2 U256.ZERO
-  then returnS? tt
-  else liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_div op1 op2)
+  letS? '(op1, op2_ref) := pop_top_macro2 in
+  liftS? Interpreter.Lens.stack (
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      if U256.eq op2 U256.ZERO
+      then returnS? tt
+      else writeS? (U256.wrapping_div op1 op2)
+    )
   ).
 
 (*
@@ -94,9 +106,12 @@ Definition div :
 Definition sdiv :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (i256_div op1 op2)
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      writeS? (i256_div op1 op2)
+    )
   ).
 
 (*
@@ -112,11 +127,14 @@ Definition sdiv :
 Definition rem :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(op1, op2) := pop_top_macro2 in
-  if U256.eq op2 U256.ZERO
-  then returnS? tt
-  else liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_rem op1 op2)
+  letS? '(op1, op2_ref) := pop_top_macro2 in
+  liftS? Interpreter.Lens.stack (
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      if U256.eq op2 U256.ZERO
+      then returnS? tt
+      else writeS? (U256.wrapping_rem op1 op2)
+    )
   ).
 
 (*
@@ -130,9 +148,12 @@ Definition rem :
 Definition smod :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (i256_mod op1 op2)
+    liftS?of!? op2_ref (
+      letS? op2 := readS? in
+      writeS? (i256_mod op1 op2)
+    )
   ).
 
 (*
@@ -146,9 +167,12 @@ Definition smod :
 Definition addmod :
   MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.MID in
-  letS? '(op1, op2, op3) := pop_top_macro3 in
+  letS? '(op1, op2, op3_ref) := pop_top_macro3 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.add_mod op1 op2 op3)
+    liftS?of!? op3_ref (
+      letS? op3 := readS? in
+      writeS? (U256.add_mod op1 op2 op3)
+    )
   ).
 
 (*
@@ -162,9 +186,12 @@ Definition addmod :
 Definition mulmod :
   MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.MID in
-  letS? '(op1, op2, op3) := pop_top_macro3 in
+  letS? '(op1, op2, op3_ref) := pop_top_macro3 in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.mul_mod op1 op2 op3)
+    liftS?of!? op3_ref (
+      letS? op3 := readS? in
+      writeS? (U256.mul_mod op1 op2 op3)
+    )
   ).
 
 (*
@@ -177,10 +204,13 @@ Definition mulmod :
 
 Definition exp (SPEC : Spec.t) :
     MS? Interpreter.t string unit :=
-  letS? '(op1, op2) := pop_top_macro2 in
+  letS? '(op1, op2_ref) := pop_top_macro2 in
+  letS? op2 := liftS? Interpreter.Lens.stack (
+    liftS?of!? op2_ref readS?
+  ) in
   letS? _ := gas_or_fail_macro (exp_cost (Spec.SPEC_ID SPEC) op2) in
   liftS? Interpreter.Lens.stack (
-    Stack.top_unsafe_write (U256.wrapping_pow op1 op2)
+    liftS?of!? op2_ref (writeS? (U256.wrapping_pow op1 op2))
   ).
 
 (*
@@ -201,22 +231,25 @@ Definition exp (SPEC : Spec.t) :
 Definition signextend :
     MS? Interpreter.t string unit :=
   letS? _ := gas_macro Gas.LOW in
-  letS? '(ext, x) := pop_top_macro2 in
-  if U256.lt ext (U256.from 31)
-  then
-    let ext := hd 0 (U256.as_limbs ext) in
-    let bit_index := (8 * ext + 7)%Z in
-    let bit := U256.bit x bit_index in
-    let mask :=
-      U256.wrapping_sub
-        (U256.shl (U256.from 1) bit_index)
-        (U256.from 1) in
-    liftS? Interpreter.Lens.stack (
-      Stack.top_unsafe_write (
-        if bit
-        then U256.or x (U256.not mask)
-        else U256.and x mask
-      )
+  letS? '(ext, x_ref) := pop_top_macro2 in
+  liftS? Interpreter.Lens.stack (
+    liftS?of!? x_ref (
+      letS? x := readS? in
+      if U256.lt ext (U256.from 31)
+      then
+        let ext := hd 0 (U256.as_limbs ext) in
+        let bit_index := (8 * ext + 7)%Z in
+        let bit := U256.bit x bit_index in
+        let mask :=
+          U256.wrapping_sub
+            (U256.shl (U256.from 1) bit_index)
+            (U256.from 1) in
+        writeS? (
+          if bit
+          then U256.or x (U256.not mask)
+          else U256.and x mask
+        )
+      else
+        returnS? tt
     )
-  else
-    returnS? tt.
+  ). 
