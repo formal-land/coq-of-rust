@@ -1116,12 +1116,6 @@ fn verify_instr(
     Ok(())
 }
 *)
-(*
-    verifier: &mut TypeSafetyChecker,
-    bytecode: &Bytecode,
-    offset: CodeOffset,
-    meter: &mut (impl Meter + ?Sized), 
- *)
 Definition verify_instr {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
   (offset : CodeOffset) (meter : A). Admitted.
 
