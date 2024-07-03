@@ -32,11 +32,11 @@ Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
+ - Correctly translate `&mut (impl Meter + ?Sized)`
+ - Implement PartialVMResult.t as std Result type
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
  - Implemeng `Meter`
- - Correctly translate `&mut (impl Meter + ?Sized)`
- - Implement PartialVMResult.t as std Result type
  - Implement AbilitySet
  - Check how to deal with stateful functions
  - Rest of the file
