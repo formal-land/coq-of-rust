@@ -485,3 +485,726 @@ fn pack(
 *)
 Definition pack (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+
+(* 
+fn unpack(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+
+    // Pop an abstract value from the stack and check if its type is equal to the one
+    // declared.
+    let arg = safe_unwrap_err!(verifier.stack.pop());
+    if arg != struct_type {
+        return Err(verifier.error(StatusCode::UNPACK_TYPE_MISMATCH_ERROR, offset));
+    }
+
+    let field_sig = type_fields_signature(verifier, meter, offset, struct_def, type_args)?;
+    for sig in field_sig.0 {
+        verifier.push(meter, sig)?
+    }
+    Ok(())
+}
+*)
+Definition unpack (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+
+(* 
+fn exists(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    if !verifier.abilities(&struct_type)?.has_key() {
+        return Err(verifier.error(
+            StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT,
+            offset,
+        ));
+    }
+
+    let operand = safe_unwrap_err!(verifier.stack.pop());
+    if operand != ST::Address {
+        // TODO better error here
+        return Err(verifier.error(
+            StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT,
+            offset,
+        ));
+    }
+
+    verifier.push(meter, ST::Bool)?;
+    Ok(())
+}
+*)
+Definition _exists (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+
+(* 
+fn move_from(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    if !verifier.abilities(&struct_type)?.has_key() {
+        return Err(verifier.error(StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY, offset));
+    }
+
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    let operand = safe_unwrap_err!(verifier.stack.pop());
+    if operand != ST::Address {
+        return Err(verifier.error(StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR, offset));
+    }
+
+    verifier.push(meter, struct_type)?;
+    Ok(())
+}
+*)
+Definition move_from (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+
+(* 
+fn move_to(
+    verifier: &mut TypeSafetyChecker,
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    if !verifier.abilities(&struct_type)?.has_key() {
+        return Err(verifier.error(StatusCode::MOVETO_WITHOUT_KEY_ABILITY, offset));
+    }
+
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    let key_struct_operand = safe_unwrap_err!(verifier.stack.pop());
+    let signer_reference_operand = safe_unwrap_err!(verifier.stack.pop());
+    if key_struct_operand != struct_type {
+        return Err(verifier.error(StatusCode::MOVETO_TYPE_MISMATCH_ERROR, offset));
+    }
+    match signer_reference_operand {
+        ST::Reference(inner) => match *inner {
+            ST::Signer => Ok(()),
+            _ => Err(verifier.error(StatusCode::MOVETO_TYPE_MISMATCH_ERROR, offset)),
+        },
+        _ => Err(verifier.error(StatusCode::MOVETO_TYPE_MISMATCH_ERROR, offset)),
+    }
+}
+*)
+Definition move_to (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+
+(* 
+fn borrow_vector_element(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    declared_element_type: &SignatureToken,
+    offset: CodeOffset,
+    mut_ref_only: bool,
+) -> PartialVMResult<()> {
+    let operand_idx = safe_unwrap_err!(verifier.stack.pop());
+    let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+
+    // check index
+    if operand_idx != ST::U64 {
+        return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+    }
+
+    // check vector and update stack
+    let element_type = match get_vector_element_type(operand_vec, mut_ref_only) {
+        Some(ty) if &ty == declared_element_type => ty,
+        _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+    };
+    let element_ref_type = if mut_ref_only {
+        ST::MutableReference(Box::new(element_type))
+    } else {
+        ST::Reference(Box::new(element_type))
+    };
+    verifier.push(meter, element_ref_type)?;
+
+    Ok(())
+}
+*)
+Definition borrow_vector_element (verifier : TypeSafetyChecker.t) (declared_element_type : SignatureToken.t) 
+(offset : CodeOffset.t) (mut_ref_only : bool) Admitted.
+
+(* 
+fn verify_instr(
+    verifier: &mut TypeSafetyChecker,
+    bytecode: &Bytecode,
+    offset: CodeOffset,
+    meter: &mut (impl Meter + ?Sized),
+) -> PartialVMResult<()> {
+    match bytecode {
+        Bytecode::Pop => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            let abilities = verifier
+                .module
+                .abilities(&operand, verifier.function_context.type_parameters());
+            if !abilities?.has_drop() {
+                return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
+            }
+        }
+
+        Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if operand != ST::Bool {
+                return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::StLoc(idx) => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if &operand != verifier.local_at(*idx) { //*)
+                return Err(verifier.error(StatusCode::STLOC_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Abort => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if operand != ST::U64 {
+                return Err(verifier.error(StatusCode::ABORT_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Ret => {
+            let return_ = &verifier.function_context.return_().0;
+            for return_type in return_.iter().rev() {
+                let operand = safe_unwrap_err!(verifier.stack.pop());
+                if &operand != return_type {
+                    return Err(verifier.error(StatusCode::RET_TYPE_MISMATCH_ERROR, offset));
+                }
+            }
+        }
+
+        Bytecode::Branch(_) | Bytecode::Nop => (),
+
+        Bytecode::FreezeRef => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            match operand {
+                ST::MutableReference(inner) => verifier.push(meter, ST::Reference(inner))?,
+                _ => return Err(verifier.error(StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR, offset)),
+            }
+        }
+
+        Bytecode::MutBorrowField(field_handle_index) => borrow_field(
+            verifier,
+            meter,
+            offset,
+            true,
+            *field_handle_index,
+            &Signature(vec![]),
+        )?,
+
+        Bytecode::MutBorrowFieldGeneric(field_inst_index) => {
+            let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
+            let type_inst = verifier.module.signature_at(field_inst.type_parameters);
+            verifier.charge_tys(meter, &type_inst.0)?;
+            borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
+        }
+
+        Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
+            verifier,
+            meter,
+            offset,
+            false,
+            *field_handle_index,
+            &Signature(vec![]),
+        )?,
+
+        Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
+            let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
+            let type_inst = verifier.module.signature_at(field_inst.type_parameters);
+            verifier.charge_tys(meter, &type_inst.0)?;
+            borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
+        }
+
+        Bytecode::LdU8(_) => {
+            verifier.push(meter, ST::U8)?;
+        }
+
+        Bytecode::LdU16(_) => {
+            verifier.push(meter, ST::U16)?;
+        }
+
+        Bytecode::LdU32(_) => {
+            verifier.push(meter, ST::U32)?;
+        }
+
+        Bytecode::LdU64(_) => {
+            verifier.push(meter, ST::U64)?;
+        }
+
+        Bytecode::LdU128(_) => {
+            verifier.push(meter, ST::U128)?;
+        }
+
+        Bytecode::LdU256(_) => {
+            verifier.push(meter, ST::U256)?;
+        }
+
+        Bytecode::LdConst(idx) => {
+            let signature = verifier.module.constant_at(*idx).type_.clone(); //*)
+            verifier.push(meter, signature)?;
+        }
+
+        Bytecode::LdTrue | Bytecode::LdFalse => {
+            verifier.push(meter, ST::Bool)?;
+        }
+
+        Bytecode::CopyLoc(idx) => {
+            let local_signature = verifier.local_at(*idx).clone(); //*)
+            if !verifier
+                .module
+                .abilities(
+                    &local_signature,
+                    verifier.function_context.type_parameters(),
+                )?
+                .has_copy()
+            {
+                return Err(verifier.error(StatusCode::COPYLOC_WITHOUT_COPY_ABILITY, offset));
+            }
+            verifier.push(meter, local_signature)?
+        }
+
+        Bytecode::MoveLoc(idx) => {
+            let local_signature = verifier.local_at(*idx).clone(); //*)
+            verifier.push(meter, local_signature)?
+        }
+
+        Bytecode::MutBorrowLoc(idx) => borrow_loc(verifier, meter, offset, true, *idx)?,
+
+        Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
+
+        Bytecode::Call(idx) => {
+            let function_handle = verifier.module.function_handle_at(*idx); //*)
+            call(verifier, meter, offset, function_handle, &Signature(vec![]))?
+        }
+
+        Bytecode::CallGeneric(idx) => {
+            let func_inst = verifier.module.function_instantiation_at(*idx); //*)
+            let func_handle = verifier.module.function_handle_at(func_inst.handle);
+            let type_args = &verifier.module.signature_at(func_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            call(verifier, meter, offset, func_handle, type_args)?
+        }
+
+        Bytecode::Pack(idx) => {
+            let struct_definition = verifier.module.struct_def_at(*idx); //*) 
+            pack(
+                verifier,
+                meter,
+                offset,
+                struct_definition,
+                &Signature(vec![]),
+            )?
+        }
+
+        Bytecode::PackGeneric(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let struct_def = verifier.module.struct_def_at(struct_inst.def);
+            let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            pack(verifier, meter, offset, struct_def, type_args)?
+        }
+
+        Bytecode::Unpack(idx) => {
+            let struct_definition = verifier.module.struct_def_at(*idx); //*)
+            unpack(
+                verifier,
+                meter,
+                offset,
+                struct_definition,
+                &Signature(vec![]),
+            )?
+        }
+
+        Bytecode::UnpackGeneric(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let struct_def = verifier.module.struct_def_at(struct_inst.def);
+            let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            unpack(verifier, meter, offset, struct_def, type_args)?
+        }
+
+        Bytecode::ReadRef => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            match operand {
+                ST::Reference(inner) | ST::MutableReference(inner) => {
+                    if !verifier.abilities(&inner)?.has_copy() {
+                        return Err(
+                            verifier.error(StatusCode::READREF_WITHOUT_COPY_ABILITY, offset)
+                        );
+                    }
+                    verifier.push(meter, *inner)?;
+                }
+                _ => return Err(verifier.error(StatusCode::READREF_TYPE_MISMATCH_ERROR, offset)),
+            }
+        }
+
+        Bytecode::WriteRef => {
+            let ref_operand = safe_unwrap_err!(verifier.stack.pop());
+            let val_operand = safe_unwrap_err!(verifier.stack.pop());
+            let ref_inner_signature = match ref_operand {
+                ST::MutableReference(inner) => *inner,
+                _ => {
+                    return Err(
+                        verifier.error(StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR, offset)
+                    )
+                }
+            };
+            if !verifier.abilities(&ref_inner_signature)?.has_drop() {
+                return Err(verifier.error(StatusCode::WRITEREF_WITHOUT_DROP_ABILITY, offset));
+            }
+
+            if val_operand != ref_inner_signature {
+                return Err(verifier.error(StatusCode::WRITEREF_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::CastU8 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U8)?;
+        }
+        Bytecode::CastU64 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U64)?;
+        }
+        Bytecode::CastU128 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U128)?;
+        }
+
+        Bytecode::Add
+        | Bytecode::Sub
+        | Bytecode::Mul
+        | Bytecode::Mod
+        | Bytecode::Div
+        | Bytecode::BitOr
+        | Bytecode::BitAnd
+        | Bytecode::Xor => {
+            let operand1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand2 = safe_unwrap_err!(verifier.stack.pop());
+            if operand1.is_integer() && operand1 == operand2 {
+                verifier.push(meter, operand1)?;
+            } else {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Shl | Bytecode::Shr => {
+            let operand1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand2 = safe_unwrap_err!(verifier.stack.pop());
+            if operand2.is_integer() && operand1 == ST::U8 {
+                verifier.push(meter, operand2)?;
+            } else {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Or | Bytecode::And => {
+            let operand1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand2 = safe_unwrap_err!(verifier.stack.pop());
+            if operand1 == ST::Bool && operand2 == ST::Bool {
+                verifier.push(meter, ST::Bool)?;
+            } else {
+                return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Not => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if operand == ST::Bool {
+                verifier.push(meter, ST::Bool)?;
+            } else {
+                return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Eq | Bytecode::Neq => {
+            let operand1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand2 = safe_unwrap_err!(verifier.stack.pop());
+            if verifier.abilities(&operand1)?.has_drop() && operand1 == operand2 {
+                verifier.push(meter, ST::Bool)?;
+            } else {
+                return Err(verifier.error(StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::Lt | Bytecode::Gt | Bytecode::Le | Bytecode::Ge => {
+            let operand1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand2 = safe_unwrap_err!(verifier.stack.pop());
+            if operand1.is_integer() && operand1 == operand2 {
+                verifier.push(meter, ST::Bool)?
+            } else {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+
+        Bytecode::MutBorrowGlobalDeprecated(idx) => {
+            borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
+        }
+
+        Bytecode::MutBorrowGlobalGenericDeprecated(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_inst.0)?;
+            borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
+        }
+
+        Bytecode::ImmBorrowGlobalDeprecated(idx) => {
+            borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
+        }
+
+        Bytecode::ImmBorrowGlobalGenericDeprecated(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_inst.0)?;
+            borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
+        }
+
+        Bytecode::ExistsDeprecated(idx) => {
+            let struct_def = verifier.module.struct_def_at(*idx); //*)
+            exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
+        }
+
+        Bytecode::ExistsGenericDeprecated(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let struct_def = verifier.module.struct_def_at(struct_inst.def);
+            let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            exists(verifier, meter, offset, struct_def, type_args)?
+        }
+
+        Bytecode::MoveFromDeprecated(idx) => {
+            let struct_def = verifier.module.struct_def_at(*idx); //*)
+            move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
+        }
+
+        Bytecode::MoveFromGenericDeprecated(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let struct_def = verifier.module.struct_def_at(struct_inst.def);
+            let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            move_from(verifier, meter, offset, struct_def, type_args)?
+        }
+
+        Bytecode::MoveToDeprecated(idx) => {
+            let struct_def = verifier.module.struct_def_at(*idx); //*)
+            move_to(verifier, offset, struct_def, &Signature(vec![]))?
+        }
+
+        Bytecode::MoveToGenericDeprecated(idx) => {
+            let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+            let struct_def = verifier.module.struct_def_at(struct_inst.def);
+            let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+            verifier.charge_tys(meter, &type_args.0)?;
+            move_to(verifier, offset, struct_def, type_args)?
+        }
+
+        Bytecode::VecPack(idx, num) => {
+            let element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            if let Some(num_to_pop) = NonZeroU64::new(*num) { //*)
+                let is_mismatched = verifier
+                    .stack
+                    .pop_eq_n(num_to_pop)
+                    .map(|t| element_type != &t)
+                    .unwrap_or(true);
+                if is_mismatched {
+                    return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+                }
+            }
+            verifier.push(meter, ST::Vector(Box::new(element_type.clone())))?;
+        }
+
+        Bytecode::VecLen(idx) => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            match get_vector_element_type(operand, false) { 
+                Some(derived_element_type) if &derived_element_type == declared_element_type => {
+                    verifier.push(meter, ST::U64)?;
+                }
+                _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+            };
+        }
+
+        Bytecode::VecImmBorrow(idx) => {
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            borrow_vector_element(verifier, meter, declared_element_type, offset, false)?
+        }
+        Bytecode::VecMutBorrow(idx) => {
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            borrow_vector_element(verifier, meter, declared_element_type, offset, true)?
+        }
+
+        Bytecode::VecPushBack(idx) => {
+            let operand_elem = safe_unwrap_err!(verifier.stack.pop());
+            let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            if declared_element_type != &operand_elem {
+                return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+            }
+            match get_vector_element_type(operand_vec, true) {
+                Some(derived_element_type) if &derived_element_type == declared_element_type => {}
+                _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+            };
+        }
+
+        Bytecode::VecPopBack(idx) => {
+            let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            match get_vector_element_type(operand_vec, true) {
+                Some(derived_element_type) if &derived_element_type == declared_element_type => {
+                    verifier.push(meter, derived_element_type)?;
+                }
+                _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+            };
+        }
+
+        Bytecode::VecUnpack(idx, num) => {
+            let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            if operand_vec != ST::Vector(Box::new(declared_element_type.clone())) {
+                return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+            }
+            verifier.push_n(meter, declared_element_type.clone(), *num)?;
+        }
+
+        Bytecode::VecSwap(idx) => {
+            let operand_idx2 = safe_unwrap_err!(verifier.stack.pop());
+            let operand_idx1 = safe_unwrap_err!(verifier.stack.pop());
+            let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+            if operand_idx1 != ST::U64 || operand_idx2 != ST::U64 {
+                return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+            }
+            let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+            match get_vector_element_type(operand_vec, true) {
+                Some(derived_element_type) if &derived_element_type == declared_element_type => {}
+                _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+            };
+        }
+        Bytecode::CastU16 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U16)?;
+        }
+        Bytecode::CastU32 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U32)?;
+        }
+        Bytecode::CastU256 => {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if !operand.is_integer() {
+                return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+            }
+            verifier.push(meter, ST::U256)?;
+        }
+    };
+    Ok(())
+}
+*)
+(*
+    verifier: &mut TypeSafetyChecker,
+    bytecode: &Bytecode,
+    offset: CodeOffset,
+    meter: &mut (impl Meter + ?Sized), 
+ *)
+Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
+  (offset : CodeOffset) (meter : _). Admitted.
+
+(* 
+fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
+    if type_args.is_empty() {
+        ST::Struct(struct_handle)
+    } else {
+        ST::StructInstantiation(Box::new((struct_handle, type_args.0.clone())))
+    }
+}
+
+fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
+    use SignatureToken::*;
+
+    if subst.0.is_empty() {
+        return token.clone();
+    }
+
+    match token {
+        Bool => Bool,
+        U8 => U8,
+        U16 => U16,
+        U32 => U32,
+        U64 => U64,
+        U128 => U128,
+        U256 => U256,
+        Address => Address,
+        Signer => Signer,
+        Vector(ty) => Vector(Box::new(instantiate(ty, subst))),
+        Struct(idx) => Struct(*idx),
+        StructInstantiation(struct_inst) => {
+            let (idx, struct_type_args) = &**struct_inst;
+            StructInstantiation(Box::new((
+                *idx,
+                struct_type_args
+                    .iter()
+                    .map(|ty| instantiate(ty, subst))
+                    .collect(),
+            )))
+        }
+        Reference(ty) => Reference(Box::new(instantiate(ty, subst))),
+        MutableReference(ty) => MutableReference(Box::new(instantiate(ty, subst))),
+        TypeParameter(idx) => {
+            // Assume that the caller has previously parsed and verified the structure of the
+            // file and that this guarantees that type parameter indices are always in bounds.
+            debug_assert!((*idx as usize) < subst.len());
+            subst.0[*idx as usize].clone()
+        }
+    }
+}
+
+fn get_vector_element_type(
+    vector_ref_ty: SignatureToken,
+    mut_ref_only: bool,
+) -> Option<SignatureToken> {
+    use SignatureToken::*;
+    match vector_ref_ty {
+        Reference(referred_type) => {
+            if mut_ref_only {
+                None
+            } else if let ST::Vector(element_type) = *referred_type {
+                Some(*element_type)
+            } else {
+                None
+            }
+        }
+        MutableReference(referred_type) => {
+            if let ST::Vector(element_type) = *referred_type {
+                Some(*element_type)
+            } else {
+                None
+            }
+        }
+        _ => None,
+    }
+}
+*)
