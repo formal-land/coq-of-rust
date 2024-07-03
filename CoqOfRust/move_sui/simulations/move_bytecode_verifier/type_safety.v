@@ -295,8 +295,8 @@ pub(crate) fn verify<'a>(
     Ok(())
 }
 *)
-Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) (meter : _) : PartialVMResult.t unit.
-Admitted.
+Definition verify {A : Set @ Meter.Trait A} (module : CompiledModule.t) (function_context : FunctionContext.t) 
+  (meter : A) : PartialVMResult.t unit. Admitted.
 
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
@@ -348,7 +348,7 @@ fn borrow_field(
     Ok(())
 }
 *)
-Definition borrow_field (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition borrow_field {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
   : PartialVMResult.t unit. Admitted.
 
@@ -378,7 +378,7 @@ fn borrow_loc(
     Ok(())
 }
 *)
-Definition borrow_loc (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition borrow_loc {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -414,7 +414,7 @@ fn borrow_global(
     Ok(())
 }
 *)
-Definition borrow_global (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition borrow_global {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (mut_ : bool) (idx : StructDefinitionIndex.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -440,7 +440,7 @@ fn call(
     Ok(())
 }
 *)
-Definition call (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition call {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (function_handle : FunctionHandle.t) (type_actuals : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -466,7 +466,7 @@ fn type_fields_signature(
     }
 }
 *)
-Definition type_fields_signature (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition type_fields_signature {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -490,7 +490,7 @@ fn pack(
     Ok(())
 }
 *)
-Definition pack (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition pack {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -517,7 +517,7 @@ fn unpack(
     Ok(())
 }
 *)
-Definition unpack (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition unpack {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -549,7 +549,7 @@ fn exists(
     Ok(())
 }
 *)
-Definition _exists (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition _exists {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -575,7 +575,7 @@ fn move_from(
     Ok(())
 }
 *)
-Definition move_from (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+Definition move_from {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -1137,8 +1137,8 @@ fn verify_instr(
     offset: CodeOffset,
     meter: &mut (impl Meter + ?Sized), 
  *)
-Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
-  (offset : CodeOffset) (meter : _). Admitted.
+Definition verify_instr {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
+  (offset : CodeOffset) (meter : A). Admitted.
 
 (* 
 fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
