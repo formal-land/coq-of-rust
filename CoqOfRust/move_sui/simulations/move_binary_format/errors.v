@@ -4,6 +4,8 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* TODO: Implement PartialVMError *)
+
 (* TODO: Use the Result type correctly *)
 (* Example code
 Module Result.
@@ -25,7 +27,7 @@ End Result.
 *)
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
-  Definition t (T : Set) : Set. Admitted.
+  Definition t (T : Set) := Result.t T PartialVMError.
   Module Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
     (* TODO: Implement `new` function *)
     Definition new : Set. Admitted.
