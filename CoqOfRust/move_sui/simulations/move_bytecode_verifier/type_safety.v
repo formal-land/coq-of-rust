@@ -33,11 +33,11 @@ Module FunctionContext := absint.FunctionContext.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
+Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress): 
  - Implement `StatusCode`
  - Correctly translate `&mut (impl Meter + ?Sized)`
- - Implement PartialVMResult.t as std Result type
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
  - Implemeng `Meter`
@@ -77,16 +77,6 @@ Module Locals.
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.type_safety.Locals.t.
-
-    (* 
-    fn new(parameters: &'a Signature, locals: &'a Signature) -> Self {
-        Self {
-            param_count: parameters.len(),
-            parameters,
-            locals,
-        }
-    }
-    *)
 
     Definition new (parameters locals : Signature.t) : Self :=
       {|
@@ -154,11 +144,6 @@ Module TypeSafetyChecker.
       TypeSafetyChecker.stack := AbstractStack_new;
     |}.
 
-    (* 
-    fn local_at(&self, i: LocalIndex) -> &SignatureToken {
-        self.locals.local_at(i)
-    }
-    *)
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
