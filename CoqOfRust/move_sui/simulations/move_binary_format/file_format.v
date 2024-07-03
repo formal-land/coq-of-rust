@@ -361,3 +361,7 @@ Module CodeUnit.
     code : list Bytecode.t;
   }.
 End CodeUnit.
+
+Module AbilitySet.
+  Record t (_ : N) : Set := { }.
+End AbilitySet.

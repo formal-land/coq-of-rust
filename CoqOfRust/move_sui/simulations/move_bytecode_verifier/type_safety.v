@@ -26,13 +26,14 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module SignatureToken := file_format.SignatureToken.
 Module CompiledModule := file_format.CompiledModule.
+Module AbilitySet := file_format.AbilitySet.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
  - Correctly translate `&mut (impl Meter + ?Sized)`
- - Implement PartialVMResult as std Result type
+ - Implement PartialVMResult.t as std Result type
  - Implement AbilitySet
  - Check how to deal with stateful functions
  - Rest of the file
@@ -156,7 +157,7 @@ Module TypeSafetyChecker.
             .abilities(t, self.function_context.type_parameters())
     }
     *)
-    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult AbilitySet :=
+    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
       self.(module).(CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities)
         t 
         self.(function_context).
@@ -187,7 +188,7 @@ Module TypeSafetyChecker.
     }
     *)
     (* TODO: "&mut (impl Meter + ?Sized)" *)
-    Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
+    Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn push_n(
@@ -201,7 +202,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
+    Definition push_n (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty(
@@ -212,7 +213,7 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
+    Definition charge_ty (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty_(
@@ -228,7 +229,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    Definition charge_ty_ (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
+    Definition charge_ty_ (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
     
@@ -243,7 +244,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition charge_tys (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
+    Definition charge_tys (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
