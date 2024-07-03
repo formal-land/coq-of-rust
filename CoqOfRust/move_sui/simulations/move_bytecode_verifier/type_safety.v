@@ -1160,7 +1160,7 @@ fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
         Address => Address,
         Signer => Signer,
         Vector(ty) => Vector(Box::new(instantiate(ty, subst))),
-        Struct(idx) => Struct(*idx),
+        Struct(idx) => Struct(*idx), //*)
         StructInstantiation(struct_inst) => {
             let (idx, struct_type_args) = &**struct_inst;
             StructInstantiation(Box::new((
@@ -1176,7 +1176,7 @@ fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
         TypeParameter(idx) => {
             // Assume that the caller has previously parsed and verified the structure of the
             // file and that this guarantees that type parameter indices are always in bounds.
-            debug_assert!((*idx as usize) < subst.len());
+            debug_assert!((*idx as usize) < subst.len()); //*)
             subst.0[*idx as usize].clone()
         }
     }
@@ -1192,14 +1192,14 @@ fn get_vector_element_type(
             if mut_ref_only {
                 None
             } else if let ST::Vector(element_type) = *referred_type {
-                Some(*element_type)
+                Some(*element_type) //*)
             } else {
                 None
             }
         }
         MutableReference(referred_type) => {
             if let ST::Vector(element_type) = *referred_type {
-                Some(*element_type)
+                Some(*element_type) //*)
             } else {
                 None
             }
@@ -1208,3 +1208,10 @@ fn get_vector_element_type(
     }
 }
 *)
+Definition materialize_type (struct_handle : StructHandleIndex.t) (type_args : Signature.t)
+  : SignatureToken.t. Admitted.
+
+Definition instantiate(token : SignatureToken.t), (subst: Signature.t) : SignatureToken.t. Admitted.
+
+Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
+  option SignatureToken.t. Admitted.
