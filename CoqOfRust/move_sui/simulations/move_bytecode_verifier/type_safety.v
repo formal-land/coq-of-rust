@@ -31,12 +31,11 @@ Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
- - CREATE CORRECT FOLDERS FOR THE FILES
+ - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult as std Result type
  - Implement AbilitySet
  - Check how to implement dyn(?) types
  - Check how to deal with stateful functions
- - Implement missing dependencies or axiomatize them
  - Rest of the file
  - Remove comments after the related code are completely translated
  *)
@@ -158,8 +157,11 @@ Module TypeSafetyChecker.
             .abilities(t, self.function_context.type_parameters())
     }
     *)
-    (* TODO: Implement PartialVMResult AbilitySet *)
-    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult AbilitySet. Admitted.
+    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult AbilitySet :=
+      self.(module).(CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities)
+        t 
+        self.(function_context).
+          (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -188,10 +190,7 @@ Module TypeSafetyChecker.
     (* TODO: "&mut (impl Meter + ?Sized)" *)
     Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
 
-  End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
-  (* 
-    impl<'a> TypeSafetyChecker<'a> {
-
+    (* 
       fn push_n(
           &mut self,
           meter: &mut (impl Meter + ?Sized),
@@ -202,7 +201,10 @@ Module TypeSafetyChecker.
           safe_unwrap_err!(self.stack.push_n(ty, n));
           Ok(())
       }
+    *)
+    Definition push_n (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
 
+    (* 
       fn charge_ty(
           &mut self,
           meter: &mut (impl Meter + ?Sized),
@@ -210,7 +212,10 @@ Module TypeSafetyChecker.
       ) -> PartialVMResult<()> {
           self.charge_ty_(meter, ty, 1)
       }
+    *)
+    Definition charge_ty (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult unit. Admitted.
 
+    (* 
       fn charge_ty_(
           &mut self,
           meter: &mut (impl Meter + ?Sized),
@@ -223,7 +228,11 @@ Module TypeSafetyChecker.
               ty.preorder_traversal().count() * (n as usize),
           )
       }
+    *)
+    Definition charge_ty_ (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
 
+    (* 
+    
       fn charge_tys(
           &mut self,
           meter: &mut (impl Meter + ?Sized),
@@ -234,6 +243,8 @@ Module TypeSafetyChecker.
           }
           Ok(())
       }
-  }
-  *)
+    *)
+    Definition charge_tys (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult unit. Admitted.
+
+  End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.

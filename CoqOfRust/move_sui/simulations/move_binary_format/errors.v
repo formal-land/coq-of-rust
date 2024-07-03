@@ -8,4 +8,10 @@ Import simulations.M.Notations.
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set). Admitted.
+  Module Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
+    (* TODO: Implement `new` function *)
+    Definition new : Set. admitted.
+
+    (* TODO: Implement at_code_offset *)
+  End Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
 End PartialVMResult.
