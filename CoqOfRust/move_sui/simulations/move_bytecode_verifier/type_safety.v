@@ -55,6 +55,9 @@ Module Meter.
   Class Trait (Self : Set) : Set := { }.
 End Meter. 
 
+(* TODO: use the notation properly *)
+Definition test_0 : forall (A : Set), { A : Set @ Meter.Trait A } -> A -> Set. Admitted.
+
 (* TODO: Use the Result type correctly *)
 (* Example code
 Module Result.
