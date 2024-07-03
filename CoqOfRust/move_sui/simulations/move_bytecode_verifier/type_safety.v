@@ -33,6 +33,7 @@ Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
+ - Implement `LocalIndex`
  - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult.t as std Result type
  - Implement AbilitySet
