@@ -32,6 +32,7 @@ Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
 (* TODO(progress): 
+ - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult.t as std Result type
  - Implement AbilitySet
@@ -48,6 +49,26 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 Module LocalIndex. 
 Inductive t : Set := .
 End LocalIndex.
+
+(* TODO: Use the Result type correctly *)
+(* Example code
+Module Result.
+  Inductive t (A Error : Set) : Set :=
+  | Ok : A -> t A Error
+  | Err : Error -> t A Error.
+
+  Arguments Ok {A Error}%type_scope.
+  Arguments Err {A Error}%type_scope.
+
+  Definition return_ {A Error : Set} (value : A) : t A Error := Ok value.
+
+  Definition bind {Error A B : Set} (value : t A Error) (f : A -> t B Error) : t B Error :=
+    match value with
+    | Ok value => f value
+    | Err error => Err error
+    end.
+End Result.
+*)
 
 (* struct Locals<'a> {
     param_count: usize,
@@ -320,6 +341,10 @@ fn borrow_field(
     Ok(())
 }
 *)
+Definition borrow_field (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+  (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
+  : PartialVMResult.t unit. Admitted.
+
 
 (* 
 fn borrow_loc(
@@ -346,6 +371,8 @@ fn borrow_loc(
     Ok(())
 }
 *)
+Definition borrow_loc (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn borrow_global(
@@ -380,6 +407,8 @@ fn borrow_global(
     Ok(())
 }
 *)
+Definition borrow_global (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(mut_ : bool) (idx : StructDefinitionIndex.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn call(
@@ -404,6 +433,8 @@ fn call(
     Ok(())
 }
 *)
+Definition call (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(function_handle : FunctionHandle.t) (type_actuals : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn type_fields_signature(
@@ -428,6 +459,8 @@ fn type_fields_signature(
     }
 }
 *)
+Definition type_fields_signature (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
 fn pack(
@@ -450,3 +483,5 @@ fn pack(
     Ok(())
 }
 *)
+Definition pack (verifier : TypeSafetyChecker.t) (meter : _) (offset : CodeOffset.t)
+(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
