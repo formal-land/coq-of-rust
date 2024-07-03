@@ -4,12 +4,20 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult.
+
 (* 
 gy@TODO:
-- Implement `AbilitySet`
 - fill in missing dependencies...
 - delete related comments after correctly implemented the code sections
 *)
+
+Module AbilitySet.
+  Record t : Set := { 
+    _ : N;
+  }.
+End AbilitySet.
 
 Module FieldHandleIndex.
   Inductive t : Set :=
@@ -78,82 +86,6 @@ Module StructDefInstantiation.
 End StructDefInstantiation.
 
 Definition CodeOffset : Set := Z.
-
-(* 
-pub struct CompiledModule {
-    /// Version number found during deserialization
-    pub version: u32,
-    /// Handle to self.
-    pub self_module_handle_idx: ModuleHandleIndex,
-    /// Handles to external dependency modules and self.
-    pub module_handles: Vec<ModuleHandle>,
-    /// Handles to external and internal types.
-    pub struct_handles: Vec<StructHandle>,
-    /// Handles to external and internal functions.
-    pub function_handles: Vec<FunctionHandle>,
-    /// Handles to fields.
-    pub field_handles: Vec<FieldHandle>,
-    /// Friend declarations, represented as a collection of handles to external friend modules.
-    pub friend_decls: Vec<ModuleHandle>,
-
-    /// Struct instantiations.
-    pub struct_def_instantiations: Vec<StructDefInstantiation>,
-    /// Function instantiations.
-    pub function_instantiations: Vec<FunctionInstantiation>,
-    /// Field instantiations.
-    pub field_instantiations: Vec<FieldInstantiation>,
-
-    /// Locals signature pool. The signature for all locals of the functions defined in the module.
-    pub signatures: SignaturePool,
-
-    /// All identifiers used in this module.
-    pub identifiers: IdentifierPool,
-    /// All address identifiers used in this module.
-    pub address_identifiers: AddressIdentifierPool,
-    /// Constant pool. The constant values used in the module.
-    pub constant_pool: ConstantPool,
-
-    pub metadata: Vec<Metadata>,
-
-    /// Types defined in this module.
-    pub struct_defs: Vec<StructDefinition>,
-    /// Function defined in this module.
-    pub function_defs: Vec<FunctionDefinition>,
-}
-*)
-Module CompiledModule.
-(* TODO: Implement the struct *)
-  Record t : Set := { 
-  version : Z;
-  (* self_module_handle_idx : ModuleHandleIndex; *)
-  (* module_handles : list ModuleHandle; *)
-  (* struct_handles : list StructHandle; *)
-  (* function_handles : list FunctionHandle; *)
-  (* field_handles : list FieldHandle; *)
-  (* friend_decls : list ModuleHandle; *)
-  (* struct_def_instantiations : list StructDefInstantiation; *)
-  (* function_instantiations : list FunctionInstantiation; *)
-  (* field_instantiations : list FieldInstantiation; *)
-  (* signatures : SignaturePool; *)
-  (* identifiers : IdentifierPool; *)
-  (* address_identifiers : AddressIdentifierPool; *)
-  (* constant_pool : ConstantPool; *)
-  (* metadata : list Metadata; *)
-  (* struct_defs : list StructDefinition; *)
-  (* function_defs : list FunctionDefinition; *)
-  }.
-  Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
-    (* 
-    pub fn abilities(
-        &self,
-        ty: &SignatureToken,
-        constraints: &[AbilitySet],
-    ) -> PartialVMResult<AbilitySet> {
-    *)
-    Definition abilities (self : Set) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
-      : PartialVMResult.t AbilitySet.t. Admitted.
-  End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
-End CompiledModule.
 
 (* 
 pub enum SignatureToken {
@@ -355,13 +287,85 @@ Module Bytecode.
   | CastU256.
 End Bytecode.
 
+(* 
+pub struct CompiledModule {
+    /// Version number found during deserialization
+    pub version: u32,
+    /// Handle to self.
+    pub self_module_handle_idx: ModuleHandleIndex,
+    /// Handles to external dependency modules and self.
+    pub module_handles: Vec<ModuleHandle>,
+    /// Handles to external and internal types.
+    pub struct_handles: Vec<StructHandle>,
+    /// Handles to external and internal functions.
+    pub function_handles: Vec<FunctionHandle>,
+    /// Handles to fields.
+    pub field_handles: Vec<FieldHandle>,
+    /// Friend declarations, represented as a collection of handles to external friend modules.
+    pub friend_decls: Vec<ModuleHandle>,
+
+    /// Struct instantiations.
+    pub struct_def_instantiations: Vec<StructDefInstantiation>,
+    /// Function instantiations.
+    pub function_instantiations: Vec<FunctionInstantiation>,
+    /// Field instantiations.
+    pub field_instantiations: Vec<FieldInstantiation>,
+
+    /// Locals signature pool. The signature for all locals of the functions defined in the module.
+    pub signatures: SignaturePool,
+
+    /// All identifiers used in this module.
+    pub identifiers: IdentifierPool,
+    /// All address identifiers used in this module.
+    pub address_identifiers: AddressIdentifierPool,
+    /// Constant pool. The constant values used in the module.
+    pub constant_pool: ConstantPool,
+
+    pub metadata: Vec<Metadata>,
+
+    /// Types defined in this module.
+    pub struct_defs: Vec<StructDefinition>,
+    /// Function defined in this module.
+    pub function_defs: Vec<FunctionDefinition>,
+}
+*)
+Module CompiledModule.
+(* TODO: Implement the struct *)
+  Record t : Set := { 
+  version : Z;
+  (* self_module_handle_idx : ModuleHandleIndex; *)
+  (* module_handles : list ModuleHandle; *)
+  (* struct_handles : list StructHandle; *)
+  (* function_handles : list FunctionHandle; *)
+  (* field_handles : list FieldHandle; *)
+  (* friend_decls : list ModuleHandle; *)
+  (* struct_def_instantiations : list StructDefInstantiation; *)
+  (* function_instantiations : list FunctionInstantiation; *)
+  (* field_instantiations : list FieldInstantiation; *)
+  (* signatures : SignaturePool; *)
+  (* identifiers : IdentifierPool; *)
+  (* address_identifiers : AddressIdentifierPool; *)
+  (* constant_pool : ConstantPool; *)
+  (* metadata : list Metadata; *)
+  (* struct_defs : list StructDefinition; *)
+  (* function_defs : list FunctionDefinition; *)
+  }.
+  Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+    (* 
+    pub fn abilities(
+        &self,
+        ty: &SignatureToken,
+        constraints: &[AbilitySet],
+    ) -> PartialVMResult<AbilitySet> {
+    *)
+    Definition abilities (self : Set) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
+      : PartialVMResult.t AbilitySet.t. Admitted.
+  End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+End CompiledModule.
+
 Module CodeUnit.
   Record t : Set := {
     locals : SignatureIndex.t;
     code : list Bytecode.t;
   }.
 End CodeUnit.
-
-Module AbilitySet.
-  Record t (_ : N) : Set := { }.
-End AbilitySet.
