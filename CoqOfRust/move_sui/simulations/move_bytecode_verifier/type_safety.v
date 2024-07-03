@@ -31,7 +31,11 @@ Module AbilitySet := file_format.AbilitySet.
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult.
+
 (* TODO(progress): 
+ - Implement `StatusCode`
  - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult.t as std Result type
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
@@ -56,7 +60,7 @@ Module Meter.
 End Meter. 
 
 (* TODO: use the notation properly *)
-Definition test_0 : forall (A : Set), { A : Set @ Meter.Trait A } -> A -> Set. Admitted.
+Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted.
 
 (* TODO: Use the Result type correctly *)
 (* Example code
@@ -189,8 +193,8 @@ Module TypeSafetyChecker.
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
       self.(module).(CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities)
         t 
-        self.(function_context).
-          (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters).
+        self.(function_context)
+          .(FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
