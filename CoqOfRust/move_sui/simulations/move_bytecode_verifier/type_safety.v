@@ -248,3 +248,205 @@ Module TypeSafetyChecker.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
+
+(* 
+pub(crate) fn verify<'a>(
+    module: &'a CompiledModule,
+    function_context: &'a FunctionContext<'a>,
+    meter: &mut (impl Meter + ?Sized),
+) -> PartialVMResult<()> {
+    let verifier = &mut TypeSafetyChecker::new(module, function_context);
+
+    for block_id in function_context.cfg().blocks() {
+        for offset in function_context.cfg().instr_indexes(block_id) {
+            let instr = &verifier.function_context.code().code[offset as usize];
+            verify_instr(verifier, instr, offset, meter)?
+        }
+    }
+
+    Ok(())
+}
+*)
+Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) (meter : _) : PartialVMResult.t unit.
+Admitted.
+
+(* 
+// helper for both `ImmBorrowField` and `MutBorrowField`
+fn borrow_field(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    mut_: bool,
+    field_handle_index: FieldHandleIndex,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    // load operand and check mutability constraints
+    let operand = safe_unwrap_err!(verifier.stack.pop());
+    if mut_ && !operand.is_mutable_reference() {
+        return Err(verifier.error(StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR, offset));
+    }
+
+    // check the reference on the stack is the expected type.
+    // Load the type that owns the field according to the instruction.
+    // For generic fields access, this step materializes that type
+    let field_handle = verifier.module.field_handle_at(field_handle_index);
+    let struct_def = verifier.module.struct_def_at(field_handle.owner);
+    let expected_type = materialize_type(struct_def.struct_handle, type_args);
+    match operand {
+        ST::Reference(inner) | ST::MutableReference(inner) if expected_type == *inner => (),
+        _ => return Err(verifier.error(StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR, offset)),
+    }
+
+    let field_def = match &struct_def.field_information {
+        StructFieldInformation::Native => {
+            return Err(verifier.error(StatusCode::BORROWFIELD_BAD_FIELD_ERROR, offset));
+        }
+        StructFieldInformation::Declared(fields) => {
+            // TODO: review the whole error story here, way too much is left to chances...
+            // definition of a more proper OM for the verifier could work around the problem
+            // (maybe, maybe not..)
+            &fields[field_handle.field as usize]
+        }
+    };
+    let field_type = Box::new(instantiate(&field_def.signature.0, type_args));
+    verifier.push(
+        meter,
+        if mut_ {
+            ST::MutableReference(field_type)
+        } else {
+            ST::Reference(field_type)
+        },
+    )?;
+    Ok(())
+}
+*)
+
+(* 
+fn borrow_loc(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    mut_: bool,
+    idx: LocalIndex,
+) -> PartialVMResult<()> {
+    let loc_signature = verifier.local_at(idx).clone();
+
+    if loc_signature.is_reference() {
+        return Err(verifier.error(StatusCode::BORROWLOC_REFERENCE_ERROR, offset));
+    }
+
+    verifier.push(
+        meter,
+        if mut_ {
+            ST::MutableReference(Box::new(loc_signature))
+        } else {
+            ST::Reference(Box::new(loc_signature))
+        },
+    )?;
+    Ok(())
+}
+*)
+
+(* 
+fn borrow_global(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    mut_: bool,
+    idx: StructDefinitionIndex,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    // check and consume top of stack
+    let operand = safe_unwrap_err!(verifier.stack.pop());
+    if operand != ST::Address {
+        return Err(verifier.error(StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR, offset));
+    }
+
+    let struct_def = verifier.module.struct_def_at(idx);
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    if !verifier.abilities(&struct_type)?.has_key() {
+        return Err(verifier.error(StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY, offset));
+    }
+
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    verifier.push(
+        meter,
+        if mut_ {
+            ST::MutableReference(Box::new(struct_type))
+        } else {
+            ST::Reference(Box::new(struct_type))
+        },
+    )?;
+    Ok(())
+}
+*)
+
+(* 
+fn call(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    function_handle: &FunctionHandle,
+    type_actuals: &Signature,
+) -> PartialVMResult<()> {
+    let parameters = verifier.module.signature_at(function_handle.parameters);
+    for parameter in parameters.0.iter().rev() {
+        let arg = safe_unwrap_err!(verifier.stack.pop());
+        if (type_actuals.is_empty() && &arg != parameter)
+            || (!type_actuals.is_empty() && arg != instantiate(parameter, type_actuals))
+        {
+            return Err(verifier.error(StatusCode::CALL_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    for return_type in &verifier.module.signature_at(function_handle.return_).0 {
+        verifier.push(meter, instantiate(return_type, type_actuals))?
+    }
+    Ok(())
+}
+*)
+
+(* 
+fn type_fields_signature(
+    verifier: &mut TypeSafetyChecker,
+    _meter: &mut (impl Meter + ?Sized), // TODO: metering
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<Signature> {
+    match &struct_def.field_information {
+        StructFieldInformation::Native => {
+            // TODO: this is more of "unreachable"
+            Err(verifier.error(StatusCode::PACK_TYPE_MISMATCH_ERROR, offset))
+        }
+        StructFieldInformation::Declared(fields) => {
+            let mut field_sig = vec![];
+            for field_def in fields.iter() {
+                field_sig.push(instantiate(&field_def.signature.0, type_args));
+            }
+            Ok(Signature(field_sig))
+        }
+    }
+}
+*)
+
+(* 
+fn pack(
+    verifier: &mut TypeSafetyChecker,
+    meter: &mut (impl Meter + ?Sized),
+    offset: CodeOffset,
+    struct_def: &StructDefinition,
+    type_args: &Signature,
+) -> PartialVMResult<()> {
+    let struct_type = materialize_type(struct_def.struct_handle, type_args);
+    let field_sig = type_fields_signature(verifier, meter, offset, struct_def, type_args)?;
+    for sig in field_sig.0.iter().rev() {
+        let arg = safe_unwrap_err!(verifier.stack.pop());
+        if &arg != sig {
+            return Err(verifier.error(StatusCode::PACK_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+
+    verifier.push(meter, struct_type)?;
+    Ok(())
+}
+*)
