@@ -133,18 +133,17 @@ Module TypeSafetyChecker.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
   (* 
-    fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
-        let locals = Locals::new(function_context.parameters(), function_context.locals());
-        Self {
-            module,
-            function_context,
-            locals,
-            stack: AbstractStack::new(),
-        }
-    }
+  fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
+      let locals = Locals::new(function_context.parameters(), function_context.locals());
+      Self {
+          module,
+          function_context,
+          locals,
+          stack: AbstractStack::new(),
+      }
+  }
   *)
   Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
-    (* TODO: Implement AbstractStack.new *)
     let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
     (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
     (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
@@ -156,9 +155,9 @@ Module TypeSafetyChecker.
     |}.
 
     (* 
-      fn local_at(&self, i: LocalIndex) -> &SignatureToken {
-          self.locals.local_at(i)
-      }
+    fn local_at(&self, i: LocalIndex) -> &SignatureToken {
+        self.locals.local_at(i)
+    }
     *)
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
@@ -171,10 +170,11 @@ Module TypeSafetyChecker.
     }
     *)
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-      self.(module).(CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities)
+      CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+        (self.(module))
         t 
-        self.(function_context)
-          .(FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters).
+        (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+        self.(function_context)).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -245,7 +245,6 @@ Module TypeSafetyChecker.
     Definition charge_ty_ {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
-    
       fn charge_tys(
           &mut self,
           meter: &mut (impl Meter + ?Sized),

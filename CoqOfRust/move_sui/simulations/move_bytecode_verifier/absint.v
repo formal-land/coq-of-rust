@@ -45,6 +45,8 @@ Module FunctionContext.
     }
     *)
     Definition locals (self : Self) : Signature.t := self.(locals).
+
+    (* TODO: Implement type_parameters *)
   End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
   (* 
   impl<'a> FunctionContext<'a> {
