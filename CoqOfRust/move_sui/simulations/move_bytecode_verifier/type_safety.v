@@ -37,10 +37,8 @@ Module FunctionContext := absint.FunctionContext.
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
  - Implemeng `Meter`
- - Implement AbilitySet
+ - Implement `AbilitySet`
  - Check how to deal with stateful functions
- - Rest of the file
- - Remove comments after the related code are completely translated
  *)
 
 (* TODO: tbd after PR #577 *)
