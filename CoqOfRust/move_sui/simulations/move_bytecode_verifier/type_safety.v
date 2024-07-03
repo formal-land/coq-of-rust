@@ -34,6 +34,7 @@ Module FunctionContext := absint.FunctionContext.
 (* TODO(progress): 
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
+ - Implemeng `Meter`
  - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult.t as std Result type
  - Implement AbilitySet
@@ -50,6 +51,11 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 Module LocalIndex. 
 Inductive t : Set := .
 End LocalIndex.
+
+(* TODO: Implement Meter trait *)
+Module Meter.
+  Class Trait (Self : Set) : Set := { }.
+End Meter. 
 
 (* TODO: Use the Result type correctly *)
 (* Example code
@@ -210,7 +216,7 @@ Module TypeSafetyChecker.
     }
     *)
     (* TODO: "&mut (impl Meter + ?Sized)" *)
-    Definition push (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition push {A : Set @ Meter.Trait A} (self : Self) (meter : A) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn push_n(
@@ -224,7 +230,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition push_n {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty(
@@ -235,7 +241,7 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (self : Self) (meter : _) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty_(
@@ -251,7 +257,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    Definition charge_ty_ (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty_ {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
     
@@ -266,7 +272,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition charge_tys (self : Self) (meter : _) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_tys {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
