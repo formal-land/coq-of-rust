@@ -5,7 +5,8 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 (* 
-TODO:
+gy@TODO:
+- Implement `AbilitySet`
 - fill in missing dependencies...
 - delete related comments after correctly implemented the code sections
 *)

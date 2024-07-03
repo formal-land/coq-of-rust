@@ -34,7 +34,6 @@ Module FunctionContext := absint.FunctionContext.
  - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement PartialVMResult as std Result type
  - Implement AbilitySet
- - Check how to implement dyn(?) types
  - Check how to deal with stateful functions
  - Rest of the file
  - Remove comments after the related code are completely translated
