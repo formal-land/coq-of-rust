@@ -43,7 +43,6 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress): 
- - Implement `StatusCode`
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
  - Check how to deal with stateful functions
@@ -147,12 +146,6 @@ Module TypeSafetyChecker.
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
 
-    (* 
-    fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
-        self.module
-            .abilities(t, self.function_context.type_parameters())
-    }
-    *)
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
       CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
         (self.(module))

@@ -125,6 +125,10 @@ Definition TableIndex := Z.
 Definition LocalIndex := Z.
 Definition TypeParameterIndex := Z.
 
+Module CodeOffset.
+  Definition t := Z.
+End CodeOffset.
+
 (* Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
