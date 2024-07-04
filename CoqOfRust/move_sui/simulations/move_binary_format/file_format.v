@@ -85,8 +85,6 @@ Module StructDefInstantiation.
   }.
 End StructDefInstantiation.
 
-Definition CodeOffset : Set := Z.
-
 (* 
 pub enum SignatureToken {
     /// Boolean, `true` or `false`.
