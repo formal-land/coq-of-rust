@@ -34,6 +34,10 @@ Module FunctionContext := absint.FunctionContext.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
+
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
+
 (* NOTE:
   - `meter : impl Meter` parameters are ignored in the simulation
 *)
@@ -42,7 +46,6 @@ Module PartialVMError := errors.PartialVMError.
  - Implement `StatusCode`
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
- - Implement `AbilitySet`
  - Check how to deal with stateful functions
  *)
 
@@ -144,10 +147,6 @@ Module TypeSafetyChecker.
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
 
-    Print FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
-
-    Definition test_0 := FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters.
-
     (* 
     fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
         self.module
@@ -171,7 +170,6 @@ Module TypeSafetyChecker.
       )
     }
     *)
-    (* TODO: Implement StatusCode & PartialVMError *)
     Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
 
     (* 
@@ -185,7 +183,6 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    (* TODO: "&mut (impl Meter + ?Sized)" *)
     Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
