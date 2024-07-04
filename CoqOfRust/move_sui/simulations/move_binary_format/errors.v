@@ -4,7 +4,6 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-(* TODO: Implement PartialVMError *)
 (* 
 #[derive(Clone)]
 pub struct PartialVMError(Box<PartialVMError_>);
