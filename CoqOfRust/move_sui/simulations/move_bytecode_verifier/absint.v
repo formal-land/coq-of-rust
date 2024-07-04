@@ -38,8 +38,6 @@ Module FunctionContext.
     Definition locals (self : Self) : Signature.t := self.(locals).
 
     Definition type_parameters (self : Self) : list AbilitySet.t := self.(type_parameters).
-
-    (* TODO: Implement type_parameters *)
   End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
   (* 
   impl<'a> FunctionContext<'a> {
