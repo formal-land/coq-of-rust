@@ -351,14 +351,9 @@ Module CompiledModule.
   (* function_defs : list FunctionDefinition; *)
   }.
   Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
-    (* 
-    pub fn abilities(
-        &self,
-        ty: &SignatureToken,
-        constraints: &[AbilitySet],
-    ) -> PartialVMResult<AbilitySet> {
-    *)
-    Definition abilities (self : Set) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
+    Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
+
+    Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t. Admitted.
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
