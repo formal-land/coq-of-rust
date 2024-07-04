@@ -15,7 +15,7 @@
 /target
 
 # vscode specific
-.vscode/settings.json
+.vscode
 
 # Coq compilation files
 *.aux
