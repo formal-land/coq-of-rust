@@ -27,6 +27,8 @@ Module Signature := file_format.Signature.
 Module SignatureToken := file_format.SignatureToken.
 Module CompiledModule := file_format.CompiledModule.
 Module AbilitySet := file_format.AbilitySet.
+Module LocalIndex := file_format.LocalIndex.
+Module CodeOffset := file_format.CodeOffset.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -44,18 +46,12 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress): 
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
- - Implement `LocalIndex`
  - Check how to deal with stateful functions
  *)
 
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
 Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
-
-(* TODO: Implement file_format::LocalIndex *)
-Module LocalIndex. 
-Inductive t : Set := .
-End LocalIndex.
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)

@@ -122,7 +122,11 @@ pub enum SignatureToken {
 *)
 
 Definition TableIndex := Z.
-Definition LocalIndex := Z.
+
+Module LocalIndex.
+  Definition t := Z.
+End LocalIndex.
+
 Definition TypeParameterIndex := Z.
 
 Module CodeOffset.
