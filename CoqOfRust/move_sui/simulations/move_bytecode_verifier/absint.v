@@ -23,7 +23,7 @@ Module FunctionContext.
     (* index : Option<FunctionDefinitionIndex>; *)
     (* code : &'a CodeUnit; *)
     parameters : Signature.t;
-    (* return_ : &'a Signature; *)
+    return_ : Signature.t;
     locals : Signature.t;
     type_parameters : list AbilitySet.t;
     (* cfg : VMControlFlowGraph; *)
