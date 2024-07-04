@@ -40,10 +40,8 @@ Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress): 
  - Implement `StatusCode`
- - Correctly translate `&mut (impl Meter + ?Sized)`
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
  - Implement `LocalIndex`
- - Implemeng `Meter`
  - Implement `AbilitySet`
  - Check how to deal with stateful functions
  *)
@@ -57,8 +55,8 @@ Module LocalIndex.
 Inductive t : Set := .
 End LocalIndex.
 
-(* TODO: use the notation properly *)
-Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted.
+(* DRAFT: template for adding trait parameters *)
+(* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
 (* struct Locals<'a> {
     param_count: usize,
@@ -145,6 +143,10 @@ Module TypeSafetyChecker.
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
+
+    Print FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
+
+    Definition test_0 := FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters.
 
     (* 
     fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {

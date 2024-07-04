@@ -6,6 +6,7 @@ Import simulations.M.Notations.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
+Module AbilitySet := file_format.AbilitySet.
 
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
@@ -24,7 +25,7 @@ Module FunctionContext.
     parameters : Signature.t;
     (* return_ : &'a Signature; *)
     locals : Signature.t;
-    (* type_parameters : list AbilitySet.t; *)
+    type_parameters : list AbilitySet.t;
     (* cfg : VMControlFlowGraph; *)
   }.
 
@@ -32,19 +33,11 @@ Module FunctionContext.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.absint.FunctionContext.t.
     
-    (* 
-    pub fn parameters(&self) -> &Signature {
-        self.parameters
-    }
-    *)
     Definition parameters (self : Self) : Signature.t := self.(parameters).
 
-    (* 
-    pub fn locals(&self) -> &Signature {
-        self.locals
-    }
-    *)
     Definition locals (self : Self) : Signature.t := self.(locals).
+
+    Definition type_parameters (self : Self) : list AbilitySet.t := self.(type_parameters).
 
     (* TODO: Implement type_parameters *)
   End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
@@ -78,10 +71,6 @@ Module FunctionContext.
 
       pub fn return_(&self) -> &Signature {
           self.return_
-      }
-
-      pub fn type_parameters(&self) -> &[AbilitySet] {
-          self.type_parameters
       }
 
       pub fn cfg(&self) -> &VMControlFlowGraph {
