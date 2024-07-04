@@ -46,7 +46,6 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress): 
  - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
- - Check how to deal with stateful functions
  *)
 
 (* TODO: tbd after PR #577 *)
@@ -186,7 +185,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition push_n (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty(
@@ -197,7 +196,7 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (self : Self) (meter : A)(ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty_(
@@ -213,7 +212,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    Definition charge_ty_ (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_tys(
@@ -227,7 +226,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition charge_tys (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
