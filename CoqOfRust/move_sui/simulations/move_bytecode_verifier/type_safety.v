@@ -34,6 +34,9 @@ Module FunctionContext := absint.FunctionContext.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
+(* NOTE:
+  - `meter : impl Meter` parameters are ignored in the simulation
+*)
 
 (* TODO(progress): 
  - Implement `StatusCode`
@@ -53,11 +56,6 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 Module LocalIndex. 
 Inductive t : Set := .
 End LocalIndex.
-
-(* TODO: Implement Meter trait *)
-Module Meter.
-  Class Trait (Self : Set) : Set := { }.
-End Meter. 
 
 (* TODO: use the notation properly *)
 Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted.
@@ -186,7 +184,7 @@ Module TypeSafetyChecker.
     }
     *)
     (* TODO: "&mut (impl Meter + ?Sized)" *)
-    Definition push {A : Set @ Meter.Trait A} (self : Self) (meter : A) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn push_n(
@@ -200,7 +198,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition push_n (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty(
@@ -211,7 +209,7 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty (self : Self) (meter : A)(ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_ty_(
@@ -227,7 +225,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    Definition charge_ty_ {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_ty_ (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
       fn charge_tys(
@@ -241,7 +239,7 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition charge_tys {A : Set @ Meter.Trait A} (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition charge_tys (self : Self) (meter : A)(ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
@@ -264,8 +262,8 @@ pub(crate) fn verify<'a>(
     Ok(())
 }
 *)
-Definition verify {A : Set @ Meter.Trait A} (module : CompiledModule.t) (function_context : FunctionContext.t) 
-  (meter : A) : PartialVMResult.t unit. Admitted.
+Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
+  : PartialVMResult.t unit. Admitted.
 
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
@@ -317,7 +315,7 @@ fn borrow_field(
     Ok(())
 }
 *)
-Definition borrow_field {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
+Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
   : PartialVMResult.t unit. Admitted.
 
@@ -347,7 +345,7 @@ fn borrow_loc(
     Ok(())
 }
 *)
-Definition borrow_loc {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition borrow_loc (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -383,7 +381,7 @@ fn borrow_global(
     Ok(())
 }
 *)
-Definition borrow_global {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition borrow_global (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (mut_ : bool) (idx : StructDefinitionIndex.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -409,7 +407,7 @@ fn call(
     Ok(())
 }
 *)
-Definition call {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition call (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (function_handle : FunctionHandle.t) (type_actuals : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
@@ -435,7 +433,7 @@ fn type_fields_signature(
     }
 }
 *)
-Definition type_fields_signature {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -459,7 +457,7 @@ fn pack(
     Ok(())
 }
 *)
-Definition pack {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition pack (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -486,7 +484,7 @@ fn unpack(
     Ok(())
 }
 *)
-Definition unpack {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (meter : A) (offset : CodeOffset.t)
+Definition unpack (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -518,7 +516,7 @@ fn exists(
     Ok(())
 }
 *)
-Definition _exists {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
+Definition _exists (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -544,7 +542,7 @@ fn move_from(
     Ok(())
 }
 *)
-Definition move_from {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
+Definition move_from (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
 (struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
 
 (* 
@@ -1100,7 +1098,7 @@ fn verify_instr(
     Ok(())
 }
 *)
-Definition verify_instr {A : Set @ Meter.Trait A} (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
+Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
   (offset : CodeOffset) (meter : A). Admitted.
 
 (* 
