@@ -29,6 +29,9 @@ Module CompiledModule := file_format.CompiledModule.
 Module AbilitySet := file_format.AbilitySet.
 Module LocalIndex := file_format.LocalIndex.
 Module CodeOffset := file_format.CodeOffset.
+Module FieldHandleIndex := file_format.FieldHandleIndex.
+Module StructDefinitionIndex := file_format.StructDefinitionIndex.
+Module FunctionHandle := file_format.FunctionHandle.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -45,7 +48,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress): 
- - Implement `FieldHandleIndex` `StructDefinitionIndex` `FunctionHandle`
+ 
  *)
 
 (* TODO: tbd after PR #577 *)
@@ -1166,7 +1169,7 @@ fn get_vector_element_type(
 Definition materialize_type (struct_handle : StructHandleIndex.t) (type_args : Signature.t)
   : SignatureToken.t. Admitted.
 
-Definition instantiate(token : SignatureToken.t), (subst: Signature.t) : SignatureToken.t. Admitted.
+Definition instantiate (token : SignatureToken.t) (subst: Signature.t) : SignatureToken.t. Admitted.
 
 Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
   option SignatureToken.t. Admitted.

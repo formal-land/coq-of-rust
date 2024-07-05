@@ -175,6 +175,51 @@ Module StructHandleIndex.
   Inductive t : Set := .
 End StructHandleIndex.
 
+(* 
+define_index! {
+    name: FieldHandleIndex,
+    kind: FieldHandle,
+    doc: "Index into the `FieldHandle` table.",
+}
+*)
+Module FieldHandleIndex.
+  Inductive t : Set := .
+End FieldHandleIndex.
+
+(* 
+define_index! {
+    name: StructDefinitionIndex,
+    kind: StructDefinition,
+    doc: "Index into the `StructDefinition` table.",
+}
+*)
+Module StructDefinitionIndex.
+  Inductive t : Set := .
+End StructDefinitionIndex.
+
+(* 
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(params = "usize"))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct FunctionHandle {
+    /// The module that defines the function.
+    pub module: ModuleHandleIndex,
+    /// The name of the function.
+    pub name: IdentifierIndex,
+    /// The list of arguments to the function.
+    pub parameters: SignatureIndex,
+    /// The list of return types.
+    pub return_: SignatureIndex,
+    /// The type formals (identified by their index into the vec) and their constraints
+    pub type_parameters: Vec<AbilitySet>,
+}
+*)
+Module FunctionHandle.
+  Record t : Set := { }.
+End FunctionHandle.
+
 Module SignatureToken.
   Inductive t : Set := 
   | Bool
