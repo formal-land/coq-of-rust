@@ -184,14 +184,14 @@ Module LensOption.
 
   Definition lift {Big_State State Error A : Set}
       (lens : t Big_State State)
-      (value : MS? State Error (option A)) :
+      (value : MS? State Error A) :
       MS? Big_State Error (option A) :=
     fun big_state =>
       match lens.(read) big_state with
       | Some result =>
         let (value, state) := value result in
         match lens.(write) big_state state with
-        | Some result => (value, result)
+        | Some result => (Panic.bind value (fun a => return!? (Some a)), result)
         | None => (return!? None, big_state)
         end
       | None => (return!? None, big_state)
