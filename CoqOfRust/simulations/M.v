@@ -231,10 +231,51 @@ Module LensPanic.
     end.
 End LensPanic.
 
+Module LensConversions.
+  Import PanicNotations.
+
+  Definition panic_of_option {Big_State State}
+      (x : LensOption.t Big_State State) :
+      LensPanic.t string Big_State State :=
+    {|
+      LensPanic.read big_state :=
+        match x.(LensOption.read) big_state with
+        | Some value => return!? value
+        | None => panic!? ""
+        end;
+      LensPanic.write big_state state :=
+        match x.(LensOption.write) big_state state with
+        | Some value => return!? value
+        | None => panic!? ""
+        end
+    |}.
+  
+  Definition option_of_panic {Big_State State}
+      (x : LensPanic.t string Big_State State) :
+      LensOption.t Big_State State :=
+    {|
+      LensOption.read big_state :=
+        match x.(LensPanic.read) big_state with
+        | Panic.Value value => Some value
+        | Panic.Panic _ => None
+        end;
+      LensOption.write big_state state :=
+        match x.(LensPanic.write) big_state state with
+        | Panic.Value value => Some value
+        | Panic.Panic _ => None
+        end
+    |}.
+End LensConversions.
+
 Module LensNoatations.
   Notation "liftS?" := Lens.lift.
   Notation "liftS?of?" := LensOption.lift.
   Notation "liftS?of!?" := LensPanic.lift.
+
+  Notation "lens_of?" := LensOption.of_lens.
+  Notation "lens_of!?" := LensPanic.of_lens.
+  Notation "lens!?of?" := LensConversions.panic_of_option.
+  Notation "lens?of!?" := LensConversions.option_of_panic.
 End LensNoatations.
 
 Module Notations.
