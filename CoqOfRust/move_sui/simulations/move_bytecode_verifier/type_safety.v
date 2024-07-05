@@ -33,6 +33,8 @@ Module FieldHandleIndex := file_format.FieldHandleIndex.
 Module StructDefinitionIndex := file_format.StructDefinitionIndex.
 Module FunctionHandle := file_format.FunctionHandle.
 Module StructDefinition := file_format.StructDefinition.
+Module Bytecode := file_format.Bytecode.
+Module StructHandleIndex := file_format.StructHandleIndex.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -425,7 +427,7 @@ fn type_fields_signature(
 }
 *)
 Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-  (struct_def : StructDefinition.t) (type_args : Signature.t) : Set. Admitted.
+  (struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t Signature.t. Admitted.
 
 (* 
 fn pack(
@@ -449,7 +451,7 @@ fn pack(
 }
 *)
 Definition pack (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn unpack(
@@ -476,7 +478,7 @@ fn unpack(
 }
 *)
 Definition unpack (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn exists(
@@ -508,7 +510,7 @@ fn exists(
 }
 *)
 Definition _exists (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn move_from(
@@ -534,7 +536,7 @@ fn move_from(
 }
 *)
 Definition move_from (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn move_to(
@@ -564,7 +566,7 @@ fn move_to(
 }
 *)
 Definition move_to (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn borrow_vector_element(
@@ -598,7 +600,7 @@ fn borrow_vector_element(
 }
 *)
 Definition borrow_vector_element (verifier : TypeSafetyChecker.t) (declared_element_type : SignatureToken.t) 
-(offset : CodeOffset.t) (mut_ref_only : bool) Admitted.
+(offset : CodeOffset.t) (mut_ref_only : bool) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn verify_instr(
@@ -1090,7 +1092,7 @@ fn verify_instr(
 }
 *)
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
-  (offset : CodeOffset) (meter : A). Admitted.
+  (offset : CodeOffset.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
