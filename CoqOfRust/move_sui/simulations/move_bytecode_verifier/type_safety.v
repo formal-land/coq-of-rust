@@ -32,6 +32,7 @@ Module CodeOffset := file_format.CodeOffset.
 Module FieldHandleIndex := file_format.FieldHandleIndex.
 Module StructDefinitionIndex := file_format.StructDefinitionIndex.
 Module FunctionHandle := file_format.FunctionHandle.
+Module StructDefinition := file_format.StructDefinition.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
