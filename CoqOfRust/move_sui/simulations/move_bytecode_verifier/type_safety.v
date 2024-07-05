@@ -48,7 +48,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress): 
- 
+ - Implement `StructDefinition`
  *)
 
 (* TODO: tbd after PR #577 *)
@@ -424,7 +424,7 @@ fn type_fields_signature(
 }
 *)
 Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t). Admitted.
+  (struct_def : StructDefinition.t) (type_args : Signature.t) : Set. Admitted.
 
 (* 
 fn pack(

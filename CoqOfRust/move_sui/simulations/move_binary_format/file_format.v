@@ -13,16 +13,77 @@ gy@TODO:
 - delete related comments after correctly implemented the code sections
 *)
 
+(* Template for `define_index!` macro
+
+pub struct $name(pub TableIndex);
+
+/// Returns an instance of the given `Index`.
+impl $name {
+    pub fn new(idx: TableIndex) -> Self {
+        Self(idx)
+    }
+}
+
+impl ::std::fmt::Display for $name {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl ::std::fmt::Debug for $name {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{}({})", stringify!($name), self.0)
+    }
+}
+
+impl ModuleIndex for $name {
+    const KIND: IndexKind = IndexKind::$kind;
+
+    #[inline]
+    fn into_index(self) -> usize {
+        self.0 as usize
+    }
+}
+*)
+
+(* 
+define_index! {
+    name: StructHandleIndex,
+    kind: StructHandle,
+    doc: "Index into the `StructHandle` table.",
+}
+*)
+Module StructHandleIndex.
+  Inductive t : Set := .
+End StructHandleIndex.
+
+(* 
+define_index! {
+    name: StructDefinitionIndex,
+    kind: StructDefinition,
+    doc: "Index into the `StructDefinition` table.",
+}
+*)
+Module StructDefinitionIndex.
+  Inductive t : Set := .
+End StructDefinitionIndex.
+
+(* 
+define_index! {
+    name: FieldHandleIndex,
+    kind: FieldHandle,
+    doc: "Index into the `FieldHandle` table.",
+}
+*)
+Module FieldHandleIndex.
+  Inductive t : Set := .
+End FieldHandleIndex.
+
 Module AbilitySet.
   Record t : Set := { 
     _ : N;
   }.
 End AbilitySet.
-
-Module FieldHandleIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FieldHandleIndex.
 
 Module SignatureIndex.
   Inductive t : Set :=
@@ -43,11 +104,6 @@ Module FunctionInstantiationIndex.
   Inductive t : Set :=
   | Make (_ : Z).
 End FunctionInstantiationIndex.
-
-Module StructDefinitionIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End StructDefinitionIndex.
 
 Module StructDefInstantiationIndex.
   Inductive t : Set :=
@@ -130,72 +186,6 @@ Definition TypeParameterIndex := Z.
 Module CodeOffset.
   Definition t := Z.
 End CodeOffset.
-
-(* Template for `define_index!` macro
-
-pub struct $name(pub TableIndex);
-
-/// Returns an instance of the given `Index`.
-impl $name {
-    pub fn new(idx: TableIndex) -> Self {
-        Self(idx)
-    }
-}
-
-impl ::std::fmt::Display for $name {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl ::std::fmt::Debug for $name {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{}({})", stringify!($name), self.0)
-    }
-}
-
-impl ModuleIndex for $name {
-    const KIND: IndexKind = IndexKind::$kind;
-
-    #[inline]
-    fn into_index(self) -> usize {
-        self.0 as usize
-    }
-}
-*)
-
-(* 
-define_index! {
-    name: StructHandleIndex,
-    kind: StructHandle,
-    doc: "Index into the `StructHandle` table.",
-}
-*)
-Module StructHandleIndex.
-  Inductive t : Set := .
-End StructHandleIndex.
-
-(* 
-define_index! {
-    name: FieldHandleIndex,
-    kind: FieldHandle,
-    doc: "Index into the `FieldHandle` table.",
-}
-*)
-Module FieldHandleIndex.
-  Inductive t : Set := .
-End FieldHandleIndex.
-
-(* 
-define_index! {
-    name: StructDefinitionIndex,
-    kind: StructDefinition,
-    doc: "Index into the `StructDefinition` table.",
-}
-*)
-Module StructDefinitionIndex.
-  Inductive t : Set := .
-End StructDefinitionIndex.
 
 (* 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
