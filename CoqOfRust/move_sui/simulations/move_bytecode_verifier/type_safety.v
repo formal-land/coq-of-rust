@@ -1,21 +1,3 @@
-(* use std::num::NonZeroU64;
-
-use crate::absint::FunctionContext;
-use move_abstract_stack::AbstractStack;
-use move_binary_format::{
-    control_flow_graph::ControlFlowGraph,
-    errors::{PartialVMError, PartialVMResult},
-    file_format::{
-        AbilitySet, Bytecode, CodeOffset, CompiledModule, FieldHandleIndex,
-        FunctionDefinitionIndex, FunctionHandle, LocalIndex, Signature, SignatureToken,
-        SignatureToken as ST, StructDefinition, StructDefinitionIndex, StructFieldInformation,
-        StructHandleIndex,
-    },
-    safe_unwrap_err,
-};
-use move_bytecode_verifier_meter::{Meter, Scope};
-use move_core_types::vm_status::StatusCode; *)
-
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
