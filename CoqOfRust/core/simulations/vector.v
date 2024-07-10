@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import simulations.M.
+Import simulations.M.Notations.
 
 Fixpoint last_error {A : Set} (l : list A) : option A :=
   match l with
@@ -28,4 +29,22 @@ Module Vector.
         | Some _ => Some (List.app (List.removelast l) [x])
         end
     |}.
+
+  Definition pop_front {A : Set} : MS? (list A) string (option A) :=
+    letS? l := readS? in
+    match l with
+    | [] => panicS? "pop_front: empty vector"
+    | x :: xs =>
+      letS? _ := writeS? xs in
+      returnS? (Some x)
+    end.
+
+  Definition pop {A : Set} : MS? (list A) string (option A) :=
+    letS? l := readS? in
+    match last_error l with
+    | None => panicS? "pop: empty vector"
+    | Some x =>
+      letS? _ := writeS? (List.removelast l) in
+      returnS? (Some x)
+    end.  
 End Vector.
