@@ -7,6 +7,23 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 
+
+Module TableIndex.
+  Definition t := Z.
+End TableIndex.
+
+Module LocalIndex.
+  Definition t := Z.
+End LocalIndex.
+
+Module TypeParameterIndex.
+  Definition t := Z.
+End TypeParameterIndex.
+
+Module CodeOffset.
+  Definition t := Z.
+End CodeOffset.
+
 (* 
 /// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
 /// user-specified fields declared on the type.
@@ -189,20 +206,6 @@ pub enum SignatureToken {
     U256,
 }
 *)
-
-Module TableIndex.
-  Definition t := Z.
-End TableIndex.
-
-Module LocalIndex.
-  Definition t := Z.
-End LocalIndex.
-
-Definition TypeParameterIndex := Z.
-
-Module CodeOffset.
-  Definition t := Z.
-End CodeOffset.
 
 (* 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
