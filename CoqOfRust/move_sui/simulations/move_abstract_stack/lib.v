@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.core.simulations.integers.
 Require Import CoqOfRust.core.simulations.vector.
+Require Import CoqOfRust.core.simulations.option.
 Import simulations.M.Notations.
 
 (*
@@ -140,9 +141,62 @@ Module AbstractStack.
     push_n item eq 1.
 
   (*
+    /// Pops n values off the stack, erroring if there are not enough items or if the n items are
+    /// not equal
+    pub fn pop_eq_n(&mut self, n: NonZeroU64) -> Result<T, AbsStackError> {
+        let n: u64 = n.get();
+        if self.is_empty() || n > self.len {
+            return Err(AbsStackError::Underflow);
+        }
+        let (count, last) = self.values.last_mut().unwrap();
+        debug_assert!( *count > 0 );
+        let ret = match ( *count ).cmp(&n) {
+            Ordering::Less => return Err(AbsStackError::ElementNotEqual),
+            Ordering::Equal => {
+                let (_, last) = self.values.pop().unwrap();
+                last
+            }
+            Ordering::Greater => {
+                *count -= n;
+                last.clone()
+            }
+        };
+        self.len -= n;
+        Ok(ret)
+    }
+  *)
+
+  Definition pop_eq_n {A : Set} (item : A) (n : Z) :
+      MS? (t A) string (Result.t A AbsStackError.t) :=
+    letS? self := readS? in
+    if (is_empty self || (n >? len self))%bool 
+    then returnS? (Result.Err AbsStackError.Underflow)
+    else
+      letS? ret := liftS? Lens.values (
+        letS? '(count, last) := Option.unwrap (liftS?of? Vector.first_mut readS?) in
+        match Z.compare count n with
+        | Lt => returnS? (Result.Err AbsStackError.ElementNotEqual)
+        | Eq =>
+          letS? '(_, last) := Option.unwrap Vector.pop in
+          returnS? (Result.Ok last)
+        | Gt =>
+          letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
+          returnS? (Result.Ok last)
+        end
+      ) in
+      letS? _ := writeS? (self <| len := len self - n |>) in
+      returnS? ret.
+
+  (*
     /// Pops a single value off the stack
     pub fn pop(&mut self) -> Result<T, AbsStackError> {
         self.pop_eq_n(NonZeroU64::new(1).unwrap())
     }
   *)
+
+  Definition pop {A : Set} (item : A) :
+      MS? (t A) string (Result.t A AbsStackError.t) :=
+    pop_eq_n item 1.
+
+  
 End AbstractStack.
