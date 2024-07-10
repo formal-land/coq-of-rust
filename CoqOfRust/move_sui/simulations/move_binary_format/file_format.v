@@ -77,7 +77,7 @@ define_index! {
 }
 *)
 Module StructHandleIndex.
-  Inductive t : Set := .
+  Record t : Set := { _ : Z; }.
 End StructHandleIndex.
 
 (* 
@@ -88,7 +88,7 @@ define_index! {
 }
 *)
 Module StructDefinitionIndex.
-  Inductive t : Set := .
+  Record t : Set := { _ : Z; }.
 End StructDefinitionIndex.
 
 (* 
@@ -99,8 +99,12 @@ define_index! {
 }
 *)
 Module FieldHandleIndex.
-  Inductive t : Set := .
+  Record t : Set := { _ : Z; }.
 End FieldHandleIndex.
+
+Module FunctionDefinitionIndex.
+  Record t : Set := { _ : Z; }.
+End FunctionDefinitionIndex.
 
 Module AbilitySet.
   Record t : Set := { 
@@ -137,11 +141,6 @@ Module FieldInstantiationIndex.
   Inductive t : Set :=
   | Make (_ : Z).
 End FieldInstantiationIndex.
-
-Module FunctionDefinitionIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FunctionDefinitionIndex.
 
 Module FieldInstantiation.
   Record t : Set := {

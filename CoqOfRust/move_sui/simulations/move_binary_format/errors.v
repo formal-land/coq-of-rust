@@ -6,13 +6,16 @@ Import simulations.M.Notations.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module TableIndex := file_format.TableIndex.
+Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
+
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
 - Plan: much more details should be irrevalent, so we only do 
   a simple wrap up here as lazy as possibles
-- Make a stub for `StatusCode`
 - Make a stub for `ExecutionState`
-- Find `IndexKind`, `FunctionDefinitionIndex` and `CodeOffset`
+- Find `IndexKind` and `CodeOffset`
 *)
 
 (* 
