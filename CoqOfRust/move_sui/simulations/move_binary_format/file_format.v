@@ -24,29 +24,6 @@ Module CodeOffset.
   Definition t := Z.
 End CodeOffset.
 
-(* 
-/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
-/// user-specified fields declared on the type.
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
-#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-pub struct StructDefinition {
-    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
-    /// for the type.
-    pub struct_handle: StructHandleIndex,
-    /// Contains either
-    /// - Information indicating the struct is native and has no accessible fields
-    /// - Information indicating the number of fields and the start `FieldDefinition`s
-    pub field_information: StructFieldInformation,
-}
-*)
-(* TODO: Implement this *)
-Module StructDefinition.
-  Record t : Set := { }.
-End StructDefinition.
-
 (* Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
@@ -174,6 +151,31 @@ Module StructDefInstantiation.
 End StructDefInstantiation.
 
 (* 
+/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
+/// user-specified fields declared on the type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct StructDefinition {
+    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
+    /// for the type.
+    pub struct_handle: StructHandleIndex,
+    /// Contains either
+    /// - Information indicating the struct is native and has no accessible fields
+    /// - Information indicating the number of fields and the start `FieldDefinition`s
+    pub field_information: StructFieldInformation,
+}
+*)
+Module StructDefinition.
+  Record t : Set := { 
+    struct_handle: StructHandleIndex.t;
+    (* field_information: StructFieldInformation.t; *)
+  }.
+End StructDefinition.
+
+(* 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
 #[cfg_attr(any(test, feature = "fuzzing"), proptest(params = "usize"))]
@@ -243,7 +245,7 @@ Module SignatureToken.
   | StructInstantiation : (StructHandleIndex.t * (list t)) -> t
   | Reference : t -> t
   | MutableReference : t -> t
-  | TypeParameter : TypeParameterIndex -> t
+  | TypeParameter : TypeParameterIndex.t -> t
   | U16
   | U32
   | U256
