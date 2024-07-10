@@ -28,7 +28,6 @@ Module PartialVMError_.
     exec_state: option ExecutionState.t;
     indices: list (IndexKind.t * TableIndex.t);
     offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
- 
   }.
 End PartialVMError_.
 
