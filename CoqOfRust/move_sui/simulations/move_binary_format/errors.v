@@ -12,7 +12,7 @@ Module TableIndex := file_format.TableIndex.
   a simple wrap up here as lazy as possibles
 - Make a stub for `StatusCode`
 - Make a stub for `ExecutionState`
-- Find `IndexKind`, `TableIndex`, `FunctionDefinitionIndex` and `CodeOffset`
+- Find `IndexKind`, `FunctionDefinitionIndex` and `CodeOffset`
 *)
 
 (* 
