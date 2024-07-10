@@ -62,6 +62,9 @@ Module Locals.
         Locals.locals := locals;
       |}.
 
+    Definition test_0 (self : t) := self.(parameters).(a0).
+    Definition test_1 (self : t) := self.(locals).(a0).
+
     (* 
     fn local_at(&self, i: LocalIndex) -> &SignatureToken {
         let idx = i as usize;
@@ -74,10 +77,10 @@ Module Locals.
     *)
     (* TODO: Implement this function correctly *)
     Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
-      let idx := i in (* TODO: correct this*)
+      let idx := i in (* TODO: correct this *)
       if idx < self.(param_count)
-      then list.nth self.(parameters).0 idx (* TOCO: correct this *)
-      else list.nth self.(locals).0 (idx - self.(param_count)).
+      then list.nth self.(parameters).(a0) idx
+      else list.nth self.(locals).(a0) (idx - self.(param_count)).
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.

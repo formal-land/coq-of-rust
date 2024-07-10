@@ -8,12 +8,6 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 
 (* 
-gy@TODO:
-- fill in missing dependencies...
-- delete related comments after correctly implemented the code sections
-*)
-
-(* 
 /// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
 /// user-specified fields declared on the type.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -77,7 +71,7 @@ define_index! {
 }
 *)
 Module StructHandleIndex.
-  Record t : Set := { _ : Z; }.
+  Record t : Set := { a0 : Z; }.
 End StructHandleIndex.
 
 (* 
@@ -88,7 +82,7 @@ define_index! {
 }
 *)
 Module StructDefinitionIndex.
-  Record t : Set := { _ : Z; }.
+  Record t : Set := { a0 : Z; }.
 End StructDefinitionIndex.
 
 (* 
@@ -99,19 +93,18 @@ define_index! {
 }
 *)
 Module FieldHandleIndex.
-  Record t : Set := { _ : Z; }.
+  Record t : Set := { a0 : Z; }.
 End FieldHandleIndex.
 
 Module FunctionDefinitionIndex.
-  Record t : Set := { _ : Z; }.
+  Record t : Set := { a0 : Z; }.
 End FunctionDefinitionIndex.
 
 Module AbilitySet.
-  Record t : Set := { 
-    _ : N;
-  }.
+  Record t : Set := { a0 : Z; }.
 End AbilitySet.
 
+(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 Module SignatureIndex.
   Inductive t : Set :=
   | Make (_ : Z).
