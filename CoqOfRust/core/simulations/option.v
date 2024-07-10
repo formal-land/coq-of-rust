@@ -3,7 +3,7 @@ Require Import simulations.M.
 Require CoqOfRust.core.simulations.default.
 Import simulations.M.Notations.
 
-Module Impl_Option_T.
+Module Option.
   Definition Self (T : Set) : Set :=
     option T.
 
@@ -17,16 +17,18 @@ Module Impl_Option_T.
     end.
 
   Definition expect {State A : Set}
-    (self : option A) (msg : string) : MS? State string A :=
-    match self with
+      (self : MS? State string (option A)) (msg : string) :
+      MS? State string A :=
+    letS? value := self in
+    match value with
     | None => panicS? msg
     | Some x => returnS? x
     end.
 
   Definition unwrap {State A : Set}
-    (self : option A) : MS? State string A :=
+    (self : MS? State string (option A)) : MS? State string A :=
     expect self "".
-End Impl_Option_T.
+End Option.
 
 Module Impl_Default_for_Option_T.
   Global Instance I (T : Set) :
