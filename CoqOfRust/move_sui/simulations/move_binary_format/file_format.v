@@ -198,7 +198,9 @@ pub enum SignatureToken {
 }
 *)
 
-Definition TableIndex := Z.
+Module TableIndex.
+  Definition t := Z.
+End TableIndex.
 
 Module LocalIndex.
   Definition t := Z.
