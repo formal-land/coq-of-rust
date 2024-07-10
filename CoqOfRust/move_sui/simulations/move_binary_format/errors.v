@@ -4,6 +4,9 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.lib.
+Module IndexKind := move_binary_format.lib.IndexKind.
+
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module TableIndex := file_format.TableIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
@@ -15,7 +18,7 @@ Module StatusCode := vm_status.StatusCode.
 - Plan: much more details should be irrevalent, so we only do 
   a simple wrap up here as lazy as possibles
 - Make a stub for `ExecutionState`
-- Find `IndexKind` and `CodeOffset`
+- Find `CodeOffset`
 *)
 
 (* 
@@ -35,11 +38,11 @@ struct PartialVMError_ {
 Module PartialVMError_.
   Record t : Set := {
   (* TODO: Implement below *)
-    (* major_status: StatusCode; *)
+    major_status: StatusCode.t;
     sub_status : option Z;
     message: option string;
     (* exec_state: Option<ExecutionState>; *)
-    (* indices: Vec<(IndexKind, TableIndex)>; *)
+    indices: list (IndexKind.t * TableIndex.t);
     (* offsets: Vec<(FunctionDefinitionIndex, CodeOffset)>; *)
  
   }.
