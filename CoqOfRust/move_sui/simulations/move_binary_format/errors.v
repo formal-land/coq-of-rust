@@ -10,40 +10,24 @@ Module IndexKind := move_binary_format.lib.IndexKind.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module TableIndex := file_format.TableIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
+Module CodeOffset := file_format.CodeOffset.
 
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* TODO(progress):
-- Plan: much more details should be irrevalent, so we only do 
-  a simple wrap up here as lazy as possibles
-- Make a stub for `ExecutionState`
-- Find `CodeOffset`
-*)
+(* NOTE: Implement this only if necessary *)
+Module ExecutionState.
+  Inductive t : Set := .
+End ExecutionState.
 
-(* 
-#[derive(Clone)]
-pub struct PartialVMError(Box<PartialVMError_>);
-
-#[derive(Clone)]
-struct PartialVMError_ {
-    major_status: StatusCode,
-    sub_status: Option<u64>,
-    message: Option<String>,
-    exec_state: Option<ExecutionState>,
-    indices: Vec<(IndexKind, TableIndex)>,
-    offsets: Vec<(FunctionDefinitionIndex, CodeOffset)>,
-}
-*)
 Module PartialVMError_.
   Record t : Set := {
-  (* TODO: Implement below *)
     major_status: StatusCode.t;
     sub_status : option Z;
     message: option string;
-    (* exec_state: Option<ExecutionState>; *)
+    exec_state: option ExecutionState.t;
     indices: list (IndexKind.t * TableIndex.t);
-    (* offsets: Vec<(FunctionDefinitionIndex, CodeOffset)>; *)
+    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
  
   }.
 End PartialVMError_.
