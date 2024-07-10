@@ -32,9 +32,10 @@ Module StatusCode := vm_status.StatusCode.
   - `meter : impl Meter` parameters are ignored in the simulation
 *)
 
-(* TODO(progress): 
- - Implement `StructDefinition`
- *)
+(* TODO(progress):
+  - Implement `local_at`
+  - Implement functions in PartialVMError::new(status).at_code_offset
+*)
 
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
@@ -43,11 +44,6 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
-(* struct Locals<'a> {
-    param_count: usize,
-    parameters: &'a Signature,
-    locals: &'a Signature,
-} *)
 Module Locals.
   Record t : Set := {
     param_count : Z;
@@ -76,22 +72,17 @@ Module Locals.
         }
     }
     *)
-    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t.
-    Admitted.
+    (* TODO: Implement this function correctly *)
+    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
+      let idx := i in (* TODO: correct this*)
+      if idx < self.(param_count)
+      then list.nth self.(parameters).0 idx (* TOCO: correct this *)
+      else list.nth self.(locals).0 (idx - self.(param_count)).
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
 
 Definition TYPE_NODE_COST : Z := 30.
-
-(* 
-struct TypeSafetyChecker<'a> {
-    module: &'a CompiledModule,
-    function_context: &'a FunctionContext<'a>,
-    locals: Locals<'a>,
-    stack: AbstractStack<SignatureToken>,
-}
-*)
 
 Module TypeSafetyChecker.
   Record t : Set := {
@@ -103,27 +94,17 @@ Module TypeSafetyChecker.
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
-  (* 
-  fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
-      let locals = Locals::new(function_context.parameters(), function_context.locals());
-      Self {
-          module,
-          function_context,
-          locals,
-          stack: AbstractStack::new(),
-      }
-  }
-  *)
-  Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
-    let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
-    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
-    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
-    {|
-      TypeSafetyChecker.module := module;
-      TypeSafetyChecker.function_context := function_context; 
-      TypeSafetyChecker.locals := locals;
-      TypeSafetyChecker.stack := AbstractStack_new;
-    |}.
+
+    Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
+      let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
+      (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
+      (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
+      {|
+        TypeSafetyChecker.module := module;
+        TypeSafetyChecker.function_context := function_context; 
+        TypeSafetyChecker.locals := locals;
+        TypeSafetyChecker.stack := AbstractStack_new;
+      |}.
 
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
