@@ -42,34 +42,6 @@ Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
   (* 
   impl PartialVMError {
-      pub fn all_data(
-          self,
-      ) -> (
-          StatusCode,
-          Option<u64>,
-          Option<String>,
-          Option<ExecutionState>,
-          Vec<(IndexKind, TableIndex)>,
-          Vec<(FunctionDefinitionIndex, CodeOffset)>,
-      ) {
-          let PartialVMError_ {
-              major_status,
-              sub_status,
-              message,
-              exec_state,
-              indices,
-              offsets,
-          } = *self.0;
-          (
-              major_status,
-              sub_status,
-              message,
-              exec_state,
-              indices,
-              offsets,
-          )
-      }
-
       pub fn finish(self, location: Location) -> VMError {
           let PartialVMError_ {
               major_status,
@@ -90,16 +62,6 @@ Module PartialVMResult.
           }))
       }
 
-      pub fn new(major_status: StatusCode) -> Self {
-          Self(Box::new(PartialVMError_ {
-              major_status,
-              sub_status: None,
-              message: None,
-              exec_state: None,
-              indices: vec![],
-              offsets: vec![],
-          }))
-      }
 
       pub fn major_status(&self) -> StatusCode {
           self.0.major_status
@@ -133,11 +95,6 @@ Module PartialVMResult.
           self
       }
 
-      pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
-          self.0.offsets.push((function, offset));
-          self
-      }
-
       pub fn at_code_offsets(
           mut self,
           additional_offsets: Vec<(FunctionDefinitionIndex, CodeOffset)>,
@@ -167,9 +124,61 @@ Module PartialVMResult.
   }
   *)
   Module Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
-    (* TODO: Implement `new` function *)
-    Definition new : Set. Admitted.
+    Definition Self : Set. Admitted.
+    (* 
+      pub fn all_data(
+          self,
+      ) -> (
+          StatusCode,
+          Option<u64>,
+          Option<String>,
+          Option<ExecutionState>,
+          Vec<(IndexKind, TableIndex)>,
+          Vec<(FunctionDefinitionIndex, CodeOffset)>,
+      ) {
+          let PartialVMError_ {
+              major_status,
+              sub_status,
+              message,
+              exec_state,
+              indices,
+              offsets,
+          } = *self.0;
+          (
+              major_status,
+              sub_status,
+              message,
+              exec_state,
+              indices,
+              offsets,
+          )
+      }
+    *)
+    Definition all_data (self : Self) :
+      (StatusCode.t * (option Z) * (option string) * (option ExecutionState.t) 
+        * (list (IndexKind.t * TableIndex.t)) * (list (FunctionDefinitionIndex.t * CodeOffset.t))).
+    Admitted.
 
-    (* TODO: Implement at_code_offset *)
+    (* 
+    pub fn new(major_status: StatusCode) -> Self {
+        Self(Box::new(PartialVMError_ {
+            major_status,
+            sub_status: None,
+            message: None,
+            exec_state: None,
+            indices: vec![],
+            offsets: vec![],
+        }))
+    }
+    *)
+    Definition new (self : Self) : Set. Admitted.
+
+    (*
+    pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
+        self.0.offsets.push((function, offset));
+        self
+    }
+    *)
+    Definition at_code_offset (self : Self) : Set. Admitted.
   End Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
 End PartialVMResult.

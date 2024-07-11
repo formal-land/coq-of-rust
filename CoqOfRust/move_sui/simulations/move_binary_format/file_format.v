@@ -7,7 +7,6 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 
-
 Module TableIndex.
   Definition t := Z.
 End TableIndex.
