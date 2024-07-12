@@ -7,6 +7,7 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.lib.
 Module IndexKind := move_binary_format.lib.IndexKind.
 
+(* TODO: Mutual Dependency issue. To be solved in some way *)
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module TableIndex := file_format.TableIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
