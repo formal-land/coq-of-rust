@@ -4,7 +4,6 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-(* TODO: Implement StatusCode *)
 (* 
 pub enum StatusCode {
     // The status of a transaction as determined by the prologue.
@@ -295,7 +294,7 @@ pub enum StatusCode {
     UNKNOWN_STATUS = 18446744073709551615,
 }
 *)
-
+(* NOTE: We might want to implement a function to translate the StatusCode to its corresponded integer in the future *)
 Module StatusCode. 
   Inductive t : Set := 
   | UNKNOWN_VALIDATION_STATUS

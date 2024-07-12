@@ -4,8 +4,12 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
-Module PartialVMResult := errors.PartialVMResult.
+(* NOTE: temporary stub for mutual dependency issue *)
+(* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult. *)
+Module PartialVMResult.
+  Inductive t : Set := .
+End PartialVMResult.
 
 Module TableIndex.
   Definition t := Z.
