@@ -33,7 +33,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress):
-  - Implement `local_at`
+  - Implement `abilities` in `file_format` and resolve the mutual dependency issue
   - Implement functions in PartialVMError::new(status).at_code_offset
 *)
 
@@ -62,9 +62,6 @@ Module Locals.
         Locals.locals := locals;
       |}.
 
-    Definition test_0 (self : t) := self.(parameters).(a0).
-    Definition test_1 (self : t) := self.(locals).(a0).
-
     (* 
     fn local_at(&self, i: LocalIndex) -> &SignatureToken {
         let idx = i as usize;
@@ -75,12 +72,14 @@ Module Locals.
         }
     }
     *)
-    (* TODO: Implement this function correctly *)
     Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
-      let idx := i in (* TODO: correct this *)
-      if idx < self.(param_count)
-      then list.nth self.(parameters).(a0) idx
-      else list.nth self.(locals).(a0) (idx - self.(param_count)).
+      let idx := i in 
+      if idx <? self.(param_count)
+      (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
+        To be fixed in the future*)
+      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) (SignatureToken.Bool)
+      else List.nth (Z.to_nat (idx - self.(param_count))) 
+              self.(locals).(Signature.a0) (SignatureToken.Bool).
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
