@@ -42,6 +42,9 @@ Module PartialVMError.
   }.
 End PartialVMError.
 
+Definition t (T : Set) := Result.t T PartialVMError.t.
+Print t.
+
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
@@ -129,7 +132,7 @@ Module PartialVMResult.
   }
   *)
   Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
-    Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.
+    Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.t.
     (* 
       pub fn all_data(
           self,
@@ -184,7 +187,6 @@ Module PartialVMResult.
     let pvme := PartialVMError.Build_t pvme_ in
     (* ??? *)
     *)
-
 
     (*
     pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
