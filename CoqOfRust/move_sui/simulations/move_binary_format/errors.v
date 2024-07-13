@@ -177,6 +177,13 @@ Module PartialVMResult.
     }
     *)
     Definition new (self : Self) (major_status : StatusCode.t) : Self. Admitted.
+    (* 
+    let pvme_ := {|
+    
+    |} in
+    let pvme := PartialVMError.Build_t pvme_ in
+    (* ??? *)
+    *)
 
 
     (*

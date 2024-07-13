@@ -35,6 +35,7 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue
   - Implement functions in PartialVMError::new(status).at_code_offset
+  - Remove `SignatureToken.Bool` with something better
 *)
 
 (* TODO: tbd after PR #577 *)
@@ -44,9 +45,8 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
-(* NOTE: temp helper function *)
-Definition coerce (a : file_format.PartialVMResult.t file_format.AbilitySet.t)
-  : PartialVMResult.t AbilitySet.t. Admitted.
+(* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
+Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
 
 Module Locals.
   Record t : Set := {
