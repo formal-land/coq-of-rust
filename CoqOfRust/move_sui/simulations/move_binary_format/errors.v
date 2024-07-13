@@ -21,6 +21,10 @@ Module ExecutionState.
   Inductive t : Set := .
 End ExecutionState.
 
+(* TODO(progress): 
+- Implement `new` and figure out a way to make the constructor
+*)
+
 Module PartialVMError_.
   Record t : Set := {
     major_status: StatusCode.t;
@@ -124,8 +128,8 @@ Module PartialVMResult.
       }
   }
   *)
-  Module Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
-    Definition Self : Set. Admitted.
+  Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
+    Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.
     (* 
       pub fn all_data(
           self,
@@ -172,7 +176,8 @@ Module PartialVMResult.
         }))
     }
     *)
-    Definition new (self : Self) : Set. Admitted.
+    Definition new (self : Self) (major_status : StatusCode.t) : Self. Admitted.
+
 
     (*
     pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
@@ -181,5 +186,5 @@ Module PartialVMResult.
     }
     *)
     Definition at_code_offset (self : Self) : Set. Admitted.
-  End Impl_move_sui_simulations_move_binary_format_error_PartialVMResult.
+  End Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
 End PartialVMResult.
