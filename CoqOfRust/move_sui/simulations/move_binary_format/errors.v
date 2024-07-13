@@ -38,12 +38,23 @@ End PartialVMError_.
 
 Module PartialVMError.
   Record t : Set := {
-    _ : PartialVMError_.t;
+    a1 : PartialVMError_.t;
+    a2 : PartialVMError_.t;
   }.
 End PartialVMError.
 
-Definition t (T : Set) := Result.t T PartialVMError.t.
-Print t.
+(* TEST CODE
+Definition major_status : StatusCode.t. Admitted.
+
+Definition pvme_ : PartialVMError_.t := {|
+  PartialVMError_.major_status := major_status;
+  PartialVMError_.sub_status := None;
+  PartialVMError_.message := None;
+  PartialVMError_.exec_state := None;
+  PartialVMError_.indices := [];
+  PartialVMError_.offsets := [];
+|}. 
+*)
 
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
@@ -181,11 +192,17 @@ Module PartialVMResult.
     *)
     Definition new (self : Self) (major_status : StatusCode.t) : Self. Admitted.
     (* 
-    let pvme_ := {|
-    
+    let pvme_ : PartialVMError_.t := {|
+      PartialVMError_.major_status := major_status;
+      PartialVMError_.sub_status  =: None;
+      PartialVMError_.message := None;
+      PartialVMError_.exec_state := None;
+      PartialVMError_.indices := [];
+      PartialVMError_.offsets := [];
     |} in
-    let pvme := PartialVMError.Build_t pvme_ in
+    let pvme : PartialVMError.t := {| _ := pvme_ |} in
     (* ??? *)
+    .
     *)
 
     (*
