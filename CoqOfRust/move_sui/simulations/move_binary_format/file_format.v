@@ -7,8 +7,12 @@ Import simulations.M.Notations.
 (* NOTE: temporary stub for mutual dependency issue *)
 (* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult. *)
-Module PartialVMResult.
+Module PartialVMError.
   Inductive t : Set := .
+End PartialVMError.
+(* NOTE: same as above *)
+Module PartialVMResult.
+  Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
 
 Module TableIndex.
