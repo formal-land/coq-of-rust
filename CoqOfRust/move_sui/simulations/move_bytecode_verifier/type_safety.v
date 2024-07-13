@@ -44,6 +44,10 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
+(* NOTE: temp helper function *)
+Definition coerce (a : file_format.PartialVMResult.t file_format.AbilitySet.t)
+  : PartialVMResult.t AbilitySet.t. Admitted.
+
 Module Locals.
   Record t : Set := {
     param_count : Z;
@@ -113,11 +117,12 @@ Module TypeSafetyChecker.
         self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-      CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
-        (self.(module))
-        t 
-        (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
-        self.(function_context)).
+        coerce
+          (CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+            (self.(module))
+            t 
+            (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+            self.(function_context))).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
