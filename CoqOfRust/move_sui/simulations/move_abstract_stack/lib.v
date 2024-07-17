@@ -198,5 +198,60 @@ Module AbstractStack.
       MS? (t A) string (Result.t A AbsStackError.t) :=
     pop_eq_n item 1.
 
-  
+  (*
+    /// Pop any n items off the stack. Unlike `pop_n`, items do not have to be equal
+    pub fn pop_any_n(&mut self, n: NonZeroU64) -> Result<(), AbsStackError> {
+        let n: u64 = n.get();
+        if self.is_empty() || n > self.len {
+            return Err(AbsStackError::Underflow);
+        }
+        let mut rem: u64 = n;
+        while rem > 0 {
+            let (count, _last) = self.values.last_mut().unwrap();
+            debug_assert!( *count > 0 );
+            match ( *count ).cmp(&rem) {
+                Ordering::Less | Ordering::Equal => {
+                    rem -= *count;
+                    self.values.pop().unwrap();
+                }
+                Ordering::Greater => {
+                    *count -= rem;
+                    break;
+                }
+            }
+        }
+        self.len -= n;
+        Ok(())
+    }
+  *)
+
+  Fixpoint pop_any_n_helper {A : Set} (l : nat) (rem : Z) :
+      MS? (list (Z * A)) string unit :=
+    if rem >? 0
+    then
+      letS? '(count, last) := Option.unwrap (liftS?of? Vector.first_mut readS?) in
+      if count <=? rem 
+      then
+        match l with
+        | O => panicS? "unreachable"
+        | S l' => 
+          letS? _ := Vector.pop in
+          pop_any_n_helper l' (rem - count)
+        end
+      else
+        liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - rem, last))
+    else returnS? tt.
+
+  Definition pop_any_n {A : Set} (n : Z) :
+      MS? (t A) string (Result.t unit AbsStackError.t) :=
+    letS? self := readS? in
+    if (is_empty self || (n >? len self))%bool 
+    then returnS? (Result.Err AbsStackError.Underflow)
+    else
+      letS? _ := liftS? Lens.values (
+        letS? values := readS? in
+        pop_any_n_helper (List.length values) n
+      ) in
+      letS? _ := writeS? (self <| len := len self - n |>) in
+      returnS? (Result.Ok tt).
 End AbstractStack.
