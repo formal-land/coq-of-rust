@@ -22,7 +22,8 @@ Module ExecutionState.
 End ExecutionState.
 
 (* TODO(progress): 
-- Implement `new` and figure out a way to make the constructor
+- Implement a value of `Result` type
+- Implement `new`
 *)
 
 Module PartialVMError_.
@@ -58,6 +59,11 @@ Definition pvme_ : PartialVMError_.t := {|
 
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
+(* TODO: figure out the way to construct a value of `Result.t` *)
+(* 
+Definition test_0 := nat.
+Definition test_1 : test_0 := S O.
+*)
   Definition t (T : Set) := Result.t T PartialVMError.t.
   (* 
   impl PartialVMError {
@@ -173,7 +179,7 @@ Module PartialVMResult.
           )
       }
     *)
-    Definition all_data (self : Self) :
+    Definition all_data {T : Set} (self : Self T) :
       (StatusCode.t * (option Z) * (option string) * (option ExecutionState.t) 
         * (list (IndexKind.t * TableIndex.t)) * (list (FunctionDefinitionIndex.t * CodeOffset.t))).
     Admitted.
@@ -190,20 +196,20 @@ Module PartialVMResult.
         }))
     }
     *)
-    Definition new (self : Self) (major_status : StatusCode.t) : Self. Admitted.
-    (* 
-    let pvme_ : PartialVMError_.t := {|
-      PartialVMError_.major_status := major_status;
-      PartialVMError_.sub_status  =: None;
-      PartialVMError_.message := None;
-      PartialVMError_.exec_state := None;
-      PartialVMError_.indices := [];
-      PartialVMError_.offsets := [];
-    |} in
-    let pvme : PartialVMError.t := {| _ := pvme_ |} in
-    (* ??? *)
-    .
-    *)
+    Definition new {T : Set} (self : Self T) (major_status : StatusCode.t) : Self T :=
+    
+      let pvme_ : PartialVMError_.t := {|
+        PartialVMError_.major_status := major_status;
+        PartialVMError_.sub_status := None;
+        PartialVMError_.message := None;
+        PartialVMError_.exec_state := None;
+        PartialVMError_.indices := [];
+        PartialVMError_.offsets := [];
+      |} in
+      let pvme : PartialVMError.t := {|| _ := pvme_ |} in
+      (* ??? *)
+      .
+   
 
     (*
     pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
@@ -211,6 +217,7 @@ Module PartialVMResult.
         self
     }
     *)
-    Definition at_code_offset (self : Self) : Set. Admitted.
+    Definition at_code_offset {T : Set} 
+      (self : Self T) (function : FunctionDefinitionIndex.t) (offset : CodeOffset.t) : Self T. Admitted.
   End Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
 End PartialVMResult.
