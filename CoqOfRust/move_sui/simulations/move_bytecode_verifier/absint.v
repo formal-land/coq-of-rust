@@ -8,10 +8,7 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
-
-(* TODO(progress) : 
-  - implement `FunctionContext::index`
-*)
+Module CodeUnit := file_format.CodeUnit.
 
 (* 
 pub struct VMControlFlowGraph {
@@ -42,7 +39,7 @@ Module FunctionContext.
     into the option monad. *)
   Record t : Set := { 
     index : option FunctionDefinitionIndex.t;
-    (* code : &'a CodeUnit; *)
+    code : CodeUnit.t;
     parameters : Signature.t;
     return_ : Signature.t;
     locals : Signature.t;
@@ -53,20 +50,9 @@ Module FunctionContext.
   Module Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.absint.FunctionContext.t.
-    
-    Definition parameters (self : Self) : Signature.t := self.(parameters).
 
-    Definition locals (self : Self) : Signature.t := self.(locals).
-
-    Definition type_parameters (self : Self) : list AbilitySet.t := self.(type_parameters).
-
-    Definition index (self : Self) : option FunctionDefinitionIndex.t := self.(index).
-
-    Definition cfg (self : Self) : VMControlFlowGraph.t := self.(cfg).
-  End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
-  (* 
-  impl<'a> FunctionContext<'a> {
-      // Creates a `FunctionContext` for a module function.
+    (* TODO: Implement this *)
+    (* 
       pub fn new(
           module: &'a CompiledModule,
           index: FunctionDefinitionIndex,
@@ -83,14 +69,20 @@ Module FunctionContext.
               cfg: VMControlFlowGraph::new(&code.code),
           }
       }
+    *)
+    
+    Definition parameters (self : Self) := self.(parameters).
 
-      pub fn code(&self) -> &CodeUnit {
-          self.code
-      }
+    Definition locals (self : Self) := self.(locals).
 
-      pub fn return_(&self) -> &Signature {
-          self.return_
-      }
-  }
-  *)
+    Definition type_parameters (self : Self).t := self.(type_parameters).
+
+    Definition index (self : Self).t := self.(index).
+
+    Definition cfg (self : Self) := self.(cfg).
+
+    Definition return_ (self : Self) := self.(restun_). 
+
+    Definition code (self : Self) := self.(code).
+  End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
 End FunctionContext.
