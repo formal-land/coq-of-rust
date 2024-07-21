@@ -35,20 +35,28 @@ macro_rules! safe_unwrap_err {
 }
 *)
 
+(* 
+NOTE: 
+  - There are a lot of structs defined here with `Record t : Set := { a0 : Z; }.`.
+    I name like such because they might be necessity to access them and t.(a0)
+    is convinient for such functionality. Other structs defined with a `Make`
+    constructor might need to change into this style in the future.
+*)
+
 Module TableIndex.
-  Definition t := Z.
+  Record t : Set := { a0 : Z; }.
 End TableIndex.
 
 Module LocalIndex.
-  Definition t := Z.
+  Record t : Set := { a0 : Z; }.
 End LocalIndex.
 
 Module TypeParameterIndex.
-  Definition t := Z.
+  Record t : Set := { a0 : Z; }.
 End TypeParameterIndex.
 
 Module CodeOffset.
-  Definition t := Z.
+  Record t : Set := { a0 : Z; }.
 End CodeOffset.
 
 (* Template for `define_index!` macro
@@ -118,7 +126,7 @@ Module FieldHandleIndex.
 End FieldHandleIndex.
 
 Module FunctionDefinitionIndex.
-  Record t : Set := { _ : Z; }.
+  Record t : Set := { a0 : Z; }.
 End FunctionDefinitionIndex.
 
 Module AbilitySet.

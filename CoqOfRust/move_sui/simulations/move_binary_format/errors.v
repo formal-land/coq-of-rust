@@ -209,7 +209,7 @@ Module PartialVMError.
         }))
     }
     *)
-    Definition new (self : Self) (major_status : StatusCode.t) : Self :=
+    Definition new (major_status : StatusCode.t) : Self :=
       let pvme_ : PartialVMError_.t := {|
         PartialVMError_.major_status := major_status;
         PartialVMError_.sub_status := None;

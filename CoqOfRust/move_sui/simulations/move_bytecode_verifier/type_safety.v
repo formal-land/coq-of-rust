@@ -91,7 +91,7 @@ Module Locals.
     }
     *)
     Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
-      let idx := i in 
+      let idx := i.(LocalIndex.a0) in 
       if idx <? self.(param_count)
       (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
         To be fixed in the future*)
@@ -150,12 +150,16 @@ Module TypeSafetyChecker.
     }
     *)
     Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t :=
-      let pvme := PartialVMError.new status in
+      let pvme := PartialVMError
+        .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.new status in
       let index := self.(function_context).(FunctionContext.index) in
       let index := match index with
         | Some idx => idx
-        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0) in
-      PartialVMError.at_code_offset index offset.
+        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0) 
+        end in
+      PartialVMError
+        .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
+          pvme index offset.
 
     (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
     (* 
