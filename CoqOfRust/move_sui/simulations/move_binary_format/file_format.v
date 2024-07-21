@@ -15,6 +15,27 @@ Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
 
+(* **************** *)
+
+(* NOTE: used in `type_safety` for reference
+macro_rules! safe_unwrap_err {
+    ($e:expr) => {{
+        match $e {
+            Ok(x) => x,
+            Err(e) => {
+                let err = PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                    .with_message(format!("{}:{} {:#}", file!(), line!(), e));
+                if cfg!(debug_assertions) {
+                    panic!("{:?}", err);
+                } else {
+                    return Err(err);
+                }
+            }
+        }
+    }};
+}
+*)
+
 Module TableIndex.
   Definition t := Z.
 End TableIndex.

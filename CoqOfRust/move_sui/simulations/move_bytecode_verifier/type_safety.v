@@ -38,7 +38,6 @@ Module StatusCode := vm_status.StatusCode.
     - Implement `absint::FunctionContext::index`
   - Implement `TypeSafetyChecker::push`:
     - Figure out how `safe_unwrap_err!` works
-  - Implement `verify` function!
   - Remove `SignatureToken.Bool` with something better
 *)
 
@@ -220,27 +219,6 @@ Module TypeSafetyChecker.
     Definition push_n (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
-
-(* 
-pub(crate) fn verify<'a>(
-    module: &'a CompiledModule,
-    function_context: &'a FunctionContext<'a>,
-    meter: &mut (impl Meter + ?Sized),
-) -> PartialVMResult<()> {
-    let verifier = &mut TypeSafetyChecker::new(module, function_context);
-
-    for block_id in function_context.cfg().blocks() {
-        for offset in function_context.cfg().instr_indexes(block_id) {
-            let instr = &verifier.function_context.code().code[offset as usize];
-            verify_instr(verifier, instr, offset, meter)?
-        }
-    }
-
-    Ok(())
-}
-*)
-Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
-  : PartialVMResult.t unit. Admitted.
 
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
@@ -1076,7 +1054,31 @@ fn verify_instr(
 }
 *)
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) : PartialVMResult.t unit. Admitted.
+  (offset : CodeOffset.t) : PartialVMResult.t unit. :=
+  match bytecode with
+  | _ => Ok(())
+  .
+
+(* 
+pub(crate) fn verify<'a>(
+    module: &'a CompiledModule,
+    function_context: &'a FunctionContext<'a>,
+    meter: &mut (impl Meter + ?Sized),
+) -> PartialVMResult<()> {
+    let verifier = &mut TypeSafetyChecker::new(module, function_context);
+
+    for block_id in function_context.cfg().blocks() {
+        for offset in function_context.cfg().instr_indexes(block_id) {
+            let instr = &verifier.function_context.code().code[offset as usize];
+            verify_instr(verifier, instr, offset, meter)?
+        }
+    }
+
+    Ok(())
+}
+*)
+Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
+  : PartialVMResult.t unit. Admitted.
 
 (* 
 fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
