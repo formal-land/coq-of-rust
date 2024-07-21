@@ -22,8 +22,7 @@ Module ExecutionState.
 End ExecutionState.
 
 (* TODO(progress): 
-- Implement a value of `Result` type
-- Implement `new`
+- figure out a way to implement functions with mutations
 *)
 
 Module PartialVMError_.
@@ -39,31 +38,12 @@ End PartialVMError_.
 
 Module PartialVMError.
   Record t : Set := {
-    a1 : PartialVMError_.t;
-    a2 : PartialVMError_.t;
+    _ : PartialVMError_.t;
   }.
 End PartialVMError.
 
-(* TEST CODE
-Definition major_status : StatusCode.t. Admitted.
-
-Definition pvme_ : PartialVMError_.t := {|
-  PartialVMError_.major_status := major_status;
-  PartialVMError_.sub_status := None;
-  PartialVMError_.message := None;
-  PartialVMError_.exec_state := None;
-  PartialVMError_.indices := [];
-  PartialVMError_.offsets := [];
-|}. 
-*)
-
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
-(* TODO: figure out the way to construct a value of `Result.t` *)
-(* 
-Definition test_0 := nat.
-Definition test_1 : test_0 := S O.
-*)
   Definition t (T : Set) := Result.t T PartialVMError.t.
   (* 
   impl PartialVMError {
@@ -150,6 +130,7 @@ Definition test_1 : test_0 := S O.
   *)
   Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.t.
+    Compute Self.
     (* 
       pub fn all_data(
           self,
@@ -197,7 +178,6 @@ Definition test_1 : test_0 := S O.
     }
     *)
     Definition new {T : Set} (self : Self T) (major_status : StatusCode.t) : Self T :=
-    
       let pvme_ : PartialVMError_.t := {|
         PartialVMError_.major_status := major_status;
         PartialVMError_.sub_status := None;
@@ -206,11 +186,10 @@ Definition test_1 : test_0 := S O.
         PartialVMError_.indices := [];
         PartialVMError_.offsets := [];
       |} in
-      let pvme : PartialVMError.t := {|| _ := pvme_ |} in
-      (* ??? *)
-      .
-   
+      let pvme := PartialVMError.Build_t pvme_ in
+      Result.Err pvme.
 
+    (* NOTE: `mut Self` involved... *)
     (*
     pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
         self.0.offsets.push((function, offset));
