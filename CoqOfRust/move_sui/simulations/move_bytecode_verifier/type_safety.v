@@ -46,16 +46,16 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
 (* DRAFT: example code for how verifier works
-Bytecode::Or | Bytecode::And => {
-    let operand1 = safe_unwrap_err!(verifier.stack.pop()); // <- used the `Result` monad
-    let operand2 = safe_unwrap_err!(verifier.stack.pop());
-    if operand1 == ST::Bool && operand2 == ST::Bool {
-        verifier.push(meter, ST::Bool)?; // <- used the `push` & `charge_ty` functions in `TypeSafetyChecker`
-    } else {
-        return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
-    }
-}
-// TODO: figure out how `meter` works exactly in where?
+  Bytecode::Or | Bytecode::And => {
+      let operand1 = safe_unwrap_err!(verifier.stack.pop()); // <- used the `Result` monad
+      let operand2 = safe_unwrap_err!(verifier.stack.pop());
+      if operand1 == ST::Bool && operand2 == ST::Bool {
+          verifier.push(meter, ST::Bool)?; // <- used the `push` & `charge_ty` functions in `TypeSafetyChecker`
+      } else {
+          return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+      }
+  }
+  // TODO: figure out how `meter` works exactly in where?
 *)
 
 (* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
