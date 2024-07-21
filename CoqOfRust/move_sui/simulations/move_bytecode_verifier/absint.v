@@ -8,6 +8,10 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
 
+(* TODO(progress) : 
+  - implement `FunctionContext::index`
+*)
+
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
     code: &'a CodeUnit,
@@ -17,7 +21,6 @@ Module AbilitySet := file_format.AbilitySet.
     type_parameters: &'a [AbilitySet],
     cfg: VMControlFlowGraph,
 } *)
-(* TODO: Implement this *)
 Module FunctionContext.
   Record t : Set := { 
     (* index : Option<FunctionDefinitionIndex>; *)

@@ -139,8 +139,8 @@ Module TypeSafetyChecker.
     := 
     PartialVMError.at_code_offset
       (PartialVMError.new status)
-      (* index() *)
-      (* unwrap_or(...) *)
+      (* index() *) (* unwrap_or(...) *)
+      (* offset *)
     *)
 
     (* 
