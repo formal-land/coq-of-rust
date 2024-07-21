@@ -82,7 +82,7 @@ Module FunctionContext.
 
     Definition cfg (self : Self) := self.(cfg).
 
-    Definition return_ (self : Self) := self.(restun_). 
+    Definition return_ (self : Self) := self.(return_). 
 
     Definition code (self : Self) := self.(code).
   End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
