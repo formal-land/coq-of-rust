@@ -35,7 +35,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue
   - Implement `TypeSafetyChecker::error`:
-    - Implement `absint::FunctionContext::index`
   - Remove `SignatureToken.Bool` with something better
 *)
 
@@ -200,6 +199,7 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
+    (* NOTE: with `safe_unwrap_err` macro, we might need to use the Result monad seriously here... *)
     Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
@@ -1053,8 +1053,85 @@ fn verify_instr(
 *)
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : PartialVMResult.t unit. :=
+  (* TODO: IMPORTANT: wrap up the pattern match with a Result monad *)
   match bytecode with
-  | _ => Ok(())
+  | ByteCode.Pop => Result.Ok tt
+  | ByteCode.Ret => Result.Ok tt
+  (* | ByteCode.BrTrue (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.BrFalse (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.Branch (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.LdU8 (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.LdU64 (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.LdU128 (_ : Z) => Result.Ok tt *)
+  | ByteCode.CastU8 => Result.Ok tt
+  | ByteCode.CastU64 => Result.Ok tt
+  | ByteCode.CastU128 => Result.Ok tt
+  (* | ByteCode.LdConst (_ : ConstantPoolIndex.t) => Result.Ok tt *)
+  (* | ByteCode.LdTrue => Result.Ok tt *)
+  (* | ByteCode.LdFalse => Result.Ok tt *)
+  (* | ByteCode.CopyLoc (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.MoveLoc (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.StLoc (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.Call (_ : FunctionHandleIndex.t) => Result.Ok tt *)
+  (* | ByteCode.CallGeneric (_ : FunctionInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.Pack (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.PackGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.Unpack (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.UnpackGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  | ByteCode.ReadRef => Result.Ok tt
+  | ByteCode.WriteRef => Result.Ok tt
+  | ByteCode.FreezeRef => Result.Ok tt
+  (* | ByteCode.MutBorrowLoc (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.ImmBorrowLoc (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.MutBorrowField (_ : FieldHandleIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MutBorrowFieldGeneric (_ : FieldInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.ImmBorrowField (_ : FieldHandleIndex.t) => Result.Ok tt *)
+  (* | ByteCode.ImmBorrowFieldGeneric (_ : FieldInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MutBorrowGlobal (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MutBorrowGlobalGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.ImmBorrowGlobal (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.ImmBorrowGlobalGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  | ByteCode.Add => Result.Ok tt
+  | ByteCode.Sub => Result.Ok tt
+  | ByteCode.Mul => Result.Ok tt
+  | ByteCode.Mod => Result.Ok tt
+  | ByteCode.Div => Result.Ok tt
+  | ByteCode.BitOr => Result.Ok tt
+  | ByteCode.BitAnd => Result.Ok tt
+  | ByteCode.Xor => Result.Ok tt
+  | ByteCode.Or => Result.Ok tt
+  | ByteCode.And => Result.Ok tt
+  | ByteCode.Not => Result.Ok tt
+  | ByteCode.Eq => Result.Ok tt
+  | ByteCode.Neq => Result.Ok tt
+  | ByteCode.Lt => Result.Ok tt
+  | ByteCode.Gt => Result.Ok tt
+  | ByteCode.Le => Result.Ok tt
+  | ByteCode.Ge => Result.Ok tt
+  | ByteCode.Abort => Result.Ok tt
+  | ByteCode.Nop => Result.Ok tt
+  (* | ByteCode.Exists (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.ExistsGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MoveFrom (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MoveFromGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MoveTo (_ : StructDefinitionIndex.t) => Result.Ok tt *)
+  (* | ByteCode.MoveToGeneric (_ : StructDefInstantiationIndex.t) => Result.Ok tt *)
+  | ByteCode.Shl => Result.Ok tt
+  | ByteCode.Shr => Result.Ok tt
+  (* | ByteCode.VecPack (_ : SignatureIndex.t) (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.VecLen (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.VecImmBorrow (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.VecMutBorrow (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.VecPushBack (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.VecPopBack (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.VecUnpack (_ : SignatureIndex.t) (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.VecSwap (_ : SignatureIndex.t) => Result.Ok tt *)
+  (* | ByteCode.LdU16 (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.LdU32 (_ : Z) => Result.Ok tt *)
+  (* | ByteCode.LdU256 (_ : Z) => Result.Ok tt *)
+  | ByteCode.CastU16 => Result.Ok tt
+  | ByteCode.CastU32 => Result.Ok tt
+  | ByteCode.CastU256 => Result.Ok tt
   .
 
 (* 
