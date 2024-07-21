@@ -36,8 +36,6 @@ Module StatusCode := vm_status.StatusCode.
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue
   - Implement `TypeSafetyChecker::error`:
     - Implement `absint::FunctionContext::index`
-  - Implement `TypeSafetyChecker::push`:
-    - Figure out how `safe_unwrap_err!` works
   - Remove `SignatureToken.Bool` with something better
 *)
 
