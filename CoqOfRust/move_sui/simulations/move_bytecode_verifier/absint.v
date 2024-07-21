@@ -7,10 +7,26 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
+Module FunctionDefinitionIndex := file_formal.FunctionDefinitionIndex.
 
 (* TODO(progress) : 
   - implement `FunctionContext::index`
 *)
+
+(* 
+pub struct VMControlFlowGraph {
+    /// The basic blocks
+    blocks: Map<BlockId, BasicBlock>,
+    /// Basic block ordering for traversal
+    traversal_successors: Map<BlockId, BlockId>,
+    /// Map of loop heads with all of their back edges
+    loop_heads: Map<BlockId, /* back edges */ Set<BlockId>>,
+}
+*)
+(* STUB: only implement if necessary *)
+Module VMControlFlowGraph.
+  Record t : Set := { }.
+End VMControlFlowGraph.
 
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
@@ -22,14 +38,16 @@ Module AbilitySet := file_format.AbilitySet.
     cfg: VMControlFlowGraph,
 } *)
 Module FunctionContext.
+  (* NOTE: For convenience we only do a standard `option` here. We can modify later 
+    into the option monad. *)
   Record t : Set := { 
-    (* index : Option<FunctionDefinitionIndex>; *)
+    index : option FunctionDefinitionIndex.t;
     (* code : &'a CodeUnit; *)
     parameters : Signature.t;
     return_ : Signature.t;
     locals : Signature.t;
     type_parameters : list AbilitySet.t;
-    (* cfg : VMControlFlowGraph; *)
+    cfg : VMControlFlowGraph.t;
   }.
 
   Module Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
@@ -41,6 +59,10 @@ Module FunctionContext.
     Definition locals (self : Self) : Signature.t := self.(locals).
 
     Definition type_parameters (self : Self) : list AbilitySet.t := self.(type_parameters).
+
+    Definition index (self : Self) : option FunctionDefinitionIndex.t := self.(index).
+
+    Definition cfg (self : Self) : VMControlFlowGraph.t := self.(cfg).
   End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
   (* 
   impl<'a> FunctionContext<'a> {
@@ -62,20 +84,12 @@ Module FunctionContext.
           }
       }
 
-      pub fn index(&self) -> Option<FunctionDefinitionIndex> {
-          self.index
-      }
-
       pub fn code(&self) -> &CodeUnit {
           self.code
       }
 
       pub fn return_(&self) -> &Signature {
           self.return_
-      }
-
-      pub fn cfg(&self) -> &VMControlFlowGraph {
-          &self.cfg
       }
   }
   *)

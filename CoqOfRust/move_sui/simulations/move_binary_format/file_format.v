@@ -10,7 +10,6 @@ Module PartialVMResult := errors.PartialVMResult. *)
 Module PartialVMError.
   Inductive t : Set := .
 End PartialVMError.
-(* NOTE: same as above *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
