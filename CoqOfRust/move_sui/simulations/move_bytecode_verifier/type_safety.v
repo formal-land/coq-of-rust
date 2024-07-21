@@ -135,6 +135,13 @@ Module TypeSafetyChecker.
     }
     *)
     Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
+    (* DRAFT
+    := 
+    PartialVMError.at_code_offset
+      (PartialVMError.new status)
+      (* index() *)
+      (* unwrap_or(...) *)
+    *)
 
     (* 
     fn push(

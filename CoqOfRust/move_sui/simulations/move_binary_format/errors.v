@@ -42,6 +42,11 @@ Module PartialVMError.
   }.
 End PartialVMError.
 
+(* WARNING: 
+  Several impl functions involves `mut Self`. Since they mostly only involves
+  changing the value of a constructed object, I'm being lazy here for now: I 
+  only return the updated value rather than modifying the original value*)
+
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
@@ -130,7 +135,6 @@ Module PartialVMResult.
   *)
   Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.t.
-    Compute Self.
     (* 
       pub fn all_data(
           self,
@@ -189,7 +193,6 @@ Module PartialVMResult.
       let pvme := PartialVMError.Build_t pvme_ in
       Result.Err pvme.
 
-    (* NOTE: `mut Self` involved... *)
     (*
     pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
         self.0.offsets.push((function, offset));
@@ -197,6 +200,11 @@ Module PartialVMResult.
     }
     *)
     Definition at_code_offset {T : Set} 
-      (self : Self T) (function : FunctionDefinitionIndex.t) (offset : CodeOffset.t) : Self T. Admitted.
+      (self : Self T) (function : FunctionDefinitionIndex.t) (offset : CodeOffset.t) : Self T :=
+      let '(Result.Err pvme) := self in
+      let '(PartialVMResult.Build_t pvem_) := pvme in
+      let offsets := pvme_.(offsets) in
+      (* ... *)
+
   End Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
 End PartialVMResult.
