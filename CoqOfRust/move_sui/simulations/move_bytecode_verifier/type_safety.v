@@ -17,6 +17,7 @@ Module FunctionHandle := file_format.FunctionHandle.
 Module StructDefinition := file_format.StructDefinition.
 Module Bytecode := file_format.Bytecode.
 Module StructHandleIndex := file_format.StructHandleIndex.
+Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -148,14 +149,13 @@ Module TypeSafetyChecker.
       )
     }
     *)
-    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
-    (* DRAFT
-    := 
-    PartialVMError.at_code_offset
-      (PartialVMError.new status)
-      (* index() *) (* unwrap_or(...) *)
-      (* offset *)
-    *)
+    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t :=
+      let pvme := PartialVMError.new status in
+      let index := self.(function_context).(FunctionContext.index) in
+      let index := match index with
+        | Some idx => idx
+        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0) in
+      PartialVMError.at_code_offset index offset.
 
     (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
     (* 
@@ -173,7 +173,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
-      Result.Ok tt.
+      return?? tt.
 
     (* 
       fn charge_ty(
@@ -185,7 +185,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
-      Result.Ok tt.
+      return?? tt.
 
     (* 
       fn charge_tys(
@@ -200,7 +200,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
-      Result.Ok tt.
+      return?? tt.
 
     (* 
     fn push(
@@ -313,7 +313,7 @@ fn borrow_loc(
 }
 *)
 Definition borrow_loc (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
+  (mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn borrow_global(

@@ -118,7 +118,7 @@ Module FieldHandleIndex.
 End FieldHandleIndex.
 
 Module FunctionDefinitionIndex.
-  Record t : Set := { a0 : Z; }.
+  Record t : Set := { _ : Z; }.
 End FunctionDefinitionIndex.
 
 Module AbilitySet.
