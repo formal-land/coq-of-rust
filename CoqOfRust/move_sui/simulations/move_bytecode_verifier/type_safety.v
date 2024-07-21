@@ -34,8 +34,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress):
-  - Implement `abilities` in `file_format` and resolve the mutual dependency issue
-  - Implement `TypeSafetyChecker::error`
+  - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
   - Remove `SignatureToken.Bool` with something better
 *)
 
