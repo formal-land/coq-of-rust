@@ -34,7 +34,7 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue
-  - Implement functions in PartialVMError::new(status).at_code_offset
+  - Implement PartialVMError::.at_code_offset
   - Remove `SignatureToken.Bool` with something better
 *)
 
