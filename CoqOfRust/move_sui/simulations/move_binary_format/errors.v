@@ -208,9 +208,8 @@ Module PartialVMError.
       let '(PartialVMError.Build_t pvme_) := self in
       let offsets := pvme_.(PartialVMError_.offsets) in
       let offsets := (function, offset) :: offsets in
-      (* TODO: find a convenient way to update the value of offsets *)
-      (* ... *)
-      self.
+      let pvme_ := pvme_ <| PartialVMError_.offsets := offsets |> in
+      PartialVMError.Build_t pvme_.
 
   End Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.
 End PartialVMError.
