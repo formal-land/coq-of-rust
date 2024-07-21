@@ -55,6 +55,7 @@ Bytecode::Or | Bytecode::And => {
         return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
     }
 }
+// TODO: figure out how `meter` works exactly in where?
 *)
 
 (* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
