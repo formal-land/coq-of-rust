@@ -115,8 +115,9 @@ Module TypeSafetyChecker.
 
     Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
       let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
-      (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
-      (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
+      (* NOTE: We directly access the corresponded fields here for conveniency *)
+      function_context.(FunctionContext.parameters)
+      function_context.(FunctionContext.locals) in
       {|
         TypeSafetyChecker.module := module;
         TypeSafetyChecker.function_context := function_context; 
