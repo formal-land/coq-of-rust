@@ -23,7 +23,7 @@ pub struct VMControlFlowGraph {
     loop_heads: Map<BlockId, /* back edges */ Set<BlockId>>,
 }
 *)
-(* STUB: only implement if necessary *)
+(* NOTE: STUB: only implement if necessary *)
 Module VMControlFlowGraph.
   Record t : Set := { }.
 End VMControlFlowGraph.
