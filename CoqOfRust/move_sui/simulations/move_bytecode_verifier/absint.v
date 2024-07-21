@@ -7,7 +7,7 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
-Module FunctionDefinitionIndex := file_formal.FunctionDefinitionIndex.
+Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 
 (* TODO(progress) : 
   - implement `FunctionContext::index`
