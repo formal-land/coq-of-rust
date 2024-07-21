@@ -76,9 +76,9 @@ Module FunctionContext.
 
     Definition locals (self : Self) := self.(locals).
 
-    Definition type_parameters (self : Self).t := self.(type_parameters).
+    Definition type_parameters (self : Self) := self.(type_parameters).
 
-    Definition index (self : Self).t := self.(index).
+    Definition index (self : Self) := self.(index).
 
     Definition cfg (self : Self) := self.(cfg).
 
