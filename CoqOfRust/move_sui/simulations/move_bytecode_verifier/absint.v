@@ -70,6 +70,7 @@ Module FunctionContext.
           }
       }
     *)
+    Definition new : Set. Admitted.
     
     Definition parameters (self : Self) := self.(parameters).
 
