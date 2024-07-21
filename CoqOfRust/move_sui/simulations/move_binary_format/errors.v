@@ -16,7 +16,7 @@ Module CodeOffset := file_format.CodeOffset.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* NOTE: Implement this only if necessary *)
+(* NOTE: STUB: Implement this only if necessary *)
 Module ExecutionState.
   Inductive t : Set := .
 End ExecutionState.
@@ -24,6 +24,29 @@ End ExecutionState.
 (* TODO(progress): 
 - figure out a way to implement functions with mutations
 *)
+
+Module Location.
+  Inductive t : Set :=
+  | Undefined
+  (* | Module _ : (* language_storage::ModuleId *) *)
+  .
+End Location.
+
+Module VMError_.
+  Record t : Set := {
+    major_status: StatusCode.t;
+    sub_status: option Z;
+    message: option string;
+    exec_state: option ExecutionState.t;
+    location: Location.t;
+    indices: list (IndexKind.t * TableIndex.t);
+    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
+  }.
+End VMError_.
+
+Module VMError.
+  Definition t := VMError_.t.
+End VMError.
 
 Module PartialVMError_.
   Record t : Set := {
@@ -37,7 +60,7 @@ Module PartialVMError_.
 End PartialVMError_.
 
 
-(* WARNING: 
+(* NOTE: WARNING: 
   Several impl functions involves `mut Self`. Since they mostly only involves
   changing the value of a constructed object, I'm being lazy here for now: I 
   only return the updated value rather than modifying the original value. *)
