@@ -34,7 +34,11 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue
-  - Implement PartialVMError::.at_code_offset
+  - Implement `TypeSafetyChecker::error`:
+    - Implement `absint::FunctionContext::index`
+  - Implement `TypeSafetyChecker::push`:
+    - Figure out how `safe_unwrap_err!` works
+  - Implement `verify` function!
   - Remove `SignatureToken.Bool` with something better
 *)
 
@@ -143,6 +147,51 @@ Module TypeSafetyChecker.
       (* offset *)
     *)
 
+    (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
+    (* 
+      fn charge_ty_(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          ty: &SignatureToken,
+          n: u64,
+      ) -> PartialVMResult<()> {
+          meter.add_items(
+              Scope::Function,
+              TYPE_NODE_COST,
+              ty.preorder_traversal().count() * (n as usize),
+          )
+      }
+    *)
+    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
+      Result.Ok tt.
+
+    (* 
+      fn charge_ty(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          ty: &SignatureToken,
+      ) -> PartialVMResult<()> {
+          self.charge_ty_(meter, ty, 1)
+      }
+    *)
+    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
+      Result.Ok tt.
+
+    (* 
+      fn charge_tys(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          tys: &[SignatureToken],
+      ) -> PartialVMResult<()> {
+          for ty in tys {
+              self.charge_ty(meter, ty)?
+          }
+          Ok(())
+      }
+    *)
+    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
+      Result.Ok tt.
+
     (* 
     fn push(
         &mut self,
@@ -169,48 +218,6 @@ Module TypeSafetyChecker.
       }
     *)
     Definition push_n (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_ty(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          ty: &SignatureToken,
-      ) -> PartialVMResult<()> {
-          self.charge_ty_(meter, ty, 1)
-      }
-    *)
-    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_ty_(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          ty: &SignatureToken,
-          n: u64,
-      ) -> PartialVMResult<()> {
-          meter.add_items(
-              Scope::Function,
-              TYPE_NODE_COST,
-              ty.preorder_traversal().count() * (n as usize),
-          )
-      }
-    *)
-    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_tys(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          tys: &[SignatureToken],
-      ) -> PartialVMResult<()> {
-          for ty in tys {
-              self.charge_ty(meter, ty)?
-          }
-          Ok(())
-      }
-    *)
-    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
 
