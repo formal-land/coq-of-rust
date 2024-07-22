@@ -58,7 +58,7 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
   // TODO: figure out how `meter` works exactly in where?
 *)
 
-(* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
+(* NOTE: temp brutal helper function. Should be removed with regard to the mutual dependency issue *)
 Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
 
 Module Locals.
@@ -217,7 +217,8 @@ Module TypeSafetyChecker.
     }
     *)
     (* NOTE: with `safe_unwrap_err` macro, we might need to use the Result monad seriously here... *)
-    Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
+      return?? tt.
 
     (* 
       fn push_n(
