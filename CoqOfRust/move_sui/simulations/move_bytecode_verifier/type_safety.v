@@ -1,21 +1,3 @@
-(* use std::num::NonZeroU64;
-
-use crate::absint::FunctionContext;
-use move_abstract_stack::AbstractStack;
-use move_binary_format::{
-    control_flow_graph::ControlFlowGraph,
-    errors::{PartialVMError, PartialVMResult},
-    file_format::{
-        AbilitySet, Bytecode, CodeOffset, CompiledModule, FieldHandleIndex,
-        FunctionDefinitionIndex, FunctionHandle, LocalIndex, Signature, SignatureToken,
-        SignatureToken as ST, StructDefinition, StructDefinitionIndex, StructFieldInformation,
-        StructHandleIndex,
-    },
-    safe_unwrap_err,
-};
-use move_bytecode_verifier_meter::{Meter, Scope};
-use move_core_types::vm_status::StatusCode; *)
-
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
@@ -35,6 +17,7 @@ Module FunctionHandle := file_format.FunctionHandle.
 Module StructDefinition := file_format.StructDefinition.
 Module Bytecode := file_format.Bytecode.
 Module StructHandleIndex := file_format.StructHandleIndex.
+Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -50,9 +33,10 @@ Module StatusCode := vm_status.StatusCode.
   - `meter : impl Meter` parameters are ignored in the simulation
 *)
 
-(* TODO(progress): 
- - Implement `StructDefinition`
- *)
+(* TODO(progress):
+  - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
+  - Remove `SignatureToken.Bool` with something better
+*)
 
 (* TODO: tbd after PR #577 *)
 Definition AbstractStack (A : Set) : Set. Admitted.
@@ -61,11 +45,22 @@ Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
-(* struct Locals<'a> {
-    param_count: usize,
-    parameters: &'a Signature,
-    locals: &'a Signature,
-} *)
+(* DRAFT: example code for how verifier works
+  Bytecode::Or | Bytecode::And => {
+      let operand1 = safe_unwrap_err!(verifier.stack.pop()); // <- used the `Result` monad
+      let operand2 = safe_unwrap_err!(verifier.stack.pop());
+      if operand1 == ST::Bool && operand2 == ST::Bool {
+          verifier.push(meter, ST::Bool)?; // <- used the `push` & `charge_ty` functions in `TypeSafetyChecker`
+      } else {
+          return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+      }
+  }
+  // TODO: figure out how `meter` works exactly in where?
+*)
+
+(* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
+Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
+
 Module Locals.
   Record t : Set := {
     param_count : Z;
@@ -94,22 +89,19 @@ Module Locals.
         }
     }
     *)
-    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t.
-    Admitted.
+    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
+      let idx := i.(LocalIndex.a0) in 
+      if idx <? self.(param_count)
+      (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
+        To be fixed in the future*)
+      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) (SignatureToken.Bool)
+      else List.nth (Z.to_nat (idx - self.(param_count))) 
+              self.(locals).(Signature.a0) (SignatureToken.Bool).
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
 
 Definition TYPE_NODE_COST : Z := 30.
-
-(* 
-struct TypeSafetyChecker<'a> {
-    module: &'a CompiledModule,
-    function_context: &'a FunctionContext<'a>,
-    locals: Locals<'a>,
-    stack: AbstractStack<SignatureToken>,
-}
-*)
 
 Module TypeSafetyChecker.
   Record t : Set := {
@@ -121,38 +113,30 @@ Module TypeSafetyChecker.
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
-  (* 
-  fn new(module: &'a CompiledModule, function_context: &'a FunctionContext<'a>) -> Self {
-      let locals = Locals::new(function_context.parameters(), function_context.locals());
-      Self {
-          module,
-          function_context,
-          locals,
-          stack: AbstractStack::new(),
-      }
-  }
-  *)
-  Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
-    let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
-    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.parameters function_context) 
-    (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.locals function_context) in
-    {|
-      TypeSafetyChecker.module := module;
-      TypeSafetyChecker.function_context := function_context; 
-      TypeSafetyChecker.locals := locals;
-      TypeSafetyChecker.stack := AbstractStack_new;
-    |}.
+
+    Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
+      let locals := Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.new 
+      (* NOTE: We directly access the corresponded fields here for conveniency *)
+      function_context.(FunctionContext.parameters)
+      function_context.(FunctionContext.locals) in
+      {|
+        TypeSafetyChecker.module := module;
+        TypeSafetyChecker.function_context := function_context; 
+        TypeSafetyChecker.locals := locals;
+        TypeSafetyChecker.stack := AbstractStack_new;
+      |}.
 
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.local_at
         self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-      CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
-        (self.(module))
-        t 
-        (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
-        self.(function_context)).
+        coerce
+          (CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+            (self.(module))
+            t 
+            (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+            self.(function_context))).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -164,7 +148,62 @@ Module TypeSafetyChecker.
       )
     }
     *)
-    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t. Admitted.
+    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t :=
+      let pvme := PartialVMError
+        .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.new status in
+      let index := self.(function_context).(FunctionContext.index) in
+      let index := match index with
+        | Some idx => idx
+        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0) 
+        end in
+      PartialVMError
+        .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
+          pvme index offset.
+
+    (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
+    (* 
+      fn charge_ty_(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          ty: &SignatureToken,
+          n: u64,
+      ) -> PartialVMResult<()> {
+          meter.add_items(
+              Scope::Function,
+              TYPE_NODE_COST,
+              ty.preorder_traversal().count() * (n as usize),
+          )
+      }
+    *)
+    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
+      return?? tt.
+
+    (* 
+      fn charge_ty(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          ty: &SignatureToken,
+      ) -> PartialVMResult<()> {
+          self.charge_ty_(meter, ty, 1)
+      }
+    *)
+    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
+      return?? tt.
+
+    (* 
+      fn charge_tys(
+          &mut self,
+          meter: &mut (impl Meter + ?Sized),
+          tys: &[SignatureToken],
+      ) -> PartialVMResult<()> {
+          for ty in tys {
+              self.charge_ty(meter, ty)?
+          }
+          Ok(())
+      }
+    *)
+    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
+      return?? tt.
 
     (* 
     fn push(
@@ -177,6 +216,7 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
+    (* NOTE: with `safe_unwrap_err` macro, we might need to use the Result monad seriously here... *)
     Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
 
     (* 
@@ -192,71 +232,8 @@ Module TypeSafetyChecker.
       }
     *)
     Definition push_n (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_ty(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          ty: &SignatureToken,
-      ) -> PartialVMResult<()> {
-          self.charge_ty_(meter, ty, 1)
-      }
-    *)
-    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_ty_(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          ty: &SignatureToken,
-          n: u64,
-      ) -> PartialVMResult<()> {
-          meter.add_items(
-              Scope::Function,
-              TYPE_NODE_COST,
-              ty.preorder_traversal().count() * (n as usize),
-          )
-      }
-    *)
-    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
-    (* 
-      fn charge_tys(
-          &mut self,
-          meter: &mut (impl Meter + ?Sized),
-          tys: &[SignatureToken],
-      ) -> PartialVMResult<()> {
-          for ty in tys {
-              self.charge_ty(meter, ty)?
-          }
-          Ok(())
-      }
-    *)
-    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
-
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
-
-(* 
-pub(crate) fn verify<'a>(
-    module: &'a CompiledModule,
-    function_context: &'a FunctionContext<'a>,
-    meter: &mut (impl Meter + ?Sized),
-) -> PartialVMResult<()> {
-    let verifier = &mut TypeSafetyChecker::new(module, function_context);
-
-    for block_id in function_context.cfg().blocks() {
-        for offset in function_context.cfg().instr_indexes(block_id) {
-            let instr = &verifier.function_context.code().code[offset as usize];
-            verify_instr(verifier, instr, offset, meter)?
-        }
-    }
-
-    Ok(())
-}
-*)
-Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
-  : PartialVMResult.t unit. Admitted.
 
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
@@ -339,7 +316,7 @@ fn borrow_loc(
 }
 *)
 Definition borrow_loc (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
+  (mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
 
 (* 
 fn borrow_global(
@@ -1091,8 +1068,111 @@ fn verify_instr(
     Ok(())
 }
 *)
+
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) : PartialVMResult.t unit. Admitted.
+  (offset : CodeOffset.t) : PartialVMResult.t unit :=
+  (* TODO: IMPORTANT: wrap up the pattern match with a Result monad *)
+  match bytecode with
+  | Bytecode.Pop => return?? tt
+  | Bytecode.Ret => return?? tt
+  | Bytecode.BrTrue idx => return?? tt
+  | Bytecode.BrFalse idx => return?? tt
+  | Bytecode.Branch idx => return?? tt
+  | Bytecode.LdU8 idx => return?? tt
+  | Bytecode.LdU64 idx => return?? tt
+  | Bytecode.LdU128 idx => return?? tt
+  | Bytecode.CastU8 => return?? tt
+  | Bytecode.CastU64 => return?? tt
+  | Bytecode.CastU128 => return?? tt
+  | Bytecode.LdConst idx => return?? tt
+  | Bytecode.LdTrue => return?? tt
+  | Bytecode.LdFalse => return?? tt
+  | Bytecode.CopyLoc idx => return?? tt
+  | Bytecode.MoveLoc idx => return?? tt
+  | Bytecode.StLoc idx => return?? tt
+  | Bytecode.Call idx => return?? tt
+  | Bytecode.CallGeneric idx => return?? tt
+  | Bytecode.Pack idx => return?? tt
+  | Bytecode.PackGeneric idx => return?? tt
+  | Bytecode.Unpack idx => return?? tt
+  | Bytecode.UnpackGeneric idx => return?? tt
+  | Bytecode.ReadRef => return?? tt
+  | Bytecode.WriteRef => return?? tt
+  | Bytecode.FreezeRef => return?? tt
+  | Bytecode.MutBorrowLoc idx => return?? tt
+  | Bytecode.ImmBorrowLoc idx => return?? tt
+  | Bytecode.MutBorrowField idx => return?? tt
+  | Bytecode.MutBorrowFieldGeneric idx => return?? tt
+  | Bytecode.ImmBorrowField idx => return?? tt
+  | Bytecode.ImmBorrowFieldGeneric idx => return?? tt
+  | Bytecode.MutBorrowGlobal idx => return?? tt
+  | Bytecode.MutBorrowGlobalGeneric idx => return?? tt
+  | Bytecode.ImmBorrowGlobal idx => return?? tt
+  | Bytecode.ImmBorrowGlobalGeneric idx => return?? tt
+  | Bytecode.Add => return?? tt
+  | Bytecode.Sub => return?? tt
+  | Bytecode.Mul => return?? tt
+  | Bytecode.Mod => return?? tt
+  | Bytecode.Div => return?? tt
+  | Bytecode.BitOr => return?? tt
+  | Bytecode.BitAnd => return?? tt
+  | Bytecode.Xor => return?? tt
+  | Bytecode.Or => return?? tt
+  | Bytecode.And => return?? tt
+  | Bytecode.Not => return?? tt
+  | Bytecode.Eq => return?? tt
+  | Bytecode.Neq => return?? tt
+  | Bytecode.Lt => return?? tt
+  | Bytecode.Gt => return?? tt
+  | Bytecode.Le => return?? tt
+  | Bytecode.Ge => return?? tt
+  | Bytecode.Abort => return?? tt
+  | Bytecode.Nop => return?? tt
+  | Bytecode.Exists idx => return?? tt
+  | Bytecode.ExistsGeneric idx => return?? tt
+  | Bytecode.MoveFrom idx => return?? tt
+  | Bytecode.MoveFromGeneric idx => return?? tt
+  | Bytecode.MoveTo idx => return?? tt
+  | Bytecode.MoveToGeneric idx => return?? tt
+  | Bytecode.Shl => return?? tt
+  | Bytecode.Shr => return?? tt
+  (* | Bytecode.VecPack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecLen idx => return?? tt
+  | Bytecode.VecImmBorrow idx => return?? tt
+  | Bytecode.VecMutBorrow idx => return?? tt
+  | Bytecode.VecPushBack idx => return?? tt
+  | Bytecode.VecPopBack idx => return?? tt
+  (* | Bytecode.VecUnpack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecSwap idx => return?? tt
+  | Bytecode.LdU16 idx => return?? tt
+  | Bytecode.LdU32 idx => return?? tt
+  | Bytecode.LdU256 idx => return?? tt
+  | Bytecode.CastU16 => return?? tt
+  | Bytecode.CastU32 => return?? tt
+  | Bytecode.CastU256 => return?? tt
+  | _ => return?? tt
+  end.
+
+(* 
+pub(crate) fn verify<'a>(
+    module: &'a CompiledModule,
+    function_context: &'a FunctionContext<'a>,
+    meter: &mut (impl Meter + ?Sized),
+) -> PartialVMResult<()> {
+    let verifier = &mut TypeSafetyChecker::new(module, function_context);
+
+    for block_id in function_context.cfg().blocks() {
+        for offset in function_context.cfg().instr_indexes(block_id) {
+            let instr = &verifier.function_context.code().code[offset as usize];
+            verify_instr(verifier, instr, offset, meter)?
+        }
+    }
+
+    Ok(())
+}
+*)
+Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
+  : PartialVMResult.t unit. Admitted.
 
 (* 
 fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {

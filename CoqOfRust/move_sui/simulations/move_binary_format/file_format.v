@@ -4,37 +4,60 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
-Module PartialVMResult := errors.PartialVMResult.
+(* NOTE: temporary stub for mutual dependency issue *)
+(* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult. *)
+Module PartialVMError.
+  Inductive t : Set := .
+End PartialVMError.
+Module PartialVMResult.
+  Definition t (T : Set) := Result.t T PartialVMError.t.
+End PartialVMResult.
 
-(* 
-gy@TODO:
-- fill in missing dependencies...
-- delete related comments after correctly implemented the code sections
-*)
+(* **************** *)
 
-(* 
-/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
-/// user-specified fields declared on the type.
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
-#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-pub struct StructDefinition {
-    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
-    /// for the type.
-    pub struct_handle: StructHandleIndex,
-    /// Contains either
-    /// - Information indicating the struct is native and has no accessible fields
-    /// - Information indicating the number of fields and the start `FieldDefinition`s
-    pub field_information: StructFieldInformation,
+(* NOTE: used in `type_safety` for reference
+macro_rules! safe_unwrap_err {
+    ($e:expr) => {{
+        match $e {
+            Ok(x) => x,
+            Err(e) => {
+                let err = PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                    .with_message(format!("{}:{} {:#}", file!(), line!(), e));
+                if cfg!(debug_assertions) {
+                    panic!("{:?}", err);
+                } else {
+                    return Err(err);
+                }
+            }
+        }
+    }};
 }
 *)
-(* TODO: Implement this *)
-Module StructDefinition.
-  Record t : Set := { }.
-End StructDefinition.
+
+(* 
+NOTE: 
+  - There are a lot of structs defined here with `Record t : Set := { a0 : Z; }.`.
+    I name like such because they might be necessity to access them and t.(a0)
+    is convinient for such functionality. Other structs defined with a `Make`
+    constructor might need to change into this style in the future.
+*)
+
+Module TableIndex.
+  Record t : Set := { a0 : Z; }.
+End TableIndex.
+
+Module LocalIndex.
+  Record t : Set := { a0 : Z; }.
+End LocalIndex.
+
+Module TypeParameterIndex.
+  Record t : Set := { a0 : Z; }.
+End TypeParameterIndex.
+
+Module CodeOffset.
+  Record t : Set := { a0 : Z; }.
+End CodeOffset.
 
 (* Template for `define_index!` macro
 
@@ -77,7 +100,7 @@ define_index! {
 }
 *)
 Module StructHandleIndex.
-  Inductive t : Set := .
+  Record t : Set := { a0 : Z; }.
 End StructHandleIndex.
 
 (* 
@@ -88,7 +111,7 @@ define_index! {
 }
 *)
 Module StructDefinitionIndex.
-  Inductive t : Set := .
+  Record t : Set := { a0 : Z; }.
 End StructDefinitionIndex.
 
 (* 
@@ -99,15 +122,18 @@ define_index! {
 }
 *)
 Module FieldHandleIndex.
-  Inductive t : Set := .
+  Record t : Set := { a0 : Z; }.
 End FieldHandleIndex.
 
+Module FunctionDefinitionIndex.
+  Record t : Set := { a0 : Z; }.
+End FunctionDefinitionIndex.
+
 Module AbilitySet.
-  Record t : Set := { 
-    _ : N;
-  }.
+  Record t : Set := { a0 : Z; }.
 End AbilitySet.
 
+(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 Module SignatureIndex.
   Inductive t : Set :=
   | Make (_ : Z).
@@ -138,11 +164,6 @@ Module FieldInstantiationIndex.
   | Make (_ : Z).
 End FieldInstantiationIndex.
 
-Module FunctionDefinitionIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FunctionDefinitionIndex.
-
 Module FieldInstantiation.
   Record t : Set := {
     handle : FieldHandleIndex.t;
@@ -163,6 +184,54 @@ Module StructDefInstantiation.
     type_parameters : SignatureIndex.t;
   }.
 End StructDefInstantiation.
+
+(* 
+/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
+/// user-specified fields declared on the type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct StructDefinition {
+    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
+    /// for the type.
+    pub struct_handle: StructHandleIndex,
+    /// Contains either
+    /// - Information indicating the struct is native and has no accessible fields
+    /// - Information indicating the number of fields and the start `FieldDefinition`s
+    pub field_information: StructFieldInformation,
+}
+*)
+Module StructDefinition.
+  Record t : Set := { 
+    struct_handle: StructHandleIndex.t;
+    (* field_information: StructFieldInformation.t; *)
+  }.
+End StructDefinition.
+
+(* 
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(params = "usize"))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct FunctionHandle {
+    /// The module that defines the function.
+    pub module: ModuleHandleIndex,
+    /// The name of the function.
+    pub name: IdentifierIndex,
+    /// The list of arguments to the function.
+    pub parameters: SignatureIndex,
+    /// The list of return types.
+    pub return_: SignatureIndex,
+    /// The type formals (identified by their index into the vec) and their constraints
+    pub type_parameters: Vec<AbilitySet>,
+}
+*)
+Module FunctionHandle.
+  Record t : Set := { }.
+End FunctionHandle.
 
 (* 
 pub enum SignatureToken {
@@ -198,41 +267,6 @@ pub enum SignatureToken {
 }
 *)
 
-Definition TableIndex := Z.
-
-Module LocalIndex.
-  Definition t := Z.
-End LocalIndex.
-
-Definition TypeParameterIndex := Z.
-
-Module CodeOffset.
-  Definition t := Z.
-End CodeOffset.
-
-(* 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
-#[cfg_attr(any(test, feature = "fuzzing"), proptest(params = "usize"))]
-#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-pub struct FunctionHandle {
-    /// The module that defines the function.
-    pub module: ModuleHandleIndex,
-    /// The name of the function.
-    pub name: IdentifierIndex,
-    /// The list of arguments to the function.
-    pub parameters: SignatureIndex,
-    /// The list of return types.
-    pub return_: SignatureIndex,
-    /// The type formals (identified by their index into the vec) and their constraints
-    pub type_parameters: Vec<AbilitySet>,
-}
-*)
-Module FunctionHandle.
-  Record t : Set := { }.
-End FunctionHandle.
-
 Module SignatureToken.
   Inductive t : Set := 
   | Bool
@@ -246,7 +280,7 @@ Module SignatureToken.
   | StructInstantiation : (StructHandleIndex.t * (list t)) -> t
   | Reference : t -> t
   | MutableReference : t -> t
-  | TypeParameter : TypeParameterIndex -> t
+  | TypeParameter : TypeParameterIndex.t -> t
   | U16
   | U32
   | U256
@@ -417,6 +451,46 @@ Module CompiledModule.
   Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
 
+    (* 
+    pub fn abilities(
+        &self,
+        ty: &SignatureToken,
+        constraints: &[AbilitySet],
+    ) -> PartialVMResult<AbilitySet> {
+        use SignatureToken::*;
+
+        match ty {
+            Bool | U8 | U16 | U32 | U64 | U128 | U256 | Address => Ok(AbilitySet::PRIMITIVES),
+
+            Reference(_) | MutableReference(_) => Ok(AbilitySet::REFERENCES),
+            Signer => Ok(AbilitySet::SIGNER),
+            TypeParameter(idx) => Ok(constraints[*idx as usize]),
+            Vector(ty) => AbilitySet::polymorphic_abilities(
+                AbilitySet::VECTOR,
+                vec![false],
+                vec![self.abilities(ty, constraints)?],
+            ),
+            Struct(idx) => {
+                let sh = self.struct_handle_at(*idx); //*)
+                Ok(sh.abilities)
+            }
+            StructInstantiation(struct_inst) => {
+                let (idx, type_args) = &**struct_inst;
+                let sh = self.struct_handle_at(*idx); //*)
+                let declared_abilities = sh.abilities;
+                let type_arguments = type_args
+                    .iter()
+                    .map(|arg| self.abilities(arg, constraints))
+                    .collect::<PartialVMResult<Vec<_>>>()?;
+                AbilitySet::polymorphic_abilities(
+                    declared_abilities,
+                    sh.type_parameters.iter().map(|param| param.is_phantom),
+                    type_arguments,
+                )
+            }
+        }
+    }
+    *)
     Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t. Admitted.
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
