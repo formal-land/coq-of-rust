@@ -22,7 +22,8 @@ Module ExecutionState.
 End ExecutionState.
 
 (* TODO(progress): 
-- figure out a way to implement functions with mutations
+- Implement functions with mutations, for example `at_code_offset`. 
+  Maybe implement Lens for `PartialVMError`. See the NOTE there
 *)
 
 Module Location.
@@ -58,7 +59,6 @@ Module PartialVMError_.
     offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
   }.
 End PartialVMError_.
-
 
 (* NOTE: WARNING: 
   Several impl functions involves `mut Self`. Since they mostly only involves

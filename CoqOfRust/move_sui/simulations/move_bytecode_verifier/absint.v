@@ -10,6 +10,10 @@ Module AbilitySet := file_format.AbilitySet.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module CodeUnit := file_format.CodeUnit.
 
+(* TODO(progress):
+- Implement `new`
+*)
+
 (* 
 pub struct VMControlFlowGraph {
     /// The basic blocks
