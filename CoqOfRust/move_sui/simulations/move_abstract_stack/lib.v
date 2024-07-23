@@ -131,7 +131,7 @@ Module AbstractStack.
     }
   *)
 
-  Definition push_n {A : Set} (item : A) (eq : A -> A -> bool) (n : Z) :
+  Definition push_n {A : Set} (item : A) `{Eq.Trait A} (n : Z) :
       MS? (t A) string (Result.t unit AbsStackError.t) :=
     if n =? 0
     then returnS? (Result.Ok tt)
@@ -146,7 +146,7 @@ Module AbstractStack.
           match result with
           | Some (count, last_item) =>
             liftS?of!? (lens!?of? Vector.first_mut) (
-              if eq item last_item
+              if item =? last_item
               then
                 writeS? ((count + n)%Z, last_item)
               else
@@ -167,9 +167,9 @@ Module AbstractStack.
     }
   *)
 
-  Definition push {A : Set} (item : A) (eq : A -> A -> bool) :
+  Definition push {A : Set} (item : A) `{Eq.Trait A} :
       MS? (t A) string (Result.t unit AbsStackError.t) :=
-    push_n item eq 1.
+    push_n item 1.
 
   (*
     /// Pops n values off the stack, erroring if there are not enough items or if the n items are
