@@ -197,7 +197,7 @@ Module AbstractStack.
     }
   *)
 
-  Definition pop_eq_n {A : Set} (item : A) (n : Z) :
+  Definition pop_eq_n {A : Set} (n : Z) :
       MS? (t A) string (Result.t A AbsStackError.t) :=
     letS? self := readS? in
     if (is_empty self || (n >? len self))%bool 
@@ -225,9 +225,9 @@ Module AbstractStack.
     }
   *)
 
-  Definition pop {A : Set} (item : A) :
+  Definition pop {A : Set} :
       MS? (t A) string (Result.t A AbsStackError.t) :=
-    pop_eq_n item 1.
+    pop_eq_n 1.
 
   (*
     /// Pop any n items off the stack. Unlike `pop_n`, items do not have to be equal
