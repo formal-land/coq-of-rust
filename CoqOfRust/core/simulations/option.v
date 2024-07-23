@@ -1,7 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import simulations.M.
-Require CoqOfRust.core.simulations.default.
 Import simulations.M.Notations.
+Require Import CoqOfRust.core.simulations.default.
+Require Import CoqOfRust.core.simulations.eq.
 
 Module Option.
   Definition Self (T : Set) : Set :=
@@ -30,9 +31,28 @@ Module Option.
     expect self "".
 End Option.
 
-Module Impl_Default_for_Option_T.
+Module ImplDefault.
   Global Instance I (T : Set) :
-      core.simulations.default.Default.Trait (option T) := {
-    default := None;
-  }.
-End Impl_Default_for_Option_T.
+    Default.Trait (option T) := {
+      default := None;
+    }.
+End ImplDefault.
+
+Module ImplEq.
+  Global Instance I (T : Set) `{Eq.Trait T} :
+    Eq.Trait (option T) := {
+      eqb x y := 
+        match x with
+        | Some a =>
+          match y with
+          | Some b => Eq.eqb a b
+          | None => false
+          end
+        | None =>
+          match y with
+          | Some _ => false
+          | None => true
+          end
+        end;
+    }.
+End ImplEq.
