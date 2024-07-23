@@ -22,27 +22,12 @@ Module AbsStackError.
   | Underflow
   | Overflow.
 
+  Scheme Boolean Equality for t.
+
   Module ImplEq.
     Global Instance I :
       Eq.Trait AbsStackError.t := {
-        eqb e1 e2 :=
-          match e1 with
-          | AbsStackError.ElementNotEqual => 
-            match e2 with
-            | AbsStackError.ElementNotEqual => true
-            | _ => false
-            end
-          | AbsStackError.Underflow => 
-            match e2 with
-            | AbsStackError.Underflow => true
-            | _ => false
-            end
-          | AbsStackError.Overflow =>
-            match e2 with
-            | AbsStackError.Overflow => true
-            | _ => false
-            end
-          end;
+        eqb := t_beq;
       }.
   End ImplEq.
 End AbsStackError.
