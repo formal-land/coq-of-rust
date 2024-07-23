@@ -104,6 +104,11 @@ Module AbstractStack.
     | _ => false
     end.
 
+  Definition self_is_empty {A : Set} :
+      MS? (t A) string bool :=
+    letS? s := readS? in
+    returnS? (is_empty s).
+
   (*
     /// Push n copies of an item on the stack
     pub fn push_n(&mut self, item: T, n: u64) -> Result<(), AbsStackError> {
