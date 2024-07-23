@@ -3,7 +3,9 @@ Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.core.simulations.integers.
 Require Import CoqOfRust.core.simulations.vector.
 Require Import CoqOfRust.core.simulations.option.
+Require Import CoqOfRust.core.simulations.eq.
 Import simulations.M.Notations.
+Import simulations.eq.Notations.
 
 (*
   #[derive(Eq, PartialEq, PartialOrd, Ord, Clone, Copy, Debug)]
@@ -19,6 +21,30 @@ Module AbsStackError.
   | ElementNotEqual
   | Underflow
   | Overflow.
+
+  Module ImplEq.
+    Global Instance I :
+      Eq.Trait AbsStackError.t := {
+        eqb e1 e2 :=
+          match e1 with
+          | AbsStackError.ElementNotEqual => 
+            match e2 with
+            | AbsStackError.ElementNotEqual => true
+            | _ => false
+            end
+          | AbsStackError.Underflow => 
+            match e2 with
+            | AbsStackError.Underflow => true
+            | _ => false
+            end
+          | AbsStackError.Overflow =>
+            match e2 with
+            | AbsStackError.Overflow => true
+            | _ => false
+            end
+          end;
+      }.
+  End ImplEq.
 End AbsStackError.
 
 (*
