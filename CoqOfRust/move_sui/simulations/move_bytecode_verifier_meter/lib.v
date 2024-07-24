@@ -9,8 +9,10 @@ Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress):
-- Write out the exact function chains from `verify_instr`
-- Implement `Scope` or stub it
+- Implement `Scope` since it's strongly related
+- Write out the exact function chains from `verify_instr` 
+  - Explain when will other verify functions use `verify_instr`
+  - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
 - Correctly Implement `f32`
 - Maybe move `BoundMeter` and `DummyMeter` to their files
 *)
@@ -152,13 +154,24 @@ Module BoundMeter.
       move_sui.simulations.move_bytecode_verifier_meter.BoundMeter.t.
 
     (* 
+    fn get_bounds_mut(&mut self, scope: Scope) -> &mut Bounds {
+        match scope {
+            Scope::Package => &mut self.pkg_bounds,
+            Scope::Module => &mut self.mod_bounds,
+            Scope::Function => &mut self.fun_bounds,
+            Scope::Transaction => panic!("transaction scope unsupported."),
+        }
+    }
+    *)
+    Definition get_bounds_mut (self : Self) (scope : Scope) : Bounds.t. Admitted.
+
+    (* 
     fn enter_scope(&mut self, name: &str, scope: Scope) {
         let bounds = self.get_bounds_mut(scope);
         bounds.name = name.into();
         bounds.units = 0;
     }
     *)
-    (* TODO: Implement get_bounds_mut *)
     Definition enter_scope (self : Self) (name : str) (scope : Scope) : unit. Admitted.
 
     (* 

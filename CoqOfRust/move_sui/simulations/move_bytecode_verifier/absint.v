@@ -12,6 +12,7 @@ Module CodeUnit := file_format.CodeUnit.
 
 (* TODO(progress):
 - Implement `new`
+  - Implement `CompiledModule::signature_at`
 *)
 
 (* 
