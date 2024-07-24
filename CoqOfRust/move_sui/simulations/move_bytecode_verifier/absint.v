@@ -12,7 +12,6 @@ Module CodeUnit := file_format.CodeUnit.
 
 (* TODO(progress):
 - Implement `new`
-  - Implement `CompiledModule::signature_at`
 *)
 
 (* 
@@ -75,7 +74,20 @@ Module FunctionContext.
           }
       }
     *)
-    Definition new : Set. Admitted.
+    (* TODO: check if there're missing dependencies *)
+    Definition new (module : CompiledModule.t) (index : FunctionDefinitionIndex.t) (code : CodeUnit.t)
+      (function_handle : FunctionHandle.t) :=
+      let result : Self :=
+      {|
+        index : Some index;
+        code : code;
+        (* TODO: correct the signature_at *)
+        parameters : module.signature_at function_handle.(FunctionHandle.parameters);
+        return_ : module.signature_at function_handle.(FunctionHandle.return_);
+        locals : module.signature_at code.(CodeUnit.locals);
+        type_parameters : function_handle.(FunctionHandle.type_parameters);
+        cfg : VMControlFlowGraph::new code.(CodeUnit.code);
+      |}
     
     Definition parameters (self : Self) := self.(parameters).
 
