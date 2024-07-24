@@ -4,6 +4,10 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* TODO(progress):
+  - Implement `SignaturePool` for `signature_at`
+*)
+
 (* NOTE: temporary stub for mutual dependency issue *)
 (* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult. *)
@@ -440,7 +444,7 @@ Module CompiledModule.
   (* struct_def_instantiations : list StructDefInstantiation; *)
   (* function_instantiations : list FunctionInstantiation; *)
   (* field_instantiations : list FieldInstantiation; *)
-  (* signatures : SignaturePool; *)
+  signatures : SignaturePool;
   (* identifiers : IdentifierPool; *)
   (* address_identifiers : AddressIdentifierPool; *)
   (* constant_pool : ConstantPool; *)
@@ -493,6 +497,14 @@ Module CompiledModule.
     *)
     Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t. Admitted.
+
+    (* 
+    pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
+        &self.signatures[idx.into_index()]
+    }
+    *)
+    (* NOTE: into_index is actually just idx.0 as usize so we just inline it *)
+    Definition signature_at(self : Self) (idx : SignatureIndex) : Signature.t. Admitted.
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
 
