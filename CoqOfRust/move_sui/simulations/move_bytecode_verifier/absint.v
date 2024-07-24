@@ -87,7 +87,8 @@ Module FunctionContext.
         locals : module.signature_at code.(CodeUnit.locals);
         type_parameters : function_handle.(FunctionHandle.type_parameters);
         cfg : VMControlFlowGraph::new code.(CodeUnit.code);
-      |}
+      |} in
+      result.
     
     Definition parameters (self : Self) := self.(parameters).
 
