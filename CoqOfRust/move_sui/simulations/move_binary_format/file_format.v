@@ -4,10 +4,6 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-(* TODO(progress):
-  - Implement `SignaturePool` for `signature_at`
-*)
-
 (* NOTE: temporary stub for mutual dependency issue *)
 (* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult. *)
@@ -137,11 +133,11 @@ Module AbilitySet.
   Record t : Set := { a0 : Z; }.
 End AbilitySet.
 
-(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 Module SignatureIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
+  Record t : Set := { a0 : Z; }.
 End SignatureIndex.
+
+(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 
 Module ConstantPoolIndex.
   Inductive t : Set :=
@@ -308,6 +304,10 @@ Module Signature.
   Definition len (self : t) : Z := Z.of_nat (List.length self.(a0)).
 End Signature.
 
+Module SignaturePool.
+  Definition t := list Signature.t.
+End SignaturePool.
+
 Module Bytecode.
   Inductive t : Set :=
   | Pop
@@ -444,7 +444,7 @@ Module CompiledModule.
   (* struct_def_instantiations : list StructDefInstantiation; *)
   (* function_instantiations : list FunctionInstantiation; *)
   (* field_instantiations : list FieldInstantiation; *)
-  signatures : SignaturePool;
+  signatures : SignaturePool.t;
   (* identifiers : IdentifierPool; *)
   (* address_identifiers : AddressIdentifierPool; *)
   (* constant_pool : ConstantPool; *)
@@ -503,8 +503,12 @@ Module CompiledModule.
         &self.signatures[idx.into_index()]
     }
     *)
-    (* NOTE: into_index is actually just idx.0 as usize so we just inline it *)
-    Definition signature_at(self : Self) (idx : SignatureIndex) : Signature.t. Admitted.
+    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
+    Definition signature_at(self : Self) (idx : SignatureIndex.t) : Signature.t :=
+      let idx := idx.(SignatureIndex.a0) in
+      (* NOTE: WARNING: default value `-1` is provided *)
+      list.nth idx self.(signatures) (-1).
+
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
 

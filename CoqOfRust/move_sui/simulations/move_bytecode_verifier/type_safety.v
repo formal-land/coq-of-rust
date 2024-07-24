@@ -35,7 +35,6 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
-  - Implement `CompiledModule::signature_at`
   - Remove `SignatureToken.Bool` with something better
 *)
 
