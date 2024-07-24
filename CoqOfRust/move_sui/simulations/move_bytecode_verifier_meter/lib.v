@@ -9,9 +9,9 @@ Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress):
-- Implement `BoundMeter` just in case
 - Write out the exact function chains from `verify_instr`
 - Implement `Scope` or stub it
+- Correctly Implement `f32`
 - Maybe move `BoundMeter` and `DummyMeter` to their files
 *)
 
