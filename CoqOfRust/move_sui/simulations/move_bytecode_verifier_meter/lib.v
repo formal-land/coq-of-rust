@@ -15,9 +15,7 @@ Module PartialVMError := errors.PartialVMError.
 - Maybe move `BoundMeter` and `DummyMeter` to their files
 *)
 
-(* 
-use crate::{Meter, Scope};
-*)
+(* use crate::{Meter, Scope}; *)
 (* pub struct DummyMeter; *)
 Module DummyMeter.
   Record t : Set := { }.
@@ -182,6 +180,50 @@ Module BoundMeter.
 End BoundMeter.
 
 (* TODO: Implement `Meter` trait as Coq Class *)
+(* 
+pub trait Meter {
+    /// Indicates the begin of a new scope.
+    fn enter_scope(&mut self, name: &str, scope: Scope);
+
+    /// Transfer the amount of metering from once scope to the next. If the current scope has
+    /// metered N units, the target scope will be charged with N*factor.
+    fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()>;
+
+    /// Add the number of units to the meter, returns an error if a limit is hit.
+    fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()>;
+
+    /// Adds the number of items.
+    fn add_items(
+        &mut self,
+        scope: Scope,
+        units_per_item: u128,
+        items: usize,
+    ) -> PartialVMResult<()> {
+        if items == 0 {
+            return Ok(());
+        }
+        self.add(scope, units_per_item.saturating_mul(items as u128))
+    }
+
+    /// Adds the number of items with growth factor
+    fn add_items_with_growth(
+        &mut self,
+        scope: Scope,
+        mut units_per_item: u128,
+        items: usize,
+        growth_factor: f32,
+    ) -> PartialVMResult<()> {
+        if items == 0 {
+            return Ok(());
+        }
+        for _ in 0..items {
+            self.add(scope, units_per_item)?;
+            units_per_item = growth_factor.mul(units_per_item as f32) as u128;
+        }
+        Ok(())
+    }
+}
+*)
 Module Meter.
   Class Trait (Self : Set) : Set := { }.
 End Meter.
