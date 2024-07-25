@@ -13,9 +13,21 @@ Module PartialVMError := errors.PartialVMError.
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
-- Correctly Implement `f32`
-- Maybe move `BoundMeter` and `DummyMeter` to their files
+  - Carefully check where does `DummyMeter` apply and what properties or functions are being accessed
+- Restructure the `Meter` module(not trait) as in note below
 *)
+
+(* NOTE: DRAFT: We can restructure the `Meter` into a large module, since its content are pretty few.
+Currently we implement the structs separately, but the plan is:
+
+Module Meter
+  - Module BoundMeter
+  - Module DummyMeter
+*)
+
+(* NOTE: 
+  - We ignore `f32` since related parameters are mostly factors to be multiplied with.
+    These parameters will be either ignored or treated as a sole `1`. *)
 
 (* use crate::{Meter, Scope}; *)
 (* pub struct DummyMeter; *)
@@ -28,10 +40,9 @@ Module DummyMeter.
       move_sui.simulations.move_bytecode_verifier_meter.DummyMeter.t.
 
     (* fn enter_scope(&mut self, _name: &str, _scope: Scope) {} *)
-    Definition enter_scope (self : Self) (_name : str) (_scope : Scope) := .
+    Definition enter_scope (self : Self) (_name : str) (_scope : Scope) : unit := tt.
 
     (* fn transfer(&mut self, _from: Scope, _to: Scope, _factor: f32) -> PartialVMResult<()> { Ok(()) } *)
-    (* TODO: translate the `f32` here correctly *)
     Definition transfer (self : Self) (_from : Scope) (_to : Scope) (_factor : Z) : PartialVMResult.t unit := return?? tt.
 
     (* fn add(&mut self, _scope: Scope, _units: u128) -> PartialVMResult<()> { Ok(()) } *)
@@ -180,7 +191,7 @@ Module BoundMeter.
         self.add(to, units)
     }
     *)
-    Definition transfer (self : Self) (from : Scope) (to : Scope) (factor : f32) : PartialVMResult.t unit. Admitted.
+    Definition transfer (self : Self) (from : Scope) (to : Scope) (factor : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
     fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
@@ -190,6 +201,11 @@ Module BoundMeter.
     Definition add (self : Self) (scope : Scope) (units : Z) : PartialVMResult.t unit. Admitted.
     
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
+
+  Module Dummy.
+    (* TODO: IMPORTANT: move the `DummyMeter` struct along with its impls into this module *)
+  End Dummy.
+
 End BoundMeter.
 
 (* TODO: Implement `Meter` trait as Coq Class *)
