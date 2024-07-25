@@ -9,6 +9,8 @@ Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module CodeUnit := file_format.CodeUnit.
+Module CompiledModule := file_format.CompiledModule.
+Module FunctionHandle := file_format.FunctionHandle.
 
 (* TODO(progress):
 - Implement `new`
@@ -77,16 +79,17 @@ Module FunctionContext.
     (* TODO: check if there're missing dependencies *)
     Definition new (module : CompiledModule.t) (index : FunctionDefinitionIndex.t) (code : CodeUnit.t)
       (function_handle : FunctionHandle.t) :=
+      let signature_at := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.signature_at in
       let result : Self :=
       {|
-        index : Some index;
-        code : code;
+        index := Some index;
+        code := code;
         (* TODO: correct the signature_at *)
-        parameters : module.signature_at function_handle.(FunctionHandle.parameters);
-        return_ : module.signature_at function_handle.(FunctionHandle.return_);
-        locals : module.signature_at code.(CodeUnit.locals);
-        type_parameters : function_handle.(FunctionHandle.type_parameters);
-        cfg : VMControlFlowGraph::new code.(CodeUnit.code);
+        parameters := signature_at module function_handle.(FunctionHandle.parameters);
+        return_ := signature_at module function_handle.(FunctionHandle.return_);
+        locals := signature_at module code.(CodeUnit.locals);
+        type_parameters := function_handle.(FunctionHandle.type_parameters);
+        cfg := VMControlFlowGraph::new code.(CodeUnit.code);
       |} in
       result.
     
