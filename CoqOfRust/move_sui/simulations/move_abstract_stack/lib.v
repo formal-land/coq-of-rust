@@ -207,19 +207,22 @@ Module AbstractStack.
     if (is_empty self || (n >? len self))%bool 
     then returnS? (Result.Err AbsStackError.Underflow)
     else
+      letS? '(count, last) := Option.unwrap (
+        liftS? Lens.values (liftS?of? Vector.first_mut readS?)
+      ) in
+      if count <? n
+      then returnS? (Result.Err AbsStackError.ElementNotEqual)
+    else
       letS? ret := liftS? Lens.values (
-        letS? '(count, last) := Option.unwrap (liftS?of? Vector.first_mut readS?) in
-        match Z.compare count n with
-        | Lt => returnS? (Result.Err AbsStackError.ElementNotEqual)
-        | Eq =>
-          letS? '(_, last) := Option.unwrap Vector.pop in
+          if count =? n
+          then
+            letS? '(_, last) := Option.unwrap Vector.pop_front in
           returnS? (Result.Ok last)
-        | Gt =>
+          else
           letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
           returnS? (Result.Ok last)
-        end
       ) in
-      letS? _ := writeS? (self <| len := len self - n |>) in
+        letS? _ := liftS? Lens.len (writeS? (len self - n)) in
       returnS? ret.
 
   (*
