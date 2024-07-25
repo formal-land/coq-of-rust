@@ -5,7 +5,7 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 (* TODO(progress):
-- Resolve the List.nth problem for `SignatureToken`
+- `List.nth` issue: remove `SignatureToken.Bool` with something better
 *)
 
 (* NOTE: temporary stub for mutual dependency issue *)
