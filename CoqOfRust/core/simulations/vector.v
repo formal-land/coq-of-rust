@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import simulations.M.
 Import simulations.M.Notations.
+Require Import CoqOfRust.core.simulations.eq.
 
 Fixpoint last_error {A : Set} (l : list A) : option A :=
   match l with
@@ -48,3 +49,10 @@ Module Vector.
       returnS? (Some x)
     end.  
 End Vector.
+
+Module ImplEq.
+  Global Instance I (A : Set) `{Eq.Trait A} :
+    Eq.Trait (list A) := {
+      eqb := List.eqb (Eq.eqb);
+    }.
+End ImplEq.
