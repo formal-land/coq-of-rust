@@ -16,3 +16,10 @@ Module ImplEq.
       eqb := Z.eqb;
     }.
 End ImplEq.
+
+Module ImplEqNat.
+  Global Instance I :
+    Eq.Trait nat := {
+      eqb := Nat.eqb;
+    }.
+End ImplEqNat.
