@@ -10,6 +10,7 @@ Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress):
 - Implement `Bounds::add` function
+- Implement `enter_scope` correctly
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -51,12 +52,6 @@ Module Scope.
 End Scope.
 
 (* bound.rs
-// Copyright (c) The Move Contributors
-// SPDX-License-Identifier: Apache-2.0
-
-use crate::{Meter, Scope};
-use move_binary_format::errors::{PartialVMError, PartialVMResult};
-use move_core_types::vm_status::StatusCode;
 use move_vm_config::verifier::MeterConfig;
 *)
 (* 
@@ -97,7 +92,6 @@ Module Bounds.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
 
-(* TODO: Implement `Meter` trait as Coq Class *)
 (* 
 pub trait Meter {
     /// Indicates the begin of a new scope.
