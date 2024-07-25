@@ -63,6 +63,14 @@ Module CodeOffset.
   Record t : Set := { a0 : Z; }.
 End CodeOffset.
 
+Module ModuleHandleIndex.
+  Record t : Set := { a0 : Z; }.
+End ModuleHandleIndex.
+
+Module IdentifierIndex.
+  Record t : Set := { a0 : Z; }.
+End IdentifierIndex.
+
 (* Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
@@ -234,7 +242,14 @@ pub struct FunctionHandle {
 }
 *)
 Module FunctionHandle.
-  Record t : Set := { }.
+  Record t : Set := { 
+  module : ModuleHandleIndex.t;
+  name : IdentifierIndex.t;
+  parameters : SignatureIndex.t;
+  return_ : SignatureIndex.t;
+  type_parameters : list AbilitySet.t;
+  
+  }.
 End FunctionHandle.
 
 (* 
