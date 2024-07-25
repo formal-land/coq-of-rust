@@ -29,24 +29,44 @@ Module Meter
   - We ignore `f32` since related parameters are mostly factors to be multiplied with.
     These parameters will be either ignored or treated as a sole `1`. *)
 
-(* use crate::{Meter, Scope}; *)
+(* 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum Scope {
+    // Metering is for transaction level
+    Transaction,
+    // Metering is for package level
+    Package,
+    // Metering is for module level
+    Module,
+    // Metering is for function level
+    Function,
+}
+*)
+Module Scope.
+  Inductive t :=
+  | Transaction
+  | Package
+  | Module
+  | Function
+  .
+End Scope.
+
 (* pub struct DummyMeter; *)
 Module DummyMeter.
   Record t : Set := { }.
 
   (* impl Meter for DummyMeter  *)
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
-    Definition Self : Set := 
-      move_sui.simulations.move_bytecode_verifier_meter.DummyMeter.t.
+    Definition Self := t.
 
-    (* fn enter_scope(&mut self, _name: &str, _scope: Scope) {} *)
-    Definition enter_scope (self : Self) (_name : str) (_scope : Scope) : unit := tt.
+    (* fn enter_scope(&mut self, _name: &str, _scope: Scope.t) {} *)
+    Definition enter_scope (self : Self) (_name : string) (_scope : Scope.t) : unit := tt.
 
     (* fn transfer(&mut self, _from: Scope, _to: Scope, _factor: f32) -> PartialVMResult<()> { Ok(()) } *)
-    Definition transfer (self : Self) (_from : Scope) (_to : Scope) (_factor : Z) : PartialVMResult.t unit := return?? tt.
+    Definition transfer (self : Self) (_from : Scope.t) (_to : Scope.t) (_factor : Z) : PartialVMResult.t unit := return?? tt.
 
     (* fn add(&mut self, _scope: Scope, _units: u128) -> PartialVMResult<()> { Ok(()) } *)
-    Definition add (self : Self) (_scope : Scope) (_units : Z) : PartialVMResult.t unit := return?? tt.
+    Definition add (self : Self) (_scope : Scope.t) (_units : Z) : PartialVMResult.t unit := return?? tt.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
 End DummyMeter.
 
@@ -101,7 +121,7 @@ impl BoundMeter {
         }
     }
 
-    fn get_bounds_mut(&mut self, scope: Scope) -> &mut Bounds {
+    fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
         match scope {
             Scope::Package => &mut self.pkg_bounds,
             Scope::Module => &mut self.mod_bounds,
@@ -110,7 +130,7 @@ impl BoundMeter {
         }
     }
 
-    fn get_bounds(&self, scope: Scope) -> &Bounds {
+    fn get_bounds(&self, scope: Scope.t) -> &Bounds {
         match scope {
             Scope::Package => &self.pkg_bounds,
             Scope::Module => &self.mod_bounds,
@@ -119,11 +139,11 @@ impl BoundMeter {
         }
     }
 
-    pub fn get_usage(&self, scope: Scope) -> u128 {
+    pub fn get_usage(&self, scope: Scope.t) -> u128 {
         self.get_bounds(scope).units
     }
 
-    pub fn get_limit(&self, scope: Scope) -> Option<u128> {
+    pub fn get_limit(&self, scope: Scope.t) -> Option<u128> {
         self.get_bounds(scope).max
     }
 }
@@ -155,17 +175,16 @@ Module BoundMeter.
     pkg_bounds : Bounds.t;
     mod_bounds : Bounds.t;
     fun_bounds : Bounds.t;
-  }
+  }.
   (* 
   impl Meter for BoundMeter {
   }
   *)
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
-    Definition Self : Set := 
-      move_sui.simulations.move_bytecode_verifier_meter.BoundMeter.t.
+    Definition Self : Set := t.
 
     (* 
-    fn get_bounds_mut(&mut self, scope: Scope) -> &mut Bounds {
+    fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
         match scope {
             Scope::Package => &mut self.pkg_bounds,
             Scope::Module => &mut self.mod_bounds,
@@ -174,16 +193,16 @@ Module BoundMeter.
         }
     }
     *)
-    Definition get_bounds_mut (self : Self) (scope : Scope) : Bounds.t. Admitted.
+    Definition get_bounds_mut (self : Self) (scope : Scope.t) : Bounds.t. Admitted.
 
     (* 
-    fn enter_scope(&mut self, name: &str, scope: Scope) {
+    fn enter_scope(&mut self, name: &str, scope: Scope.t) {
         let bounds = self.get_bounds_mut(scope);
         bounds.name = name.into();
         bounds.units = 0;
     }
     *)
-    Definition enter_scope (self : Self) (name : str) (scope : Scope) : unit. Admitted.
+    Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit. Admitted.
 
     (* 
     fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
@@ -191,14 +210,14 @@ Module BoundMeter.
         self.add(to, units)
     }
     *)
-    Definition transfer (self : Self) (from : Scope) (to : Scope) (factor : Z) : PartialVMResult.t unit. Admitted.
+    Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) : PartialVMResult.t unit. Admitted.
 
     (* 
     fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
         self.get_bounds_mut(scope).add(units)
     }
     *)
-    Definition add (self : Self) (scope : Scope) (units : Z) : PartialVMResult.t unit. Admitted.
+    Definition add (self : Self) (scope : Scope.t) (units : Z) : PartialVMResult.t unit. Admitted.
     
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
 
@@ -212,7 +231,7 @@ End BoundMeter.
 (* 
 pub trait Meter {
     /// Indicates the begin of a new scope.
-    fn enter_scope(&mut self, name: &str, scope: Scope);
+    fn enter_scope(&mut self, name: &str, scope: Scope.t);
 
     /// Transfer the amount of metering from once scope to the next. If the current scope has
     /// metered N units, the target scope will be charged with N*factor.
