@@ -11,6 +11,7 @@ Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module CodeUnit := file_format.CodeUnit.
 Module CompiledModule := file_format.CompiledModule.
 Module FunctionHandle := file_format.FunctionHandle.
+Module Bytecode := file_format.Bytecode.
 
 (* TODO(progress):
 - Implement `new`
@@ -30,6 +31,8 @@ pub struct VMControlFlowGraph {
 Module VMControlFlowGraph.
   Record t : Set := { }.
 End VMControlFlowGraph.
+
+Definition VMControlFlowGraph_new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
 
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
@@ -89,7 +92,7 @@ Module FunctionContext.
         return_ := signature_at module function_handle.(FunctionHandle.return_);
         locals := signature_at module code.(CodeUnit.locals);
         type_parameters := function_handle.(FunctionHandle.type_parameters);
-        cfg := VMControlFlowGraph::new code.(CodeUnit.code);
+        cfg := VMControlFlowGraph_new code.(CodeUnit.code);
       |} in
       result.
     
