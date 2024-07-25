@@ -4,8 +4,10 @@ Require Import CoqOfRust.core.simulations.integers.
 Require Import CoqOfRust.core.simulations.vector.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.eq.
+Require Import CoqOfRust.core.simulations.assert.
 Import simulations.M.Notations.
 Import simulations.eq.Notations.
+Import simulations.assert.Notations.
 
 (*
   #[derive(Eq, PartialEq, PartialOrd, Ord, Clone, Copy, Debug)]
@@ -148,12 +150,12 @@ Module AbstractStack.
           letS? result := liftS?of? Vector.first_mut readS? in
           match result with
           | Some (count, last_item) =>
-              if item =? last_item
-              then
+            if item =? last_item
+            then
               liftS?of!? (lens!?of? Vector.first_mut) (
                 writeS? ((count + n)%Z, last_item)
               )
-              else
+            else
               letS? values := readS? in
               writeS? ((n, item) :: values)
           | None =>
@@ -212,18 +214,18 @@ Module AbstractStack.
       ) in
       if count <? n
       then returnS? (Result.Err AbsStackError.ElementNotEqual)
-    else
-      letS? ret := liftS? Lens.values (
+      else
+        letS? ret := liftS? Lens.values (
           if count =? n
           then
             letS? '(_, last) := Option.unwrap Vector.pop_front in
-          returnS? (Result.Ok last)
+            returnS? (Result.Ok last)
           else
-          letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
-          returnS? (Result.Ok last)
-      ) in
+            letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
+            returnS? (Result.Ok last)
+        ) in
         letS? _ := liftS? Lens.len (writeS? (len self - n)) in
-      returnS? ret.
+        returnS? ret.
 
   (*
     /// Pops a single value off the stack
@@ -292,4 +294,35 @@ Module AbstractStack.
       ) in
       letS? _ := liftS? Lens.len (writeS? (len self - n)) in
       returnS? (Result.Ok tt).
+  
+  (*
+    #[cfg(test)]
+    pub(crate) fn assert_run_lengths<Items, Item>(&self, lengths: Items)
+    where
+        Item: std::borrow::Borrow<u64>,
+        Items: IntoIterator<Item = Item>,
+        <Items as IntoIterator>::IntoIter: ExactSizeIterator,
+    {
+        let lengths_iter = lengths.into_iter();
+        assert_eq!(self.values.len(), lengths_iter.len());
+        let mut sum = 0;
+        for ((actual, _), expected) in self.values.iter().zip(lengths_iter) {
+            let expected = expected.borrow();
+            assert_eq!(actual, expected);
+            sum += *expected;
+        }
+        assert_eq!(self.len, sum);
+    }
+  *)
+
+  Definition assert_run_lengths {A : Set} (lengths : list Z) :
+      MS? (t A) string unit :=
+    letS? self := readS? in
+    letS? _ := assert_eqS? (List.length (values self)) (List.length lengths) in
+    letS? sum :=
+      foldS? (fun acc '((actual, _), expected) =>
+        letS? _ := assert_eqS? actual expected in
+        returnS? (acc + expected)%Z
+      ) (List.combine (values self) lengths) 0 in
+    assert_eqS? (len self) sum.
 End AbstractStack.
