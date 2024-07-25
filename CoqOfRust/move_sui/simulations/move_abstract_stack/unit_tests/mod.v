@@ -27,28 +27,28 @@ Import simulations.assert.Notations.
 Definition test_empty_stack :
     MS? (AbstractStack.t Z) string unit :=
   letS? empty := readS? in
-  letS? _ := assertS? (AbstractStack.self_is_empty) in
+  letS? _ := assertS?ofS? AbstractStack.self_is_empty in
   letS? _ :=
-    assert_eqS?
+    assert_eqS?ofS?
       (AbstractStack.pop)
       (returnS? (Result.Err AbsStackError.Underflow)) in
   letS? _ :=
-    assert_eqS?
+    assert_eqS?ofS?
       (AbstractStack.pop_any_n 1)
       (returnS? (Result.Err AbsStackError.Underflow)) in
   letS? _ :=
-    assert_eqS?
+    assert_eqS?ofS?
       (AbstractStack.pop_any_n 100)
       (returnS? (Result.Err AbsStackError.Underflow)) in
   letS? _ :=
-    assert_eqS?
+    assert_eqS?ofS?
       (AbstractStack.pop_eq_n 12)
       (returnS? (Result.Err AbsStackError.Underflow)) in
   letS? _ :=
-    assert_eqS?
+    assert_eqS?ofS?
       (AbstractStack.pop_eq_n 112)
       (returnS? (Result.Err AbsStackError.Underflow)) in
-  assertS? (AbstractStack.self_is_empty).
+  assertS?ofS? AbstractStack.self_is_empty.
 
 Lemma test_empty_stack_correct :
   testS? test_empty_stack AbstractStack.new.
