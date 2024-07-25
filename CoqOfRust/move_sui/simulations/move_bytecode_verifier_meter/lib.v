@@ -51,25 +51,6 @@ Module Scope.
   .
 End Scope.
 
-(* pub struct DummyMeter; *)
-Module DummyMeter.
-  Record t : Set := { }.
-
-  (* impl Meter for DummyMeter  *)
-  Module Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
-    Definition Self := t.
-
-    (* fn enter_scope(&mut self, _name: &str, _scope: Scope.t) {} *)
-    Definition enter_scope (self : Self) (_name : string) (_scope : Scope.t) : unit := tt.
-
-    (* fn transfer(&mut self, _from: Scope, _to: Scope, _factor: f32) -> PartialVMResult<()> { Ok(()) } *)
-    Definition transfer (self : Self) (_from : Scope.t) (_to : Scope.t) (_factor : Z) : PartialVMResult.t unit := return?? tt.
-
-    (* fn add(&mut self, _scope: Scope, _units: u128) -> PartialVMResult<()> { Ok(()) } *)
-    Definition add (self : Self) (_scope : Scope.t) (_units : Z) : PartialVMResult.t unit := return?? tt.
-  End Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
-End DummyMeter.
-
 (* bound.rs
 // Copyright (c) The Move Contributors
 // SPDX-License-Identifier: Apache-2.0
@@ -78,27 +59,6 @@ use crate::{Meter, Scope};
 use move_binary_format::errors::{PartialVMError, PartialVMResult};
 use move_core_types::vm_status::StatusCode;
 use move_vm_config::verifier::MeterConfig;
-
-/// Module and function level metering.
-
-impl Bounds {
-    fn add(&mut self, units: u128) -> PartialVMResult<()> {
-        if let Some(max) = self.max {
-            let new_units = self.units.saturating_add(units);
-            if new_units > max {
-                // TODO: change to a new status PROGRAM_TOO_COMPLEX once this is rolled out. For
-                // now we use an existing code to avoid breaking changes on potential rollback.
-                return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
-                    .with_message(format!(
-                        "program too complex (in `{}` with `{} current + {} new > {} max`)",
-                        self.name, self.units, units, max
-                    )));
-            }
-            self.units = new_units;
-        }
-        Ok(())
-    }
-}
 
 impl BoundMeter {
     pub fn new(config: MeterConfig) -> Self {
@@ -161,6 +121,29 @@ Module Bounds.
     units : Z;
     max : option Z;
   }.
+  (* 
+  impl Bounds {
+      fn add(&mut self, units: u128) -> PartialVMResult<()> {
+          if let Some(max) = self.max {
+              let new_units = self.units.saturating_add(units);
+              if new_units > max {
+                  // TODO: change to a new status PROGRAM_TOO_COMPLEX once this is rolled out. For
+                  // now we use an existing code to avoid breaking changes on potential rollback.
+                  return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
+                      .with_message(format!(
+                          "program too complex (in `{}` with `{} current + {} new > {} max`)",
+                          self.name, self.units, units, max
+                      )));
+              }
+              self.units = new_units;
+          }
+          Ok(())
+      }
+  }
+  *)
+  Module Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
+    Definition add : Set. Admitted.
+  End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
 
 (* 
@@ -176,10 +159,7 @@ Module BoundMeter.
     mod_bounds : Bounds.t;
     fun_bounds : Bounds.t;
   }.
-  (* 
-  impl Meter for BoundMeter {
-  }
-  *)
+  (* impl Meter for BoundMeter *)
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
     Definition Self : Set := t.
 
@@ -193,7 +173,14 @@ Module BoundMeter.
         }
     }
     *)
-    Definition get_bounds_mut (self : Self) (scope : Scope.t) : Bounds.t. Admitted.
+    (* NOTE: Here we use Panic monad for such function with panic involved *)
+    Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? Bounds.t string :=
+      match scope with
+      | Scope.Package => return!? self.pkg_bounds
+      | Scope.Module => return!? self.mod_bounds
+      | Scope.Function => return!? self.fun_bounds
+      | Scope.Transaction => panic!? "transaction scope unsupported."
+      end.
 
     (* 
     fn enter_scope(&mut self, name: &str, scope: Scope.t) {
@@ -202,7 +189,15 @@ Module BoundMeter.
         bounds.units = 0;
     }
     *)
-    Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit. Admitted.
+    (* NOTE: This function is intended to modify `self.bounds`. Here however we would only return the
+        updated `bounds` instead without modifying `self`. 
+        It's intended that everywhere invoking this function should also correctly update the `self`
+        as well
+      *)
+    Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit :=
+      let bounds := get_bounds_mut scope in
+      (* TODO: check the panic and construct the correct bound *)
+      _ .
 
     (* 
     fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
@@ -274,4 +269,22 @@ pub trait Meter {
 *)
 Module Meter.
   Class Trait (Self : Set) : Set := { }.
+
+  Module DummyMeter.
+    Record t : Set := { }.
+
+    (* impl Meter for DummyMeter  *)
+    Module Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
+      Definition Self := t.
+
+      (* fn enter_scope(&mut self, _name: &str, _scope: Scope.t) {} *)
+      Definition enter_scope (self : Self) (_name : string) (_scope : Scope.t) : unit := tt.
+
+      (* fn transfer(&mut self, _from: Scope, _to: Scope, _factor: f32) -> PartialVMResult<()> { Ok(()) } *)
+      Definition transfer (self : Self) (_from : Scope.t) (_to : Scope.t) (_factor : Z) : PartialVMResult.t unit := return?? tt.
+
+      (* fn add(&mut self, _scope: Scope, _units: u128) -> PartialVMResult<()> { Ok(()) } *)
+      Definition add (self : Self) (_scope : Scope.t) (_units : Z) : PartialVMResult.t unit := return?? tt.
+    End Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
+  End DummyMeter.
 End Meter.
