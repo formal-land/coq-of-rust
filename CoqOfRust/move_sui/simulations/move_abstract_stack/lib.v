@@ -55,7 +55,20 @@ Module AbstractStack.
       Lens.read stack := values stack;
       Lens.write stack vs := stack <| values := vs |>
     |}.
+
+    Definition len {A : Set} : Lens.t (t A) Z := {|
+      Lens.read stack := len stack;
+      Lens.write stack x := stack <| len := x |>
+    |}.
   End Lens.
+
+  Definition self_values {A : Set} :
+      MS? (t A) string (list (Z * A)) :=
+    liftS? Lens.values readS?.
+
+  Definition self_len {A : Set} :
+      MS? (t A) string Z :=
+    liftS? Lens.len readS?.
 
   (*
     /// Creates an empty stack
@@ -93,6 +106,11 @@ Module AbstractStack.
       MS? (t A) string bool :=
     letS? s := readS? in
     returnS? (is_empty s).
+
+  Definition self_is_not_empty {A : Set} :
+      MS? (t A) string bool :=
+    letS? s := readS? in
+    returnS? (negb (is_empty s)).
 
   (*
     /// Push n copies of an item on the stack
