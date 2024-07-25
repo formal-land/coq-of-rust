@@ -9,25 +9,24 @@ Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress):
-- Implement `Scope` since it's strongly related
+- Implement `Bounds::add` function
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
   - Carefully check where does `DummyMeter` apply and what properties or functions are being accessed
-- Restructure the `Meter` module(not trait) as in note below
-*)
-
-(* NOTE: DRAFT: We can restructure the `Meter` into a large module, since its content are pretty few.
-Currently we implement the structs separately, but the plan is:
-
-Module Meter
-  - Module BoundMeter
-  - Module DummyMeter
 *)
 
 (* NOTE: 
-  - We ignore `f32` since related parameters are mostly factors to be multiplied with.
-    These parameters will be either ignored or treated as a sole `1`. *)
+- We can restructure the `Meter` into a large module, since its content are pretty few.
+  Currently we implement the structs as the following tree:
+  
+  Module Meter
+  - Module BoundMeter
+  - Module DummyMeter
+
+- We ignore `f32` since related parameters are mostly factors to be multiplied with.
+  These parameters will be either ignored or treated as a sole `1`.
+*)
 
 (* 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -59,54 +58,6 @@ use crate::{Meter, Scope};
 use move_binary_format::errors::{PartialVMError, PartialVMResult};
 use move_core_types::vm_status::StatusCode;
 use move_vm_config::verifier::MeterConfig;
-
-impl BoundMeter {
-    pub fn new(config: MeterConfig) -> Self {
-        Self {
-            pkg_bounds: Bounds {
-                name: "<unknown>".to_string(),
-                units: 0,
-                max: config.max_per_pkg_meter_units,
-            },
-            mod_bounds: Bounds {
-                name: "<unknown>".to_string(),
-                units: 0,
-                max: config.max_per_mod_meter_units,
-            },
-            fun_bounds: Bounds {
-                name: "<unknown>".to_string(),
-                units: 0,
-                max: config.max_per_fun_meter_units,
-            },
-        }
-    }
-
-    fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
-        match scope {
-            Scope::Package => &mut self.pkg_bounds,
-            Scope::Module => &mut self.mod_bounds,
-            Scope::Function => &mut self.fun_bounds,
-            Scope::Transaction => panic!("transaction scope unsupported."),
-        }
-    }
-
-    fn get_bounds(&self, scope: Scope.t) -> &Bounds {
-        match scope {
-            Scope::Package => &self.pkg_bounds,
-            Scope::Module => &self.mod_bounds,
-            Scope::Function => &self.fun_bounds,
-            Scope::Transaction => panic!("transaction scope unsupported."),
-        }
-    }
-
-    pub fn get_usage(&self, scope: Scope.t) -> u128 {
-        self.get_bounds(scope).units
-    }
-
-    pub fn get_limit(&self, scope: Scope.t) -> Option<u128> {
-        self.get_bounds(scope).max
-    }
-}
 *)
 (* 
 struct Bounds {
@@ -145,82 +96,6 @@ Module Bounds.
     Definition add : Set. Admitted.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
-
-(* 
-pub struct BoundMeter {
-    pkg_bounds: Bounds,
-    mod_bounds: Bounds,
-    fun_bounds: Bounds,
-}
-*)
-Module BoundMeter.
-  Record t : Set := {
-    pkg_bounds : Bounds.t;
-    mod_bounds : Bounds.t;
-    fun_bounds : Bounds.t;
-  }.
-  (* impl Meter for BoundMeter *)
-  Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
-    Definition Self : Set := t.
-
-    (* 
-    fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
-        match scope {
-            Scope::Package => &mut self.pkg_bounds,
-            Scope::Module => &mut self.mod_bounds,
-            Scope::Function => &mut self.fun_bounds,
-            Scope::Transaction => panic!("transaction scope unsupported."),
-        }
-    }
-    *)
-    (* NOTE: Here we use Panic monad for such function with panic involved *)
-    Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? Bounds.t string :=
-      match scope with
-      | Scope.Package => return!? self.pkg_bounds
-      | Scope.Module => return!? self.mod_bounds
-      | Scope.Function => return!? self.fun_bounds
-      | Scope.Transaction => panic!? "transaction scope unsupported."
-      end.
-
-    (* 
-    fn enter_scope(&mut self, name: &str, scope: Scope.t) {
-        let bounds = self.get_bounds_mut(scope);
-        bounds.name = name.into();
-        bounds.units = 0;
-    }
-    *)
-    (* NOTE: This function is intended to modify `self.bounds`. Here however we would only return the
-        updated `bounds` instead without modifying `self`. 
-        It's intended that everywhere invoking this function should also correctly update the `self`
-        as well
-      *)
-    Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit :=
-      let bounds := get_bounds_mut scope in
-      (* TODO: check the panic and construct the correct bound *)
-      _ .
-
-    (* 
-    fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
-        let units = (self.get_bounds_mut(from).units as f32 * factor) as u128;
-        self.add(to, units)
-    }
-    *)
-    Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) : PartialVMResult.t unit. Admitted.
-
-    (* 
-    fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
-        self.get_bounds_mut(scope).add(units)
-    }
-    *)
-    Definition add (self : Self) (scope : Scope.t) (units : Z) : PartialVMResult.t unit. Admitted.
-    
-  End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
-
-  Module Dummy.
-    (* TODO: IMPORTANT: move the `DummyMeter` struct along with its impls into this module *)
-  End Dummy.
-
-End BoundMeter.
 
 (* TODO: Implement `Meter` trait as Coq Class *)
 (* 
@@ -287,4 +162,127 @@ Module Meter.
       Definition add (self : Self) (_scope : Scope.t) (_units : Z) : PartialVMResult.t unit := return?? tt.
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
   End DummyMeter.
+
+  (* 
+  pub struct BoundMeter {
+      pkg_bounds: Bounds,
+      mod_bounds: Bounds,
+      fun_bounds: Bounds,
+  }
+  *)
+  Module BoundMeter.
+    Record t : Set := {
+      pkg_bounds : Bounds.t;
+      mod_bounds : Bounds.t;
+      fun_bounds : Bounds.t;
+    }.
+    (* 
+    impl BoundMeter {
+        pub fn new(config: MeterConfig) -> Self {
+            Self {
+                pkg_bounds: Bounds {
+                    name: "<unknown>".to_string(),
+                    units: 0,
+                    max: config.max_per_pkg_meter_units,
+                },
+                mod_bounds: Bounds {
+                    name: "<unknown>".to_string(),
+                    units: 0,
+                    max: config.max_per_mod_meter_units,
+                },
+                fun_bounds: Bounds {
+                    name: "<unknown>".to_string(),
+                    units: 0,
+                    max: config.max_per_fun_meter_units,
+                },
+            }
+        }
+
+        fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
+            match scope {
+                Scope::Package => &mut self.pkg_bounds,
+                Scope::Module => &mut self.mod_bounds,
+                Scope::Function => &mut self.fun_bounds,
+                Scope::Transaction => panic!("transaction scope unsupported."),
+            }
+        }
+
+        fn get_bounds(&self, scope: Scope.t) -> &Bounds {
+            match scope {
+                Scope::Package => &self.pkg_bounds,
+                Scope::Module => &self.mod_bounds,
+                Scope::Function => &self.fun_bounds,
+                Scope::Transaction => panic!("transaction scope unsupported."),
+            }
+        }
+
+        pub fn get_usage(&self, scope: Scope.t) -> u128 {
+            self.get_bounds(scope).units
+        }
+
+        pub fn get_limit(&self, scope: Scope.t) -> Option<u128> {
+            self.get_bounds(scope).max
+        }
+    }
+    *)
+    Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
+      Definition Self : Set := t.
+
+      (* 
+      fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
+          match scope {
+              Scope::Package => &mut self.pkg_bounds,
+              Scope::Module => &mut self.mod_bounds,
+              Scope::Function => &mut self.fun_bounds,
+              Scope::Transaction => panic!("transaction scope unsupported."),
+          }
+      }
+      *)
+      (* NOTE: Here we use Panic monad for such function with panic involved *)
+      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? Bounds.t string :=
+        match scope with
+        | Scope.Package => return!? self.pkg_bounds
+        | Scope.Module => return!? self.mod_bounds
+        | Scope.Function => return!? self.fun_bounds
+        | Scope.Transaction => panic!? "transaction scope unsupported."
+        end.
+
+      (* 
+      fn enter_scope(&mut self, name: &str, scope: Scope.t) {
+          let bounds = self.get_bounds_mut(scope);
+          bounds.name = name.into();
+          bounds.units = 0;
+      }
+      *)
+      (* NOTE: 
+          This function is intended to modify `self.bounds`. Here however we would only return the
+          updated `bounds` instead without modifying `self`. 
+          It's intended that everywhere invoking this function should also correctly update the `self`
+          as well
+        *)
+      (* TODO: IMPORTANT: Correctly translate this function with `unit` as return value(?!) *)
+      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit :=
+        let bounds := get_bounds_mut scope in
+        match bounds with
+        | return!? value => _
+        | panic!? error => _
+        end.
+
+      (* 
+      fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
+          let units = (self.get_bounds_mut(from).units as f32 * factor) as u128;
+          self.add(to, units)
+      }
+      *)
+      Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) : PartialVMResult.t unit. Admitted.
+
+      (* 
+      fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
+          self.get_bounds_mut(scope).add(units)
+      }
+      *)
+      Definition add (self : Self) (scope : Scope.t) (units : Z) : PartialVMResult.t unit. Admitted.
+      
+    End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
+  End BoundMeter.
 End Meter.
