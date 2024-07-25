@@ -148,13 +148,14 @@ Module AbstractStack.
           letS? result := liftS?of? Vector.first_mut readS? in
           match result with
           | Some (count, last_item) =>
-            liftS?of!? (lens!?of? Vector.first_mut) (
               if item =? last_item
               then
+              liftS?of!? (lens!?of? Vector.first_mut) (
                 writeS? ((count + n)%Z, last_item)
+              )
               else
-                returnS? tt
-            )
+              letS? values := readS? in
+              writeS? ((n, item) :: values)
           | None =>
             letS? values := readS? in
             writeS? ((n, item) :: values)
