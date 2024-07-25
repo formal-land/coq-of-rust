@@ -4,6 +4,10 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+(* TODO(progress):
+- Resolve the List.nth problem for `SignatureToken`
+*)
+
 (* NOTE: temporary stub for mutual dependency issue *)
 (* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult. *)
@@ -506,8 +510,9 @@ Module CompiledModule.
     (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
     Definition signature_at(self : Self) (idx : SignatureIndex.t) : Signature.t :=
       let idx := idx.(SignatureIndex.a0) in
-      (* NOTE: WARNING: default value `-1` is provided *)
-      list.nth idx self.(signatures) (-1).
+      (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future  *)
+      let default_token := [SignatureToken.Bool] in
+      List.nth (Z.to_nat idx) self.(signatures) (Signature.Build_t default_token).
 
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
