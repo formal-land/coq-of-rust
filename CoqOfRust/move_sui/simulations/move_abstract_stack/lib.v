@@ -273,7 +273,7 @@ Module AbstractStack.
         match l with
         | O => panicS? "unreachable"
         | S l' => 
-          letS? _ := Vector.pop in
+          letS? _ := Vector.pop_front in
           pop_any_n_helper l' (rem - count)
         end
       else
@@ -290,6 +290,6 @@ Module AbstractStack.
         letS? values := readS? in
         pop_any_n_helper (List.length values) n
       ) in
-      letS? _ := writeS? (self <| len := len self - n |>) in
+      letS? _ := liftS? Lens.len (writeS? (len self - n)) in
       returnS? (Result.Ok tt).
 End AbstractStack.
