@@ -110,6 +110,15 @@ Module StatePanic.
       | Panic.Panic error => (Panic.Panic error, state)
       end.
 
+  (* same as [List.fold_left] but for functions that return a monadic value *)
+  Fixpoint fold {State Error A B : Set}
+      (f : A -> B -> t State Error A) (l : list B) (init : A) :
+      t State Error A :=
+    match l with
+    | nil => return_ init
+    | cons x xs => bind (fold f xs init) (fun init => f init x)
+    end.
+
   Definition read {State Error : Set} : t State Error State :=
     fun state => (return!? state, state).
 
@@ -135,6 +144,8 @@ Module StatePanicNotations.
   Notation "'letS?' ' x ':=' X 'in' Y" :=
     (StatePanic.bind X (fun x => Y))
     (at level 200, x pattern, X at level 100, Y at level 200).
+
+  Notation "foldS?" := StatePanic.fold.
 
   Notation "readS?" := StatePanic.read.
 

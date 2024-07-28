@@ -1,6 +1,7 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.simulations.M.
 Import simulations.M.Notations.
+Require Import CoqOfRust.core.simulations.eq.
 
 Module Bool.
   Definition and {State Error} (x y : MS? State Error bool) : MS? State Error bool :=
@@ -41,3 +42,10 @@ Module Notations.
   Notation "'notS?' b" := (Bool.not b) (at level 60).
   Notation "'ifS?' b 'then' x 'else' y" := (Bool.if_then_else b x y) (at level 200, right associativity).
 End Notations.
+
+Module ImplEq.
+  Global Instance I :
+    Eq.Trait bool := {
+      eqb := Bool.eqb;
+    }.
+End ImplEq.

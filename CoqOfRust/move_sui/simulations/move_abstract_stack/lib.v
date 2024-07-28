@@ -3,7 +3,11 @@ Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.core.simulations.integers.
 Require Import CoqOfRust.core.simulations.vector.
 Require Import CoqOfRust.core.simulations.option.
+Require Import CoqOfRust.core.simulations.eq.
+Require Import CoqOfRust.core.simulations.assert.
 Import simulations.M.Notations.
+Import simulations.eq.Notations.
+Import simulations.assert.Notations.
 
 (*
   #[derive(Eq, PartialEq, PartialOrd, Ord, Clone, Copy, Debug)]
@@ -19,6 +23,15 @@ Module AbsStackError.
   | ElementNotEqual
   | Underflow
   | Overflow.
+
+  Scheme Boolean Equality for t.
+
+  Module ImplEq.
+    Global Instance I :
+      Eq.Trait AbsStackError.t := {
+        eqb := t_beq;
+      }.
+  End ImplEq.
 End AbsStackError.
 
 (*
@@ -44,7 +57,20 @@ Module AbstractStack.
       Lens.read stack := values stack;
       Lens.write stack vs := stack <| values := vs |>
     |}.
+
+    Definition len {A : Set} : Lens.t (t A) Z := {|
+      Lens.read stack := len stack;
+      Lens.write stack x := stack <| len := x |>
+    |}.
   End Lens.
+
+  Definition self_values {A : Set} :
+      MS? (t A) string (list (Z * A)) :=
+    liftS? Lens.values readS?.
+
+  Definition self_len {A : Set} :
+      MS? (t A) string Z :=
+    liftS? Lens.len readS?.
 
   (*
     /// Creates an empty stack
@@ -78,6 +104,16 @@ Module AbstractStack.
     | _ => false
     end.
 
+  Definition self_is_empty {A : Set} :
+      MS? (t A) string bool :=
+    letS? s := readS? in
+    returnS? (is_empty s).
+
+  Definition self_is_not_empty {A : Set} :
+      MS? (t A) string bool :=
+    letS? s := readS? in
+    returnS? (negb (is_empty s)).
+
   (*
     /// Push n copies of an item on the stack
     pub fn push_n(&mut self, item: T, n: u64) -> Result<(), AbsStackError> {
@@ -100,7 +136,7 @@ Module AbstractStack.
     }
   *)
 
-  Definition push_n {A : Set} (item : A) (eq : A -> A -> bool) (n : Z) :
+  Definition push_n {A : Set} (item : A) `{Eq.Trait A} (n : Z) :
       MS? (t A) string (Result.t unit AbsStackError.t) :=
     if n =? 0
     then returnS? (Result.Ok tt)
@@ -114,13 +150,14 @@ Module AbstractStack.
           letS? result := liftS?of? Vector.first_mut readS? in
           match result with
           | Some (count, last_item) =>
-            liftS?of!? (lens!?of? Vector.first_mut) (
-              if eq item last_item
-              then
+            if item =? last_item
+            then
+              liftS?of!? (lens!?of? Vector.first_mut) (
                 writeS? ((count + n)%Z, last_item)
-              else
-                returnS? tt
-            )
+              )
+            else
+              letS? values := readS? in
+              writeS? ((n, item) :: values)
           | None =>
             letS? values := readS? in
             writeS? ((n, item) :: values)
@@ -136,9 +173,9 @@ Module AbstractStack.
     }
   *)
 
-  Definition push {A : Set} (item : A) (eq : A -> A -> bool) :
+  Definition push {A : Set} (item : A) `{Eq.Trait A} :
       MS? (t A) string (Result.t unit AbsStackError.t) :=
-    push_n item eq 1.
+    push_n item 1.
 
   (*
     /// Pops n values off the stack, erroring if there are not enough items or if the n items are
@@ -166,26 +203,29 @@ Module AbstractStack.
     }
   *)
 
-  Definition pop_eq_n {A : Set} (item : A) (n : Z) :
+  Definition pop_eq_n {A : Set} (n : Z) :
       MS? (t A) string (Result.t A AbsStackError.t) :=
     letS? self := readS? in
     if (is_empty self || (n >? len self))%bool 
     then returnS? (Result.Err AbsStackError.Underflow)
     else
-      letS? ret := liftS? Lens.values (
-        letS? '(count, last) := Option.unwrap (liftS?of? Vector.first_mut readS?) in
-        match Z.compare count n with
-        | Lt => returnS? (Result.Err AbsStackError.ElementNotEqual)
-        | Eq =>
-          letS? '(_, last) := Option.unwrap Vector.pop in
-          returnS? (Result.Ok last)
-        | Gt =>
-          letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
-          returnS? (Result.Ok last)
-        end
+      letS? '(count, last) := Option.unwrap (
+        liftS? Lens.values (liftS?of? Vector.first_mut readS?)
       ) in
-      letS? _ := writeS? (self <| len := len self - n |>) in
-      returnS? ret.
+      if count <? n
+      then returnS? (Result.Err AbsStackError.ElementNotEqual)
+      else
+        letS? ret := liftS? Lens.values (
+          if count =? n
+          then
+            letS? '(_, last) := Option.unwrap Vector.pop_front in
+            returnS? (Result.Ok last)
+          else
+            letS? _ := liftS?of!? (lens!?of? Vector.first_mut) (writeS? (count - n, last)) in
+            returnS? (Result.Ok last)
+        ) in
+        letS? _ := liftS? Lens.len (writeS? (len self - n)) in
+        returnS? ret.
 
   (*
     /// Pops a single value off the stack
@@ -194,9 +234,9 @@ Module AbstractStack.
     }
   *)
 
-  Definition pop {A : Set} (item : A) :
+  Definition pop {A : Set} :
       MS? (t A) string (Result.t A AbsStackError.t) :=
-    pop_eq_n item 1.
+    pop_eq_n 1.
 
   (*
     /// Pop any n items off the stack. Unlike `pop_n`, items do not have to be equal
@@ -235,7 +275,7 @@ Module AbstractStack.
         match l with
         | O => panicS? "unreachable"
         | S l' => 
-          letS? _ := Vector.pop in
+          letS? _ := Vector.pop_front in
           pop_any_n_helper l' (rem - count)
         end
       else
@@ -252,6 +292,37 @@ Module AbstractStack.
         letS? values := readS? in
         pop_any_n_helper (List.length values) n
       ) in
-      letS? _ := writeS? (self <| len := len self - n |>) in
+      letS? _ := liftS? Lens.len (writeS? (len self - n)) in
       returnS? (Result.Ok tt).
+  
+  (*
+    #[cfg(test)]
+    pub(crate) fn assert_run_lengths<Items, Item>(&self, lengths: Items)
+    where
+        Item: std::borrow::Borrow<u64>,
+        Items: IntoIterator<Item = Item>,
+        <Items as IntoIterator>::IntoIter: ExactSizeIterator,
+    {
+        let lengths_iter = lengths.into_iter();
+        assert_eq!(self.values.len(), lengths_iter.len());
+        let mut sum = 0;
+        for ((actual, _), expected) in self.values.iter().zip(lengths_iter) {
+            let expected = expected.borrow();
+            assert_eq!(actual, expected);
+            sum += *expected;
+        }
+        assert_eq!(self.len, sum);
+    }
+  *)
+
+  Definition assert_run_lengths {A : Set} (lengths : list Z) :
+      MS? (t A) string unit :=
+    letS? self := readS? in
+    letS? _ := assert_eqS? (List.length (values self)) (List.length lengths) in
+    letS? sum :=
+      foldS? (fun acc '((actual, _), expected) =>
+        letS? _ := assert_eqS? actual expected in
+        returnS? (acc + expected)%Z
+      ) (List.combine (values self) lengths) 0 in
+    assert_eqS? (len self) sum.
 End AbstractStack.
