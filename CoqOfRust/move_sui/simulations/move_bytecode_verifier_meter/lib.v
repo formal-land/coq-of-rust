@@ -293,14 +293,11 @@ Module Meter.
         self : Self;
       }.
 
-      (* DRAFT: 
-      MS? State PartialVMError.t unit
-      *)
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State PartialVMError.t unit :=
         let bounds := get_bounds_mut self scope in
           match bounds with
+          (* TODO: finish this *)
           | Panic.Value value => returnS? tt
-
           | Panic.Panic error => fun state => (panic!? error)
           end.
         returnS? tt.
