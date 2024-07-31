@@ -29,6 +29,9 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
+Require CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
+Module AbstractStack := move_abstract_stack.lib.AbstractStack.
+
 (* NOTE:
   - `meter : impl Meter` parameters are ignored in the simulation
 *)
@@ -40,8 +43,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO: tbd after PR #577 *)
-Definition AbstractStack (A : Set) : Set. Admitted.
-Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
+Definition AbstractStack_new : AbstractStack.t SignatureToken.t. Admitted.
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
@@ -109,7 +111,7 @@ Module TypeSafetyChecker.
     module : CompiledModule.t;
     function_context : FunctionContext.t;
     locals : Locals.t;
-    stack : AbstractStack SignatureToken.t;
+    stack : AbstractStack.t SignatureToken.t;
   }.
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
@@ -1086,6 +1088,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       }
     }
   *)
+  (* NOTE: `State` for this function should contain `verifier` *)
   | Bytecode.Pop => 
     let operand := _ in
     let abilities := _ in (* TODO: Implement `abilities`! *)
