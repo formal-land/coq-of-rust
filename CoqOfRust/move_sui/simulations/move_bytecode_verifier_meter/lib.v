@@ -99,7 +99,7 @@ Module Bounds.
 
     (* NOTE: since PartialVMResult<()> = Result () PartialVMError, we expand the definition for the monad *)
     Definition add (self : Self) (units : Z) : MS? State PartialVMError.t unit :=
-      let _return :=
+      let _return : MS? State PartialVMError.t unit :=
         match self.(max) with
         | Some max => 
         (* let new_units = self.units.saturating_add(units); *)
@@ -116,12 +116,14 @@ Module Bounds.
                         )));
               *)
               (* NOTE: for now we ignore the message *)
-              then panicS? (
+              then panicS? "stub-error"
+              (* 
                 PartialVMError.Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-                  .new StatusCode.CONSTRAINT_NOT_SATISFIED)
-              else returnS? tt in (* we should never arrive at this stub *)
+                  .new StatusCode.CONSTRAINT_NOT_SATISFIED *)
+              (* we should never arrive at this stub *)
+              else returnS? tt in 
             (* self.units = new_units; *)
-            let self := self <| units := units |> in (* TODO: update self *)
+            let self := self <| Bounds.units := units |> in (* TODO: update self *)
             writeS? self
         | None => returnS? tt
         end in
