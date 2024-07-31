@@ -34,6 +34,7 @@ Module StatusCode := vm_status.StatusCode.
 *)
 
 (* TODO(progress):
+  - Use `AbstractStack::Pop` correctly
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)

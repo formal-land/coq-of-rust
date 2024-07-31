@@ -297,11 +297,13 @@ Module Meter.
       MS? State PartialVMError.t unit
       *)
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State PartialVMError.t unit :=
-        let bounds := get_bounds_mut scope in
-        match bounds with
-        | return!? value => _
-        | panic!? error => _
-        end.
+        let bounds := get_bounds_mut self scope in
+          match bounds with
+          | Panic.Value value => returnS? tt
+
+          | Panic.Panic error => fun state => (panic!? error)
+          end.
+        returnS? tt.
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
