@@ -8,6 +8,9 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
 
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
+
 (* TODO(progress):
 - Implement `Bounds::add` function
 - Implement `enter_scope` correctly, with a correct State monad
@@ -68,28 +71,61 @@ Module Bounds.
     units : Z;
     max : option Z;
   }.
-  (* 
-  impl Bounds {
-      fn add(&mut self, units: u128) -> PartialVMResult<()> {
-          if let Some(max) = self.max {
-              let new_units = self.units.saturating_add(units);
-              if new_units > max {
-                  // TODO: change to a new status PROGRAM_TOO_COMPLEX once this is rolled out. For
-                  // now we use an existing code to avoid breaking changes on potential rollback.
-                  return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
-                      .with_message(format!(
-                          "program too complex (in `{}` with `{} current + {} new > {} max`)",
-                          self.name, self.units, units, max
-                      )));
-              }
-              self.units = new_units;
-          }
-          Ok(())
-      }
-  }
-  *)
+
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
-    Definition add : Set. Admitted.
+    Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Bounds.t.
+
+    (* 
+    fn add(&mut self, units: u128) -> PartialVMResult<()> {
+        if let Some(max) = self.max {
+            let new_units = self.units.saturating_add(units);
+            if new_units > max {
+                // TODO: change to a new status PROGRAM_TOO_COMPLEX once this is rolled out. For
+                // now we use an existing code to avoid breaking changes on potential rollback.
+                return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
+                    .with_message(format!(
+                        "program too complex (in `{}` with `{} current + {} new > {} max`)",
+                        self.name, self.units, units, max
+                    )));
+            }
+            self.units = new_units;
+        }
+        Ok(())
+    }
+    *)
+    Record State : Set := {
+      self : Self;
+    }.
+
+    (* NOTE: since PartialVMResult<()> = Result () PartialVMError, we expand the definition for the monad *)
+    Definition add (self : Self) (units : Z) : MS? State PartialVMError.t unit :=
+      let _return :=
+        match self.(max) with
+        | Some max => 
+        (* let new_units = self.units.saturating_add(units); *)
+        (* TODO: IMPORTANT: replace the normal `+` below to actual bounded add
+          https://doc.rust-lang.org/std/primitive.u128.html#method.saturating_add *)
+            let self_units := self.(Bounds.units) in
+            let new_units := Z.add self_units self_units in
+            let _ := if new_units >? max 
+              (* 
+              return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
+                        .with_message(format!(
+                            "program too complex (in `{}` with `{} current + {} new > {} max`)",
+                            self.name, self.units, units, max
+                        )));
+              *)
+              (* NOTE: for now we ignore the message *)
+              then panicS? (
+                PartialVMError.Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+                  .new StatusCode.CONSTRAINT_NOT_SATISFIED)
+              else returnS? tt in (* we should never arrive at this stub *)
+            (* self.units = new_units; *)
+            let self := self <| units := units |> in (* TODO: update self *)
+            writeS? self
+        | None => returnS? tt
+        end in
+      _return.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
 
