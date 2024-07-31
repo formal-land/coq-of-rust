@@ -116,6 +116,8 @@ Module StatePanic.
   Definition write {State Error : Set} (state : State) : t State Error unit :=
     fun _ => (return!? tt, state).
 
+  (* TODO: change the `string` to arbitary type `Error` *)
+  (* I think this combinator might be heavily bugged *)
   Definition panic {State A : Set} (msg : string) : t State string A :=
     fun state => (panic!? msg, state).
 

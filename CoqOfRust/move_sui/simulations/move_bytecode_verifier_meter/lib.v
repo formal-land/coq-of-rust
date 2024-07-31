@@ -12,7 +12,8 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Implement `Bounds::add` function
+- Suggestion: change the type order for `M!? Error A` into `M!?" A Error`
+- Fix bugs in `Bounds.add`: implement saturated addition
 - Implement `enter_scope` correctly, with a correct State monad
   - Currently we use `MS? State PartialVMError.t unit`. Maybe there's a better candidate for `Error` type within
 - Write out the exact function chains from `verify_instr` 
@@ -107,27 +108,20 @@ Module Bounds.
           https://doc.rust-lang.org/std/primitive.u128.html#method.saturating_add *)
             let self_units := self.(Bounds.units) in
             let new_units := Z.add self_units self_units in
-            let _ := if new_units >? max 
-              (* 
-              return Err(PartialVMError::new(StatusCode::CONSTRAINT_NOT_SATISFIED)
-                        .with_message(format!(
-                            "program too complex (in `{}` with `{} current + {} new > {} max`)",
-                            self.name, self.units, units, max
-                        )));
-              *)
-              (* NOTE: for now we ignore the message *)
-              then panicS? "stub-error"
-              (* 
-                PartialVMError.Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-                  .new StatusCode.CONSTRAINT_NOT_SATISFIED *)
-              (* we should never arrive at this stub *)
-              else returnS? tt in 
-            (* self.units = new_units; *)
-            let self := self <| Bounds.units := units |> in (* TODO: update self *)
-            writeS? self
+            letS? _ := (if new_units >? max 
+              (* TODO: correctly implement `panicS!?` for arbitary type *)
+              then (fun state => (panic!? 
+                (PartialVMError
+                  .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+                  .new(StatusCode.CONSTRAINT_NOT_SATISFIED)), state))
+              else 
+                let self := self <| Bounds.units := units |> in
+                let state : State := {| self := self; |} in
+                writeS? state) in 
+            returnS? tt
         | None => returnS? tt
         end in
-      _return.
+        returnS? tt.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
 
@@ -271,12 +265,14 @@ Module Meter.
           }
       }
       *)
-      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? Bounds.t string :=
+
+      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? string Bounds.t:=
         match scope with
-        | Scope.Package => return!? self.pkg_bounds
-        | Scope.Module => return!? self.mod_bounds
-        | Scope.Function => return!? self.fun_bounds
-        | Scope.Transaction => panic!? "transaction scope unsupported."
+        | Scope.Package => return!? self.(pkg_bounds)
+        | Scope.Module => return!? self.(mod_bounds)
+        | Scope.Function => return!? self.(fun_bounds)
+        | Scope.Transaction => panic!? 
+          "transaction scope unsupported."
         end.
 
       (* 
