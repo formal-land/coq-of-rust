@@ -1074,11 +1074,29 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   (offset : CodeOffset.t) : PartialVMResult.t unit :=
   (* TODO: IMPORTANT: wrap up the pattern match with a Result monad *)
   match bytecode with
-  | Bytecode.Pop => return?? tt
+  (* 
+    Bytecode::Pop => {
+      let operand = safe_unwrap_err!(verifier.stack.pop());
+      let abilities = verifier
+          .module
+          .abilities(&operand, verifier.function_context.type_parameters());
+      if !abilities?.has_drop() {
+          return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
+      }
+    }
+  *)
+  | Bytecode.Pop => 
+    let operand := _ in
+    let abilities := _ in (* TODO: Implement `abilities`! *)
+    let _ := _ in
+    return?? tt
+
+  (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
+  | Bytecode.Branch _ | Bytecode.Nop => return?? tt
+
   | Bytecode.Ret => return?? tt
   | Bytecode.BrTrue idx => return?? tt
   | Bytecode.BrFalse idx => return?? tt
-  | Bytecode.Branch idx => return?? tt
   | Bytecode.LdU8 idx => return?? tt
   | Bytecode.LdU64 idx => return?? tt
   | Bytecode.LdU128 idx => return?? tt
@@ -1128,7 +1146,6 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.Le => return?? tt
   | Bytecode.Ge => return?? tt
   | Bytecode.Abort => return?? tt
-  | Bytecode.Nop => return?? tt
   | Bytecode.Exists idx => return?? tt
   | Bytecode.ExistsGeneric idx => return?? tt
   | Bytecode.MoveFrom idx => return?? tt

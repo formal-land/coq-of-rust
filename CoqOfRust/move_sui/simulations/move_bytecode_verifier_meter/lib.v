@@ -10,7 +10,8 @@ Module PartialVMError := errors.PartialVMError.
 
 (* TODO(progress):
 - Implement `Bounds::add` function
-- Implement `enter_scope` correctly
+- Implement `enter_scope` correctly, with a correct State monad
+  - Currently we use `MS? State PartialVMError.t unit`. Maybe there's a better candidate for `Error` type within
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -232,7 +233,6 @@ Module Meter.
           }
       }
       *)
-      (* NOTE: Here we use Panic monad for such function with panic involved *)
       Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? Bounds.t string :=
         match scope with
         | Scope.Package => return!? self.pkg_bounds
@@ -254,8 +254,15 @@ Module Meter.
           It's intended that everywhere invoking this function should also correctly update the `self`
           as well
         *)
-      (* TODO: IMPORTANT: Correctly translate this function with `unit` as return value(?!) *)
-      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : unit :=
+      (* TODO: apply `StatePanic` monad *)
+      Record State := { 
+        self : Self;
+      }.
+
+      (* DRAFT: 
+      MS? State PartialVMError.t unit
+      *)
+      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State PartialVMError.t unit :=
         let bounds := get_bounds_mut scope in
         match bounds with
         | return!? value => _
