@@ -42,9 +42,6 @@ Module AbstractStack := move_abstract_stack.lib.AbstractStack.
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
 
-(* TODO: tbd after PR #577 *)
-Definition AbstractStack_new : AbstractStack.t SignatureToken.t. Admitted.
-
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
@@ -113,7 +110,7 @@ Module TypeSafetyChecker.
         TypeSafetyChecker.module := module;
         TypeSafetyChecker.function_context := function_context; 
         TypeSafetyChecker.locals := locals;
-        TypeSafetyChecker.stack := AbstractStack_new;
+        TypeSafetyChecker.stack := AbstractStack.new;
       |}.
 
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
@@ -1077,7 +1074,8 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   *)
   (* NOTE: `State` for this function should contain `verifier` *)
   | Bytecode.Pop => 
-    let operand := _ in
+    let _stack := verifier.(TypeSafetyChecker.stack) in
+    let operand := AbstractStack.pop _stack in
     let abilities := _ in (* TODO: Implement `abilities`! *)
     let _ := _ in
     return?? tt
