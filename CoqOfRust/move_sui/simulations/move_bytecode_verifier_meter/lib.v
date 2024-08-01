@@ -285,14 +285,16 @@ Module Meter.
         self : Self;
       }.
 
+      (* TODO: write test to test out lens combination *)
+
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
         let bounds := get_bounds_mut self scope in
           match bounds with
-          (* TODO: finish this *)
           | Panic.Value value => 
-            let bounds := 
-                Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
-                .get_bounds_mut self in
+          (* TODO: lift the value with lens... *)
+            let!? bounds := LensPanic.lift (Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
+                .get_bounds_mut self) readS? in
+            let bounds := bounds <| Bounds.name := name |> in 
             returnS? tt
 
           | Panic.Panic error => fun state => ((panic!? error), state)
