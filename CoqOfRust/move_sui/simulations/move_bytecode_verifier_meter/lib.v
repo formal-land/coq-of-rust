@@ -12,7 +12,7 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Suggestion: change the type order for `M!? Error A` into `M!?" A Error`
+- Suggestion: change the type order for `M!? Error A` into `M!? A Error`
 - Fix bugs in `Bounds.add`: implement saturated addition
 - Implement `enter_scope` correctly, with a correct State monad
   - Currently we use `MS? State PartialVMError.t unit`. Maybe there's a better candidate for `Error` type within
@@ -20,7 +20,7 @@ Module StatusCode := vm_status.StatusCode.
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
   - Carefully check where does `DummyMeter` apply and what properties or functions are being accessed
-*)
+ *)
 
 (* NOTE: 
 - We can restructure the `Meter` into a large module, since its content are pretty few.
@@ -253,7 +253,7 @@ Module Meter.
     }
     *)
     Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
-      Definition Self : Set := t.
+      Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Meter.BoundMeter.t.
 
       (* 
       fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
@@ -265,7 +265,6 @@ Module Meter.
           }
       }
       *)
-
       Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? string Bounds.t:=
         match scope with
         | Scope.Package => return!? self.(pkg_bounds)
@@ -282,25 +281,22 @@ Module Meter.
           bounds.units = 0;
       }
       *)
-      (* NOTE: 
-          This function is intended to modify `self.bounds`. Here however we would only return the
-          updated `bounds` instead without modifying `self`. 
-          It's intended that everywhere invoking this function should also correctly update the `self`
-          as well
-        *)
-      (* TODO: apply `StatePanic` monad *)
       Record State := { 
         self : Self;
       }.
 
-      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State PartialVMError.t unit :=
+      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
         let bounds := get_bounds_mut self scope in
           match bounds with
           (* TODO: finish this *)
-          | Panic.Value value => returnS? tt
-          | Panic.Panic error => fun state => (panic!? error)
+          | Panic.Value value => 
+            let bounds := 
+                Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
+                .get_bounds_mut self in
+            returnS? tt
+
+          | Panic.Panic error => fun state => ((panic!? error), state)
           end.
-        returnS? tt.
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {

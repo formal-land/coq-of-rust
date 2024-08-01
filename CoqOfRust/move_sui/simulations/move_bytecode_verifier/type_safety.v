@@ -1074,10 +1074,10 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   *)
   (* NOTE: `State` for this function should contain `verifier` *)
   | Bytecode.Pop => 
-    let _stack := verifier.(TypeSafetyChecker.stack) in
+    (* let _stack := verifier.(TypeSafetyChecker.stack) in
     let operand := AbstractStack.pop _stack in
     let abilities := _ in (* TODO: Implement `abilities`! *)
-    let _ := _ in
+    let _ := _ in *)
     return?? tt
 
   (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
