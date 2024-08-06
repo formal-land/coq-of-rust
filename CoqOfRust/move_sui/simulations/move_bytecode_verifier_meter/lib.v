@@ -71,6 +71,11 @@ Module Bounds.
     max : option Z;
   }.
 
+  
+  Record State : Set := {
+    self : t;
+  }.
+
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
     Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Bounds.t.
 
@@ -92,9 +97,6 @@ Module Bounds.
         Ok(())
     }
     *)
-    Record State : Set := {
-      self : Self;
-    }.
 
     (* NOTE: we currently just stub the `Error` with `string`. A more proper way is to
         define an `Error` explicitly*)
@@ -201,6 +203,11 @@ Module Meter.
       mod_bounds : Bounds.t;
       fun_bounds : Bounds.t;
     }.
+
+    
+    Record State := { 
+      self : t;
+    }.
     (* 
     impl BoundMeter {
         pub fn new(config: MeterConfig) -> Self {
@@ -278,9 +285,6 @@ Module Meter.
           bounds.units = 0;
       }
       *)
-      Record State := { 
-        self : Self;
-      }.
 
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
@@ -302,13 +306,27 @@ Module Meter.
       *)
       Definition add (self : Self) (scope : Scope.t) (units : Z) 
         : MS? State string (PartialVMResult.t unit):=
-        (* Auto inferring `Error` here to string  *)
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
         let units := bounds.(Bounds.units) in
-        letS? _ := 
-        (* TODO: correctly transfer the state from `Bounds.State` to ``BoundMeter.State` *)
-          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
-            bounds units in
+        (* TODO: write a `Lens` for this function *)
+        let bounds : MS? Bounds.State string (PartialVMResult.t unit) := 
+            Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
+              bounds units in
+        let state :=
+          bounds (fun state =>
+            let '(_, state) := state in state) in
+
+        (* 
+        The term
+        "letS? ' _
+          := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
+              bounds units0 in readS?" has type
+        "MS? Bounds.State string Bounds.State"
+        while it is expected to have type
+        "MS? Bounds.State string (PartialVMResult.t unit)"
+        (cannot unify "M!? string Bounds.State * Bounds.State" and
+        "M!? string (PartialVMResult.t unit) * Bounds.State").
+        *)
 
         (* let bounds := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
           bounds units in *)
