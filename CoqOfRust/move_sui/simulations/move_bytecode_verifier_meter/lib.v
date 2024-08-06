@@ -14,6 +14,8 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Fix bugs in `Bounds.add`: 
   - Implement saturated addition
+- Implement `BoundMeter::add`:
+  - Implement `Lens` from `Bounds` to `BoundMeter`
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -298,6 +300,22 @@ Module Meter.
         end in
         let state : State := {| self := self |} in
           writeS? state.
+
+      Module Lens_Bounds.
+        Definition t : Lens.t Bounds.t Self := {| 
+          Lens.read := _ ;
+          Lens.write := _;
+        |}.
+      End Lens_Bounds.
+
+      (* 
+      Module Lens.
+        Definition values {A : Set} : Lens.t (t A) (list (Z * A)) := {|
+          Lens.read stack := values stack;
+          Lens.write stack vs := stack <| values := vs |>
+        |}.
+      End Lens.
+      *)
 
       (* 
       fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {

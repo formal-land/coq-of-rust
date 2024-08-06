@@ -13,10 +13,6 @@ Module CompiledModule := file_format.CompiledModule.
 Module FunctionHandle := file_format.FunctionHandle.
 Module Bytecode := file_format.Bytecode.
 
-(* TODO(progress):
-- Implement `new`
-*)
-
 (* 
 pub struct VMControlFlowGraph {
     /// The basic blocks
