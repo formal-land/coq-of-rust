@@ -286,23 +286,17 @@ Module Meter.
       }.
 
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
-        let bounds := get_bounds_mut self scope in
-          match bounds with
-          | Panic.Value value => 
-            letS? bounds := return!?toS? (Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
-                .get_bounds_mut self scope) in
-            let bounds := bounds <| Bounds.name := name |> in 
-            let bounds := bounds <| Bounds.units := 0 |> in 
-            let self := match scope with 
-            | Scope.Package => self <| BoundMeter.pkg_bounds := bounds |> 
-            | Scope.Module => self <| BoundMeter.mod_bounds := bounds |> 
-            | Scope.Function => self <| BoundMeter.fun_bounds := bounds |>
-            | Scope.Transaction => self
-            end in
-            let state : State := {| self := self |} in
-            writeS? state 
-          | Panic.Panic error => fun state => ((panic!? error), state)
-          end.
+        letS? bounds := return!?toS? (get_bounds_mut self scope) in
+        let bounds := bounds <| Bounds.name := name |> in 
+        let bounds := bounds <| Bounds.units := 0 |> in 
+        let self := match scope with 
+        | Scope.Package => self <| BoundMeter.pkg_bounds := bounds |> 
+        | Scope.Module => self <| BoundMeter.mod_bounds := bounds |> 
+        | Scope.Function => self <| BoundMeter.fun_bounds := bounds |>
+        | Scope.Transaction => self
+        end in
+        let state : State := {| self := self |} in
+          writeS? state.
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
@@ -310,7 +304,12 @@ Module Meter.
           self.add(to, units)
       }
       *)
-      Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) : PartialVMResult.t unit. Admitted.
+      Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) 
+        : MS? State string (PartialVMResult.t unit) :=
+      letS? bounds := get_bounds_mut self from in
+      let units := bounds.(Bounds.units) in
+      returnS? tt.
+      
 
       (* 
       fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
