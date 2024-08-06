@@ -12,10 +12,9 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Suggestion: change the type order for `M!? Error A` into `M!? A Error`
-- Fix bugs in `Bounds.add`: implement saturated addition
-- Implement `enter_scope` correctly, with a correct State monad
-  - Currently we use `MS? State PartialVMError.t unit`. Maybe there's a better candidate for `Error` type within
+- Fix bugs in `Bounds.add`: 
+  - Implement saturated addition
+  - Define correct state for `Bounds.add` so that the state propagates
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -299,6 +298,18 @@ Module Meter.
           writeS? state.
 
       (* 
+      fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
+          self.get_bounds_mut(scope).add(units)
+      }
+      *)
+      (* TODO: we might need to simplify the monad *)
+      Definition add (self : Self) (scope : Scope.t) (units : Z) 
+        : MS? State string PartialVMResult.t unit :=
+        letS? bounds := get_bounds_mut self scope in
+        let units := bounds.(Bounds.units)
+        let bounds := 
+
+      (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
           let units = (self.get_bounds_mut(from).units as f32 * factor) as u128;
           self.add(to, units)
@@ -309,14 +320,6 @@ Module Meter.
       letS? bounds := get_bounds_mut self from in
       let units := bounds.(Bounds.units) in
       returnS? tt.
-      
-
-      (* 
-      fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
-          self.get_bounds_mut(scope).add(units)
-      }
-      *)
-      Definition add (self : Self) (scope : Scope.t) (units : Z) : PartialVMResult.t unit. Admitted.
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.
