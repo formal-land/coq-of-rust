@@ -265,7 +265,7 @@ Module Meter.
           }
       }
       *)
-      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? string Bounds.t:=
+      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? string Bounds.t :=
         match scope with
         | Scope.Package => return!? self.(pkg_bounds)
         | Scope.Module => return!? self.(mod_bounds)
@@ -285,18 +285,22 @@ Module Meter.
         self : Self;
       }.
 
-      (* TODO: write test to test out lens combination *)
-
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
         let bounds := get_bounds_mut self scope in
           match bounds with
           | Panic.Value value => 
-          (* TODO: lift the value with lens... *)
-            let!? bounds := LensPanic.lift (Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
-                .get_bounds_mut self) readS? in
+            letS? bounds := return!?toS? (Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter
+                .get_bounds_mut self scope) in
             let bounds := bounds <| Bounds.name := name |> in 
-            returnS? tt
-
+            let bounds := bounds <| Bounds.units := 0 |> in 
+            let self := match scope with 
+            | Scope.Package => self <| BoundMeter.pkg_bounds := bounds |> 
+            | Scope.Module => self <| BoundMeter.mod_bounds := bounds |> 
+            | Scope.Function => self <| BoundMeter.fun_bounds := bounds |>
+            | Scope.Transaction => self
+            end in
+            let state : State := {| self := self |} in
+            writeS? state 
           | Panic.Panic error => fun state => ((panic!? error), state)
           end.
 
