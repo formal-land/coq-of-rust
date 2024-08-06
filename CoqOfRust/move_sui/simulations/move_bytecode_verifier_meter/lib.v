@@ -14,7 +14,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Fix bugs in `Bounds.add`: 
   - Implement saturated addition
-  - Correctly implement `panicS!?` for arbitary type in `simulations.M`
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -97,32 +96,30 @@ Module Bounds.
       self : Self;
     }.
 
-    (* NOTE: since PartialVMResult<()> = Result () PartialVMError, we expand the definition for the monad *)
-    Definition add (self : Self) (units : Z) : MS? State PartialVMError.t unit :=
+    (* NOTE: we currently just stub the `Error` with `string`. A more proper way is to
+        define an `Error` explicitly*)
+    Definition add (self : Self) (units : Z) : MS? State string (PartialVMResult.t unit) :=
       let state : State := {| self := self |} in
-      let _return : MS? State PartialVMError.t unit :=
-        match self.(max) with
-        | Some max => 
-        (* TODO: IMPORTANT: replace the normal `+` below to actual bounded add
-          https://doc.rust-lang.org/std/primitive.u128.html#method.saturating_add *)
-            let self_units := self.(Bounds.units) in
-            let new_units := Z.add self_units self_units in
-            letS? _ := (if new_units >? max 
-              (* TODO: correctly implement `panicS!?` for arbitary type *)
-              then (fun state => (panic!? 
-                (PartialVMError
-                  .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-                  .new(StatusCode.CONSTRAINT_NOT_SATISFIED)), state))
-              else 
-                let self := self <| Bounds.units := units |> in
-                let state : State := {| self := self; |} in
-                writeS? state) in 
-            returnS? tt
-        | None => 
-            letS? _ := writeS? state in
-            returnS? tt
-        end in
-        _return.
+      match self.(max) with
+      | Some max => 
+      (* TODO: IMPORTANT: replace the normal `+` below to actual bounded add
+        https://doc.rust-lang.org/std/primitive.u128.html#method.saturating_add *)
+        let self_units := self.(Bounds.units) in
+        let new_units := Z.add self_units self_units in
+        if new_units >? max 
+        then 
+          returnS? (Result.Err (PartialVMError
+            .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+            .new(StatusCode.CONSTRAINT_NOT_SATISFIED)))
+        else 
+          let self := self <| Bounds.units := units |> in
+          let state : State := {| self := self |} in
+          letS? _ := writeS? state in
+          returnS? (Result.Ok tt)
+      | None => 
+          letS? _ := writeS? state in
+          returnS? (Result.Ok tt)
+      end.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
 
@@ -303,26 +300,20 @@ Module Meter.
           self.get_bounds_mut(scope).add(units)
       }
       *)
-      (* 
-        TODO: MS? State string unit -> MS? State PartialVMError.t unit
-      *)
       Definition add (self : Self) (scope : Scope.t) (units : Z) 
-        : MS? State PartialVMError.t unit :=
+        : MS? State string (PartialVMResult.t unit):=
         (* Auto inferring `Error` here to string  *)
-        let bounds : M!? string Bounds.t := get_bounds_mut self scope in
-        let _ := match bounds with
-        | Panic.Value bounds => returnS? tt
-        | Panic.Panic str => returnS? tt
-        end in
-        (* letS? _ := 
-          return!?toS? (get_bounds_mut self scope) in
-        let _ := tt in *)
-        (* let bounds := bounds in *)
-        (* let units := bounds.(Bounds.units) in
-        let bounds := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
+        letS? bounds := return!?toS? (get_bounds_mut self scope) in
+        let units := bounds.(Bounds.units) in
+        letS? _ := 
+        (* TODO: correctly transfer the state from `Bounds.State` to ``BoundMeter.State` *)
+          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
+            bounds units in
+
+        (* let bounds := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
           bounds units in *)
         
-        returnS? tt.
+        returnS? (Result.Ok tt).
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
