@@ -5,12 +5,19 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 (* TODO(progress):
+- Implement `safe_unwrap_err`
+- (IMPORTANT)Implement `AbilitySet` and its `impl`s. In particular, being used for `verify_instr`:
+  - Implement `has_drop`
+  - Implement `has_copy`
+  - Implement `has_key`
+  Luckily they aren't mutable functions!
+- Implement `CompiledModule`'s `abilities`
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
 *)
 
-(* NOTE: temporary stub for mutual dependency issue *)
-(* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
-Module PartialVMResult := errors.PartialVMResult. *)
+(* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
+   since this file has mutual dependency with another file. Although it works 
+   for now, we shouldn't ignore this. *)
 Module PartialVMError.
   Inductive t : Set := .
 End PartialVMError.
@@ -20,7 +27,7 @@ End PartialVMResult.
 
 (* **************** *)
 
-(* NOTE: used in `type_safety` for reference
+(* DRAFT: used in `type_safety` for reference
    TODO: implement the function such that it panics for Error and returns the value for Ok
 macro_rules! safe_unwrap_err {
     ($e:expr) => {{
@@ -72,7 +79,7 @@ Module IdentifierIndex.
   Record t : Set := { a0 : Z; }.
 End IdentifierIndex.
 
-(* Template for `define_index!` macro
+(* DRAFT: Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
 
