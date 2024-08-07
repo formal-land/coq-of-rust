@@ -45,6 +45,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     3. Implement `mut` functions in this file
     4. Implement `AbilitySet` and `CompiledModule` in `file_format`
     5. Implement cases for `verify_instr`
+  - Implement `SignatureToken.preorder_traversal`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
@@ -168,9 +169,16 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    (* TODO: Implement Lens from `BoundMeter` to `TypeSafetyChecker` *)
-    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
-      return?? tt.
+    (* NOTE: 
+    1. Why the `self` is a `mut` variable here? 
+    2. Can we delete the `self` parameter? *)
+    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) 
+      : MS? Meter.t string (PartialVMResult.t unit) :=
+      letS? meter := readS? in
+      Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
+        Scope.Function
+        TYPE_NODE_COST
+        0 (* TODO: implement SignatureToken.preorder_traversal *).
 
     (* 
       fn charge_ty(
@@ -181,8 +189,9 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
-      return?? tt.
+    Definition charge_ty (self : Self) (ty : SignatureToken.t) 
+      : MS? Meter.t string (PartialVMResult.t unit) :=
+      charge_ty_ self ty 1.
 
     (* 
       fn charge_tys(
@@ -196,8 +205,15 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition charge_tys (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
-      return?? tt.
+    Fixpoint charge_tys (self : Self) (tys : list SignatureToken.t)
+    : MS? Meter.t string (PartialVMResult.t unit) :=
+      match tys with
+      | ty :: tys => 
+        letS? ty := charge_ty self ty in
+        (* TODO: How to translate the `?` operator here? *)
+        charge_tys self tys
+      | [] => returnS? (Result.Ok tt)
+      end.
 
     (* 
     fn push(
@@ -210,6 +226,7 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
+    (* NOTE: the state for this function should contain `self` and `meter` *)
     Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
       return?? tt.
 
