@@ -30,9 +30,6 @@ Module StatusCode := vm_status.StatusCode.
   - Module DummyMeter
 - We ignore `f32` since related parameters are mostly factors to be multiplied with.
   These parameters will be either ignored or treated as a sole Z value.
-- For style consistency, I currently design the `mut` functions such that they:
-  - Explicitly pass in `self` as parameter rather than reading from states
-  - Write to their state monads with the updated `self`
 *)
 
 (* 
@@ -75,9 +72,7 @@ Module Bounds.
   }.
 
   
-  Record State : Set := {
-    self : t;
-  }.
+  Definition State := t.
 
   Module Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
     Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Bounds.t.
@@ -101,8 +96,8 @@ Module Bounds.
     }
     *)
 
-    Definition add (self : Self) (units : Z) : MS? State string (PartialVMResult.t unit) :=
-      let state : State := {| self := self |} in
+    Definition add (units : Z) : MS? State string (PartialVMResult.t unit) :=
+      letS? self := readS? in
       match self.(max) with
       | Some max => 
       (* TODO: IMPORTANT: replace the normal `+` below to actual bounded add
@@ -116,11 +111,10 @@ Module Bounds.
             .new(StatusCode.CONSTRAINT_NOT_SATISFIED)))
         else 
           let self := self <| Bounds.units := units |> in
-          let state : State := {| self := self |} in
-          letS? _ := writeS? state in
+          letS? _ := writeS? self in
           returnS? (Result.Ok tt)
       | None => 
-          letS? _ := writeS? state in
+          letS? _ := writeS? self in
           returnS? (Result.Ok tt)
       end.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
@@ -205,36 +199,8 @@ Module Meter.
       fun_bounds : Bounds.t;
     }.
 
-    
-    Record State := { 
-      self : t;
-    }.
+    Definition State := t.
 
-    Module Lens_BoundMeter_State_Bounds_State.
-      Definition values (scope : Scope.t) : Lens.t State Bounds.State := {|
-        Lens.read boundmeter_state := 
-          let boundmeter := boundmeter_state.(self) in
-          let bound := match scope with
-          | Scope.Package     => boundmeter.(pkg_bounds)
-          | Scope.Module      => boundmeter.(mod_bounds)
-          | Scope.Function    => boundmeter.(fun_bounds)
-          (* NOTE: For this case we just assume it will never be arrived *)
-          | Scope.Transaction => boundmeter.(pkg_bounds)
-          end in
-          Bounds.Build_State bound;
-        Lens.write boundmeter_state bounds_state := 
-          let boundmeter := boundmeter_state.(self) in
-          let bounds := bounds_state.(Bounds.self) in
-          let boundmeter := match scope with
-          | Scope.Package     => boundmeter <| pkg_bounds := bounds |>
-          | Scope.Module      => boundmeter <| mod_bounds := bounds |>
-          | Scope.Function    => boundmeter <| fun_bounds := bounds |>
-          (* NOTE: For this case we just assume it will never be arrived *)
-          | Scope.Transaction => boundmeter <| pkg_bounds := bounds |>
-          end in
-          Build_State boundmeter;
-      |}.
-    End Lens_BoundMeter_State_Bounds_State.
     (* 
     impl BoundMeter {
         pub fn new(config: MeterConfig) -> Self {
@@ -288,13 +254,23 @@ Module Meter.
           }
       }
       *)
-      Definition get_bounds_mut (self : Self) (scope : Scope.t) : M!? string Bounds.t :=
-        match scope with
-        | Scope.Package     => return!? self.(pkg_bounds)
-        | Scope.Module      => return!? self.(mod_bounds)
-        | Scope.Function    => return!? self.(fun_bounds)
-        | Scope.Transaction => panic!? "transaction scope unsupported."
-        end.
+      Definition get_bounds_mut (scope : Scope.t) :
+        LensPanic.t string State Bounds.State := {|
+          LensPanic.read boundmeter := 
+            match scope with
+            | Scope.Package     => return!? (boundmeter.(pkg_bounds))
+            | Scope.Module      => return!? (boundmeter.(mod_bounds))
+            | Scope.Function    => return!? (boundmeter.(fun_bounds))
+            | Scope.Transaction => panic!? "transaction scope unsupported."
+            end;
+          LensPanic.write boundmeter bounds := 
+            match scope with
+            | Scope.Package     => return!? (boundmeter <| pkg_bounds := bounds |>)
+            | Scope.Module      => return!? (boundmeter <| mod_bounds := bounds |>)
+            | Scope.Function    => return!? (boundmeter <| fun_bounds := bounds |>)
+            | Scope.Transaction => panic!? "transaction scope unsupported."
+            end;
+        |}.
  
       (* 
       fn enter_scope(&mut self, name: &str, scope: Scope.t) {
@@ -303,18 +279,13 @@ Module Meter.
           bounds.units = 0;
       }
       *)
-      Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
-        letS? bounds := return!?toS? (get_bounds_mut self scope) in
-        let bounds := bounds <| Bounds.name  := name |> in 
-        let bounds := bounds <| Bounds.units := 0    |> in 
-        let self := match scope with 
-          | Scope.Package     => self <| BoundMeter.pkg_bounds := bounds |> 
-          | Scope.Module      => self <| BoundMeter.mod_bounds := bounds |> 
-          | Scope.Function    => self <| BoundMeter.fun_bounds := bounds |>
-          | Scope.Transaction => self
-        end in
-        let state : State := {| self := self |} in
-          writeS? state.
+      Definition enter_scope (name : string) (scope : Scope.t) : MS? State string unit :=
+        liftS?of!? (get_bounds_mut scope) (
+          letS? bounds := readS? in
+          letS? _ := writeS? (bounds <| Bounds.name  := name |>) in 
+          letS? _ := writeS? (bounds <| Bounds.units := 0    |>) in
+          returnS? tt
+        ).
 
       (* 
       fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
