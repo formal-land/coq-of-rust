@@ -42,7 +42,8 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - (IMPORTANT)Push the progress on this file by:
     1. Implement `safe_unwrap_err!` macro
     2. Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
-  - 3. Implement `mut` functions in this file
+    3. Implement `mut` functions in this file
+    4. Implement cases for `verify_instr`
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
@@ -580,22 +581,6 @@ fn verify_instr(
     meter: &mut (impl Meter + ?Sized),
 ) -> PartialVMResult<()> {
     match bytecode {
-        Bytecode::Pop => {
-            let operand = safe_unwrap_err!(verifier.stack.pop());
-            let abilities = verifier
-                .module
-                .abilities(&operand, verifier.function_context.type_parameters());
-            if !abilities?.has_drop() {
-                return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
-            }
-        }
-
-        Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
-            let operand = safe_unwrap_err!(verifier.stack.pop());
-            if operand != ST::Bool {
-                return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
-            }
-        }
 
         Bytecode::StLoc(idx) => {
             let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1066,17 +1051,17 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   (offset : CodeOffset.t) : PartialVMResult.t unit :=
   (* TODO: wrap up the function with a StatePanic monad *)
   match bytecode with
-  (* 
+    (* 
     Bytecode::Pop => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      let abilities = verifier
-          .module
-          .abilities(&operand, verifier.function_context.type_parameters());
-      if !abilities?.has_drop() {
-          return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
-      }
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        let abilities = verifier
+            .module
+            .abilities(&operand, verifier.function_context.type_parameters());
+        if !abilities?.has_drop() {
+            return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
+        }
     }
-  *)
+    *)
   (* NOTE: `State` for this function should contain `verifier` *)
   | Bytecode.Pop => 
     (* let _stack := verifier.(TypeSafetyChecker.stack) in
@@ -1084,6 +1069,14 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
     let abilities := _ in
     let _ := _ in *)
     return?? tt
+    (* 
+    Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if operand != ST::Bool {
+            return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
 
   (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
   | Bytecode.Branch _ | Bytecode.Nop => return?? tt
@@ -1148,13 +1141,13 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.MoveToGeneric idx => return?? tt
   | Bytecode.Shl => return?? tt
   | Bytecode.Shr => return?? tt
-  (* | Bytecode.VecPack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecPack idx num => return?? tt
   | Bytecode.VecLen idx => return?? tt
   | Bytecode.VecImmBorrow idx => return?? tt
   | Bytecode.VecMutBorrow idx => return?? tt
   | Bytecode.VecPushBack idx => return?? tt
   | Bytecode.VecPopBack idx => return?? tt
-  (* | Bytecode.VecUnpack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecUnpack idx num => return?? tt
   | Bytecode.VecSwap idx => return?? tt
   | Bytecode.LdU16 idx => return?? tt
   | Bytecode.LdU32 idx => return?? tt
