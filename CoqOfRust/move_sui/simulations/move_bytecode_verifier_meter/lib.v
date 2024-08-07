@@ -14,8 +14,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Fix bugs in `Bounds.add`: 
   - Implement saturated addition
-- Implement `BoundMeter::add`:
-  - Implement `Lens` from `Bounds` to `BoundMeter`
 - Write out the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -325,12 +323,13 @@ Module Meter.
       Definition add (self : Self) (scope : Scope.t) (units : Z) 
         : MS? State string (PartialVMResult.t unit) :=
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
-        let units := bounds.(Bounds.units) in
-        let bounds : MS? Bounds.State string (PartialVMResult.t unit) := 
-          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
-            bounds units in
-        (* TODO: write the updated bounds to the bounds state *)
-        let boundmeter := Lens.lift (Lens_BoundMeter_State_Bounds_State.values scope) bounds in
+        letS? boundmeter := liftS? 
+          (Lens_BoundMeter_State_Bounds_State.values scope) 
+          (Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
+          bounds units)
+          in
+        letS? _ := writeS? boundmeter in
+
         (* TODO: figure out why `writeS?` doesn't work *)
         (* letS? _ := writeS? in *)
         returnS? (Result.Ok tt).
