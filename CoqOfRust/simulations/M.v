@@ -125,8 +125,11 @@ Module StatePanic.
   Definition write {State Error : Set} (state : State) : t State Error unit :=
     fun _ => (return!? tt, state).
 
+  Definition panic_any {State Error A : Set} (err : Error) : t State Error A :=
+    fun state => (panic!? err, state).
+
   Definition panic {State A : Set} (msg : string) : t State string A :=
-    fun state => (panic!? msg, state).
+    panic_any msg.
 
   Definition lift_from_panic {State Error A : Set} (value : M!? Error A) : t State Error A :=
     fun state => (value, state).
@@ -150,6 +153,8 @@ Module StatePanicNotations.
   Notation "readS?" := StatePanic.read.
 
   Notation "writeS?" := StatePanic.write.
+
+  Notation "panic_anyS?" := StatePanic.panic_any.
 
   Notation "panicS?" := StatePanic.panic.
 
