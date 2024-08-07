@@ -12,8 +12,6 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- (Important) Check `mut` functions for `BoundMeter` have been implemented correctly
-  with a focus on correctly mutating the states
 - Fix bugs in `Bounds.add`: 
   - Implement saturated addition
 - Investigate the exact function chains from `verify_instr` 
