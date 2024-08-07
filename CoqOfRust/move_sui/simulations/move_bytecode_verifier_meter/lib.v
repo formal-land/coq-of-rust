@@ -282,8 +282,9 @@ Module Meter.
       Definition enter_scope (name : string) (scope : Scope.t) : MS? State string unit :=
         liftS?of!? (get_bounds_mut scope) (
           letS? bounds := readS? in
-          letS? _ := writeS? (bounds <| Bounds.name  := name |>) in 
-          letS? _ := writeS? (bounds <| Bounds.units := 0    |>) in
+          let   bounds := bounds <| Bounds.name  := name |> in
+          let   bounds := bounds <| Bounds.units := 0    |> in
+          letS? _ := writeS? bounds in
           returnS? tt
         ).
 
@@ -292,19 +293,13 @@ Module Meter.
           self.get_bounds_mut(scope).add(units)
       }
       *)
-      Definition add (self : Self) (scope : Scope.t) (units : Z) 
+      Definition add (scope : Scope.t) (units : Z) 
         : MS? State string (PartialVMResult.t unit) :=
-        letS? _ := writeS? (Build_State self) in
-        letS? bounds := return!?toS? (get_bounds_mut self scope) in
-        letS? boundmeter := liftS? 
-          (Lens_BoundMeter_State_Bounds_State.values scope) 
-          (Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
-          bounds units)
-          in
-        (* NOTE: is it the correct way to write the updated value? *)
-        letS? self := readS? in
-        letS? _ := writeS? self in
-        returnS? boundmeter.
+        liftS?of!? (get_bounds_mut scope) (
+          letS? bounds := readS? in
+          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
+            units
+        ).
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
@@ -312,11 +307,13 @@ Module Meter.
           self.add(to, units)
       }
       *)
-      Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) 
+      Definition transfer (from : Scope.t) (to : Scope.t) (factor : Z) 
         : MS? State string (PartialVMResult.t unit) :=
-        letS? bounds := return!?toS? (get_bounds_mut self from) in
+        letS? bounds := liftS?of!? (get_bounds_mut from) (readS?) in 
+        letS? self := readS? in
         let units := Z.mul bounds.(Bounds.units) factor in
-        add self to units.
+        add to units
+        .
 
       (* 
       /// Adds the number of items.
