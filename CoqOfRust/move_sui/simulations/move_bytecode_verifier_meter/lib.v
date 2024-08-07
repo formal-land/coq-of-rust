@@ -12,9 +12,11 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
+- (Important) Check `mut` functions for `BoundMeter` have been implemented correctly
+  with a focus on correctly mutating the states
 - Fix bugs in `Bounds.add`: 
   - Implement saturated addition
-- Write out the exact function chains from `verify_instr` 
+- Investigate the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
   - Carefully check where does `DummyMeter` apply and what properties or functions are being accessed
@@ -293,7 +295,7 @@ Module Meter.
         | Scope.Function    => return!? self.(fun_bounds)
         | Scope.Transaction => panic!? "transaction scope unsupported."
         end.
-
+ 
       (* 
       fn enter_scope(&mut self, name: &str, scope: Scope.t) {
           let bounds = self.get_bounds_mut(scope);
@@ -344,6 +346,21 @@ Module Meter.
         letS? bounds := return!?toS? (get_bounds_mut self from) in
         let units := Z.mul bounds.(Bounds.units) factor in
         add self to units.
+
+      (* 
+      /// Adds the number of items.
+      fn add_items(
+          &mut self,
+          scope: Scope,
+          units_per_item: u128,
+          items: usize,
+      ) -> PartialVMResult<()> {
+          if items == 0 {
+              return Ok(());
+          }
+          self.add(scope, units_per_item.saturating_mul(items as u128))
+      }
+      *)
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.

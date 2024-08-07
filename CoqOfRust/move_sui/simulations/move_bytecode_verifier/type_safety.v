@@ -37,7 +37,6 @@ Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 *)
 
 (* TODO(progress):
-  - Use `AbstractStack::Pop` correctly
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)

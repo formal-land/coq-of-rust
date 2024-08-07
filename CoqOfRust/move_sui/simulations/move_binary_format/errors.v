@@ -22,7 +22,7 @@ Module ExecutionState.
 End ExecutionState.
 
 (* TODO(progress): 
-- Implement functions with mutations, for example `at_code_offset`. 
+- Rewrite `mut` functions with `StatePanic` monads, for example `at_code_offset`. 
   Maybe implement Lens for `PartialVMError`. See the NOTE there
 *)
 
