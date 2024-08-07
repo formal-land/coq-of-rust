@@ -212,7 +212,7 @@ Module Meter.
     }.
 
     Module Lens_BoundMeter_State_Bounds_State.
-      Definition values {A : Set} (scope : Scope.t) : Lens.t State Bounds.State := {|
+      Definition values (scope : Scope.t) : Lens.t State Bounds.State := {|
         Lens.read boundmeter_state := 
           let boundmeter := boundmeter_state.(self) in
           let bound := match scope with
@@ -304,7 +304,6 @@ Module Meter.
           bounds.units = 0;
       }
       *)
-
       Definition enter_scope (self : Self) (name : string) (scope : Scope.t) : MS? State string unit :=
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
         let bounds := bounds <| Bounds.name  := name |> in 
@@ -319,44 +318,21 @@ Module Meter.
           writeS? state.
 
       (* 
-      Definition lift {Big_State State Error A : Set}
-        (lens : t Big_State State)
-        (value : MS? State Error A) :
-        MS? Big_State Error A
-      *)
-
-      (* 
       fn add(&mut self, scope: Scope, units: u128) -> PartialVMResult<()> {
           self.get_bounds_mut(scope).add(units)
       }
       *)
       Definition add (self : Self) (scope : Scope.t) (units : Z) 
-        : MS? State string (PartialVMResult.t unit):=
+        : MS? State string (PartialVMResult.t unit) :=
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
         let units := bounds.(Bounds.units) in
-        (* TODO: write a `Lens` for this function *)
         let bounds : MS? Bounds.State string (PartialVMResult.t unit) := 
-            Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
-              bounds units in
-        let state :=
-          bounds (fun state =>
-            let '(_, state) := state in state) in
-
-        (* 
-        The term
-        "letS? ' _
-          := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
-              bounds units0 in readS?" has type
-        "MS? Bounds.State string Bounds.State"
-        while it is expected to have type
-        "MS? Bounds.State string (PartialVMResult.t unit)"
-        (cannot unify "M!? string Bounds.State * Bounds.State" and
-        "M!? string (PartialVMResult.t unit) * Bounds.State").
-        *)
-
-        (* let bounds := Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add
-          bounds units in *)
-        
+          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
+            bounds units in
+        (* TODO: write the updated bounds to the bounds state *)
+        let boundmeter := Lens.lift (Lens_BoundMeter_State_Bounds_State.values scope) bounds in
+        (* TODO: figure out why `writeS?` doesn't work *)
+        (* letS? _ := writeS? in *)
         returnS? (Result.Ok tt).
 
       (* 
@@ -366,10 +342,10 @@ Module Meter.
       }
       *)
       Definition transfer (self : Self) (from : Scope.t) (to : Scope.t) (factor : Z) 
-        : MS? State PartialVMError.t unit :=
-        letS? bounds := get_bounds_mut self from in
-        let units := bounds.(Bounds.units) in
-        returnS? tt.
+        : MS? State string (PartialVMResult.t unit) :=
+        letS? bounds := return!?toS? (get_bounds_mut self from) in
+        let units := Z.mul bounds.(Bounds.units) factor in
+        add self to units.
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.
