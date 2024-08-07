@@ -32,14 +32,19 @@ Module StatusCode := vm_status.StatusCode.
 Require CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 
-(* NOTE:
-  - `meter : impl Meter` parameters are ignored in the simulation
-*)
+Require CoqOfRust.move_sui.simulations.move_bytecode_verifier_meter.lib.
+Module Scope := move_bytecode_verifier_meter.lib.Scope.
+(* NOTE(IMPORTANT): For now we just simplify `Meter` to the actual `BoundMeter` struct
+   since it's the only implementation that contains useful logic *)
+Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
+  - (IMPORTANT)Push the progress on this file by:
+    1. Implement `safe_unwrap_err!` macro
+    2. Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
+  - 3. Implement `mut` functions in this file
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
-  - Implement `safe_unwrap_err!` macro
-  - Implement `mut` functions in this file
+  - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
 
@@ -162,6 +167,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
+    (* TODO: Implement Lens from `BoundMeter` to `TypeSafetyChecker` *)
     Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
       return?? tt.
 
@@ -203,7 +209,6 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    (* NOTE: with `safe_unwrap_err` macro, we might need to use the Result monad seriously here... *)
     Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
       return?? tt.
 
@@ -1059,7 +1064,7 @@ fn verify_instr(
 
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : PartialVMResult.t unit :=
-  (* TODO: IMPORTANT: wrap up the pattern match with a Result monad *)
+  (* TODO: wrap up the function with a StatePanic monad *)
   match bytecode with
   (* 
     Bytecode::Pop => {
@@ -1076,7 +1081,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.Pop => 
     (* let _stack := verifier.(TypeSafetyChecker.stack) in
     let operand := AbstractStack.pop _stack in
-    let abilities := _ in (* TODO: Implement `abilities`! *)
+    let abilities := _ in
     let _ := _ in *)
     return?? tt
 
