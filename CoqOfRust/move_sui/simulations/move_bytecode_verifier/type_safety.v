@@ -38,6 +38,7 @@ Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
+  - Implement `safe_unwrap_err!` macro
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
 

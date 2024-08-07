@@ -21,6 +21,7 @@ End PartialVMResult.
 (* **************** *)
 
 (* NOTE: used in `type_safety` for reference
+   TODO: implement the function such that it panics for Error and returns the value for Ok
 macro_rules! safe_unwrap_err {
     ($e:expr) => {{
         match $e {
