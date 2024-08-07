@@ -12,8 +12,7 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Fix bugs in `Bounds.add`: 
-  - Implement saturated addition
+- Implement saturated additions
 - Investigate the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -24,8 +23,8 @@ Module StatusCode := vm_status.StatusCode.
 - We can restructure the `Meter` into a large module, since its content are pretty few.
   Currently we implement the structs as the following tree:
   Module Meter
-  - Module BoundMeter
-  - Module DummyMeter
+  | - Module BoundMeter
+  | - Module DummyMeter
 - We ignore `f32` since related parameters are mostly factors to be multiplied with.
   These parameters will be either ignored or treated as a sole Z value.
 *)
@@ -112,7 +111,6 @@ Module Bounds.
           letS? _ := writeS? self in
           returnS? (Result.Ok tt)
       | None => 
-          letS? _ := writeS? self in
           returnS? (Result.Ok tt)
       end.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
@@ -332,6 +330,7 @@ Module Meter.
         if items =? 0
         then (returnS? (Result.Ok tt))
         else letS? self := readS? in
+        (* TODO: Implement saturating_mul *)
         add scope (Z.mul units_per_item items).
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
