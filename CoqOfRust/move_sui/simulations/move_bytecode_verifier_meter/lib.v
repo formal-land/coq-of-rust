@@ -327,6 +327,12 @@ Module Meter.
           self.add(scope, units_per_item.saturating_mul(items as u128))
       }
       *)
+      Definition add_items (scope : Scope.t) (units_per_item items : Z) 
+        : MS? State string (PartialVMResult.t unit) :=
+        if items =? 0
+        then (returnS? (Result.Ok tt))
+        else letS? self := readS? in
+        add scope (Z.mul units_per_item items).
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.
