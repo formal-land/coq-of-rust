@@ -210,6 +210,32 @@ Module Meter.
     Record State := { 
       self : t;
     }.
+
+    Module Lens_BoundMeter_State_Bounds_State.
+      Definition values {A : Set} (scope : Scope.t) : Lens.t State Bounds.State := {|
+        Lens.read boundmeter_state := 
+          let boundmeter := boundmeter_state.(self) in
+          let bound := match scope with
+          | Scope.Package     => boundmeter.(pkg_bounds)
+          | Scope.Module      => boundmeter.(mod_bounds)
+          | Scope.Function    => boundmeter.(fun_bounds)
+          (* NOTE: For this case we just assume it will never be arrived *)
+          | Scope.Transaction => boundmeter.(pkg_bounds)
+          end in
+          Bounds.Build_State bound;
+        Lens.write boundmeter_state bounds_state := 
+          let boundmeter := boundmeter_state.(self) in
+          let bounds := bounds_state.(Bounds.self) in
+          let boundmeter := match scope with
+          | Scope.Package     => boundmeter <| pkg_bounds := bounds |>
+          | Scope.Module      => boundmeter <| mod_bounds := bounds |>
+          | Scope.Function    => boundmeter <| fun_bounds := bounds |>
+          (* NOTE: For this case we just assume it will never be arrived *)
+          | Scope.Transaction => boundmeter <| pkg_bounds := bounds |>
+          end in
+          Build_State boundmeter;
+      |}.
+    End Lens_BoundMeter_State_Bounds_State.
     (* 
     impl BoundMeter {
         pub fn new(config: MeterConfig) -> Self {
@@ -229,15 +255,6 @@ Module Meter.
                     units: 0,
                     max: config.max_per_fun_meter_units,
                 },
-            }
-        }
-
-        fn get_bounds_mut(&mut self, scope: Scope.t) -> &mut Bounds {
-            match scope {
-                Scope::Package => &mut self.pkg_bounds,
-                Scope::Module => &mut self.mod_bounds,
-                Scope::Function => &mut self.fun_bounds,
-                Scope::Transaction => panic!("transaction scope unsupported."),
             }
         }
 
@@ -301,20 +318,11 @@ Module Meter.
         let state : State := {| self := self |} in
           writeS? state.
 
-      Module Lens_Bounds.
-        Definition t : Lens.t Bounds.t Self := {| 
-          Lens.read := _ ;
-          Lens.write := _;
-        |}.
-      End Lens_Bounds.
-
       (* 
-      Module Lens.
-        Definition values {A : Set} : Lens.t (t A) (list (Z * A)) := {|
-          Lens.read stack := values stack;
-          Lens.write stack vs := stack <| values := vs |>
-        |}.
-      End Lens.
+      Definition lift {Big_State State Error A : Set}
+        (lens : t Big_State State)
+        (value : MS? State Error A) :
+        MS? Big_State Error A
       *)
 
       (* 
