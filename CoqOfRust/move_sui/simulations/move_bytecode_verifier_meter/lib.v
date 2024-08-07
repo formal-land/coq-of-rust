@@ -23,13 +23,14 @@ Module StatusCode := vm_status.StatusCode.
 (* NOTE: 
 - We can restructure the `Meter` into a large module, since its content are pretty few.
   Currently we implement the structs as the following tree:
-  
   Module Meter
   - Module BoundMeter
   - Module DummyMeter
-
 - We ignore `f32` since related parameters are mostly factors to be multiplied with.
-  These parameters will be either ignored or treated as a sole `1`.
+  These parameters will be either ignored or treated as a sole Z value.
+- For style consistency, I currently design the `mut` functions such that they:
+  - Explicitly pass in `self` as parameter rather than reading from states
+  - Write to their state monads with the updated `self`
 *)
 
 (* 
@@ -98,8 +99,6 @@ Module Bounds.
     }
     *)
 
-    (* NOTE: we currently just stub the `Error` with `string`. A more proper way is to
-        define an `Error` explicitly*)
     Definition add (self : Self) (units : Z) : MS? State string (PartialVMResult.t unit) :=
       let state : State := {| self := self |} in
       match self.(max) with
@@ -322,17 +321,17 @@ Module Meter.
       *)
       Definition add (self : Self) (scope : Scope.t) (units : Z) 
         : MS? State string (PartialVMResult.t unit) :=
+        letS? _ := writeS? (Build_State self) in
         letS? bounds := return!?toS? (get_bounds_mut self scope) in
         letS? boundmeter := liftS? 
           (Lens_BoundMeter_State_Bounds_State.values scope) 
           (Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
           bounds units)
           in
-        letS? _ := writeS? boundmeter in
-
-        (* TODO: figure out why `writeS?` doesn't work *)
-        (* letS? _ := writeS? in *)
-        returnS? (Result.Ok tt).
+        (* NOTE: is it the correct way to write the updated value? *)
+        letS? self := readS? in
+        letS? _ := writeS? self in
+        returnS? boundmeter.
 
       (* 
       fn transfer(&mut self, from: Scope, to: Scope, factor: f32) -> PartialVMResult<()> {
