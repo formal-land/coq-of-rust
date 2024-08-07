@@ -39,6 +39,7 @@ Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 (* TODO(progress):
   - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
   - Implement `safe_unwrap_err!` macro
+  - Implement `mut` functions in this file
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
 
@@ -147,7 +148,6 @@ Module TypeSafetyChecker.
         .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
           pvme index offset.
 
-    (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
     (* 
       fn charge_ty_(
           &mut self,
