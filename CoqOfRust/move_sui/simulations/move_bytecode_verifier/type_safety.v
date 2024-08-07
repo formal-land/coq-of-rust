@@ -29,36 +29,30 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* NOTE:
-  - `meter : impl Meter` parameters are ignored in the simulation
-*)
+Require CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
+Module AbstractStack := move_abstract_stack.lib.AbstractStack.
+
+Require CoqOfRust.move_sui.simulations.move_bytecode_verifier_meter.lib.
+Module Scope := move_bytecode_verifier_meter.lib.Scope.
+(* NOTE(IMPORTANT): For now we just simplify `Meter` to the actual `BoundMeter` struct
+   since it's the only implementation that contains useful logic *)
+Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
-  - Implement `abilities` in `file_format` and resolve the mutual dependency issue completely
-  - Remove `SignatureToken.Bool` with something better
+  - (IMPORTANT)Push the progress on this file by:
+    1. Implement `safe_unwrap_err!` macro
+    2. Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
+    3. Implement `mut` functions in this file
+    4. Implement `AbilitySet` and `CompiledModule` in `file_format`
+    5. Implement cases for `verify_instr`
+  - Deal with the temporary `coerce`
+  - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
-
-(* TODO: tbd after PR #577 *)
-Definition AbstractStack (A : Set) : Set. Admitted.
-Definition AbstractStack_new : AbstractStack SignatureToken.t. Admitted.
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
-(* DRAFT: example code for how verifier works
-  Bytecode::Or | Bytecode::And => {
-      let operand1 = safe_unwrap_err!(verifier.stack.pop()); // <- used the `Result` monad
-      let operand2 = safe_unwrap_err!(verifier.stack.pop());
-      if operand1 == ST::Bool && operand2 == ST::Bool {
-          verifier.push(meter, ST::Bool)?; // <- used the `push` & `charge_ty` functions in `TypeSafetyChecker`
-      } else {
-          return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  // TODO: figure out how `meter` works exactly in where?
-*)
-
-(* NOTE: temp brutal helper function. Should be removed with regarding to mutual dependency issue *)
+(* NOTE: temp brutal helper function. Should be removed with regard to the mutual dependency issue *)
 Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
 
 Module Locals.
@@ -108,7 +102,7 @@ Module TypeSafetyChecker.
     module : CompiledModule.t;
     function_context : FunctionContext.t;
     locals : Locals.t;
-    stack : AbstractStack SignatureToken.t;
+    stack : AbstractStack.t SignatureToken.t;
   }.
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
@@ -123,7 +117,7 @@ Module TypeSafetyChecker.
         TypeSafetyChecker.module := module;
         TypeSafetyChecker.function_context := function_context; 
         TypeSafetyChecker.locals := locals;
-        TypeSafetyChecker.stack := AbstractStack_new;
+        TypeSafetyChecker.stack := AbstractStack.new;
       |}.
 
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
@@ -160,7 +154,6 @@ Module TypeSafetyChecker.
         .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
           pvme index offset.
 
-    (* NOTE: Since we ignore the `Meter` trait, these functions will be greatly simplified... *)
     (* 
       fn charge_ty_(
           &mut self,
@@ -175,6 +168,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
+    (* TODO: Implement Lens from `BoundMeter` to `TypeSafetyChecker` *)
     Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit :=
       return?? tt.
 
@@ -216,8 +210,8 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    (* NOTE: with `safe_unwrap_err` macro, we might need to use the Result monad seriously here... *)
-    Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit. Admitted.
+    Definition push (self : Self) (ty : SignatureToken.t) : PartialVMResult.t unit :=
+      return?? tt.
 
     (* 
       fn push_n(
@@ -587,22 +581,6 @@ fn verify_instr(
     meter: &mut (impl Meter + ?Sized),
 ) -> PartialVMResult<()> {
     match bytecode {
-        Bytecode::Pop => {
-            let operand = safe_unwrap_err!(verifier.stack.pop());
-            let abilities = verifier
-                .module
-                .abilities(&operand, verifier.function_context.type_parameters());
-            if !abilities?.has_drop() {
-                return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
-            }
-        }
-
-        Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
-            let operand = safe_unwrap_err!(verifier.stack.pop());
-            if operand != ST::Bool {
-                return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
-            }
-        }
 
         Bytecode::StLoc(idx) => {
             let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1070,14 +1048,41 @@ fn verify_instr(
 *)
 
 Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) : PartialVMResult.t unit :=
-  (* TODO: IMPORTANT: wrap up the pattern match with a Result monad *)
+  (offset : CodeOffset.t) (* meter : Meter *) : PartialVMResult.t unit :=
+  (* TODO: wrap up the function with a StatePanic monad *)
   match bytecode with
-  | Bytecode.Pop => return?? tt
+  (* 
+  Bytecode::Pop => {
+      let operand = safe_unwrap_err!(verifier.stack.pop());
+      let abilities = verifier
+          .module
+          .abilities(&operand, verifier.function_context.type_parameters());
+      if !abilities?.has_drop() {
+          return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
+      }
+  }
+  *)
+  (* NOTE: `State` for this function should contain `verifier` *)
+  | Bytecode.Pop => 
+    (* let _stack := verifier.(TypeSafetyChecker.stack) in
+    let operand := AbstractStack.pop _stack in
+    let abilities := _ in
+    let _ := _ in *)
+    return?? tt
+  (* 
+  Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
+      let operand = safe_unwrap_err!(verifier.stack.pop());
+      if operand != ST::Bool {
+          return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
+      }
+  }
+  *)
+  | Bytecode.BrTrue idx | Bytecode.BrFalse idx => return?? tt
+
+  (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
+  | Bytecode.Branch _ | Bytecode.Nop => return?? tt
+
   | Bytecode.Ret => return?? tt
-  | Bytecode.BrTrue idx => return?? tt
-  | Bytecode.BrFalse idx => return?? tt
-  | Bytecode.Branch idx => return?? tt
   | Bytecode.LdU8 idx => return?? tt
   | Bytecode.LdU64 idx => return?? tt
   | Bytecode.LdU128 idx => return?? tt
@@ -1127,7 +1132,6 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.Le => return?? tt
   | Bytecode.Ge => return?? tt
   | Bytecode.Abort => return?? tt
-  | Bytecode.Nop => return?? tt
   | Bytecode.Exists idx => return?? tt
   | Bytecode.ExistsGeneric idx => return?? tt
   | Bytecode.MoveFrom idx => return?? tt
@@ -1136,13 +1140,13 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.MoveToGeneric idx => return?? tt
   | Bytecode.Shl => return?? tt
   | Bytecode.Shr => return?? tt
-  (* | Bytecode.VecPack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecPack idx num => return?? tt
   | Bytecode.VecLen idx => return?? tt
   | Bytecode.VecImmBorrow idx => return?? tt
   | Bytecode.VecMutBorrow idx => return?? tt
   | Bytecode.VecPushBack idx => return?? tt
   | Bytecode.VecPopBack idx => return?? tt
-  (* | Bytecode.VecUnpack (_ : SignatureIndex.t) (_ : Z) => return?? tt *)
+  | Bytecode.VecUnpack idx num => return?? tt
   | Bytecode.VecSwap idx => return?? tt
   | Bytecode.LdU16 idx => return?? tt
   | Bytecode.LdU32 idx => return?? tt
@@ -1150,7 +1154,6 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.CastU16 => return?? tt
   | Bytecode.CastU32 => return?? tt
   | Bytecode.CastU256 => return?? tt
-  | _ => return?? tt
   end.
 
 (* 

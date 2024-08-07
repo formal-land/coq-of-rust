@@ -4,9 +4,20 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-(* NOTE: temporary stub for mutual dependency issue *)
-(* Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
-Module PartialVMResult := errors.PartialVMResult. *)
+(* TODO(progress):
+- Implement `safe_unwrap_err`
+- (IMPORTANT)Implement `AbilitySet` and its `impl`s. In particular, being used for `verify_instr`:
+  - Implement `has_drop`
+  - Implement `has_copy`
+  - Implement `has_key`
+  Luckily they aren't mutable functions!
+- Implement `CompiledModule`'s `abilities`
+- `List.nth` issue: remove `SignatureToken.Bool` with something better
+*)
+
+(* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
+   since this file has mutual dependency with another file. Although it works 
+   for now, we shouldn't ignore this. *)
 Module PartialVMError.
   Inductive t : Set := .
 End PartialVMError.
@@ -16,7 +27,8 @@ End PartialVMResult.
 
 (* **************** *)
 
-(* NOTE: used in `type_safety` for reference
+(* DRAFT: used in `type_safety` for reference
+   TODO: implement the function such that it panics for Error and returns the value for Ok
 macro_rules! safe_unwrap_err {
     ($e:expr) => {{
         match $e {
@@ -59,7 +71,15 @@ Module CodeOffset.
   Record t : Set := { a0 : Z; }.
 End CodeOffset.
 
-(* Template for `define_index!` macro
+Module ModuleHandleIndex.
+  Record t : Set := { a0 : Z; }.
+End ModuleHandleIndex.
+
+Module IdentifierIndex.
+  Record t : Set := { a0 : Z; }.
+End IdentifierIndex.
+
+(* DRAFT: Template for `define_index!` macro
 
 pub struct $name(pub TableIndex);
 
@@ -133,11 +153,11 @@ Module AbilitySet.
   Record t : Set := { a0 : Z; }.
 End AbilitySet.
 
-(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 Module SignatureIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
+  Record t : Set := { a0 : Z; }.
 End SignatureIndex.
+
+(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 
 Module ConstantPoolIndex.
   Inductive t : Set :=
@@ -230,7 +250,14 @@ pub struct FunctionHandle {
 }
 *)
 Module FunctionHandle.
-  Record t : Set := { }.
+  Record t : Set := { 
+  module : ModuleHandleIndex.t;
+  name : IdentifierIndex.t;
+  parameters : SignatureIndex.t;
+  return_ : SignatureIndex.t;
+  type_parameters : list AbilitySet.t;
+  
+  }.
 End FunctionHandle.
 
 (* 
@@ -303,6 +330,10 @@ Module Signature.
 
   Definition len (self : t) : Z := Z.of_nat (List.length self.(a0)).
 End Signature.
+
+Module SignaturePool.
+  Definition t := list Signature.t.
+End SignaturePool.
 
 Module Bytecode.
   Inductive t : Set :=
@@ -440,7 +471,7 @@ Module CompiledModule.
   (* struct_def_instantiations : list StructDefInstantiation; *)
   (* function_instantiations : list FunctionInstantiation; *)
   (* field_instantiations : list FieldInstantiation; *)
-  (* signatures : SignaturePool; *)
+  signatures : SignaturePool.t;
   (* identifiers : IdentifierPool; *)
   (* address_identifiers : AddressIdentifierPool; *)
   (* constant_pool : ConstantPool; *)
@@ -493,6 +524,19 @@ Module CompiledModule.
     *)
     Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t. Admitted.
+
+    (* 
+    pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
+        &self.signatures[idx.into_index()]
+    }
+    *)
+    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
+    Definition signature_at(self : Self) (idx : SignatureIndex.t) : Signature.t :=
+      let idx := idx.(SignatureIndex.a0) in
+      (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future  *)
+      let default_token := [SignatureToken.Bool] in
+      List.nth (Z.to_nat idx) self.(signatures) (Signature.Build_t default_token).
+
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
 
