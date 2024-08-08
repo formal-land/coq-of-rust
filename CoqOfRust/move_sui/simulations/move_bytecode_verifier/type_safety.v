@@ -90,7 +90,8 @@ Module Locals.
       let idx := i.(LocalIndex.a0) in 
       if idx <? self.(param_count)
       (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
-        To be fixed in the future*)
+        Since we already checked the length of list, it shouldn't occur by
+        any means. *)
       then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) (SignatureToken.Bool)
       else List.nth (Z.to_nat (idx - self.(param_count))) 
               self.(locals).(Signature.a0) (SignatureToken.Bool).
@@ -151,7 +152,7 @@ Module TypeSafetyChecker.
       let index := self.(function_context).(FunctionContext.index) in
       let index := match index with
         | Some idx => idx
-        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0) 
+        | None => FunctionDefinitionIndex.Build_t $ Z.of_N 0
         end in
       PartialVMError
         .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
@@ -171,10 +172,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    (* NOTE: 
-    1. Why the `self` is a `mut` variable here? 
-    2. Can we delete the `self` parameter? *)
-    Definition charge_ty_ (self : Self) (ty : SignatureToken.t) (n : Z) 
+    Definition charge_ty_ (ty : SignatureToken.t) (n : Z) 
       : MS? Meter.t string (PartialVMResult.t unit) :=
       letS? meter := readS? in
       Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
@@ -191,8 +189,8 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (self : Self) (ty : SignatureToken.t) 
-      : MS? Meter.t string (PartialVMResult.t unit) :=
+    Definition charge_ty (ty : SignatureToken.t) : 
+      MS? Meter.t string (PartialVMResult.t unit) :=
       charge_ty_ self ty 1.
 
     (* 
@@ -232,7 +230,7 @@ Module TypeSafetyChecker.
     *)
     (* NOTE: the state for this function should contain `self` and `meter` *)
     Definition push (self : Self) (ty : SignatureToken.t) : 
-      MS? unit string (PartialVMResult.t unit):=
+      MS? (Self * Meter) string (PartialVMResult.t unit):=
       returnS? (Result.Ok tt).
 
     (* 
@@ -1014,14 +1012,21 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   *)
   | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
       let _stack := verifier.(TypeSafetyChecker.stack) in
+      (* TODO: lift the operand from `AbstractStack`'s monad *)
       let operand := AbstractStack.pop _stack in
-      (* TODO: extract the `operand` from M?? SignatureToken.t lib.AbsStackError.t *)
-      (* TODO: if the value is `Ok` then continue else return Err *)
-      if ~SignatureToken.t_beq operand SignatureToken.Bool
+      match operand with
+      | Result.Ok _ => returnS? (Result.Ok tt)
+      | Result.Err _ => returnS? (Result.Ok tt)
+      end
+      (* TODO: extract the `operand` from Result.t SignatureToken.t lib.AbsStackError.t *)
+      (* TODO: if the value is `Ok` then continue else return 
+          Result.Err 
+            (PartialVMError.new(StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR) *)
+      (* if ~SignatureToken.t_beq operand SignatureToken.Bool
       then returnS? (Result.Err (
         TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
-      else returnS? (Result.Ok tt)
+      else returnS? (Result.Ok tt) *)
 
   (* 
   Bytecode::StLoc(idx) => {

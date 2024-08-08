@@ -18,8 +18,10 @@ Import simulations.M.Notations.
 (* NOTE:
 - `safe_unwrap_err` macro does the following:
   1. Return `Ok x` for `PartialVMResult` value of `Ok x`
-  2. If we're in debug mode, panic when we have a value of `Err x`
-  3. Otherwise just rethrn `Err x` for value of `Err x`
+  2. If we're in debug mode, `panic!` when we have a value of `Err x`
+  3. Otherwise for value of `Err x` we return 
+    `Err (PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR))`
+    (I ignore the `with_message` for now) 
   Therefore I decide that we just ignore this macro.
 *)
 
@@ -279,7 +281,6 @@ pub enum SignatureToken {
     U256,
 }
 *)
-
 Module SignatureToken.
   Inductive t : Set := 
   | Bool
@@ -299,6 +300,241 @@ Module SignatureToken.
   | U256
   .
   Scheme Boolean Equality for t.
+  (* 
+  impl SignatureToken {
+      /// Returns the "value kind" for the `SignatureToken`
+      #[inline]
+      pub fn signature_token_kind(&self) -> SignatureTokenKind {
+          // TODO: SignatureTokenKind is out-dated. fix/update/remove SignatureTokenKind and see if
+          // this function needs to be cleaned up
+          use SignatureToken::*;
+
+          match self {
+              Reference(_) => SignatureTokenKind::Reference,
+              MutableReference(_) => SignatureTokenKind::MutableReference,
+              Bool
+              | U8
+              | U16
+              | U32
+              | U64
+              | U128
+              | U256
+              | Address
+              | Signer
+              | Struct(_)
+              | StructInstantiation(_)
+              | Vector(_) => SignatureTokenKind::Value,
+              // TODO: This is a temporary hack to please the verifier. SignatureTokenKind will soon
+              // be completely removed. `SignatureTokenView::kind()` should be used instead.
+              TypeParameter(_) => SignatureTokenKind::Value,
+          }
+      }
+
+      /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
+      pub fn is_reference(&self) -> bool {
+          use SignatureToken::*;
+
+          matches!(self, Reference(_) | MutableReference(_))
+      }
+
+      /// Returns true if the `SignatureToken` is a mutable reference.
+      pub fn is_mutable_reference(&self) -> bool {
+          use SignatureToken::*;
+
+          matches!(self, MutableReference(_))
+      }
+
+      /// Returns true if the `SignatureToken` is a signer
+      pub fn is_signer(&self) -> bool {
+          use SignatureToken::*;
+
+          matches!(self, Signer)
+      }
+
+      /// Returns true if the `SignatureToken` can represent a constant (as in representable in
+      /// the constants table).
+      pub fn is_valid_for_constant(&self) -> bool {
+          use SignatureToken::*;
+
+          match self {
+              Bool | U8 | U16 | U32 | U64 | U128 | U256 | Address => true,
+              Vector(inner) => inner.is_valid_for_constant(),
+              Signer
+              | Struct(_)
+              | StructInstantiation(_)
+              | Reference(_)
+              | MutableReference(_)
+              | TypeParameter(_) => false,
+          }
+      }
+
+      /// Set the index to this one. Useful for random testing.
+      ///
+      /// Panics if this token doesn't contain a struct handle.
+      pub fn debug_set_sh_idx(&mut self, sh_idx: StructHandleIndex) {
+          match self {
+              SignatureToken::Struct(ref mut wrapped) => *wrapped = sh_idx,
+              SignatureToken::StructInstantiation(ref mut struct_inst) => {
+                  Box::as_mut(struct_inst).0 = sh_idx
+              }
+              SignatureToken::Reference(ref mut token)
+              | SignatureToken::MutableReference(ref mut token) => token.debug_set_sh_idx(sh_idx),
+              other => panic!(
+                  "debug_set_sh_idx (to {}) called for non-struct token {:?}",
+                  sh_idx, other
+              ),
+          }
+      }
+
+      pub fn preorder_traversal_with_depth(
+          &self,
+      ) -> SignatureTokenPreorderTraversalIterWithDepth<'_> {
+          SignatureTokenPreorderTraversalIterWithDepth {
+              stack: vec![(self, 1)],
+          }
+      }
+  }
+  *)
+
+  (* 
+  pub struct SignatureTokenPreorderTraversalIter<'a> {
+      stack: Vec<&'a SignatureToken>,
+  }
+
+  impl<'a> Iterator for SignatureTokenPreorderTraversalIter<'a> {
+      type Item = &'a SignatureToken;
+  }
+  *)
+  (* NOTE: For this helper iterator I decide to implement in a rougher style *)
+  Module SignatureTokenPreorderTraversalIter.
+    Definition tt := list t.
+
+    (* 
+    fn next(&mut self) -> Option<Self::Item> {
+        use SignatureToken::*;
+
+        match self.stack.pop() {
+            Some(tok) => {
+                match tok {
+                    Reference(inner_tok) | MutableReference(inner_tok) | Vector(inner_tok) => {
+                        self.stack.push(inner_tok)
+                    }
+
+                    StructInstantiation(struct_inst) => {
+                        let (_, inner_toks) = &**struct_inst;
+                        self.stack.extend(inner_toks.iter().rev())
+                    }
+
+                    Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct(_)
+                    | TypeParameter(_) => (),
+                }
+                Some(tok)
+            }
+            None => None,
+        }
+    }
+    *)
+    (* NOTE: for the implementation we only return the stack for simplicity *)
+    Definition next (stack : tt) : tt :=
+      match stack with
+      | tok :: xs => 
+        match tok with
+        | SignatureToken.Reference inner_tok
+        | SignatureToken.MutableReference inner_tok
+        | SignatureToken.Vector inner_tok
+            => inner_tok :: xs
+
+        | SignatureToken.StructInstantiation struct_inst =>
+            let (_, inner_toks) := struct_inst in
+              List.app xs (List.rev inner_toks)
+
+        | SignatureToken.Signer | SignatureToken.Bool | SignatureToken.Address 
+          | SignatureToken.U8 | SignatureToken.U16 | SignatureToken.U32 
+          | SignatureToken.U64 | SignatureToken.U128 | SignatureToken.U256 
+          | SignatureToken.Struct _ | SignatureToken.TypeParameter _
+          => xs
+        end
+      | [] => []
+      end.
+
+    (* 
+    fn fold<B, F>(mut self, init: B, mut f: F) -> B
+    where
+        Self: Sized,
+        F: FnMut(B, Self::Item) -> B,
+    {
+        let mut accum = init;
+        while let Some(x) = self.next() {
+            accum = f(accum, x);
+        }
+        accum
+    }
+
+    fn count(self) -> usize
+    where
+        Self: Sized,
+    {
+        self.fold(
+            0,
+            #[rustc_inherit_overflow_checks]
+            |count, _| count + 1,
+        )
+    }
+    *)
+    (* NOTE: `count` is actually a method for Rust's `Iterator` trait. 
+      For simplicity we ignore all the callbacks and directly implement 
+      its functionality... *)
+    (* 
+    NOTE: Error: Cannot guess decreasing argument of fix.
+    *)
+    Fixpoint count_helper (iters : tt) (c : Z) : Z :=
+      match iters with
+      | _ :: _ => 
+        let iters := next iters in
+          count_helper iters (Z.add 1 c)
+      | [] => c
+      end.
+  End SignatureTokenPreorderTraversalIter.
+
+  Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
+    Definition Self := move_sui.simulations.move_binary_format.file_format.SignatureToken.t.
+
+    (* 
+    // Returns `true` if the `SignatureToken` is an integer type.
+    pub fn is_integer(&self) -> bool {
+        use SignatureToken::*;
+        match self {
+            U8 | U16 | U32 | U64 | U128 | U256 => true,
+            Bool
+            | Address
+            | Signer
+            | Vector(_)
+            | Struct(_)
+            | StructInstantiation(_)
+            | Reference(_)
+            | MutableReference(_)
+            | TypeParameter(_) => false,
+        }
+    }
+    *)
+    Definition is_integer (self : Self) : bool :=
+      match self with
+      | U8 | U16 | U32 | U64 | U128 | U256 => true
+      | _ => false
+      end.
+
+    (* TODO:
+    - Implement `preorder_traversal
+    - Implement `SignatureTokenPreorderTraversalIter::count`
+    *)
+    
+    (* 
+    pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
+        SignatureTokenPreorderTraversalIter { stack: vec![self] }
+    }
+    *)
+
+  End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
 End SignatureToken.
 
 (* 
