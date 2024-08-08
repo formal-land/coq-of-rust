@@ -40,11 +40,11 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
   - (IMPORTANT)Push the progress on this file by:
-    1. Implement `safe_unwrap_err!` macro
-    2. Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
-    3. Implement `mut` functions in this file
-    4. Implement `AbilitySet` and `CompiledModule` in `file_format`
-    5. Implement cases for `verify_instr`
+    - [x] Implement `safe_unwrap_err!` macro
+    - [ ] Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
+    - [ ] Implement `mut` functions in this file
+    - [ ] Implement `AbilitySet` and `CompiledModule` in `file_format`
+    - [ ] Implement cases for `verify_instr`
   - Implement `SignatureToken.preorder_traversal`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
@@ -209,9 +209,11 @@ Module TypeSafetyChecker.
     : MS? Meter.t string (PartialVMResult.t unit) :=
       match tys with
       | ty :: tys => 
-        letS? ty := charge_ty self ty in
-        (* TODO: How to translate the `?` operator here? *)
-        charge_tys self tys
+        letS? ty_result := charge_ty self ty in
+        match ty_result with
+        | Result.Ok _ => charge_tys self tys
+        | Result.Err err => returnS? (Result.Err err)
+        end
       | [] => returnS? (Result.Ok tt)
       end.
 

@@ -15,6 +15,14 @@ Import simulations.M.Notations.
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
 *)
 
+(* NOTE:
+- `safe_unwrap_err` macro does the following:
+  1. Return `Ok x` for `PartialVMResult` value of `Ok x`
+  2. If we're in debug mode, panic when we have a value of `Err x`
+  3. Otherwise just rethrn `Err x` for value of `Err x`
+  Therefore I decide that we just ignore this macro.
+*)
+
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
    since this file has mutual dependency with another file. Although it works 
    for now, we shouldn't ignore this. *)
@@ -27,25 +35,13 @@ End PartialVMResult.
 
 (* **************** *)
 
-(* DRAFT: used in `type_safety` for reference
-   TODO: implement the function such that it panics for Error and returns the value for Ok
-macro_rules! safe_unwrap_err {
-    ($e:expr) => {{
-        match $e {
-            Ok(x) => x,
-            Err(e) => {
-                let err = PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
-                    .with_message(format!("{}:{} {:#}", file!(), line!(), e));
-                if cfg!(debug_assertions) {
-                    panic!("{:?}", err);
-                } else {
-                    return Err(err);
-                }
-            }
-        }
-    }};
-}
-*)
+Definition safe_unwrap_err {State A : Set} 
+  (expr : PartialVMResult.t A)
+  : MS? State string (PartialVMResult.t A) :=
+  match expr with
+  | Result.Ok x => returnS? 
+  | Result.Err err => returnS? (Result.Err err)
+  end.
 
 (* 
 NOTE: 
