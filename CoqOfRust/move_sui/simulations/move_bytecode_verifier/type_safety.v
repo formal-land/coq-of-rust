@@ -47,7 +47,6 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [ ] Implement `mut` functions in this file
     - [ ] Implement `AbilitySet` and `CompiledModule` in `file_format`
     - [ ] Implement cases for `verify_instr`
-  - Implement `SignatureToken.preorder_traversal`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
@@ -152,7 +151,7 @@ Module TypeSafetyChecker.
       let index := self.(function_context).(FunctionContext.index) in
       let index := match index with
         | Some idx => idx
-        | None => FunctionDefinitionIndex.Build_t $ Z.of_N 0
+        | None => FunctionDefinitionIndex.Build_t (Z.of_N 0)
         end in
       PartialVMError
         .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.at_code_offset 
@@ -178,8 +177,9 @@ Module TypeSafetyChecker.
       Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
         Scope.Function
         TYPE_NODE_COST
-        (SignatureToken.preorder_traversal_count 
-          ty) * n.
+        (Z.mul (SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .preorder_traversal_count 
+          ty) n).
 
     (* 
       fn charge_ty(
@@ -192,7 +192,7 @@ Module TypeSafetyChecker.
     *)
     Definition charge_ty (ty : SignatureToken.t) : 
       MS? Meter.t string (PartialVMResult.t unit) :=
-      charge_ty_ self ty 1.
+      charge_ty_ ty 1.
 
     (* 
       fn charge_tys(
@@ -206,13 +206,13 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Fixpoint charge_tys (self : Self) (tys : list SignatureToken.t)
+    Fixpoint charge_tys (tys : list SignatureToken.t)
     : MS? Meter.t string (PartialVMResult.t unit) :=
       match tys with
       | ty :: tys => 
-        letS? ty_result := charge_ty self ty in
+        letS? ty_result := charge_ty ty in
         match ty_result with
-        | Result.Ok _ => charge_tys self tys
+        | Result.Ok _ => charge_tys tys
         | Result.Err err => returnS? (Result.Err err)
         end
       | [] => returnS? (Result.Ok tt)
