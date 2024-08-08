@@ -32,17 +32,7 @@ End PartialVMError.
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
-
 (* **************** *)
-
-Definition safe_unwrap_err {State A : Set} 
-  (expr : PartialVMResult.t A)
-  : MS? State string (PartialVMResult.t A) :=
-  match expr with
-  | Result.Ok x => returnS? 
-  | Result.Err err => returnS? (Result.Err err)
-  end.
-
 (* 
 NOTE: 
   - There are a lot of structs defined here with `Record t : Set := { a0 : Z; }.`.
@@ -308,7 +298,10 @@ Module SignatureToken.
   | U32
   | U256
   .
+  Scheme Boolean Equality for t.
 End SignatureToken.
+
+Print SignatureToken.
 
 (* 
 pub struct Signature(
