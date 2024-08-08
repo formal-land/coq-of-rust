@@ -178,7 +178,8 @@ Module TypeSafetyChecker.
       Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
         Scope.Function
         TYPE_NODE_COST
-        0 (* TODO: implement SignatureToken.preorder_traversal *).
+        (SignatureToken.preorder_traversal_count 
+          ty) * n.
 
     (* 
       fn charge_ty(

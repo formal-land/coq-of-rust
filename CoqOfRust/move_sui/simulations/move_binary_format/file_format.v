@@ -400,12 +400,10 @@ Module SignatureToken.
   pub struct SignatureTokenPreorderTraversalIter<'a> {
       stack: Vec<&'a SignatureToken>,
   }
-
-  impl<'a> Iterator for SignatureTokenPreorderTraversalIter<'a> {
-      type Item = &'a SignatureToken;
-  }
   *)
-  (* NOTE: For this helper iterator I decide to implement in a rougher style *)
+  (* NOTE: We keep a draft for this module, since it's related to the `count`
+     functionality for `SignatureToken`. See notes at `preorder_traersal`
+     below. *)
   Module SignatureTokenPreorderTraversalIter.
     Definition tt := list t.
 
@@ -434,8 +432,8 @@ Module SignatureToken.
         }
     }
     *)
-    (* NOTE: for the implementation we only return the stack for simplicity *)
-    Definition next (stack : tt) : tt :=
+    (* NOTE: DRAFT: Initial simulation for `next`
+      Definition next (stack : tt) : tt :=
       match stack with
       | tok :: xs => 
         match tok with
@@ -455,7 +453,7 @@ Module SignatureToken.
           => xs
         end
       | [] => []
-      end.
+      end. *)
 
     (* 
     fn fold<B, F>(mut self, init: B, mut f: F) -> B
@@ -481,22 +479,6 @@ Module SignatureToken.
         )
     }
     *)
-    (* NOTE: `count` is actually a method for Rust's `Iterator` trait. 
-      For simplicity we ignore all the callbacks and directly implement 
-      its functionality... *)
-    (* 
-    NOTE: Error: Cannot guess decreasing argument of fix.
-    *)
-    Fixpoint count_helper (iters : tt) (c : Z) : Z :=
-      match iters with
-      | _ :: _ => 
-        let iters := next iters in
-          count_helper iters (Z.add 1 c)
-      | [] => c
-      end.
-
-    Definition count (iters : tt) : Z := count_helper iters 0.
-    
   End SignatureTokenPreorderTraversalIter.
 
   Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
@@ -526,16 +508,23 @@ Module SignatureToken.
       | _ => false
       end.
 
-    (* TODO:
-    - Implement `preorder_traversal
-    - Implement `SignatureTokenPreorderTraversalIter::count`
-    *)
-    
     (* 
     pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
         SignatureTokenPreorderTraversalIter { stack: vec![self] }
     }
     *)
+    (* NOTE: Since for now this is only used for counting the tokens in
+      `SignatureToken`, we pick the easiest way to get over it *)
+    
+    Fixpoint count_nat (self : t) : nat :=
+      match self with
+      | Reference inner_tok | MutableReference inner_tok | Vector inner_tok => 1 + count_nat inner_tok
+      | StructInstantiation (_, inner_toks) => 1 + List.list_sum (List.map count_nat inner_toks)
+      | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct _ | TypeParameter _ => 1
+      end.
+
+    Definition preorder_traversal_count (self : Self) : Z :=
+      Z.of_nat (count_nat self).
 
   End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
 End SignatureToken.
