@@ -494,6 +494,9 @@ Module SignatureToken.
           count_helper iters (Z.add 1 c)
       | [] => c
       end.
+
+    Definition count (iters : tt) : Z := count_helper iters 0.
+    
   End SignatureTokenPreorderTraversalIter.
 
   Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
