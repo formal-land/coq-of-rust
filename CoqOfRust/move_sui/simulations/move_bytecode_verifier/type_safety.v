@@ -1003,7 +1003,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       let operand := AbstractStack.pop _stack in
       let abilities := _ in
       let _ := _ in *)
-      returnS? tt
+      returnS? (Result.Ok tt)
   (* 
   Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
       let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1015,10 +1015,12 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
+      (* TODO: extract the `operand` from M?? SignatureToken.t lib.AbsStackError.t *)
+      (* TODO: if the value is `Ok` then continue else return Err *)
       if ~SignatureToken.t_beq operand SignatureToken.Bool
       then returnS? (Result.Err (
         TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error self StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+          .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
       else returnS? (Result.Ok tt)
 
   (* 
@@ -1033,7 +1035,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
-      returnS? tt
+      returnS? (Result.Ok tt)
 
   (* 
   Bytecode::Abort => {
@@ -1047,7 +1049,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
-      returnS? tt
+      returnS? (Result.Ok tt)
 
   (*
   Bytecode::Ret => {
@@ -1060,10 +1062,10 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       }
   }
   *)
-  | Bytecode.Ret => returnS? tt
+  | Bytecode.Ret => returnS? (Result.Ok tt)
 
   (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
-  | Bytecode.Branch _ | Bytecode.Nop => returnS? tt
+  | Bytecode.Branch _ | Bytecode.Nop => returnS? (Result.Ok tt)
 
   (* 
   Bytecode::FreezeRef => {
@@ -1078,7 +1080,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
-      returnS? tt
+      returnS? (Result.Ok tt)
 
   (*
   Bytecode::MutBorrowField(field_handle_index) => borrow_field(
@@ -1091,7 +1093,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
   )?,
   *)
   (* TODO: implement `borrow_field` *)
-  | Bytecode.MutBorrowField idx => returnS? tt
+  | Bytecode.MutBorrowField idx => returnS? (Result.Ok tt)
 
   (*
   Bytecode::MutBorrowFieldGeneric(field_inst_index) => {
@@ -1101,7 +1103,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
   }
   *)
-  | Bytecode.MutBorrowFieldGeneric idx => returnS? tt
+  | Bytecode.MutBorrowFieldGeneric idx => returnS? (Result.Ok tt)
 
   (* 
   Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
@@ -1113,7 +1115,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       &Signature(vec![]),
   )?,
   *)
-  | Bytecode.ImmBorrowField idx => returnS? tt
+  | Bytecode.ImmBorrowField idx => returnS? (Result.Ok tt)
 
   (*
   Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
@@ -1123,7 +1125,7 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
   }
   *)
-  | Bytecode.ImmBorrowFieldGeneric idx => returnS? tt
+  | Bytecode.ImmBorrowFieldGeneric idx => returnS? (Result.Ok tt)
 
   (* 
   Bytecode::LdU8(_) => {
@@ -1150,70 +1152,70 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       verifier.push(meter, ST::U256)?;
   }
   *)
-  | Bytecode.LdU8 idx => returnS? tt
-  | Bytecode.LdU64 idx => returnS? tt
-  | Bytecode.LdU128 idx => returnS? tt
-  | Bytecode.CastU8 => returnS? tt
-  | Bytecode.CastU64 => returnS? tt
-  | Bytecode.CastU128 => returnS? tt
-  | Bytecode.LdConst idx => returnS? tt
-  | Bytecode.LdTrue => returnS? tt
-  | Bytecode.LdFalse => returnS? tt
-  | Bytecode.CopyLoc idx => returnS? tt
-  | Bytecode.MoveLoc idx => returnS? tt
-  | Bytecode.Call idx => returnS? tt
-  | Bytecode.CallGeneric idx => returnS? tt
-  | Bytecode.Pack idx => returnS? tt
-  | Bytecode.PackGeneric idx => returnS? tt
-  | Bytecode.Unpack idx => returnS? tt
-  | Bytecode.UnpackGeneric idx => returnS? tt
-  | Bytecode.ReadRef => returnS? tt
-  | Bytecode.WriteRef => returnS? tt
-  | Bytecode.MutBorrowLoc idx => returnS? tt
-  | Bytecode.ImmBorrowLoc idx => returnS? tt
-  | Bytecode.MutBorrowGlobal idx => returnS? tt
-  | Bytecode.MutBorrowGlobalGeneric idx => returnS? tt
-  | Bytecode.ImmBorrowGlobal idx => returnS? tt
-  | Bytecode.ImmBorrowGlobalGeneric idx => returnS? tt
-  | Bytecode.Add => returnS? tt
-  | Bytecode.Sub => returnS? tt
-  | Bytecode.Mul => returnS? tt
-  | Bytecode.Mod => returnS? tt
-  | Bytecode.Div => returnS? tt
-  | Bytecode.BitOr => returnS? tt
-  | Bytecode.BitAnd => returnS? tt
-  | Bytecode.Xor => returnS? tt
-  | Bytecode.Or => returnS? tt
-  | Bytecode.And => returnS? tt
-  | Bytecode.Not => returnS? tt
-  | Bytecode.Eq => returnS? tt
-  | Bytecode.Neq => returnS? tt
-  | Bytecode.Lt => returnS? tt
-  | Bytecode.Gt => returnS? tt
-  | Bytecode.Le => returnS? tt
-  | Bytecode.Ge => returnS? tt
-  | Bytecode.Exists idx => returnS? tt
-  | Bytecode.ExistsGeneric idx => returnS? tt
-  | Bytecode.MoveFrom idx => returnS? tt
-  | Bytecode.MoveFromGeneric idx => returnS? tt
-  | Bytecode.MoveTo idx => returnS? tt
-  | Bytecode.MoveToGeneric idx => returnS? tt
-  | Bytecode.Shl => returnS? tt
-  | Bytecode.Shr => returnS? tt
-  | Bytecode.VecPack idx num => returnS? tt
-  | Bytecode.VecLen idx => returnS? tt
-  | Bytecode.VecImmBorrow idx => returnS? tt
-  | Bytecode.VecMutBorrow idx => returnS? tt
-  | Bytecode.VecPushBack idx => returnS? tt
-  | Bytecode.VecPopBack idx => returnS? tt
-  | Bytecode.VecUnpack idx num => returnS? tt
-  | Bytecode.VecSwap idx => returnS? tt
-  | Bytecode.LdU16 idx => returnS? tt
-  | Bytecode.LdU32 idx => returnS? tt
-  | Bytecode.LdU256 idx => returnS? tt
-  | Bytecode.CastU16 => returnS? tt
-  | Bytecode.CastU32 => returnS? tt
-  | Bytecode.CastU256 => returnS? tt
+  | Bytecode.LdU8 idx => returnS? (Result.Ok tt)
+  | Bytecode.LdU64 idx => returnS? (Result.Ok tt)
+  | Bytecode.LdU128 idx => returnS? (Result.Ok tt)
+  | Bytecode.CastU8 => returnS? (Result.Ok tt)
+  | Bytecode.CastU64 => returnS? (Result.Ok tt)
+  | Bytecode.CastU128 => returnS? (Result.Ok tt)
+  | Bytecode.LdConst idx => returnS? (Result.Ok tt)
+  | Bytecode.LdTrue => returnS? (Result.Ok tt)
+  | Bytecode.LdFalse => returnS? (Result.Ok tt)
+  | Bytecode.CopyLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.Call idx => returnS? (Result.Ok tt)
+  | Bytecode.CallGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.Pack idx => returnS? (Result.Ok tt)
+  | Bytecode.PackGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.Unpack idx => returnS? (Result.Ok tt)
+  | Bytecode.UnpackGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.ReadRef => returnS? (Result.Ok tt)
+  | Bytecode.WriteRef => returnS? (Result.Ok tt)
+  | Bytecode.MutBorrowLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.ImmBorrowLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.MutBorrowGlobal idx => returnS? (Result.Ok tt)
+  | Bytecode.MutBorrowGlobalGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.ImmBorrowGlobal idx => returnS? (Result.Ok tt)
+  | Bytecode.ImmBorrowGlobalGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.Add => returnS? (Result.Ok tt)
+  | Bytecode.Sub => returnS? (Result.Ok tt)
+  | Bytecode.Mul => returnS? (Result.Ok tt)
+  | Bytecode.Mod => returnS? (Result.Ok tt)
+  | Bytecode.Div => returnS? (Result.Ok tt)
+  | Bytecode.BitOr => returnS? (Result.Ok tt)
+  | Bytecode.BitAnd => returnS? (Result.Ok tt)
+  | Bytecode.Xor => returnS? (Result.Ok tt)
+  | Bytecode.Or => returnS? (Result.Ok tt)
+  | Bytecode.And => returnS? (Result.Ok tt)
+  | Bytecode.Not => returnS? (Result.Ok tt)
+  | Bytecode.Eq => returnS? (Result.Ok tt)
+  | Bytecode.Neq => returnS? (Result.Ok tt)
+  | Bytecode.Lt => returnS? (Result.Ok tt)
+  | Bytecode.Gt => returnS? (Result.Ok tt)
+  | Bytecode.Le => returnS? (Result.Ok tt)
+  | Bytecode.Ge => returnS? (Result.Ok tt)
+  | Bytecode.Exists idx => returnS? (Result.Ok tt)
+  | Bytecode.ExistsGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveFrom idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveFromGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveTo idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveToGeneric idx => returnS? (Result.Ok tt)
+  | Bytecode.Shl => returnS? (Result.Ok tt)
+  | Bytecode.Shr => returnS? (Result.Ok tt)
+  | Bytecode.VecPack idx num => returnS? (Result.Ok tt)
+  | Bytecode.VecLen idx => returnS? (Result.Ok tt)
+  | Bytecode.VecImmBorrow idx => returnS? (Result.Ok tt)
+  | Bytecode.VecMutBorrow idx => returnS? (Result.Ok tt)
+  | Bytecode.VecPushBack idx => returnS? (Result.Ok tt)
+  | Bytecode.VecPopBack idx => returnS? (Result.Ok tt)
+  | Bytecode.VecUnpack idx num => returnS? (Result.Ok tt)
+  | Bytecode.VecSwap idx => returnS? (Result.Ok tt)
+  | Bytecode.LdU16 idx => returnS? (Result.Ok tt)
+  | Bytecode.LdU32 idx => returnS? (Result.Ok tt)
+  | Bytecode.LdU256 idx => returnS? (Result.Ok tt)
+  | Bytecode.CastU16 => returnS? (Result.Ok tt)
+  | Bytecode.CastU32 => returnS? (Result.Ok tt)
+  | Bytecode.CastU256 => returnS? (Result.Ok tt)
   end.
 
 (* 

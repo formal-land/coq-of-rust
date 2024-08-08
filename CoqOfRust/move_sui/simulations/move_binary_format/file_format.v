@@ -301,8 +301,6 @@ Module SignatureToken.
   Scheme Boolean Equality for t.
 End SignatureToken.
 
-Print SignatureToken.
-
 (* 
 pub struct Signature(
     #[cfg_attr(
