@@ -16,6 +16,7 @@ guide](./GUIDE.md)
   - [Standalone executable](#standalone-executable)
   - [Tests](#tests)
 - [Coq](#coq)
+- [For Windows](#for-windows)
 
 ## Rust
 
@@ -106,3 +107,37 @@ Compile the Coq files:
 ```sh
 make
 ```
+
+
+## For Windows
+
+On Windows, to set up the environment for translating your Rust project, 
+follow the belows:
+
+1. Install WSL 2 by [the official tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) with a proper Linux distribution
+2. Install [Coq](https://coq.inria.fr/download) in WSL 2
+3. Install [VSCode](https://code.visualstudio.com/), its [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) 
+extension and its [Coq](https://marketplace.visualstudio.com/items?itemName=ruoz.coq) 
+extension
+4. Follow the [official guide](https://code.visualstudio.com/docs/remote/wsl) 
+to run the Coq project in WSL environment. Specifically:
+   1. With an WSL terminal, enter `code .` at the project root that 
+   you want to run `CoqOfRust`
+   2. With `Ctrl+,` for VSCode's settings, checkout the environment 
+   settings for `Remote: [WSL ...]`. Modify the `Coq: Coq Project Root` 
+   to `.` , in particular, your preference folder with `_CoqProject` 
+   inside
+   3. Now you can `make` your project in WSL(not Windows) or customize 
+   your experience with other features of `CoqOfRust`
+
+### Known Issues
+
+WSL has a different format from Windows. Since we run Coq on WSL
+only, the files being generated should be in WSL's file format. We 
+usually put the project on Windows, `make` it in WSL, to generate 
+Coq files of WSL's file format. The format differences here usually
+lead to significantly longer `make` time for WSL than other systems. 
+
+As an alternative, you might copy the project under WSL's `/mnt` and
+observe the performance boost under WSL's `make`, with a tradeoff of
+extra time on copying the project from Windows to WSL.
