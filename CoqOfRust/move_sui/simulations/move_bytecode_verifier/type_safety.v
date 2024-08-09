@@ -1088,7 +1088,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       (* TODO: lots of things to be fixed in this draft *)
       | Result.Err _ => returnS? (Result.Err unknown_err)
       end
-      (* TODO: extract the `operand` from Result.t SignatureToken.t lib.AbsStackError.t *)
       (* TODO: if the value is `Ok` then continue else return 
           Result.Err 
             (PartialVMError.new(StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR) *)
