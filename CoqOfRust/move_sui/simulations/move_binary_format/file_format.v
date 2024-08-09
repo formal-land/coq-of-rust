@@ -4,8 +4,9 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require Import CoqOfRust.core.simulations.eq.
+
 (* TODO(progress):
-- Implement `safe_unwrap_err`
 - (IMPORTANT)Implement `AbilitySet` and its `impl`s. In particular, being used for `verify_instr`:
   - Implement `has_drop`
   - Implement `has_copy`
@@ -13,16 +14,6 @@ Import simulations.M.Notations.
   Luckily they aren't mutable functions!
 - Implement `CompiledModule`'s `abilities`
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
-*)
-
-(* NOTE:
-- `safe_unwrap_err` macro does the following:
-  1. Return `Ok x` for `PartialVMResult` value of `Ok x`
-  2. If we're in debug mode, `panic!` when we have a value of `Err x`
-  3. Otherwise for value of `Err x` we return 
-    `Err (PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR))`
-    (I ignore the `with_message` for now) 
-  Therefore I decide that we just ignore this macro.
 *)
 
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
@@ -35,6 +26,7 @@ Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
 (* **************** *)
+
 (* 
 NOTE: 
   - There are a lot of structs defined here with `Record t : Set := { a0 : Z; }.`.
@@ -300,6 +292,13 @@ Module SignatureToken.
   | U256
   .
   Scheme Boolean Equality for t.
+
+  Module ImplEq.
+    Global Instance I :
+      Eq.Trait SignatureToken.t := {
+        eqb := t_beq;
+      }.
+  End ImplEq.
   (* 
   impl SignatureToken {
       /// Returns the "value kind" for the `SignatureToken`

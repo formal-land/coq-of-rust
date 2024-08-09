@@ -31,6 +31,7 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
+Require Import CoqOfRust.core.simulations.eq.
 Require CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 
@@ -56,6 +57,24 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* NOTE: temp brutal helper function. Should be removed with regard to the mutual dependency issue *)
 Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
+(* NOTE:
+- `safe_unwrap_err` macro does the following:
+  1. Return `Ok x` for `PartialVMResult` value of `Ok x`
+  2. If we're in debug mode, `panic!` when we have a value of `Err x`
+  3. Otherwise for value of `Err x` we return 
+    `Err (PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR))`
+    (I ignore the `with_message` for now) 
+*)
+Definition unknown_err := PartialVMError
+  .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+  .new (StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR).
+
+Definition safe_unwrap_err {State A : Set} (value : PartialVMResult.t A)
+  : MS? State string (PartialVMResult.t A) :=
+  match value with
+  | Result.Ok _ => returnS? value
+  | Result.Err x => returnS? (Result.Err unknown_err)
+  end.
 
 Module Locals.
   Record t : Set := {
@@ -217,7 +236,24 @@ Module TypeSafetyChecker.
         end
       | [] => returnS? (Result.Ok tt)
       end.
+    
+    Definition lens_self_meter_self : Lens.t (Self * Meter.t) Self :=
+    {|
+      Lens.read state := fst state;
+      Lens.write state self := (self, snd state);
+    |}.
 
+    Definition lens_self_meter_meter : Lens.t (Self * Meter.t) Meter.t :=
+    {|
+      Lens.read state := snd state;
+      Lens.write state meter := (fst state, meter);
+    |}.
+
+    Definition lens_self_stack : Lens.t Self (AbstractStack.t SignatureToken.t) :=
+    {|
+      Lens.read self := self.(TypeSafetyChecker.stack);
+      Lens.write self stack := self <| TypeSafetyChecker.stack := stack |>;
+    |}.
     (* 
     fn push(
         &mut self,
@@ -229,10 +265,18 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    (* NOTE: the state for this function should contain `self` and `meter` *)
-    Definition push (self : Self) (ty : SignatureToken.t) : 
-      MS? (Self * Meter) string (PartialVMResult.t unit):=
-      returnS? (Result.Ok tt).
+
+    Definition push (ty : SignatureToken.t) {A : Set} : 
+      MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
+      (* NOTE: Should we make a panic for this operation? *)
+      letS? _ := liftS? lens_self_meter_meter (charge_ty ty) in
+      letS? result := liftS? lens_self_meter_self (
+        liftS? lens_self_stack (AbstractStack.push ty)) in
+      match result with
+      | Result.Ok _ => returnS? (Result.Ok tt)
+      | Result.Err _ => returnS? (Result.Err unknown_err)
+      end
+      .
 
     (* 
       fn push_n(
@@ -246,7 +290,17 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n (self : Self) (ty : SignatureToken.t) (n : Z) : PartialVMResult.t unit. Admitted.
+    Definition push_n (ty : SignatureToken.t) (n : Z)
+      : MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
+      letS? _ := liftS? lens_self_meter_meter (charge_ty ty) in
+      letS? result := liftS? lens_self_meter_self (
+        liftS? lens_self_stack (AbstractStack.push_n ty n)) in
+      match result with
+      | Result.Ok _ => returnS? (Result.Ok tt)
+      | Result.Err _ => returnS? (Result.Err unknown_err)
+      end
+      .
+
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
 
