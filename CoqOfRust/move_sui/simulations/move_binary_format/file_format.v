@@ -129,10 +129,6 @@ Module FunctionDefinitionIndex.
   Record t : Set := { a0 : Z; }.
 End FunctionDefinitionIndex.
 
-Module AbilitySet.
-  Record t : Set := { a0 : Z; }.
-End AbilitySet.
-
 Module SignatureIndex.
   Record t : Set := { a0 : Z; }.
 End SignatureIndex.
@@ -184,6 +180,180 @@ Module StructDefInstantiation.
     type_parameters : SignatureIndex.t;
   }.
 End StructDefInstantiation.
+
+(* 
+pub enum Ability {
+    /// Allows values of types with this ability to be copied, via CopyLoc or ReadRef
+    Copy = 0x1,
+    /// Allows values of types with this ability to be dropped, via Pop, WriteRef, StLoc, Eq, Neq,
+    /// or if left in a local when Ret is invoked
+    /// Technically also needed for numeric operations (Add, BitAnd, Shift, etc), but all
+    /// of the types that can be used with those operations have Drop
+    Drop = 0x2,
+    /// Allows values of types with this ability to exist inside a struct in global storage
+    Store = 0x4,
+    /// Allows the type to serve as a key for global storage operations: MoveTo, MoveFrom, etc.
+    Key = 0x8,
+}
+*)
+Module Ability.
+  Definition Copy : Z := 0x1.
+  Definition Drop : Z := 0x2.
+  Definition Store : Z := 0x4.
+  Definition Key : Z := 0x8.
+End Ability.
+
+(* 
+impl AbilitySet {
+    pub fn singleton(ability: Ability) -> Self {
+        Self(ability as u8)
+    }
+
+    pub fn has_ability(self, ability: Ability) -> bool {
+        let a = ability as u8;
+        (a & self.0) == a
+    }
+
+    pub fn has_copy(self) -> bool {
+        self.has_ability(Ability::Copy)
+    }
+
+    pub fn has_drop(self) -> bool {
+        self.has_ability(Ability::Drop)
+    }
+
+    pub fn has_store(self) -> bool {
+        self.has_ability(Ability::Store)
+    }
+
+    pub fn has_key(self) -> bool {
+        self.has_ability(Ability::Key)
+    }
+
+    pub fn remove(self, ability: Ability) -> Self {
+        Self(self.0 & (!(ability as u8)))
+    }
+
+    pub fn intersect(self, other: Self) -> Self {
+        Self(self.0 & other.0)
+    }
+
+    pub fn union(self, other: Self) -> Self {
+        Self(self.0 | other.0)
+    }
+
+    #[inline]
+    fn is_subset_bits(sub: u8, sup: u8) -> bool {
+        (sub & sup) == sub
+    }
+
+    pub fn is_subset(self, other: Self) -> bool {
+        Self::is_subset_bits(self.0, other.0)
+    }
+
+    /// For a polymorphic type, its actual abilities correspond to its declared abilities but
+    /// predicated on its non-phantom type arguments having that ability. For `Key`, instead of needing
+    /// the same ability, the type arguments need `Store`.
+    pub fn polymorphic_abilities<I1, I2>(
+        declared_abilities: Self,
+        declared_phantom_parameters: I1,
+        type_arguments: I2,
+    ) -> PartialVMResult<Self>
+    where
+        I1: IntoIterator<Item = bool>,
+        I2: IntoIterator<Item = Self>,
+        I1::IntoIter: ExactSizeIterator,
+        I2::IntoIter: ExactSizeIterator,
+    {
+        let declared_phantom_parameters = declared_phantom_parameters.into_iter();
+        let type_arguments = type_arguments.into_iter();
+
+        if declared_phantom_parameters.len() != type_arguments.len() {
+            return Err(
+                PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
+                    "the length of `declared_phantom_parameters` doesn't match the length of `type_arguments`".to_string(),
+                ),
+            );
+        }
+
+        // Conceptually this is performing the following operation:
+        // For any ability 'a' in `declared_abilities`
+        // 'a' is in the result only if
+        //   for all (abi_i, is_phantom_i) in `type_arguments` s.t. !is_phantom then a.required() is a subset of abi_i
+        //
+        // So to do this efficiently, we can determine the required_by set for each ti
+        // and intersect them together along with the declared abilities
+        // This only works because for any ability y, |y.requires()| == 1
+        let abs = type_arguments
+            .zip(declared_phantom_parameters)
+            .filter(|(_, is_phantom)| !is_phantom)
+            .map(|(ty_arg_abilities, _)| {
+                ty_arg_abilities
+                    .into_iter()
+                    .map(|a| a.required_by())
+                    .fold(AbilitySet::EMPTY, AbilitySet::union)
+            })
+            .fold(declared_abilities, |acc, ty_arg_abilities| {
+                acc.intersect(ty_arg_abilities)
+            });
+        Ok(abs)
+    }
+
+    pub fn from_u8(byte: u8) -> Option<Self> {
+        // If there is a bit set in the read `byte`, that bit must be set in the
+        // `AbilitySet` containing all `Ability`s
+        // This corresponds the byte being a bit set subset of ALL
+        // The byte is a subset of ALL if the intersection of the two is the original byte
+        if Self::is_subset_bits(byte, Self::ALL.0) {
+            Some(Self(byte))
+        } else {
+            None
+        }
+    }
+
+    pub fn into_u8(self) -> u8 {
+        self.0
+    }
+}
+*)
+
+Module AbilitySet.
+  Record t : Set := { a0 : Z; }.
+
+  (* 
+  /// The empty ability set
+  pub const EMPTY: Self = Self(0);
+  /// Abilities for `Bool`, `U8`, `U16`, `U32`, `U64`, `U128`, `U256`, and `Address`
+  pub const PRIMITIVES: AbilitySet =
+      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
+  /// Abilities for `Reference` and `MutableReference`
+  pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8));
+  /// Abilities for `Signer`
+  pub const SIGNER: AbilitySet = Self(Ability::Drop as u8);
+  /// Abilities for `Vector`, note they are predicated on the type argument
+  pub const VECTOR: AbilitySet =
+      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
+  /// Ability set containing all abilities
+  pub const ALL: Self = Self(
+      // Cannot use AbilitySet bitor because it is not const
+      (Ability::Copy as u8)
+          | (Ability::Drop as u8)
+          | (Ability::Store as u8)
+          | (Ability::Key as u8),
+  );
+  *)
+  Definition EMPTY := Build_t 0.
+  (* TODO: fill the follows *)
+  Definition PRIMITIVES := Build_t (Z.lor Ability.Copy (Z.lor Ability.Drop Ability.Store)).
+  Definition REFERENCES := Build_t (Z.lor Ability.Copy Ability.Drop).
+  Definition SIGNER := Build_t Ability.Drop.
+  Definition VECTOR := Build_t (Z.lor Ability.Copy (Z.lor Ability.Drop Ability.Store)).
+  Definition ALL := Build_t
+    (Z.lor Ability.Copy
+      (Z.lor Ability.Drop
+        (Z.lor Ability.Store Ability.Key))).
+
+End AbilitySet.
 
 (* 
 /// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
@@ -737,7 +907,54 @@ Module CompiledModule.
     }
     *)
     Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
-      : PartialVMResult.t AbilitySet.t. Admitted.
+      : PartialVMResult.t AbilitySet.t :=
+      let default_ability := AbilitySet.EMPTY in
+      match ty with
+      | SignatureToken.Bool | SignatureToken.U8 | SignatureToken.U16 
+      | SignatureToken.U32 | SignatureToken.U64 | SignatureToken.U128 
+      | SignatureToken.U256 | SignatureToken.Address 
+        => Result.Ok AbilitySet.PRIMITIVES
+
+      | SignatureToken.Reference _ | SignatureToken.MutableReference _ 
+        => Result.Ok AbilitySet.REFERENCES
+
+      | SignatureToken.Signer => Result.Ok AbilitySet.SIGNER
+
+      | SignatureToken.TypeParameter idx => 
+        let idx := idx.(TypeParameterIndex.a0) in
+        let ability := List.nth (Z.to_nat idx) constraints default_ability in
+        Result.Ok ability
+
+      (* TODO: implement polymorphic_abilities *)
+      (* | SignatureToken.Vector ty => AbilitySet::polymorphic_abilities(
+          AbilitySet::VECTOR,
+          vec![false],
+          vec![self.abilities(ty, constraints)?],
+      ) *)
+
+      (* TODO: implement struct_handle_at *)
+      (* | Struct idx => {
+          let sh = self.struct_handle_at idx;
+          Ok(sh.abilities)
+      } *)
+
+      (* | StructInstantiation(struct_inst) => {
+          let (idx, type_args) = &**struct_inst;
+          let sh = self.struct_handle_at(*idx); //*)
+          let declared_abilities = sh.abilities;
+          let type_arguments = type_args
+              .iter()
+              .map(|arg| self.abilities(arg, constraints))
+              .collect::<PartialVMResult<Vec<_>>>()?;
+          AbilitySet::polymorphic_abilities(
+              declared_abilities,
+              sh.type_parameters.iter().map(|param| param.is_phantom),
+              type_arguments,
+          )
+      } *)
+      | _ => Result.Ok default_ability
+      end.
+      
 
     (* 
     pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
