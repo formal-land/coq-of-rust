@@ -114,7 +114,7 @@ make
 On Windows, to set up the environment for translating your Rust project, 
 follow the belows:
 
-1. Install WSL2 by [the official tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) with a proper Linux distribution
+1. Install WSL 2 by [the official tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) with a proper Linux distribution
 2. Install [Coq](https://coq.inria.fr/download) in WSL 2
 3. Install [VSCode](https://code.visualstudio.com/), its [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) 
 extension and its [Coq](https://marketplace.visualstudio.com/items?itemName=ruoz.coq) 
