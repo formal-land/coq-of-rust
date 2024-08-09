@@ -111,8 +111,8 @@ make
 
 ## For Windows
 
-On Windows, to set up the environment to `make` the Rust files you 
-need to translate, follow the belows:
+On Windows, to set up the environment for translating your Rust project, 
+follow the belows:
 
 1. Install WSL2 by [the official tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) with a proper Linux distribution
 2. Install [Coq](https://coq.inria.fr/download) in WSL 2
