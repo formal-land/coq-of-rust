@@ -164,6 +164,9 @@ Module TypeSafetyChecker.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
         coerce
+        (* TODO: we might be able to directly transfer the PartialVMResult from there to here...
+            since it's relatively pretty simple to do for PartialVMResult
+        *)
           (CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
             (self.(module))
             t 
@@ -1051,11 +1054,20 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Pop => 
-      letS? _ := liftS? TypeSafetyChecker.lens_self_meter_self (
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      (* TODO: Implement `abilities` *)
-      let abilities := _ in
-      returnS? (Result.Ok tt)
+      (* TODO: safe_unwrap_error *)
+      letS? verifier := readS? in
+      let abilities := 
+        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+          verifier.(TypeSafetyChecker.module)
+          operand
+          verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
+      if ~ (AbilitySet.has_drop abilities)
+      then returnS? 
+        (Result Err 
+          (TypeSafetyChecker.error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset))
+      else returnS? (Result.Ok tt)
   (* 
   Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
       let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1065,12 +1077,16 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
-      let _stack := verifier.(TypeSafetyChecker.stack) in
-      (* TODO: lift the operand from `AbstractStack`'s monad *)
-      let operand := AbstractStack.pop _stack in
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       match operand with
-      | Result.Ok _ => returnS? (Result.Ok tt)
-      | Result.Err _ => returnS? (Result.Ok tt)
+      | Result.Ok op => 
+        match op with
+        | SignatureToken.Bool => returnS? (Result.Ok tt)
+        | _ => returnS? (Result.Err 
+          (TypeSafetyChecker.error verifier (StatusCode.BR_TYPE_MISMATCH_ERROR) offset))
+      (* TODO: lots of things to be fixed in this draft *)
+      | Result.Err _ => returnS? (Result.Err unknown_err)
       end
       (* TODO: extract the `operand` from Result.t SignatureToken.t lib.AbsStackError.t *)
       (* TODO: if the value is `Ok` then continue else return 

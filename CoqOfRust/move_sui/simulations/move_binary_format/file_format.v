@@ -436,9 +436,9 @@ Module AbilitySet.
         sh.type_parameters.iter().map(|param| param.is_phantom),
         type_arguments,
     )
-    Can we just shrink the function just to iterate over its length?
     *)
-    Definition polymorphic_abilities {I : Set} (declared_abilities : Self) (type_arguments : I) : Set. Admitted.
+    Definition polymorphic_abilities {I1 I2 : Set} 
+      (declared_abilities : Self) (declared_phantom_parameters: I1) (type_arguments : I2) : Set. Admitted.
   End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
 
 End AbilitySet.
