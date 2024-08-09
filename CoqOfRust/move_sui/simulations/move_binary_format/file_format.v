@@ -7,11 +7,7 @@ Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.eq.
 
 (* TODO(progress):
-- (IMPORTANT)Implement `AbilitySet` and its `impl`s. In particular, being used for `verify_instr`:
-  - Implement `has_drop`
-  - Implement `has_copy`
-  - Implement `has_key`
-  Luckily they aren't mutable functions!
+- Implement `AbilitySet`'s `polymorphic_abilities`.
 - Implement `CompiledModule`'s `abilities`
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
 *)
@@ -197,11 +193,28 @@ pub enum Ability {
 }
 *)
 Module Ability.
-  Definition Copy : Z := 0x1.
-  Definition Drop : Z := 0x2.
-  Definition Store : Z := 0x4.
-  Definition Key : Z := 0x8.
+(* TODO: Implement conversion function for ability *)
+  Inductive t : Set :=
+  | Copy
+  | Drop
+  | Store
+  | Key
+  .
+
+  Definition to_Z (self : t) : Z :=
+  match self with
+  | Copy => 0x1
+  | Drop => 0x2
+  | Store => 0x4
+  | Key => 0x8
+  end.
+
+  Definition Copy_Z := to_Z Copy.
+  Definition Drop_Z := to_Z Drop.
+  Definition Store_Z := to_Z Store.
+  Definition Key_Z := to_Z Key.
 End Ability.
+
 
 (* 
 impl AbilitySet {
@@ -251,6 +264,117 @@ impl AbilitySet {
         Self::is_subset_bits(self.0, other.0)
     }
 
+    pub fn from_u8(byte: u8) -> Option<Self> {
+        // If there is a bit set in the read `byte`, that bit must be set in the
+        // `AbilitySet` containing all `Ability`s
+        // This corresponds the byte being a bit set subset of ALL
+        // The byte is a subset of ALL if the intersection of the two is the original byte
+        if Self::is_subset_bits(byte, Self::ALL.0) {
+            Some(Self(byte))
+        } else {
+            None
+        }
+    }
+
+    pub fn into_u8(self) -> u8 {
+        self.0
+    }
+}
+*)
+
+Module AbilitySet.
+  Record t : Set := { a0 : Z; }.
+
+  (* 
+  /// The empty ability set
+  pub const EMPTY: Self = Self(0);
+  /// Abilities for `Bool`, `U8`, `U16`, `U32`, `U64`, `U128`, `U256`, and `Address`
+  pub const PRIMITIVES: AbilitySet =
+      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
+  /// Abilities for `Reference` and `MutableReference`
+  pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8));
+  /// Abilities for `Signer`
+  pub const SIGNER: AbilitySet = Self(Ability::Drop as u8);
+  /// Abilities for `Vector`, note they are predicated on the type argument
+  pub const VECTOR: AbilitySet =
+      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
+  /// Ability set containing all abilities
+  pub const ALL: Self = Self(
+      // Cannot use AbilitySet bitor because it is not const
+      (Ability::Copy as u8)
+          | (Ability::Drop as u8)
+          | (Ability::Store as u8)
+          | (Ability::Key as u8),
+  );
+  *)
+  Definition EMPTY := Build_t 0.
+  Definition PRIMITIVES := Build_t (Z.lor Ability.Copy_Z (Z.lor Ability.Drop_Z Ability.Store_Z)).
+  Definition REFERENCES := Build_t (Z.lor Ability.Copy_Z Ability.Drop_Z).
+  Definition SIGNER := Build_t Ability.Drop_Z.
+  Definition VECTOR := Build_t (Z.lor Ability.Copy_Z (Z.lor Ability.Drop_Z Ability.Store_Z)).
+  Definition ALL := Build_t
+    (Z.lor Ability.Copy_Z
+      (Z.lor Ability.Drop_Z
+        (Z.lor Ability.Store_Z Ability.Key_Z))).
+
+  (* NOTE: since this relies on `AbilitySet`, I decide to just implement it in this module...
+    to avoid mutual dependency issue *)
+  (* 
+  pub struct StructTypeParameter {
+      /// The type parameter constraints.
+      pub constraints: AbilitySet,
+      /// Whether the parameter is declared as phantom.
+      pub is_phantom: bool,
+  }
+  *)
+  Module StructTypeParameter.
+    Record t : Set := {
+      constraints : AbilitySet.t;
+      is_phantom : bool;
+    }.
+  End StructTypeParameter.
+
+  Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
+    Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
+
+    (* 
+    pub fn has_ability(self, ability: Ability) -> bool {
+        let a = ability as u8;
+        (a & self.0) == a
+    }
+    *)
+    Definition has_ability (self : Self) (ability : Ability.t) : bool := 
+      Z.land (Ability.to_Z ability) self.(a0) =? Ability.to_Z ability.
+
+    (* 
+    pub fn has_copy(self) -> bool {
+        self.has_ability(Ability::Copy)
+    }
+    *)
+    Definition has_copy (self : Self) : bool := has_ability self Ability.Copy.
+
+    (* 
+    pub fn has_drop(self) -> bool {
+        self.has_ability(Ability::Drop)
+    }
+    *)
+    Definition has_drop (self : Self) : bool := has_ability self Ability.Drop.
+
+    (* 
+    pub fn has_store(self) -> bool {
+        self.has_ability(Ability::Store)
+    }
+    *)
+    Definition has_store (self : Self) : bool := has_ability self Ability.Store.
+
+
+    (*
+    pub fn has_key(self) -> bool {
+        self.has_ability(Ability::Key)
+    }
+    *)
+    Definition has_key (self : Self) : bool := has_ability self Ability.Key.
+    (* 
     /// For a polymorphic type, its actual abilities correspond to its declared abilities but
     /// predicated on its non-phantom type arguments having that ability. For `Key`, instead of needing
     /// the same ability, the type arguments need `Store`.
@@ -298,60 +422,23 @@ impl AbilitySet {
             });
         Ok(abs)
     }
+    *)
+    (* NOTE: Instances in this file:
+    AbilitySet::polymorphic_abilities(
+                AbilitySet::VECTOR,
+                vec![false],
+                vec![self.abilities(ty, constraints)?],
+            ),
 
-    pub fn from_u8(byte: u8) -> Option<Self> {
-        // If there is a bit set in the read `byte`, that bit must be set in the
-        // `AbilitySet` containing all `Ability`s
-        // This corresponds the byte being a bit set subset of ALL
-        // The byte is a subset of ALL if the intersection of the two is the original byte
-        if Self::is_subset_bits(byte, Self::ALL.0) {
-            Some(Self(byte))
-        } else {
-            None
-        }
-    }
-
-    pub fn into_u8(self) -> u8 {
-        self.0
-    }
-}
-*)
-
-Module AbilitySet.
-  Record t : Set := { a0 : Z; }.
-
-  (* 
-  /// The empty ability set
-  pub const EMPTY: Self = Self(0);
-  /// Abilities for `Bool`, `U8`, `U16`, `U32`, `U64`, `U128`, `U256`, and `Address`
-  pub const PRIMITIVES: AbilitySet =
-      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
-  /// Abilities for `Reference` and `MutableReference`
-  pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8));
-  /// Abilities for `Signer`
-  pub const SIGNER: AbilitySet = Self(Ability::Drop as u8);
-  /// Abilities for `Vector`, note they are predicated on the type argument
-  pub const VECTOR: AbilitySet =
-      Self((Ability::Copy as u8) | (Ability::Drop as u8) | (Ability::Store as u8));
-  /// Ability set containing all abilities
-  pub const ALL: Self = Self(
-      // Cannot use AbilitySet bitor because it is not const
-      (Ability::Copy as u8)
-          | (Ability::Drop as u8)
-          | (Ability::Store as u8)
-          | (Ability::Key as u8),
-  );
-  *)
-  Definition EMPTY := Build_t 0.
-  (* TODO: fill the follows *)
-  Definition PRIMITIVES := Build_t (Z.lor Ability.Copy (Z.lor Ability.Drop Ability.Store)).
-  Definition REFERENCES := Build_t (Z.lor Ability.Copy Ability.Drop).
-  Definition SIGNER := Build_t Ability.Drop.
-  Definition VECTOR := Build_t (Z.lor Ability.Copy (Z.lor Ability.Drop Ability.Store)).
-  Definition ALL := Build_t
-    (Z.lor Ability.Copy
-      (Z.lor Ability.Drop
-        (Z.lor Ability.Store Ability.Key))).
+    AbilitySet::polymorphic_abilities(
+        declared_abilities,
+        sh.type_parameters.iter().map(|param| param.is_phantom),
+        type_arguments,
+    )
+    Can we just shrink the function just to iterate over its length?
+    *)
+    Definition polymorphic_abilities {I : Set} (declared_abilities : Self) (type_arguments : I) : Set. Admitted.
+  End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
 
 End AbilitySet.
 
@@ -574,7 +661,7 @@ Module SignatureToken.
      functionality for `SignatureToken`. See notes at `preorder_traersal`
      below. *)
   Module SignatureTokenPreorderTraversalIter.
-    Definition tt := list t.
+    Definition t := list SignatureToken.t.
 
     (* 
     fn next(&mut self) -> Option<Self::Item> {
@@ -906,6 +993,7 @@ Module CompiledModule.
         }
     }
     *)
+    (* TODO: this is actually a Fixpoint?? *)
     Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t :=
       let default_ability := AbilitySet.EMPTY in
