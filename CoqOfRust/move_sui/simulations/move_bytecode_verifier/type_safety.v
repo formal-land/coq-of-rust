@@ -47,6 +47,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Implement `mut` functions in this file
     - [x] Implement `AbilitySet` in `file_format`
     - [ ] Implement `CompiledModule` in `file_format`
+    - [ ] Classyfy different cases for `verify_instr` to split the task
     - [ ] Implement cases for `verify_instr`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
