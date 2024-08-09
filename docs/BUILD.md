@@ -130,12 +130,12 @@ to run the Coq project in WSL environment. Specifically:
    3. Now you can `make` your project in WSL(not Windows) or customize 
    your experience with other features of `CoqOfRust`
 
-### Known Issues: 
+### Known Issues
 
-WSL has a different format from `Windows`. Since we run Coq on `WSL` 
+WSL has a different format from Windows. Since we run Coq on WSL
 only, the files being generated should be in WSL's file format. We 
 usually put the project on Windows, `make` it in WSL, to generate 
-Coq files of `WSL`'s file format. The format differences here usually
+Coq files of WSL's file format. The format differences here usually
 lead to significantly longer `make` time for WSL than other systems. 
 
 As an alternative, you might copy the project under WSL's `/mnt` and
