@@ -45,7 +45,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - (IMPORTANT)Push the progress on this file by:
     - [x] Implement `safe_unwrap_err!` macro
     - [ ] Implement `Lens` from `BoundMeter` for `TypeSafetyChecker`
-    - [ ] Implement `mut` functions in this file
+    - [x] Implement `mut` functions in this file
     - [ ] Implement `AbilitySet` and `CompiledModule` in `file_format`
     - [ ] Implement cases for `verify_instr`
   - Deal with the temporary `coerce`
@@ -126,6 +126,22 @@ Module TypeSafetyChecker.
     locals : Locals.t;
     stack : AbstractStack.t SignatureToken.t;
   }.
+
+  Definition lens_self_meter_self : Lens.t (Self * Meter.t) Self := {|
+    Lens.read state := fst state;
+    Lens.write state self := (self, snd state);
+  |}.
+
+  Definition lens_self_meter_meter : Lens.t (Self * Meter.t) Meter.t :={|
+    Lens.read state := snd state;
+    Lens.write state meter := (fst state, meter);
+  |}.
+
+  Definition lens_self_stack : Lens.t Self (AbstractStack.t SignatureToken.t) :={|
+    Lens.read self := self.(TypeSafetyChecker.stack);
+    Lens.write self stack := self <| TypeSafetyChecker.stack := stack |>;
+  |}.
+
   Module Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
@@ -236,24 +252,7 @@ Module TypeSafetyChecker.
         end
       | [] => returnS? (Result.Ok tt)
       end.
-    
-    Definition lens_self_meter_self : Lens.t (Self * Meter.t) Self :=
-    {|
-      Lens.read state := fst state;
-      Lens.write state self := (self, snd state);
-    |}.
 
-    Definition lens_self_meter_meter : Lens.t (Self * Meter.t) Meter.t :=
-    {|
-      Lens.read state := snd state;
-      Lens.write state meter := (fst state, meter);
-    |}.
-
-    Definition lens_self_stack : Lens.t Self (AbstractStack.t SignatureToken.t) :=
-    {|
-      Lens.read self := self.(TypeSafetyChecker.stack);
-      Lens.write self stack := self <| TypeSafetyChecker.stack := stack |>;
-    |}.
     (* 
     fn push(
         &mut self,
@@ -265,7 +264,6 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-
     Definition push (ty : SignatureToken.t) {A : Set} : 
       MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
       (* NOTE: Should we make a panic for this operation? *)
@@ -1032,12 +1030,14 @@ fn verify_instr(
 }
 *)
 
-(* TODO: wrap up the function with a StatePanic monad. What should 
-   be the state of this monad? *)
-Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t) 
+(* TODO(IMPORTANT): implement `abilities` function *)
+(* 
+NOTE: lenses to use:
+- TypeSafetyChecker -> Abstractstack
+*)
+Definition verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) (* meter : Meter *) : 
-  (* NOTE: STUB: For now we only  *)
-  MS? unit string (PartialVMResult.t unit) :=
+  MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
   (* 
   Bytecode::Pop => {
@@ -1050,12 +1050,11 @@ Definition verify_instr (verifier : TypeSafetyChecker.t) (bytecode : Bytecode.t)
       }
   }
   *)
-  (* NOTE: `State` for this function should contain `verifier` *)
   | Bytecode.Pop => 
-      (* let _stack := verifier.(TypeSafetyChecker.stack) in
-      let operand := AbstractStack.pop _stack in
+      letS? _ := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      (* TODO: Implement `abilities` *)
       let abilities := _ in
-      let _ := _ in *)
       returnS? (Result.Ok tt)
   (* 
   Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
