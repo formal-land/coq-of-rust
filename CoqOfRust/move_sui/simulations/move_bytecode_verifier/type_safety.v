@@ -47,7 +47,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Implement `mut` functions in this file
     - [x] Implement `AbilitySet` in `file_format`
     - [ ] Implement `CompiledModule` in `file_format`
-    - [ ] Classyfy different cases for `verify_instr` to split the task
+    - [ ] (Important)Classyfy different cases for `verify_instr` to split the task
     - [ ] Implement cases for `verify_instr`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
@@ -128,17 +128,17 @@ Module TypeSafetyChecker.
     stack : AbstractStack.t SignatureToken.t;
   }.
 
-  Definition lens_self_meter_self : Lens.t (Self * Meter.t) Self := {|
+  Definition lens_self_meter_self : Lens.t (t * Meter.t) t := {|
     Lens.read state := fst state;
     Lens.write state self := (self, snd state);
   |}.
 
-  Definition lens_self_meter_meter : Lens.t (Self * Meter.t) Meter.t :={|
+  Definition lens_self_meter_meter : Lens.t (t * Meter.t) Meter.t :={|
     Lens.read state := snd state;
     Lens.write state meter := (fst state, meter);
   |}.
 
-  Definition lens_self_stack : Lens.t Self (AbstractStack.t SignatureToken.t) :={|
+  Definition lens_self_stack : Lens.t t (AbstractStack.t SignatureToken.t) :={|
     Lens.read self := self.(TypeSafetyChecker.stack);
     Lens.write self stack := self <| TypeSafetyChecker.stack := stack |>;
   |}.
@@ -270,13 +270,16 @@ Module TypeSafetyChecker.
     *)
     Definition push (ty : SignatureToken.t) {A : Set} : 
       MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
-      (* NOTE: Should we make a panic for this operation? *)
-      letS? _ := liftS? lens_self_meter_meter (charge_ty ty) in
-      letS? result := liftS? lens_self_meter_self (
-        liftS? lens_self_stack (AbstractStack.push ty)) in
+      letS? result := liftS? lens_self_meter_meter (charge_ty ty) in
       match result with
-      | Result.Ok _ => returnS? (Result.Ok tt)
-      | Result.Err _ => returnS? (Result.Err unknown_err)
+      | Result.Err _ => returnS? result
+      | Result.Ok _ =>
+          letS? result := liftS? lens_self_meter_self (
+            liftS? lens_self_stack (AbstractStack.push ty)) in
+          match result with
+          | Result.Ok _ => returnS? (Result.Ok tt)
+          | Result.Err _ => returnS? (Result.Err unknown_err)
+          end
       end
       .
 
@@ -294,14 +297,17 @@ Module TypeSafetyChecker.
     *)
     Definition push_n (ty : SignatureToken.t) (n : Z)
       : MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
-      letS? _ := liftS? lens_self_meter_meter (charge_ty ty) in
-      letS? result := liftS? lens_self_meter_self (
-        liftS? lens_self_stack (AbstractStack.push_n ty n)) in
+      letS? result := liftS? lens_self_meter_meter (charge_ty ty) in
       match result with
-      | Result.Ok _ => returnS? (Result.Ok tt)
-      | Result.Err _ => returnS? (Result.Err unknown_err)
-      end
-      .
+      | Result.Err _ => returnS? result
+      | Result.Ok _ =>
+          letS? result := liftS? lens_self_meter_self (
+            liftS? lens_self_stack (AbstractStack.push_n ty n)) in
+          match result with
+          | Result.Ok _ => returnS? (Result.Ok tt)
+          | Result.Err _ => returnS? (Result.Err unknown_err)
+          end
+      end.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker.
 End TypeSafetyChecker.
