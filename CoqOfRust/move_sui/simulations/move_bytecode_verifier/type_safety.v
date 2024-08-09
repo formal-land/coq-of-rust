@@ -1092,6 +1092,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         | SignatureToken.Bool => returnS? (Result.Ok tt)
         | _ => returnS? (Result.Err 
           (TypeSafetyChecker.error verifier (StatusCode.BR_TYPE_MISMATCH_ERROR) offset))
+        end
       (* TODO: lots of things to be fixed in this draft *)
       | Result.Err _ => returnS? (Result.Err unknown_err)
       end
