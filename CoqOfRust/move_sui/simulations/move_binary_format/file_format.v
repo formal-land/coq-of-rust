@@ -209,6 +209,7 @@ Module Ability.
   | Key => 0x8
   end.
 
+  (* These definitions are just for convenience *)
   Definition Copy_Z := to_Z Copy.
   Definition Drop_Z := to_Z Drop.
   Definition Store_Z := to_Z Store.
