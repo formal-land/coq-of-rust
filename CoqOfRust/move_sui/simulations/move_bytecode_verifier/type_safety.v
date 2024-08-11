@@ -49,6 +49,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [ ] Implement `CompiledModule` in `file_format`
     - [x] Classyfy different cases for `verify_instr` to split the task
     - [ ] Implement cases for `verify_instr`
+  - (IMPORTANT) write a `unpack` function for `?`s in Rust
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
 *)
@@ -76,6 +77,10 @@ Definition safe_unwrap_err {State A : Set} (value : PartialVMResult.t A)
   | Result.Ok _ => returnS? value
   | Result.Err x => returnS? (Result.Err unknown_err)
   end.
+
+(* TODO: write a function here designed with `M!? A` monad for return type A *)
+
+(* **************** *)
 
 Module Locals.
   Record t : Set := {
