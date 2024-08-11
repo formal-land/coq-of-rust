@@ -295,4 +295,6 @@ Module Notations.
   Include PanicNotations.
   Include StatePanicNotations.
   Include LensNoatations.
+
+  Notation "f $ x" := (f x) (at level 60, right associativity, only parsing).
 End Notations.

@@ -340,9 +340,9 @@ Module Meter.
       Definition add_items (scope : Scope.t) (units_per_item items : Z) 
         : MS? State string (PartialVMResult.t unit) :=
         if items =? 0
-        then (returnS? (Result.Ok tt))
+        then returnS? $ Result.Ok tt
         else letS? self := readS? in
-        add scope (saturating_mul units_per_item items).
+        add scope $ saturating_mul units_per_item items.
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.

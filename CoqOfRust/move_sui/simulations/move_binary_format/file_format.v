@@ -8,7 +8,13 @@ Require Import CoqOfRust.core.simulations.eq.
 
 (* TODO(progress):
 - Implement `AbilitySet`'s `polymorphic_abilities`.
-- Implement `CompiledModule`'s `abilities`
+- Implement `CompiledModule`'s functions:
+  - abilities - pretty large to completely implement but now it works partially
+  - struct_instantiation_at
+  - struct_def_at
+  - signature_at
+  - constant_at
+  - function_handle_at
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
 *)
 
@@ -193,7 +199,6 @@ pub enum Ability {
 }
 *)
 Module Ability.
-(* TODO: Implement conversion function for ability *)
   Inductive t : Set :=
   | Copy
   | Drop
@@ -221,27 +226,6 @@ End Ability.
 impl AbilitySet {
     pub fn singleton(ability: Ability) -> Self {
         Self(ability as u8)
-    }
-
-    pub fn has_ability(self, ability: Ability) -> bool {
-        let a = ability as u8;
-        (a & self.0) == a
-    }
-
-    pub fn has_copy(self) -> bool {
-        self.has_ability(Ability::Copy)
-    }
-
-    pub fn has_drop(self) -> bool {
-        self.has_ability(Ability::Drop)
-    }
-
-    pub fn has_store(self) -> bool {
-        self.has_ability(Ability::Store)
-    }
-
-    pub fn has_key(self) -> bool {
-        self.has_ability(Ability::Key)
     }
 
     pub fn remove(self, ability: Ability) -> Self {
@@ -309,14 +293,13 @@ Module AbilitySet.
   );
   *)
   Definition EMPTY := Build_t 0.
-  Definition PRIMITIVES := Build_t (Z.lor Ability.Copy_Z (Z.lor Ability.Drop_Z Ability.Store_Z)).
-  Definition REFERENCES := Build_t (Z.lor Ability.Copy_Z Ability.Drop_Z).
+  Definition PRIMITIVES := Build_t $ Z.lor Ability.Copy_Z $ Z.lor Ability.Drop_Z Ability.Store_Z.
+  Definition REFERENCES := Build_t $ Z.lor Ability.Copy_Z Ability.Drop_Z.
   Definition SIGNER := Build_t Ability.Drop_Z.
-  Definition VECTOR := Build_t (Z.lor Ability.Copy_Z (Z.lor Ability.Drop_Z Ability.Store_Z)).
-  Definition ALL := Build_t
-    (Z.lor Ability.Copy_Z
-      (Z.lor Ability.Drop_Z
-        (Z.lor Ability.Store_Z Ability.Key_Z))).
+  Definition VECTOR := Build_t $ Z.lor Ability.Copy_Z $ Z.lor Ability.Drop_Z Ability.Store_Z.
+  Definition ALL := Build_t $ Z.lor Ability.Copy_Z $
+    Z.lor Ability.Drop_Z $
+    Z.lor Ability.Store_Z Ability.Key_Z.
 
   (* NOTE: since this relies on `AbilitySet`, I decide to just implement it in this module...
     to avoid mutual dependency issue *)
@@ -338,42 +321,15 @@ Module AbilitySet.
   Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
     Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
 
-    (* 
-    pub fn has_ability(self, ability: Ability) -> bool {
-        let a = ability as u8;
-        (a & self.0) == a
-    }
-    *)
     Definition has_ability (self : Self) (ability : Ability.t) : bool := 
       Z.land (Ability.to_Z ability) self.(a0) =? Ability.to_Z ability.
 
-    (* 
-    pub fn has_copy(self) -> bool {
-        self.has_ability(Ability::Copy)
-    }
-    *)
     Definition has_copy (self : Self) : bool := has_ability self Ability.Copy.
 
-    (* 
-    pub fn has_drop(self) -> bool {
-        self.has_ability(Ability::Drop)
-    }
-    *)
     Definition has_drop (self : Self) : bool := has_ability self Ability.Drop.
 
-    (* 
-    pub fn has_store(self) -> bool {
-        self.has_ability(Ability::Store)
-    }
-    *)
     Definition has_store (self : Self) : bool := has_ability self Ability.Store.
 
-
-    (*
-    pub fn has_key(self) -> bool {
-        self.has_ability(Ability::Key)
-    }
-    *)
     Definition has_key (self : Self) : bool := has_ability self Ability.Key.
     (* 
     /// For a polymorphic type, its actual abilities correspond to its declared abilities but
@@ -437,8 +393,35 @@ Module AbilitySet.
         type_arguments,
     )
     *)
-    Definition polymorphic_abilities {I1 I2 : Set} 
-      (declared_abilities : Self) (declared_phantom_parameters: I1) (type_arguments : I2) : Set. Admitted.
+    Definition polymorphic_abilities {I1 I2 : Set} (declared_abilities : Self) 
+      (declared_phantom_parameters: list I1) (type_arguments : list I2) 
+      : PartialVMResult.t Self :=
+      let len_dpp := List.length declared_phantom_parameters in
+      let len_ta := List.length type_arguments in
+      if ~ len_dpp =? len_ta
+      (* TODO: correctly deal with the `PartialVMError` in the future *)
+      then Result.Err (
+        PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION)
+      )
+      else _.
+      (* 
+      let abs = type_arguments
+      .zip(declared_phantom_parameters)
+      .filter(|(_, is_phantom)| !is_phantom)
+      .map(|(ty_arg_abilities, _)| {
+          ty_arg_abilities
+              .into_iter()
+              .map(|a| a.required_by())
+              .fold(AbilitySet::EMPTY, AbilitySet::union)
+      })
+      .fold(declared_abilities, |acc, ty_arg_abilities| {
+          acc.intersect(ty_arg_abilities)
+      });
+      Ok(abs)
+      *)
+      (* TODO: finc a way to access `is_phantom`? *)
+
+
   End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
 
 End AbilitySet.
@@ -776,12 +759,12 @@ Module SignatureToken.
     Fixpoint count_nat (self : t) : nat :=
       match self with
       | Reference inner_tok | MutableReference inner_tok | Vector inner_tok => 1 + count_nat inner_tok
-      | StructInstantiation (_, inner_toks) => 1 + List.list_sum (List.map count_nat inner_toks)
+      | StructInstantiation (_, inner_toks) => 1 + List.list_sum $ List.map count_nat inner_toks
       | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct _ | TypeParameter _ => 1
       end.
 
     Definition preorder_traversal_count (self : Self) : Z :=
-      Z.of_nat (count_nat self).
+      Z.of_nat $ count_nat self.
 
   End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
 End SignatureToken.
@@ -800,7 +783,7 @@ Module Signature.
     a0 : list SignatureToken.t;
   }.
 
-  Definition len (self : t) : Z := Z.of_nat (List.length self.(a0)).
+  Definition len (self : t) : Z := Z.of_nat $ List.length self.(a0).
 End Signature.
 
 Module SignaturePool.
@@ -1055,7 +1038,7 @@ Module CompiledModule.
       let idx := idx.(SignatureIndex.a0) in
       (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future  *)
       let default_token := [SignatureToken.Bool] in
-      List.nth (Z.to_nat idx) self.(signatures) (Signature.Build_t default_token).
+      List.nth (Z.to_nat idx) self.(signatures) $ Signature.Build_t default_token.
 
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
