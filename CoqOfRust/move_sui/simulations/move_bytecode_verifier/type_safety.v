@@ -1206,7 +1206,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       move_to(verifier, offset, struct_def, type_args)?
   }
   *)
-  (* NOTE: It's weird that only deprecated cases are presented in the match *)
+  (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
   | Bytecode.MutBorrowGlobal idx => returnS? (Result.Ok tt)
   | Bytecode.MutBorrowGlobalGeneric idx => returnS? (Result.Ok tt)
   | Bytecode.ImmBorrowGlobal idx => returnS? (Result.Ok tt)
@@ -1353,7 +1353,6 @@ Definition verify_instr (bytecode : Bytecode.t)
   | Bytecode.CastU256 => returnS? (Result.Ok tt)
 
   end
-  
   (* Ok(()) *)
   .
 
