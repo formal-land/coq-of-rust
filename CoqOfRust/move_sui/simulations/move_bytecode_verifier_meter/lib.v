@@ -115,15 +115,15 @@ Module Bounds.
         let new_units := saturating_add self_units self_units in
         if new_units >? max 
         then 
-          returnS? (Result.Err (PartialVMError
+          returnS? $ Result.Err $ PartialVMError
             .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-            .new(StatusCode.CONSTRAINT_NOT_SATISFIED)))
+            .new StatusCode.CONSTRAINT_NOT_SATISFIED
         else 
           let self := self <| Bounds.units := units |> in
           letS? _ := writeS? self in
-          returnS? (Result.Ok tt)
+          returnS? $ Result.Ok tt
       | None => 
-          returnS? (Result.Ok tt)
+          returnS? $ Result.Ok tt
       end.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.

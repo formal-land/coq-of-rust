@@ -47,7 +47,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Implement `mut` functions in this file
     - [x] Implement `AbilitySet` in `file_format`
     - [ ] Implement `CompiledModule` in `file_format`
-    - [ ] (Important)Classyfy different cases for `verify_instr` to split the task
+    - [x] Classyfy different cases for `verify_instr` to split the task
     - [ ] Implement cases for `verify_instr`
   - Deal with the temporary `coerce`
   - List.nth issue: remove `SignatureToken.Bool` with something better
@@ -111,9 +111,9 @@ Module Locals.
       (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
         Since we already checked the length of list, it shouldn't occur by
         any means. *)
-      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) (SignatureToken.Bool)
-      else List.nth (Z.to_nat (idx - self.(param_count))) 
-              self.(locals).(Signature.a0) (SignatureToken.Bool).
+      then List.nth $ Z.to_nat idx self.(parameters).(Signature.a0) SignatureToken.Bool
+      else List.nth (Z.to_nat $ idx - self.(param_count)) 
+              self.(locals).(Signature.a0) SignatureToken.Bool.
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
@@ -164,15 +164,15 @@ Module TypeSafetyChecker.
         self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-        coerce
+        coerce $
         (* TODO: we might be able to directly transfer the PartialVMResult from there to here...
             since it's relatively pretty simple to do for PartialVMResult
         *)
-          (CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
-            (self.(module))
+          CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+            self.(module)
             t 
-            (FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
-            self.(function_context))).
+            $ FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+              self.(function_context).
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -216,9 +216,9 @@ Module TypeSafetyChecker.
       Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
         Scope.Function
         TYPE_NODE_COST
-        (Z.mul (SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-          .preorder_traversal_count 
-          ty) n).
+        $ Z.mul (SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+            .preorder_traversal_count ty)
+            n.
 
     (* 
       fn charge_ty(
@@ -252,9 +252,9 @@ Module TypeSafetyChecker.
         letS? ty_result := charge_ty ty in
         match ty_result with
         | Result.Ok _ => charge_tys tys
-        | Result.Err err => returnS? (Result.Err err)
+        | Result.Err err => returnS? $ Result.Err err
         end
-      | [] => returnS? (Result.Ok tt)
+      | [] => returnS? $ Result.Ok tt
       end.
 
     (* 
@@ -270,15 +270,15 @@ Module TypeSafetyChecker.
     *)
     Definition push (ty : SignatureToken.t) {A : Set} : 
       MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
-      letS? result := liftS? lens_self_meter_meter (charge_ty ty) in
+      letS? result := liftS? lens_self_meter_meter $ charge_ty ty in
       match result with
       | Result.Err _ => returnS? result
       | Result.Ok _ =>
           letS? result := liftS? lens_self_meter_self (
-            liftS? lens_self_stack (AbstractStack.push ty)) in
+            liftS? lens_self_stack $ AbstractStack.push ty) in
           match result with
-          | Result.Ok _ => returnS? (Result.Ok tt)
-          | Result.Err _ => returnS? (Result.Err unknown_err)
+          | Result.Ok _ => returnS? $ Result.Ok tt
+          | Result.Err _ => returnS? $ Result.Err unknown_err
           end
       end
       .
@@ -297,15 +297,15 @@ Module TypeSafetyChecker.
     *)
     Definition push_n (ty : SignatureToken.t) (n : Z)
       : MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
-      letS? result := liftS? lens_self_meter_meter (charge_ty ty) in
+      letS? result := liftS? lens_self_meter_meter $ charge_ty ty in
       match result with
       | Result.Err _ => returnS? result
       | Result.Ok _ =>
           letS? result := liftS? lens_self_meter_self (
-            liftS? lens_self_stack (AbstractStack.push_n ty n)) in
+            liftS? lens_self_stack $ AbstractStack.push_n ty n) in
           match result with
-          | Result.Ok _ => returnS? (Result.Ok tt)
-          | Result.Err _ => returnS? (Result.Err unknown_err)
+          | Result.Ok _ => returnS? $ Result.Ok tt
+          | Result.Err _ => returnS? $ Result.Err unknown_err
           end
       end.
 
