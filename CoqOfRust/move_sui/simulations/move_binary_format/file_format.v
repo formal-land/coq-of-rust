@@ -10,7 +10,8 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Implement `AbilitySet`'s `polymorphic_abilities`.
+- Implement `AbilitySet`'s `polymorphic_abilities`
+- Implement `struct_handle_at`
 - Implement `CompiledModule`'s functions:
   - abilities - pretty large to completely implement but now it works partially
   - struct_instantiation_at
@@ -19,6 +20,7 @@ Module StatusCode := vm_status.StatusCode.
   - constant_at
   - function_handle_at
 - `List.nth` issue: remove `SignatureToken.Bool` with something better
+- (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
 *)
 
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
@@ -209,6 +211,7 @@ Module Ability.
   | Drop
   | Store
   | Key
+  | Empty (* Temporary stub *)
   .
 
   Definition to_Z (self : t) : Z :=
@@ -217,7 +220,15 @@ Module Ability.
     | Drop => 0x2
     | Store => 0x4
     | Key => 0x8
+    | Empty => 0
     end.
+
+  Definition of_Z (n : Z) : t :=
+    if      Z.eqb n 0x1 then Copy
+    else if Z.eqb n 0x2 then Drop
+    else if Z.eqb n 0x4 then Store
+    else if Z.eqb n 0x8 then Key
+    else Empty.
 
   (* These definitions are just for convenience *)
   Definition Copy_Z := to_Z Copy.
@@ -348,7 +359,7 @@ Module AbilitySet.
       | Ability.Copy => Ability.to_Z Ability.Copy
       | Ability.Drop => Ability.to_Z Ability.Drop
       | Ability.Store => Z.lor (Ability.to_Z Ability.Store) (Ability.to_Z Ability.Key)
-      | Ability.Key => 0
+      | Ability.Key | Ability.Empty => 0
       end in
     Build_t z.
 
@@ -375,6 +386,38 @@ Module AbilitySet.
       let '(Build_t self) := self in
       let '(Build_t other) := other in
       Build_t $ Z.lor self other.
+
+    Definition zip {A B} (xs : list A) (ys : list B) :=
+      let zip_helper :=
+        (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
+          match xs, ys with
+          | [], [] => ls
+          | [], y :: ys => ls
+          | x :: xs, [] => ls
+          | x::xs, y::ys => zip_helper xs ys ((x, y) :: ls)
+          end) in
+      zip_helper xs ys [].
+
+    (* Customized `into_iter` solely turn `AbilitySet` type into `Ability`.
+       The name is being kept for consistency with the original code. *)
+    Definition into_iter (a : Self) : list Ability.t. Admitted.
+
+    (* Customized `fold` for `Ability`-specific iterators *)
+    (* NOTE: maybe we have to rewrite this *)
+    Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
+      let fold_helper :=
+        (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
+        match n8 with
+        | S n =>
+          let '(AbilitySet.Build_t a0) := a in
+          let b := AbilitySet.Build_t $ Z.land a0 (Z.shiftl 0x01 (Z.of_nat (Nat.sub 8 n8))) in
+          fold_helper a (f a b) f n
+        | O => result
+        end
+        ) in
+      fold_helper a (AbilitySet.Build_t 0) f 8%nat
+      .
+
     (* 
     /// For a polymorphic type, its actual abilities correspond to its declared abilities but
     /// predicated on its non-phantom type arguments having that ability. For `Key`, instead of needing
@@ -404,7 +447,8 @@ Module AbilitySet.
         // Conceptually this is performing the following operation:
         // For any ability 'a' in `declared_abilities`
         // 'a' is in the result only if
-        //   for all (abi_i, is_phantom_i) in `type_arguments` s.t. !is_phantom then a.required() is a subset of abi_i
+        //   for all (abi_i, is_phantom_i) in `type_arguments` s.t. !is_phantom 
+                then a.required() is a subset of abi_i
         //
         // So to do this efficiently, we can determine the required_by set for each ti
         // and intersect them together along with the declared abilities
@@ -437,20 +481,6 @@ Module AbilitySet.
         type_arguments,
     )
     *)
-
-    Definition zip {A B} (xs : list A) (ys : list B) :=
-      let zip_helper :=
-        (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
-          match xs, ys with
-          | [], [] => ls
-          | [], y :: ys => ls
-          | x :: xs, [] => ls
-          | x::xs, y::ys => zip_helper xs ys ((x, y) :: ls)
-          end) in
-      zip_helper xs ys [].
-
-    Definition fold : Set. Admitted.
-
     Definition polymorphic_abilities (* {I1 I2 : Set} *) (declared_abilities : Self) 
       (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
@@ -468,9 +498,9 @@ Module AbilitySet.
       .filter(|(_, is_phantom)| !is_phantom)
       .map(|(ty_arg_abilities, _)| {
           ty_arg_abilities
-              .into_iter()
-              .map(|a| a.required_by())
-              .fold(AbilitySet::EMPTY, AbilitySet::union)
+              .into_iter() 
+              .map(|a| a.required_by()) 
+              .fold(AbilitySet::EMPTY, AbilitySet::union) 
       })
       .fold(declared_abilities, |acc, ty_arg_abilities| {
           acc.intersect(ty_arg_abilities)
@@ -483,16 +513,10 @@ Module AbilitySet.
       ) abs in
       let abs := List.map (fun x =>
         let '(ty_arg_abilities, _) := x in
-        (* NOTE: this block do the following:
-        1. `into_iter` changes the `AbilitySet` into its iterator by custom logic
-        2. `AbilitySet` bits are being presented by its `required_by` -- nothing special here
-        3. Further with the `iterator`, a custom `fold` directly iterates on the bits rather
-        than a list of bits
+        (* TODO: write a convert function of `AbilitySet -> Ability` *)
+        let ty_arg_abilities := required_by ty_arg_abilities in
 
-        TODO: maybe write a custom fold function that terminates within 4 steps
-        *)
-        (* let ty_arg_abilities : list Self := List.map required_by ty_arg_abilities in *)
-        let result : Self := List.fold_left union ty_arg_abilities EMPTY in
+        let result : Self := fold ty_arg_abilities EMPTY union in
         result
       ) abs in
         Result.Ok declared_abilities. (* NOTE: Placeholder *)
@@ -1014,6 +1038,15 @@ Module CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
 
     (* 
+    pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
+        let handle = &self.struct_handles[idx.into_index()];
+        debug_assert!(handle.module.into_index() < self.module_handles.len()); // invariant
+        handle
+    }
+
+    *)
+
+    (* 
     pub fn abilities(
         &self,
         ty: &SignatureToken,
@@ -1074,11 +1107,11 @@ Module CompiledModule.
         Result.Ok ability
 
       (* TODO: implement polymorphic_abilities *)
-      (* | SignatureToken.Vector ty => AbilitySet::polymorphic_abilities(
+      | SignatureToken.Vector ty => AbilitySet::polymorphic_abilities(
           AbilitySet::VECTOR,
           vec![false],
           vec![self.abilities(ty, constraints)?],
-      ) *)
+      )
 
       (* TODO: implement struct_handle_at *)
       (* | Struct idx => {
