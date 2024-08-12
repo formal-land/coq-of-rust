@@ -36,29 +36,6 @@ NOTE:
     constructor might need to change into this style in the future.
 *)
 
-Module TableIndex.
-  Record t : Set := { a0 : Z; }.
-End TableIndex.
-
-Module LocalIndex.
-  Record t : Set := { a0 : Z; }.
-End LocalIndex.
-
-Module TypeParameterIndex.
-  Record t : Set := { a0 : Z; }.
-End TypeParameterIndex.
-
-Module CodeOffset.
-  Record t : Set := { a0 : Z; }.
-End CodeOffset.
-
-Module ModuleHandleIndex.
-  Record t : Set := { a0 : Z; }.
-End ModuleHandleIndex.
-
-Module IdentifierIndex.
-  Record t : Set := { a0 : Z; }.
-End IdentifierIndex.
 
 (* DRAFT: Template for `define_index!` macro
 
@@ -92,36 +69,38 @@ impl ModuleIndex for $name {
     }
 }
 *)
+Module TableIndex.
+  Record t : Set := { a0 : Z; }.
+End TableIndex.
 
-(* 
-define_index! {
-    name: StructHandleIndex,
-    kind: StructHandle,
-    doc: "Index into the `StructHandle` table.",
-}
-*)
+Module LocalIndex.
+  Record t : Set := { a0 : Z; }.
+End LocalIndex.
+
+Module TypeParameterIndex.
+  Record t : Set := { a0 : Z; }.
+End TypeParameterIndex.
+
+Module CodeOffset.
+  Record t : Set := { a0 : Z; }.
+End CodeOffset.
+
+Module ModuleHandleIndex.
+  Record t : Set := { a0 : Z; }.
+End ModuleHandleIndex.
+
+Module IdentifierIndex.
+  Record t : Set := { a0 : Z; }.
+End IdentifierIndex.
+
 Module StructHandleIndex.
   Record t : Set := { a0 : Z; }.
 End StructHandleIndex.
 
-(* 
-define_index! {
-    name: StructDefinitionIndex,
-    kind: StructDefinition,
-    doc: "Index into the `StructDefinition` table.",
-}
-*)
 Module StructDefinitionIndex.
   Record t : Set := { a0 : Z; }.
 End StructDefinitionIndex.
 
-(* 
-define_index! {
-    name: FieldHandleIndex,
-    kind: FieldHandle,
-    doc: "Index into the `FieldHandle` table.",
-}
-*)
 Module FieldHandleIndex.
   Record t : Set := { a0 : Z; }.
 End FieldHandleIndex.
@@ -257,7 +236,6 @@ impl AbilitySet {
     }
 }
 *)
-
 Module AbilitySet.
   Record t : Set := { a0 : Z; }.
 
@@ -1047,6 +1025,7 @@ Module CompiledModule.
         &self.struct_def_instantiations[idx.into_index()]
     }
     *)
+    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
     Definition default_struct_def_instantiations : StructDefInstantiation.t. Admitted.
     Definition struct_instantiation_at (self : Self) (idx : StructDefInstantiationIndex.t)
       : StructDefInstantiation.t :=
@@ -1083,7 +1062,6 @@ Module CompiledModule.
         &self.signatures[idx.into_index()]
     }
     *)
-    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
     Definition default_signature : Signature.t. Admitted.
     Definition signature_at (self : Self) (idx : SignatureIndex.t) : Signature.t :=
       let idx := idx.(SignatureIndex.a0) in
