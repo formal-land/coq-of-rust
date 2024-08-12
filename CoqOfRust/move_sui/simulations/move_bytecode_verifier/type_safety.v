@@ -76,15 +76,15 @@ Definition unknown_err := PartialVMError
   .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
   .new (StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR).
 
-Definition safe_unwrap_err {State A : Set} (value : PartialVMResult.t A)
-  : MS? State string (PartialVMResult.t A) :=
+(* NOTE: Sometimes we need to explicitly provide the `Error2` as argument *)
+Definition safe_unwrap_err {State A Error1 Error2: Set} (value : Result.t A Error1)
+  : MS? State string A :=
   match value with
-  | Result.Ok _ => returnS? value
-  (* NOTE: is this the correct way to use? *)
-  | Result.Err x => return!?toS? $ panic!? "Value is empty."
+  | Result.Ok x => returnS? x
+  | Result.Err _ => return!?toS? $ panic!? "Value is empty."
   end.
 
-(* TODO: write a function here designed with `M!? A` monad for return type A *)
+(* TODO: Define another function for `?` with panic monad *)
 
 (* **************** *)
 
@@ -681,11 +681,21 @@ fn verify_instr(
 }
 *)
 
-(* TODO(IMPORTANT): implement `abilities` function *)
 (* 
 NOTE: lenses to use:
 - TypeSafetyChecker -> Abstractstack
 *)
+
+Definition verify_instr_test (bytecode : Bytecode.t) 
+  (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  match bytecode with
+  (* NOTE: 
+      This is a function that is intended to test the cases for `verify_instr`
+      for better debugging experience. When you need to debug a case just
+      fill it here. *)
+  | _ => returnS? (Result.Ok tt)
+  end.
+
 Definition verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : 
   MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -702,23 +712,26 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Pop => 
-      (* TODO: extract the SignatureToken.t value correctly for operand *)
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      (* TODO: add safe_unwrap_error logic *)
-      letS? verifier := readS? in
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      letS? '(verifier, _) := readS? in
       let abilities := 
         CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
         .abilities
           verifier.(TypeSafetyChecker.module)
-          operand (* TODO: fix the bug here *)
+          operand
           verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
-      if ~ (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
-      then returnS? 
+      letS? abilities := safe_unwrap_err (Error2 := PartialVMError.t) abilities in
+      let abilities : AbilitySet.t := abilities in
+      if negb (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
+      then returnS?
         (Result.Err 
           (TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset))
-      else returnS? (Result.Ok tt)
+      else 
+        returnS? (Result.Ok tt)
+
   (* 
   Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
       let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -728,28 +741,15 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
-      letS? verifier := readS? in
+      letS? '(verifier, _) := readS? in
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      match operand with
-      | Result.Ok op => 
-        match op with
-        | SignatureToken.Bool => returnS? (Result.Ok tt)
-        | _ => returnS? (Result.Err 
-          (TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier (StatusCode.BR_TYPE_MISMATCH_ERROR) offset))
-        end
-      (* TODO: lots of things to be fixed in this draft *)
-      | Result.Err _ => returnS? (Result.Err unknown_err)
-      end
-      (* TODO: if the value is `Ok` then continue else return 
-          Result.Err 
-            (PartialVMError.new(StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR) *)
-      (* if ~SignatureToken.t_beq operand SignatureToken.Bool
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      if negb $ SignatureToken.t_beq operand SignatureToken.Bool
       then returnS? (Result.Err (
         TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
-      else returnS? (Result.Ok tt) *)
+      else returnS? (Result.Ok tt)
 
   (* 
   Bytecode::StLoc(idx) => {
@@ -760,7 +760,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.StLoc idx => 
-      letS? verifier := readS? in
+      letS? '(verifier, _) := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
@@ -775,7 +775,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Abort => 
-      letS? verifier := readS? in
+      letS? '(verifier, _) := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
@@ -807,7 +807,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.FreezeRef => 
-      letS? verifier := readS? in
+      letS? '(verifier, _) := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
