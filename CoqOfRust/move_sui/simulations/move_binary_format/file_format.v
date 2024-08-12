@@ -384,14 +384,14 @@ Module AbilitySet.
           | [], [] => ls
           | [], y :: ys => ls
           | x :: xs, [] => ls
-          | x::xs, y::ys => zip_helper xs ys ((x, y) :: ls)
+          | x::xs, y::ys => zip_helper xs ys $ (x, y) :: ls
           end) in
       zip_helper xs ys [].
 
     (* Customized `into_iter` solely turns `AbilitySet` type into `Ability`.
        The name is being kept for consistency with the original code. 
        There's a lot of thing going on digging into the `Iterator` trait.
-       NOTEs: My understanding towards original code:
+       NOTE: My understanding towards original code:
        - `into_iter` is customized to convert a `Ability` value into `AbilitySet`
        - `map` *should* only map with the `required_by` a single `AbilitySet` value 
          into `Ability` values. So I omit the `map`(?). THIS IS THE MOST SUSPICIOUS 
@@ -402,14 +402,15 @@ Module AbilitySet.
     Definition into_iter (a : Self) : Ability.t :=
       let '(Build_t z) := a in Ability.Build_t z.
 
-    (* Ad hoc `fold` specifically for `Ability` and the function below *)
+    (* Ad hoc `fold` specifically for `Ability` and the function below.
+      This `fold` is ensured to loop for 8 times exactly *)
     Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
       let fold_helper :=
         (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
         match n8 with
         | S n =>
           let '(AbilitySet.Build_t a0) := a in
-          let b := AbilitySet.Build_t $ Z.land a0 (Z.shiftl 0x01 (Z.of_nat (Nat.sub 8 n8))) in
+          let b := AbilitySet.Build_t $ Z.land a0 $ Z.shiftl 0x01 $ Z.of_nat $ Nat.sub 8 n8 in
           fold_helper a (f a b) f n
         | O => result
         end
