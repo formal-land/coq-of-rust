@@ -693,6 +693,20 @@ Definition verify_instr_test (bytecode : Bytecode.t)
       This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. *)
+
+  (* DEBUG:
+  Bytecode::LdU8(_) => {
+      verifier.push(meter, ST::U8)?;
+  }
+  *)
+  (* | Bytecode.LdU8 idx => 
+    letS? '(verifier, meter) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U8 in
+    letS? result := safe_unwrap_err (A := PartialVMResult.t unit) (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result) *)
+
   | _ => returnS? (Result.Ok tt)
   end.
 
@@ -761,10 +775,16 @@ Definition verify_instr (bytecode : Bytecode.t)
   *)
   | Bytecode.StLoc idx => 
       letS? '(verifier, _) := readS? in
-      let _stack := verifier.(TypeSafetyChecker.stack) in
-      let operand := AbstractStack.pop _stack in
-      (* TODO: fill here *)
-      returnS? (Result.Ok tt)
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .local_at verifier (LocalIndex.Build_t idx)
+      then returnS? (Result.Err (
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+      else returnS? (Result.Ok tt)
 
   (* 
   Bytecode::Abort => {
@@ -776,10 +796,14 @@ Definition verify_instr (bytecode : Bytecode.t)
   *)
   | Bytecode.Abort => 
       letS? '(verifier, _) := readS? in
-      let _stack := verifier.(TypeSafetyChecker.stack) in
-      let operand := AbstractStack.pop _stack in
-      (* TODO: fill here *)
-      returnS? (Result.Ok tt)
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      if negb $ SignatureToken.t_beq operand SignatureToken.U64
+      then returnS? (Result.Err (
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.ABORT_TYPE_MISMATCH_ERROR offset))
+      else returnS? (Result.Ok tt)
 
   (*
   Bytecode::Ret => {
@@ -884,6 +908,11 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.LdU8 idx => returnS? (Result.Ok tt)
+      (* letS? '(verifier, meter) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U8 in
+      safe_unwrap_err (Error2 := PartialVMError.t) result  *)
   | Bytecode.LdU16 idx => returnS? (Result.Ok tt)
   | Bytecode.LdU32 idx => returnS? (Result.Ok tt)
   | Bytecode.LdU64 idx => returnS? (Result.Ok tt)
