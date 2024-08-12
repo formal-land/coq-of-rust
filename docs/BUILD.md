@@ -140,6 +140,6 @@ in WSL, to generate Coq files of WSL's file format. The format differences
 here usually lead to significantly longer `make` time for WSL than other 
 systems. 
 
-As an alternative, you might copy the project under WSL's `/mnt` and
+As an alternative, you might copy the project under WSL's `/home` and
 observe the performance boost under WSL's `make`, with a tradeoff of
 extra time on copying the project from Windows to WSL.
