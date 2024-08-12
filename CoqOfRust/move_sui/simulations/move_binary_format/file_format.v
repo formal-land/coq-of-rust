@@ -1251,4 +1251,3 @@ Module CompiledModule.
 
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
-
