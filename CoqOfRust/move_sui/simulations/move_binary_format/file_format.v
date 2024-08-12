@@ -9,16 +9,10 @@ Require Import CoqOfRust.core.simulations.eq.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* TODO(progress):
-- Implement `CompiledModule`'s functions:
-  - struct_instantiation_at
-  - struct_def_at
-  - signature_at
-  - constant_at
-  - function_handle_at
-  These functions are pretty easy so we implement when we need them.
-- `List.nth` issue: check every occurrences and see if we can remove the default param
+(* TODO(misc tasks):
 - (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
+- `List.nth` issue: check every occurrences and see if we can remove the default param
+- Reformat the modules into better order
 *)
 
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
@@ -140,27 +134,24 @@ Module SignatureIndex.
   Record t : Set := { a0 : Z; }.
 End SignatureIndex.
 
-(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
+Module StructDefInstantiationIndex.
+  Record t : Set := { a0 : Z; }.
+End StructDefInstantiationIndex.
 
 Module ConstantPoolIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
+  Record t : Set := { a0 : Z; }.
 End ConstantPoolIndex.
 
 Module FunctionHandleIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
+  Record t : Set := { a0 : Z; }.
 End FunctionHandleIndex.
+
+(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
 
 Module FunctionInstantiationIndex.
   Inductive t : Set :=
   | Make (_ : Z).
 End FunctionInstantiationIndex.
-
-Module StructDefInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End StructDefInstantiationIndex.
 
 Module FieldInstantiationIndex.
   Inductive t : Set :=
@@ -879,6 +870,28 @@ Module SignaturePool.
   Definition t := list Signature.t.
 End SignaturePool.
 
+(* 
+/// A `Constant` is a serialized value along with its type. That type will be deserialized by the
+/// loader/evauluator
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct Constant {
+    pub type_: SignatureToken,
+    pub data: Vec<u8>,
+}
+*)
+Module Constant.
+  Record t : Set := {
+    type_ : SignatureToken.t;
+    data : list Z;
+  }.
+End Constant.
+
+Module ConstantPool.
+  Definition t := list Constant.t.
+End ConstantPool.
+
 Module Bytecode.
   Inductive t : Set :=
   | Pop
@@ -1005,26 +1018,51 @@ pub struct CompiledModule {
 Module CompiledModule.
 (* TODO: Implement the struct *)
   Record t : Set := { 
-  version : Z;
-  (* self_module_handle_idx : ModuleHandleIndex; *)
-  (* module_handles : list ModuleHandle; *)
-  struct_handles : list StructHandle.t;
-  (* function_handles : list FunctionHandle; *)
-  (* field_handles : list FieldHandle; *)
-  (* friend_decls : list ModuleHandle; *)
-  (* struct_def_instantiations : list StructDefInstantiation; *)
-  (* function_instantiations : list FunctionInstantiation; *)
-  (* field_instantiations : list FieldInstantiation; *)
-  signatures : SignaturePool.t;
-  (* identifiers : IdentifierPool; *)
-  (* address_identifiers : AddressIdentifierPool; *)
-  (* constant_pool : ConstantPool; *)
-  (* metadata : list Metadata; *)
-  (* struct_defs : list StructDefinition; *)
-  (* function_defs : list FunctionDefinition; *)
+    version : Z;
+    (* self_module_handle_idx : ModuleHandleIndex; *)
+    (* module_handles : list ModuleHandle; *)
+    struct_handles : list StructHandle.t;
+    function_handles : list FunctionHandle.t;
+    (* field_handles : list FieldHandle; *)
+    (* friend_decls : list ModuleHandle; *)
+    struct_def_instantiations : list StructDefInstantiation.t;
+    (* function_instantiations : list FunctionInstantiation; *)
+    (* field_instantiations : list FieldInstantiation; *)
+    signatures : SignaturePool.t;
+    (* identifiers : IdentifierPool; *)
+    (* address_identifiers : AddressIdentifierPool; *)
+    constant_pool : ConstantPool.t;
+    (* metadata : list Metadata; *)
+    struct_defs : list StructDefinition.t;
+    (* function_defs : list FunctionDefinition; *)
   }.
   Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
+
+    (* 
+    pub fn struct_instantiation_at(
+        &self,
+        idx: StructDefInstantiationIndex,
+    ) -> &StructDefInstantiation {
+        &self.struct_def_instantiations[idx.into_index()]
+    }
+    *)
+    Definition default_struct_def_instantiations : StructDefInstantiation.t. Admitted.
+    Definition struct_instantiation_at (self : Self) (idx : StructDefInstantiationIndex.t)
+      : StructDefInstantiation.t :=
+      let idx := idx.(StructDefInstantiationIndex.a0) in
+      List.nth (Z.to_nat idx) self.(struct_def_instantiations) default_struct_def_instantiations.
+
+    (* 
+    pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
+        &self.struct_defs[idx.into_index()]
+    }
+    *)
+    Definition default_struct_defs : StructDefinition.t. Admitted.
+    Definition struct_def_at (self : Self) (idx : StructDefinitionIndex.t) 
+      : StructDefinition.t :=
+      let idx := idx.(StructDefinitionIndex.a0) in
+      List.nth (Z.to_nat idx) self.(struct_defs) default_struct_defs.
 
     (* 
     pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
@@ -1038,6 +1076,43 @@ Module CompiledModule.
       let idx := idx.(StructHandleIndex.a0) in
       let handle := List.nth (Z.to_nat idx) self.(struct_handles) default_struct_handle in
       (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
+      handle.
+
+    (* 
+    pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
+        &self.signatures[idx.into_index()]
+    }
+    *)
+    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
+    Definition default_signature : Signature.t. Admitted.
+    Definition signature_at (self : Self) (idx : SignatureIndex.t) : Signature.t :=
+      let idx := idx.(SignatureIndex.a0) in
+      List.nth (Z.to_nat idx) self.(signatures) default_signature.
+
+    (* 
+    pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
+        &self.constant_pool[idx.into_index()]
+    }
+    *)
+    Definition default_constant : Constant.t. Admitted.
+    Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
+      let idx := idx.(ConstantPoolIndex.a0) in
+      List.nth (Z.to_nat idx) self.(constant_pool) default_constant.
+
+    (* 
+    pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
+        let handle = &self.function_handles[idx.into_index()];
+        debug_assert!(handle.parameters.into_index() < self.signatures.len()); // invariant
+        debug_assert!(handle.return_.into_index() < self.signatures.len()); // invariant
+        handle
+    }
+    *)
+    Definition default_function_handle : FunctionHandle.t. Admitted.
+    Definition function_handle_at (self : Self) (idx : FunctionHandleIndex.t) 
+      : FunctionHandle.t :=
+      let idx := idx.(FunctionHandleIndex.a0) in
+      let handle := List.nth (Z.to_nat idx) self.(function_handles) default_function_handle in
+      (* TODO: Implement the debugs *)
       handle.
 
     (* 
@@ -1150,18 +1225,6 @@ Module CompiledModule.
           | Result.Err err            => Result.Err err
           end
       end.
-
-    (* 
-    pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
-        &self.signatures[idx.into_index()]
-    }
-    *)
-    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
-    Definition signature_at(self : Self) (idx : SignatureIndex.t) : Signature.t :=
-      let idx := idx.(SignatureIndex.a0) in
-      (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future *)
-      let default_token := [SignatureToken.Bool] in
-      List.nth (Z.to_nat idx) self.(signatures) $ Signature.Build_t default_token.
 
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
