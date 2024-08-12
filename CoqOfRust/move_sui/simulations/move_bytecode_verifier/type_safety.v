@@ -46,7 +46,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Implement `safe_unwrap_err!` macro
     - [x] Implement `mut` functions in this file
     - [x] Implement `AbilitySet` in `file_format`
-    - [ ] Implement `CompiledModule` in `file_format`
+    - [x] Implement `CompiledModule` in `file_format`
     - [x] Classyfy different cases for `verify_instr` to split the task
     - [ ] Implement cases for `verify_instr`
   - (IMPORTANT) write a `unpack` function for `?`s in Rust
@@ -75,7 +75,8 @@ Definition safe_unwrap_err {State A : Set} (value : PartialVMResult.t A)
   : MS? State string (PartialVMResult.t A) :=
   match value with
   | Result.Ok _ => returnS? value
-  | Result.Err x => panic!? "Value is empty."
+  (* NOTE: is this the correct way to use? *)
+  | Result.Err x => return!?toS? $ panic!? "Value is empty."
   end.
 
 (* TODO: write a function here designed with `M!? A` monad for return type A *)
@@ -116,7 +117,7 @@ Module Locals.
       (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
         Since we already checked the length of list, it shouldn't occur by
         any means. *)
-      then List.nth $ Z.to_nat idx self.(parameters).(Signature.a0) SignatureToken.Bool
+      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) SignatureToken.Bool
       else List.nth (Z.to_nat $ idx - self.(param_count)) 
               self.(locals).(Signature.a0) SignatureToken.Bool.
 
@@ -681,7 +682,7 @@ NOTE: lenses to use:
 - TypeSafetyChecker -> Abstractstack
 *)
 Definition verify_instr (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) (* meter : Meter *) : 
+  (offset : CodeOffset.t) : 
   MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
   (* 
@@ -696,19 +697,22 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Pop => 
+      (* TODO: extract the SignatureToken.t value correctly for operand *)
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      (* TODO: safe_unwrap_error *)
+      (* TODO: add safe_unwrap_error logic *)
       letS? verifier := readS? in
       let abilities := 
-        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .abilities
           verifier.(TypeSafetyChecker.module)
-          operand
+          operand (* TODO: fix the bug here *)
           verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
       if ~ (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
       then returnS? 
-        (Result Err 
-          (TypeSafetyChecker.error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset))
+        (Result.Err 
+          (TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset))
       else returnS? (Result.Ok tt)
   (* 
   Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
@@ -719,6 +723,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
+      letS? verifier := readS? in
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       match operand with
@@ -726,7 +731,8 @@ Definition verify_instr (bytecode : Bytecode.t)
         match op with
         | SignatureToken.Bool => returnS? (Result.Ok tt)
         | _ => returnS? (Result.Err 
-          (TypeSafetyChecker.error verifier (StatusCode.BR_TYPE_MISMATCH_ERROR) offset))
+          (TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier (StatusCode.BR_TYPE_MISMATCH_ERROR) offset))
         end
       (* TODO: lots of things to be fixed in this draft *)
       | Result.Err _ => returnS? (Result.Err unknown_err)
@@ -749,6 +755,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.StLoc idx => 
+      letS? verifier := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
@@ -763,6 +770,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Abort => 
+      letS? verifier := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
@@ -794,6 +802,7 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.FreezeRef => 
+      letS? verifier := readS? in
       let _stack := verifier.(TypeSafetyChecker.stack) in
       let operand := AbstractStack.pop _stack in
       (* TODO: fill here *)
@@ -1081,8 +1090,8 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
   *)
-  | Bytecode::Add | Bytecode::Sub | Bytecode::Mul | Bytecode::Mod 
-  | Bytecode::Div | Bytecode::BitOr | Bytecode::BitAnd | Bytecode::Xor
+  | Bytecode.Add | Bytecode.Sub | Bytecode.Mul | Bytecode.Mod 
+  | Bytecode.Div | Bytecode.BitOr | Bytecode.BitAnd | Bytecode.Xor
     => returnS? (Result.Ok tt)
 
   (* 
