@@ -6,6 +6,9 @@ Import simulations.M.Notations.
 
 Require Import CoqOfRust.core.simulations.eq.
 
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
+
 (* TODO(progress):
 - Implement `AbilitySet`'s `polymorphic_abilities`.
 - Implement `CompiledModule`'s functions:
@@ -23,6 +26,8 @@ Require Import CoqOfRust.core.simulations.eq.
    for now, we shouldn't ignore this. *)
 Module PartialVMError.
   Inductive t : Set := .
+
+  Definition new (s : StatusCode.t) : t. Admitted.
 End PartialVMError.
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
@@ -396,14 +401,14 @@ Module AbilitySet.
     Definition polymorphic_abilities {I1 I2 : Set} (declared_abilities : Self) 
       (declared_phantom_parameters: list I1) (type_arguments : list I2) 
       : PartialVMResult.t Self :=
-      let len_dpp := List.length declared_phantom_parameters in
-      let len_ta := List.length type_arguments in
-      if ~ len_dpp =? len_ta
+      let len_dpp := Z.of_nat $ List.length declared_phantom_parameters in
+      let len_ta := Z.of_nat $ List.length type_arguments in
+      if negb (len_dpp =? len_ta)
       (* TODO: correctly deal with the `PartialVMError` in the future *)
       then Result.Err (
         PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION)
       )
-      else _.
+      else Result.Ok declared_abilities . (* NOTE: Placeholder *)
       (* 
       let abs = type_arguments
       .zip(declared_phantom_parameters)
@@ -759,7 +764,7 @@ Module SignatureToken.
     Fixpoint count_nat (self : t) : nat :=
       match self with
       | Reference inner_tok | MutableReference inner_tok | Vector inner_tok => 1 + count_nat inner_tok
-      | StructInstantiation (_, inner_toks) => 1 + List.list_sum $ List.map count_nat inner_toks
+      | StructInstantiation (_, inner_toks) => Nat.add 1 $ List.list_sum $ List.map count_nat inner_toks
       | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct _ | TypeParameter _ => 1
       end.
 
