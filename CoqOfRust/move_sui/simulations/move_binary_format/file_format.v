@@ -449,6 +449,8 @@ Module AbilitySet.
           end) in
       zip_helper xs ys [].
 
+    Definition fold : Set. Admitted.
+
     Definition polymorphic_abilities (* {I1 I2 : Set} *) (declared_abilities : Self) 
       (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
@@ -481,8 +483,15 @@ Module AbilitySet.
       ) abs in
       let abs := List.map (fun x =>
         let '(ty_arg_abilities, _) := x in
-        (* TODO(IMPORTANT): examine `AbilitySet.into_iter` and fill the hidden logic*)
-        let ty_arg_abilities : list Self := List.map required_by ty_arg_abilities in
+        (* NOTE: this block do the following:
+        1. `into_iter` changes the `AbilitySet` into its iterator by custom logic
+        2. `AbilitySet` bits are being presented by its `required_by` -- nothing special here
+        3. Further with the `iterator`, a custom `fold` directly iterates on the bits rather
+        than a list of bits
+
+        TODO: maybe write a custom fold function that terminates within 4 steps
+        *)
+        (* let ty_arg_abilities : list Self := List.map required_by ty_arg_abilities in *)
         let result : Self := List.fold_left union ty_arg_abilities EMPTY in
         result
       ) abs in
