@@ -837,7 +837,7 @@ Module SignatureToken.
       | Reference inner_tok | MutableReference inner_tok | Vector inner_tok 
         => 1 + count_nat inner_tok
       | StructInstantiation (_, inner_toks) 
-        => Nat.add 1 $ List.list_sum $ List.map count_nat inner_toks
+        => Datatypes.S $ List.list_sum $ List.map count_nat inner_toks
       | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 
       | Struct _ | TypeParameter _ 
         => 1
