@@ -369,6 +369,16 @@ Module AbilitySet.
       let '(Build_t other) := other in
       Build_t $ Z.lor self other.
 
+    (* 
+    pub fn intersect(self, other: Self) -> Self {
+        Self(self.0 & other.0)
+    }
+    *)
+    Definition intersect (self other : Self) : Self :=
+      let '(Build_t self) := self in
+      let '(Build_t other) := other in
+      Build_t $ Z.land self other.
+
     Definition zip {A B} (xs : list A) (ys : list B) :=
       let zip_helper :=
         (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
@@ -380,13 +390,12 @@ Module AbilitySet.
           end) in
       zip_helper xs ys [].
 
-    (* Customized `into_iter` solely turn `AbilitySet` type into `Ability`.
+    (* Customized `into_iter` solely turns `AbilitySet` type into `Ability`.
        The name is being kept for consistency with the original code. *)
     Definition into_iter (a : Self) : Ability.t :=
       let '(Build_t z) := a in Ability.Build_t z.
 
     (* Customized `fold` for `Ability`-specific iterators *)
-    (* NOTE: maybe we have to rewrite this *)
     Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
       let fold_helper :=
         (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
@@ -451,19 +460,6 @@ Module AbilitySet.
         Ok(abs)
     }
     *)
-    (* NOTE: Instances in this file:
-    AbilitySet::polymorphic_abilities(
-                AbilitySet::VECTOR,
-                vec![false],
-                vec![self.abilities(ty, constraints)?],
-            ),
-
-    AbilitySet::polymorphic_abilities(
-        declared_abilities,
-        sh.type_parameters.iter().map(|param| param.is_phantom),
-        type_arguments,
-    )
-    *)
     Definition polymorphic_abilities (* {I1 I2 : Set} *) (declared_abilities : Self) 
       (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
@@ -471,25 +467,8 @@ Module AbilitySet.
       let len_ta := Z.of_nat $ List.length type_arguments in
       if negb (len_dpp =? len_ta)
       (* TODO: correctly deal with the `PartialVMError` in the future *)
-      then Result.Err (
-        PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION)
-      )
+      then Result.Err (PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION))
       else 
-      (* 
-      let abs = type_arguments
-      .zip(declared_phantom_parameters)
-      .filter(|(_, is_phantom)| !is_phantom)
-      .map(|(ty_arg_abilities, _)| {
-          ty_arg_abilities
-              .into_iter() 
-              .map(|a| a.required_by()) 
-              .fold(AbilitySet::EMPTY, AbilitySet::union) 
-      })
-      .fold(declared_abilities, |acc, ty_arg_abilities| {
-          acc.intersect(ty_arg_abilities)
-      });
-      Ok(abs)
-      *)
       let abs : list (Self * bool) := zip type_arguments declared_phantom_parameters in
       let abs : list (Self * bool) := List.filter (fun x =>
         let '(_, is_phantom) := x in negb is_phantom
@@ -498,19 +477,13 @@ Module AbilitySet.
         let '(ty_arg_abilities, _) := x in
         let ty_arg_abilities := into_iter ty_arg_abilities in
         let ty_arg_abilities := required_by ty_arg_abilities in
-        let result : Self := fold ty_arg_abilities EMPTY union in
-        result
+        fold ty_arg_abilities EMPTY union
       ) abs in
-      (* TODO: Implemeng below and `intersect`
-      .fold(declared_abilities, |acc, ty_arg_abilities| {
-          acc.intersect(ty_arg_abilities)
-      });
-      *)
-        Result.Ok declared_abilities. (* NOTE: Placeholder *)
-
-
+      let abs := List.fold_left (fun acc ty_arg_abilities => 
+          intersect acc ty_arg_abilities
+      ) abs declared_abilities in
+      Result.Ok abs.
   End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
-
 End AbilitySet.
 
 (* 
