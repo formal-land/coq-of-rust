@@ -75,7 +75,7 @@ Definition safe_unwrap_err {State A : Set} (value : PartialVMResult.t A)
   : MS? State string (PartialVMResult.t A) :=
   match value with
   | Result.Ok _ => returnS? value
-  | Result.Err x => returnS? (Result.Err unknown_err)
+  | Result.Err x => panic!? "Value is empty."
   end.
 
 (* TODO: write a function here designed with `M!? A` monad for return type A *)

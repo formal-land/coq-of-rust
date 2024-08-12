@@ -212,18 +212,31 @@ Module Ability.
   .
 
   Definition to_Z (self : t) : Z :=
-  match self with
-  | Copy => 0x1
-  | Drop => 0x2
-  | Store => 0x4
-  | Key => 0x8
-  end.
+    match self with
+    | Copy => 0x1
+    | Drop => 0x2
+    | Store => 0x4
+    | Key => 0x8
+    end.
 
   (* These definitions are just for convenience *)
   Definition Copy_Z := to_Z Copy.
   Definition Drop_Z := to_Z Drop.
   Definition Store_Z := to_Z Store.
   Definition Key_Z := to_Z Key.
+
+  (* NOTE: we make it here brutal and fast as well - 
+          we actually implement it at `AbilitySet` below
+  /// An inverse of `requires`, where x is in a.required_by() iff x.requires() == a
+  pub fn required_by(self) -> AbilitySet {
+      match self {
+          Self::Copy => AbilitySet::EMPTY | Ability::Copy,
+          Self::Drop => AbilitySet::EMPTY | Ability::Drop,
+          Self::Store => AbilitySet::EMPTY | Ability::Store | Ability::Key,
+          Self::Key => AbilitySet::EMPTY,
+      }
+  }
+  *)
 End Ability.
 
 
@@ -239,10 +252,6 @@ impl AbilitySet {
 
     pub fn intersect(self, other: Self) -> Self {
         Self(self.0 & other.0)
-    }
-
-    pub fn union(self, other: Self) -> Self {
-        Self(self.0 | other.0)
     }
 
     #[inline]
@@ -323,6 +332,26 @@ Module AbilitySet.
     }.
   End StructTypeParameter.
 
+  (* From `Ability`
+  pub fn required_by(self) -> AbilitySet {
+    match self {
+        Self::Copy => AbilitySet::EMPTY | Ability::Copy,
+        Self::Drop => AbilitySet::EMPTY | Ability::Drop,
+        Self::Store => AbilitySet::EMPTY | Ability::Store | Ability::Key,
+        Self::Key => AbilitySet::EMPTY,
+    }
+  }
+  *)
+  Definition required_by (self : Ability.t) : t :=
+    let z :=
+      match self with
+      | Ability.Copy => Ability.to_Z Ability.Copy
+      | Ability.Drop => Ability.to_Z Ability.Drop
+      | Ability.Store => Z.lor (Ability.to_Z Ability.Store) (Ability.to_Z Ability.Key)
+      | Ability.Key => 0
+      end in
+    Build_t z.
+
   Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
     Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
 
@@ -336,6 +365,16 @@ Module AbilitySet.
     Definition has_store (self : Self) : bool := has_ability self Ability.Store.
 
     Definition has_key (self : Self) : bool := has_ability self Ability.Key.
+
+    (* 
+    pub fn union(self, other: Self) -> Self {
+        Self(self.0 | other.0)
+    }
+    *)
+    Definition union (self other : Self) : Self :=
+      let '(Build_t self) := self in
+      let '(Build_t other) := other in
+      Build_t $ Z.lor self other.
     (* 
     /// For a polymorphic type, its actual abilities correspond to its declared abilities but
     /// predicated on its non-phantom type arguments having that ability. For `Key`, instead of needing
@@ -398,8 +437,20 @@ Module AbilitySet.
         type_arguments,
     )
     *)
-    Definition polymorphic_abilities {I1 I2 : Set} (declared_abilities : Self) 
-      (declared_phantom_parameters: list I1) (type_arguments : list I2) 
+
+    Definition zip {A B} (xs : list A) (ys : list B) :=
+      let zip_helper :=
+        (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
+          match xs, ys with
+          | [], [] => ls
+          | [], y :: ys => ls
+          | x :: xs, [] => ls
+          | x::xs, y::ys => zip_helper xs ys ((x, y) :: ls)
+          end) in
+      zip_helper xs ys [].
+
+    Definition polymorphic_abilities (* {I1 I2 : Set} *) (declared_abilities : Self) 
+      (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
       let len_dpp := Z.of_nat $ List.length declared_phantom_parameters in
       let len_ta := Z.of_nat $ List.length type_arguments in
@@ -408,7 +459,7 @@ Module AbilitySet.
       then Result.Err (
         PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION)
       )
-      else Result.Ok declared_abilities . (* NOTE: Placeholder *)
+      else 
       (* 
       let abs = type_arguments
       .zip(declared_phantom_parameters)
@@ -424,7 +475,18 @@ Module AbilitySet.
       });
       Ok(abs)
       *)
-      (* TODO: finc a way to access `is_phantom`? *)
+      let abs : list (Self * bool) := zip type_arguments declared_phantom_parameters in
+      let abs : list (Self * bool) := List.filter (fun x =>
+        let '(_, is_phantom) := x in negb is_phantom
+      ) abs in
+      let abs := List.map (fun x =>
+        let '(ty_arg_abilities, _) := x in
+        (* TODO(IMPORTANT): examine `AbilitySet.into_iter` and fill the hidden logic*)
+        let ty_arg_abilities : list Self := List.map required_by ty_arg_abilities in
+        let result : Self := List.fold_left union ty_arg_abilities EMPTY in
+        result
+      ) abs in
+        Result.Ok declared_abilities. (* NOTE: Placeholder *)
 
 
   End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
