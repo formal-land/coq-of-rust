@@ -10,16 +10,14 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Implement `AbilitySet`'s `polymorphic_abilities`
-- Implement `struct_handle_at`
 - Implement `CompiledModule`'s functions:
-  - abilities - pretty large to completely implement but now it works partially
   - struct_instantiation_at
   - struct_def_at
   - signature_at
   - constant_at
   - function_handle_at
-- `List.nth` issue: remove `SignatureToken.Bool` with something better
+  These functions are pretty easy so we implement when we need them.
+- `List.nth` issue: check every occurrences and see if we can remove the default param
 - (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
 *)
 
@@ -391,11 +389,12 @@ Module AbilitySet.
       zip_helper xs ys [].
 
     (* Customized `into_iter` solely turns `AbilitySet` type into `Ability`.
-       The name is being kept for consistency with the original code. *)
+       The name is being kept for consistency with the original code. 
+       There's a lot of thing going on digging into the `Iterator` trait... *)
     Definition into_iter (a : Self) : Ability.t :=
       let '(Build_t z) := a in Ability.Build_t z.
 
-    (* Customized `fold` for `Ability`-specific iterators *)
+    (* Ad hoc `fold` specifically for `Ability` and the function below *)
     Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
       let fold_helper :=
         (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
@@ -460,7 +459,7 @@ Module AbilitySet.
         Ok(abs)
     }
     *)
-    Definition polymorphic_abilities (* {I1 I2 : Set} *) (declared_abilities : Self) 
+    Definition polymorphic_abilities (declared_abilities : Self) 
       (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
       let len_dpp := Z.of_nat $ List.length declared_phantom_parameters in
@@ -485,6 +484,28 @@ Module AbilitySet.
       Result.Ok abs.
   End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
 End AbilitySet.
+
+(* 
+pub struct StructHandle {
+    /// The module that defines the type.
+    pub module: ModuleHandleIndex,
+    /// The name of the type.
+    pub name: IdentifierIndex,
+    /// Contains the abilities for this struct
+    /// For any instantiation of this type, the abilities of this type are predicated on
+    /// that ability being satisfied for all type parameters.
+    pub abilities: AbilitySet,
+    /// The type formals (identified by their index into the vec)
+    pub type_parameters: Vec<StructTypeParameter>,
+}
+*)
+Module StructHandle.
+  Record t : Set := { 
+    abilities : AbilitySet.t;
+    (* NOTE: Remember that I put `StructTypeParameter` in `AbilitySet`... *)
+    type_parameters : list AbilitySet.StructTypeParameter.t;
+  }.
+End StructHandle.
 
 (* 
 /// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
@@ -537,7 +558,6 @@ Module FunctionHandle.
   parameters : SignatureIndex.t;
   return_ : SignatureIndex.t;
   type_parameters : list AbilitySet.t;
-  
   }.
 End FunctionHandle.
 
@@ -815,12 +835,15 @@ Module SignatureToken.
     *)
     (* NOTE: Since for now this is only used for counting the tokens in
       `SignatureToken`, we pick the easiest way to get over it *)
-    
     Fixpoint count_nat (self : t) : nat :=
       match self with
-      | Reference inner_tok | MutableReference inner_tok | Vector inner_tok => 1 + count_nat inner_tok
-      | StructInstantiation (_, inner_toks) => Nat.add 1 $ List.list_sum $ List.map count_nat inner_toks
-      | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct _ | TypeParameter _ => 1
+      | Reference inner_tok | MutableReference inner_tok | Vector inner_tok 
+        => 1 + count_nat inner_tok
+      | StructInstantiation (_, inner_toks) 
+        => Nat.add 1 $ List.list_sum $ List.map count_nat inner_toks
+      | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 
+      | Struct _ | TypeParameter _ 
+        => 1
       end.
 
     Definition preorder_traversal_count (self : Self) : Z :=
@@ -979,7 +1002,7 @@ Module CompiledModule.
   version : Z;
   (* self_module_handle_idx : ModuleHandleIndex; *)
   (* module_handles : list ModuleHandle; *)
-  (* struct_handles : list StructHandle; *)
+  struct_handles : list StructHandle.t;
   (* function_handles : list FunctionHandle; *)
   (* field_handles : list FieldHandle; *)
   (* friend_decls : list ModuleHandle; *)
@@ -1003,8 +1026,14 @@ Module CompiledModule.
         debug_assert!(handle.module.into_index() < self.module_handles.len()); // invariant
         handle
     }
-
     *)
+
+    Definition debug_struct_handle : StructHandle.t. Admitted.
+    Definition struct_handle_at (self : Self) (idx : StructHandleIndex.t) : StructHandle.t :=
+      let idx := idx.(StructHandleIndex.a0) in
+      let handle := List.nth (Z.to_nat idx) self.(struct_handles) debug_struct_handle in
+      (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
+      handle.
 
     (* 
     pub fn abilities(
@@ -1046,7 +1075,6 @@ Module CompiledModule.
         }
     }
     *)
-    (* TODO: this is actually a Fixpoint?? *)
     Fixpoint abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t :=
       let default_ability := AbilitySet.EMPTY in
@@ -1065,7 +1093,9 @@ Module CompiledModule.
         let idx := idx.(TypeParameterIndex.a0) in
         let ability := List.nth (Z.to_nat idx) constraints default_ability in
         Result.Ok ability
-        
+
+      (* NOTE: belows are cases that are slightly more complicated,
+          since they involves `?`... *)
       | SignatureToken.Vector ty => 
       let abilities_result := abilities self ty constraints in
         match abilities_result with
@@ -1076,29 +1106,45 @@ Module CompiledModule.
             [a]
         | Result.Err x => Result.Err x (* TODO: maybe make this into a panic *)
         end
-      (* TODO: implement struct_handle_at *)
-      (* | Struct idx => {
-          let sh = self.struct_handle_at idx;
-          Ok(sh.abilities)
-      } *)
 
-      (* | StructInstantiation(struct_inst) => {
-          let (idx, type_args) = &**struct_inst;
-          let sh = self.struct_handle_at(*idx); //*)
-          let declared_abilities = sh.abilities;
-          let type_arguments = type_args
-              .iter()
-              .map(|arg| self.abilities(arg, constraints))
-              .collect::<PartialVMResult<Vec<_>>>()?;
-          AbilitySet::polymorphic_abilities(
-              declared_abilities,
-              sh.type_parameters.iter().map(|param| param.is_phantom),
-              type_arguments,
-          )
-      } *)
-      | _ => Result.Ok default_ability
+      | SignatureToken.Struct idx =>
+          let sh := struct_handle_at self idx in
+            Result.Ok sh.(StructHandle.abilities)
+
+      | SignatureToken.StructInstantiation struct_inst => 
+          let (idx, type_args) := struct_inst in
+          let sh := struct_handle_at self idx in
+          let declared_abilities := sh.(StructHandle.abilities) in
+          let is_phantom_list := List.map 
+            (fun x => x.(AbilitySet.StructTypeParameter.is_phantom)) 
+            sh.(StructHandle.type_parameters) in
+          let type_arguments := List.map (fun x => abilities self x constraints) type_args in
+          let type_arguments :=
+            let check_type_arguments := 
+              (fix check_type_arguments (l1 : list (PartialVMResult.t AbilitySet.t))
+                (l2 : list AbilitySet.t)
+                : PartialVMResult.t (list AbilitySet.t) :=
+              match l1 with
+              | [] => Result.Ok l2
+              | x :: xs =>
+                match x with
+                | Result.Err err => Result.Err err
+                | Result.Ok x => check_type_arguments xs (x :: l2)
+                end
+              end
+            ) in
+            check_type_arguments type_arguments [] in
+          match type_arguments with
+          | Result.Ok type_arguments =>
+              AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+                .polymorphic_abilities
+                  declared_abilities
+                  is_phantom_list
+                  type_arguments
+          (* NOTE: maybe handle with a panic? *)
+          | Result.Err err => Result.Err err
+          end
       end.
-      
 
     (* 
     pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
@@ -1108,7 +1154,7 @@ Module CompiledModule.
     (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
     Definition signature_at(self : Self) (idx : SignatureIndex.t) : Signature.t :=
       let idx := idx.(SignatureIndex.a0) in
-      (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future  *)
+      (* NOTE: WARNING: Default value provided for `List.nth`. To be modified in the future *)
       let default_token := [SignatureToken.Bool] in
       List.nth (Z.to_nat idx) self.(signatures) $ Signature.Build_t default_token.
 
