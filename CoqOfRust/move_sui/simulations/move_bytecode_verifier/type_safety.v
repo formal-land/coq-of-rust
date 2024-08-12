@@ -42,23 +42,28 @@ Module Scope := move_bytecode_verifier_meter.lib.Scope.
 Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
-  - (IMPORTANT)Push the progress on this file by:
+  - (PART 1)Push the progress on this file by:
     - [x] Implement `safe_unwrap_err!` macro
     - [x] Implement `mut` functions in this file
     - [x] Implement `AbilitySet` in `file_format`
     - [x] Implement `CompiledModule` in `file_format`
     - [x] Classyfy different cases for `verify_instr` to split the task
-    - [ ] Implement cases for `verify_instr`
+  - (PART 2) Implement cases for `verify_instr` by
+    - [x] Format all cases nicely with comments
+    - [ ] Split the cases into collaborative tasks maybe
+    - [ ] Implement them one by one
   - (IMPORTANT) write a `unpack` function for `?`s in Rust
-  - Deal with the temporary `coerce`
-  - List.nth issue: remove `SignatureToken.Bool` with something better
+  - Misc issues:
+    - Mutual dependency: deal with the temporary `coerce`
+    - List.nth: find a way to provide a better default values at all occurences
 *)
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
-(* NOTE: temp brutal helper function. Should be removed with regard to the mutual dependency issue *)
+(* NOTE: MUTUAL DEPENDENCY: temp brutal helper function. Should be removed in the future *)
 Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
+
 (* NOTE:
 - `safe_unwrap_err` macro does the following:
   1. Return `Ok x` for `PartialVMResult` value of `Ok x`
