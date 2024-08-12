@@ -30,15 +30,14 @@ End PartialVMResult.
 
 (* 
 NOTE: 
-  - There are a lot of structs defined here with `Record t : Set := { a0 : Z; }.`.
-    I name like such because they might be necessity to access them and t.(a0)
-    is convinient for such functionality. Other structs defined with a `Make`
-    constructor might need to change into this style in the future.
+  Structs defined with `define_index` macro are usually represented
+  with `Record t : Set := { a0 : Z; }.`. I name like such because 
+  they might be necessity to access them and t.(a0)is convinient for
+  such functionality. Other structs defined with a `Make` constructor
+  might need to change into this style in the future.
 *)
 
-
 (* DRAFT: Template for `define_index!` macro
-
 pub struct $name(pub TableIndex);
 
 /// Returns an instance of the given `Index`.
@@ -125,16 +124,14 @@ Module FunctionHandleIndex.
   Record t : Set := { a0 : Z; }.
 End FunctionHandleIndex.
 
-(* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
+Module FieldInstantiationIndex.
+  Record t : Set := { a0 : Z; }.
+End FieldInstantiationIndex.
+
 Module FunctionInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
+  Record t : Set := { a0 : Z; }.
 End FunctionInstantiationIndex.
 
-Module FieldInstantiationIndex.
-  Inductive t : Set :=
-  | Make (_ : Z).
-End FieldInstantiationIndex.
 (* **************** *)
 
 Module FieldInstantiation.
@@ -209,7 +206,6 @@ Module Ability.
   }
   *)
 End Ability.
-
 
 (* 
 impl AbilitySet {
@@ -1029,8 +1025,8 @@ Module CompiledModule.
     (* field_handles : list FieldHandle; *)
     (* friend_decls : list ModuleHandle; *)
     struct_def_instantiations : list StructDefInstantiation.t;
-    (* function_instantiations : list FunctionInstantiation; *)
-    (* field_instantiations : list FieldInstantiation; *)
+    function_instantiations : list FunctionInstantiation.t;
+    field_instantiations : list FieldInstantiation.t;
     signatures : SignaturePool.t;
     (* identifiers : IdentifierPool; *)
     (* address_identifiers : AddressIdentifierPool; *)
@@ -1117,6 +1113,31 @@ Module CompiledModule.
       let handle := List.nth (Z.to_nat idx) self.(function_handles) default_function_handle in
       (* TODO: Implement the debugs *)
       handle.
+
+    (* 
+    pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
+        &self.field_instantiations[idx.into_index()]
+    }
+    *)
+    Definition default_field_instantiations : FieldInstantiation.t. Admitted.
+    Definition field_instantiation_at (self : Self) (idx : FieldInstantiationIndex.t)
+      : FieldInstantiation.t :=
+      let idx := idx.(FieldInstantiationIndex.a0) in
+      List.nth (Z.to_nat idx) self.(field_instantiations) default_field_instantiations.
+
+    (* 
+    pub fn function_instantiation_at(
+        &self,
+        idx: FunctionInstantiationIndex,
+    ) -> &FunctionInstantiation {
+        &self.function_instantiations[idx.into_index()]
+    }
+    *)
+    Definition default_function_instantiations : FunctionInstantiation.t. Admitted.
+    Definition function_instantiation_at (self : Self) (idx : FunctionInstantiationIndex.t)
+      : FunctionInstantiation.t :=
+      let idx := idx.(FunctionInstantiationIndex.a0) in
+      List.nth (Z.to_nat idx) self.(function_instantiations) default_function_instantiations.
 
     (* 
     pub fn abilities(
