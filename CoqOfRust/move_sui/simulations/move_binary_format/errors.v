@@ -37,13 +37,13 @@ End Location.
 
 Module VMError_.
   Record t : Set := {
-    major_status: StatusCode.t;
-    sub_status: option Z;
-    message: option string;
-    exec_state: option ExecutionState.t;
-    location: Location.t;
-    indices: list (IndexKind.t * TableIndex.t);
-    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
+    major_status  : StatusCode.t;
+    sub_status    : option Z;
+    message       : option string;
+    exec_state    : option ExecutionState.t;
+    location      : Location.t;
+    indices       : list (IndexKind.t * TableIndex.t);
+    offsets       : list (FunctionDefinitionIndex.t * CodeOffset.t);
   }.
 End VMError_.
 
@@ -53,12 +53,12 @@ End VMError.
 
 Module PartialVMError_.
   Record t : Set := {
-    major_status: StatusCode.t;
-    sub_status : option Z;
-    message: option string;
-    exec_state: option ExecutionState.t;
-    indices: list (IndexKind.t * TableIndex.t);
-    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
+    major_status  : StatusCode.t;
+    sub_status    : option Z;
+    message       : option string;
+    exec_state    : option ExecutionState.t;
+    indices       : list (IndexKind.t * TableIndex.t);
+    offsets       : list (FunctionDefinitionIndex.t * CodeOffset.t);
   }.
 End PartialVMError_.
 
