@@ -1047,7 +1047,7 @@ Module CompiledModule.
     }
     *)
     (* TODO: this is actually a Fixpoint?? *)
-    Definition abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
+    Fixpoint abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
       : PartialVMResult.t AbilitySet.t :=
       let default_ability := AbilitySet.EMPTY in
       match ty with
@@ -1065,14 +1065,17 @@ Module CompiledModule.
         let idx := idx.(TypeParameterIndex.a0) in
         let ability := List.nth (Z.to_nat idx) constraints default_ability in
         Result.Ok ability
-
-      (* TODO: implement polymorphic_abilities *)
-      | SignatureToken.Vector ty => AbilitySet::polymorphic_abilities(
-          AbilitySet::VECTOR,
-          vec![false],
-          vec![self.abilities(ty, constraints)?],
-      )
-
+        
+      | SignatureToken.Vector ty => 
+      let abilities_result := abilities self ty constraints in
+        match abilities_result with
+        | Result.Ok a => AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+            .polymorphic_abilities
+            AbilitySet.VECTOR
+            [false]
+            [a]
+        | Result.Err x => Result.Err x (* TODO: maybe make this into a panic *)
+        end
       (* TODO: implement struct_handle_at *)
       (* | Struct idx => {
           let sh = self.struct_handle_at idx;
