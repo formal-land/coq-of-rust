@@ -132,7 +132,7 @@ to run the Coq project in WSL environment. Specifically:
 
 ### Known Issues
 
-WSL has a different format from Windows. Since we run Coq on WSL
+[WSL has a different format from Windows](https://blog.jyotiprakash.org/the-windows-file-system-and-the-wsl-file-systems-are-different). Since we run Coq on WSL
 only, the files being generated should be in WSL's file format. We 
 usually put the project on Windows, `make` it in WSL, to generate 
 Coq files of WSL's file format. The format differences here usually
