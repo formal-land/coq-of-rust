@@ -12,7 +12,6 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Implement saturated additions
 - Investigate the exact function chains from `verify_instr` 
   - Explain when will other verify functions use `verify_instr`
   - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
@@ -28,6 +27,19 @@ Module StatusCode := vm_status.StatusCode.
 - We ignore `f32` since related parameters are mostly factors to be multiplied with.
   These parameters will be either ignored or treated as a sole Z value.
 *)
+
+(* Saturating mul & add support specifically for u128 *)
+Definition u128_MAX := 340282366920938463463374607431768211455.
+
+Definition saturating_mul (a b : Z) :=
+  let result := Z.mul a b in
+  if result >? u128_MAX
+  then u128_MAX else result.
+
+Definition saturating_add (a b : Z) :=
+  let result := Z.add a b in
+  if result >? u128_MAX
+  then u128_MAX else result.
 
 (* 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -100,18 +112,18 @@ Module Bounds.
       (* TODO: IMPORTANT: replace the normal `+` below to actual bounded add
         https://doc.rust-lang.org/std/primitive.u128.html#method.saturating_add *)
         let self_units := self.(Bounds.units) in
-        let new_units := Z.add self_units self_units in
+        let new_units := saturating_add self_units self_units in
         if new_units >? max 
         then 
-          returnS? (Result.Err (PartialVMError
+          returnS? $ Result.Err $ PartialVMError
             .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-            .new(StatusCode.CONSTRAINT_NOT_SATISFIED)))
+            .new StatusCode.CONSTRAINT_NOT_SATISFIED
         else 
           let self := self <| Bounds.units := units |> in
           letS? _ := writeS? self in
-          returnS? (Result.Ok tt)
+          returnS? $ Result.Ok tt
       | None => 
-          returnS? (Result.Ok tt)
+          returnS? $ Result.Ok tt
       end.
   End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
 End Bounds.
@@ -328,10 +340,9 @@ Module Meter.
       Definition add_items (scope : Scope.t) (units_per_item items : Z) 
         : MS? State string (PartialVMResult.t unit) :=
         if items =? 0
-        then (returnS? (Result.Ok tt))
+        then returnS? $ Result.Ok tt
         else letS? self := readS? in
-        (* TODO: Implement saturating_mul *)
-        add scope (Z.mul units_per_item items).
+        add scope $ saturating_mul units_per_item items.
       
     End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
   End BoundMeter.

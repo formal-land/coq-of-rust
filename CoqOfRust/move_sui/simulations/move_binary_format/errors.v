@@ -7,7 +7,14 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.lib.
 Module IndexKind := move_binary_format.lib.IndexKind.
 
-(* TODO: Mutual Dependency issue. To be solved in some way *)
+(* TODO(progress):
+  - Rewrite `mut` functions with `StatePanic` monads, for example `at_code_offset`. 
+    Maybe implement Lens for `PartialVMError`. See the NOTE there
+  - Mutual dependency issue: only make copies of `PartialVMError` 
+    and `PartialVMResult` at the `file_format`'s side since it's 
+    relatively smaller
+*)
+
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module TableIndex := file_format.TableIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
@@ -20,11 +27,6 @@ Module StatusCode := vm_status.StatusCode.
 Module ExecutionState.
   Inductive t : Set := .
 End ExecutionState.
-
-(* TODO(progress): 
-- Rewrite `mut` functions with `StatePanic` monads, for example `at_code_offset`. 
-  Maybe implement Lens for `PartialVMError`. See the NOTE there
-*)
 
 Module Location.
   Inductive t : Set :=
