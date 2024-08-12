@@ -213,12 +213,12 @@ Module PartialVMError.
     *)
     Definition new (major_status : StatusCode.t) : Self :=
       let pvme_ : PartialVMError_.t := {|
-        PartialVMError_.major_status := major_status;
-        PartialVMError_.sub_status := None;
-        PartialVMError_.message := None;
-        PartialVMError_.exec_state := None;
-        PartialVMError_.indices := [];
-        PartialVMError_.offsets := [];
+        PartialVMError_.major_status  := major_status;
+        PartialVMError_.sub_status    := None;
+        PartialVMError_.message       := None;
+        PartialVMError_.exec_state    := None;
+        PartialVMError_.indices       := [];
+        PartialVMError_.offsets       := [];
       |} in
       PartialVMError.Build_t pvme_.
 
