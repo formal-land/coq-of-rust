@@ -204,13 +204,12 @@ pub enum Ability {
 }
 *)
 Module Ability.
-
   Record t : Set := { a0 : Z; }.
 
-  Definition Copy := 0x1.
-  Definition Drop := 0x2.
+  Definition Copy  := 0x1.
+  Definition Drop  := 0x2.
   Definition Store := 0x4.
-  Definition Key := 0x8.
+  Definition Key   := 0x8.
 
   (* NOTE: we make it here brutal and fast as well - 
           we actually implement it at `AbilitySet` below
@@ -293,14 +292,14 @@ Module AbilitySet.
           | (Ability::Key as u8),
   );
   *)
-  Definition EMPTY := Build_t 0.
+  Definition EMPTY      := Build_t 0.
   Definition PRIMITIVES := Build_t $ Z.lor Ability.Copy $ Z.lor Ability.Drop Ability.Store.
   Definition REFERENCES := Build_t $ Z.lor Ability.Copy Ability.Drop.
-  Definition SIGNER := Build_t Ability.Drop.
-  Definition VECTOR := Build_t $ Z.lor Ability.Copy $ Z.lor Ability.Drop Ability.Store.
-  Definition ALL := Build_t $ Z.lor Ability.Copy $
-    Z.lor Ability.Drop $
-    Z.lor Ability.Store Ability.Key.
+  Definition SIGNER     := Build_t Ability.Drop.
+  Definition VECTOR     := Build_t $ Z.lor Ability.Copy $ Z.lor Ability.Drop Ability.Store.
+  Definition ALL        := Build_t $ Z.lor Ability.Copy
+                                   $ Z.lor Ability.Drop
+                                   $ Z.lor Ability.Store Ability.Key.
 
   (* NOTE: since this relies on `AbilitySet`, I decide to just implement it in this module...
     to avoid mutual dependency issue *)
@@ -315,7 +314,7 @@ Module AbilitySet.
   Module StructTypeParameter.
     Record t : Set := {
       constraints : AbilitySet.t;
-      is_phantom : bool;
+      is_phantom  : bool;
     }.
   End StructTypeParameter.
 
@@ -381,10 +380,10 @@ Module AbilitySet.
       let zip_helper :=
         (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
           match xs, ys with
-          | [], [] => ls
-          | [], y :: ys => ls
-          | x :: xs, [] => ls
-          | x::xs, y::ys => zip_helper xs ys $ (x, y) :: ls
+          | []      , []        => ls
+          | []      , y :: ys   => ls
+          | x :: xs , []        => ls
+          | x::xs   , y::ys     => zip_helper xs ys $ (x, y) :: ls
           end) in
       zip_helper xs ys [].
 
@@ -407,14 +406,15 @@ Module AbilitySet.
     Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
       let fold_helper :=
         (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
-        match n8 with
-        | S n =>
-          let '(AbilitySet.Build_t a0) := a in
-          let b := AbilitySet.Build_t $ Z.land a0 $ Z.shiftl 0x01 $ Z.of_nat $ Nat.sub 8 n8 in
-          fold_helper a (f a b) f n
-        | O => result
-        end
-        ) in
+          match n8 with
+          | S n =>
+            let '(AbilitySet.Build_t a0) := a in
+            let b := AbilitySet.Build_t 
+              $ Z.land a0 $ Z.shiftl 0x01 $ Z.of_nat $ Nat.sub 8 n8 in
+            fold_helper a (f a b) f n
+          | O => result
+          end
+          ) in
       fold_helper a (AbilitySet.Build_t 0) f 8%nat
       .
 
@@ -472,13 +472,13 @@ Module AbilitySet.
       (declared_phantom_parameters: list bool) (type_arguments : list Self) 
       : PartialVMResult.t Self :=
       let len_dpp := Z.of_nat $ List.length declared_phantom_parameters in
-      let len_ta := Z.of_nat $ List.length type_arguments in
+      let len_ta  := Z.of_nat $ List.length type_arguments in
       if negb (len_dpp =? len_ta)
       (* TODO: correctly deal with the `PartialVMError` in the future *)
       then Result.Err (PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION))
       else 
-      let abs : list (Self * bool) := zip type_arguments declared_phantom_parameters in
-      let abs : list (Self * bool) := List.filter (fun x =>
+      let abs := zip type_arguments declared_phantom_parameters in
+      let abs := List.filter (fun x =>
         let '(_, is_phantom) := x in negb is_phantom
       ) abs in
       let abs := List.map (fun x =>
@@ -510,7 +510,7 @@ pub struct StructHandle {
 *)
 Module StructHandle.
   Record t : Set := { 
-    abilities : AbilitySet.t;
+    abilities       : AbilitySet.t;
     (* NOTE: Remember that I put `StructTypeParameter` in `AbilitySet`... *)
     type_parameters : list AbilitySet.StructTypeParameter.t;
   }.
@@ -562,11 +562,11 @@ pub struct FunctionHandle {
 *)
 Module FunctionHandle.
   Record t : Set := { 
-  module : ModuleHandleIndex.t;
-  name : IdentifierIndex.t;
-  parameters : SignatureIndex.t;
-  return_ : SignatureIndex.t;
-  type_parameters : list AbilitySet.t;
+    module          : ModuleHandleIndex.t;
+    name            : IdentifierIndex.t;
+    parameters      : SignatureIndex.t;
+    return_         : SignatureIndex.t;
+    type_parameters : list AbilitySet.t;
   }.
 End FunctionHandle.
 
@@ -624,10 +624,7 @@ Module SignatureToken.
   Scheme Boolean Equality for t.
 
   Module ImplEq.
-    Global Instance I :
-      Eq.Trait SignatureToken.t := {
-        eqb := t_beq;
-      }.
+    Global Instance I : Eq.Trait SignatureToken.t := { eqb := t_beq }.
   End ImplEq.
   (* 
   impl SignatureToken {
@@ -833,8 +830,8 @@ Module SignatureToken.
     *)
     Definition is_integer (self : Self) : bool :=
       match self with
-      | U8 | U16 | U32 | U64 | U128 | U256 => true
-      | _ => false
+      | U8 | U16 | U32 | U64 | U128 | U256  => true
+      | _                                   => false
       end.
 
     (* 
@@ -1107,11 +1104,11 @@ Module CompiledModule.
       | SignatureToken.Vector ty => 
       let abilities_result := abilities self ty constraints in
         match abilities_result with
-        | Result.Ok a => AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-            .polymorphic_abilities
-            AbilitySet.VECTOR
-            [false]
-            [a]
+        | Result.Ok  a => AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+                            .polymorphic_abilities
+                              AbilitySet.VECTOR
+                              [false]
+                              [a]
         | Result.Err x => Result.Err x (* TODO: maybe make this into a panic *)
         end
 
@@ -1133,24 +1130,24 @@ Module CompiledModule.
                 (l2 : list AbilitySet.t)
                 : PartialVMResult.t (list AbilitySet.t) :=
               match l1 with
-              | [] => Result.Ok l2
+              | []      => Result.Ok l2
               | x :: xs =>
-                match x with
-                | Result.Err err => Result.Err err
-                | Result.Ok x => check_type_arguments xs (x :: l2)
-                end
+                  match x with
+                  | Result.Err err  => Result.Err err
+                  | Result.Ok  x    => check_type_arguments xs (x :: l2)
+                  end
               end
             ) in
             check_type_arguments type_arguments [] in
           match type_arguments with
-          | Result.Ok type_arguments =>
+          | Result.Ok  type_arguments =>
               AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
                 .polymorphic_abilities
                   declared_abilities
                   is_phantom_list
                   type_arguments
           (* NOTE: maybe handle with a panic? *)
-          | Result.Err err => Result.Err err
+          | Result.Err err            => Result.Err err
           end
       end.
 
@@ -1171,7 +1168,7 @@ End CompiledModule.
 
 Module CodeUnit.
   Record t : Set := {
-    locals : SignatureIndex.t;
-    code : list Bytecode.t;
+    locals  : SignatureIndex.t;
+    code    : list Bytecode.t;
   }.
 End CodeUnit.
