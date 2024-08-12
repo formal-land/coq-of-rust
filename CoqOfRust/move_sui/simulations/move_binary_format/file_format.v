@@ -174,13 +174,35 @@ pub enum Ability {
 }
 *)
 Module Ability.
-  Record t : Set := { a0 : Z; }.
+  (* Record t : Set := { a0 : Z; }.
 
   Definition Copy  := 0x1.
   Definition Drop  := 0x2.
   Definition Store := 0x4.
-  Definition Key   := 0x8.
+  Definition Key   := 0x8. *)
 
+  Inductive t : Set :=
+  | Copy
+  | Drop
+  | Store
+  | Key
+  .
+
+  Definition to_Z (x : t) : Z :=
+    match x with
+    | Copy => 0x1
+    | Drop => 0x2
+    | Store => 0x4
+    | Key => 0x8
+    end.
+
+  Definition of_Z (x : Z) : t :=
+    if      x =? 0x1 then Copy
+    else if x =? 0x2 then Drop
+    else if x =? 0x4 then Store
+    else if x =? 0x8 then Key
+    else Copy. (* NOTE: This should never arrive *)
+    
   (* NOTE: we make it here brutal and fast as well - 
           we actually implement it at `AbilitySet` below
   /// An inverse of `requires`, where x is in a.required_by() iff x.requires() == a
@@ -262,13 +284,20 @@ Module AbilitySet.
   );
   *)
   Definition EMPTY      := Build_t 0.
-  Definition PRIMITIVES := Build_t $ Z.lor Ability.Copy $ Z.lor Ability.Drop Ability.Store.
-  Definition REFERENCES := Build_t $ Z.lor Ability.Copy Ability.Drop.
-  Definition SIGNER     := Build_t Ability.Drop.
-  Definition VECTOR     := Build_t $ Z.lor Ability.Copy $ Z.lor Ability.Drop Ability.Store.
-  Definition ALL        := Build_t $ Z.lor Ability.Copy
-                                   $ Z.lor Ability.Drop
-                                   $ Z.lor Ability.Store Ability.Key.
+  Definition PRIMITIVES := 
+    Build_t $ Z.lor (Ability.to_Z Ability.Copy) 
+            $ Z.lor (Ability.to_Z Ability.Drop) (Ability.to_Z Ability.Store).
+  Definition REFERENCES := 
+    Build_t $ Z.lor (Ability.to_Z Ability.Copy) (Ability.to_Z Ability.Drop).
+  Definition SIGNER     := 
+    Build_t (Ability.to_Z Ability.Drop).
+  Definition VECTOR     := 
+    Build_t $ Z.lor (Ability.to_Z Ability.Copy) 
+            $ Z.lor (Ability.to_Z Ability.Drop) (Ability.to_Z Ability.Store).
+  Definition ALL        := 
+    Build_t $ Z.lor (Ability.to_Z Ability.Copy)
+            $ Z.lor (Ability.to_Z Ability.Drop)
+            $ Z.lor (Ability.to_Z Ability.Store) (Ability.to_Z Ability.Key).
 
   (* NOTE: since this relies on `AbilitySet`, I decide to just implement it in this module...
     to avoid mutual dependency issue *)
@@ -298,32 +327,28 @@ Module AbilitySet.
   }
   *)
   Definition required_by (self : Ability.t) : t :=
-    let z :=
-      let '(Ability.Build_t z) := self in
-      if      z =? Ability.Copy then Ability.Copy 
-      else if z =? Ability.Drop then Ability.Drop 
-      else if z =? Ability.Store then Z.lor Ability.Store Ability.Key
-      else 0 (* Ability.Key *)
-      in
-    Build_t z.
+    let abs := match self with
+      | Ability.Copy  => Ability.to_Z Ability.Copy
+      | Ability.Drop  => Ability.to_Z Ability.Drop 
+      | Ability.Store => Z.lor (Ability.to_Z Ability.Store) (Ability.to_Z Ability.Key)
+      | Ability.Key   => 0
+      end in
+    Build_t abs.
 
   Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
     Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
 
     Definition has_ability (self : Self) (ability : Ability.t) : bool := 
-      Z.land ability.(Ability.a0) self.(a0) =? ability.(Ability.a0).
+      let ab := Ability.to_Z ability in
+      Z.land ab self.(a0) =? ab.
 
-    Definition has_copy (self : Self) : bool := has_ability self $
-      Ability.Build_t Ability.Copy.
+    Definition has_copy (self : Self) : bool := has_ability self Ability.Copy.
 
-    Definition has_drop (self : Self) : bool := has_ability self $
-      Ability.Build_t Ability.Drop.
+    Definition has_drop (self : Self) : bool := has_ability self Ability.Drop.
 
-    Definition has_store (self : Self) : bool := has_ability self $
-      Ability.Build_t Ability.Store.
+    Definition has_store (self : Self) : bool := has_ability self Ability.Store.
 
-    Definition has_key (self : Self) : bool := has_ability self $ 
-      Ability.Build_t Ability.Key.
+    Definition has_key (self : Self) : bool := has_ability self Ability.Key.
 
     (* 
     pub fn union(self, other: Self) -> Self {
@@ -368,7 +393,7 @@ Module AbilitySet.
          uses a customized `next` to get the next value, until `next` returns `None`.
     *)
     Definition into_iter (a : Self) : Ability.t :=
-      let '(Build_t z) := a in Ability.Build_t z.
+      let '(Build_t z) := a in Ability.of_Z z.
 
     (* Ad hoc `fold` specifically for `Ability` and the function below.
       This `fold` is ensured to loop for 8 times exactly *)
