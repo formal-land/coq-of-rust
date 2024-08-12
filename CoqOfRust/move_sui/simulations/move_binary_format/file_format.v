@@ -126,7 +126,6 @@ Module FunctionHandleIndex.
 End FunctionHandleIndex.
 
 (* NOTE: Below are taken from `move`'s simulation and could be deprecated *)
-
 Module FunctionInstantiationIndex.
   Inductive t : Set :=
   | Make (_ : Z).
@@ -136,6 +135,7 @@ Module FieldInstantiationIndex.
   Inductive t : Set :=
   | Make (_ : Z).
 End FieldInstantiationIndex.
+(* **************** *)
 
 Module FieldInstantiation.
   Record t : Set := {
@@ -951,6 +951,13 @@ Module Bytecode.
   | CastU256.
 End Bytecode.
 
+Module CodeUnit.
+  Record t : Set := {
+    locals  : SignatureIndex.t;
+    code    : list Bytecode.t;
+  }.
+End CodeUnit.
+
 (* 
 pub struct CompiledModule {
     /// Version number found during deserialization
@@ -1207,9 +1214,3 @@ Module CompiledModule.
   End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
 End CompiledModule.
 
-Module CodeUnit.
-  Record t : Set := {
-    locals  : SignatureIndex.t;
-    code    : list Bytecode.t;
-  }.
-End CodeUnit.
