@@ -390,7 +390,15 @@ Module AbilitySet.
 
     (* Customized `into_iter` solely turns `AbilitySet` type into `Ability`.
        The name is being kept for consistency with the original code. 
-       There's a lot of thing going on digging into the `Iterator` trait... *)
+       There's a lot of thing going on digging into the `Iterator` trait.
+       NOTEs: My understanding towards original code:
+       - `into_iter` is customized to convert a `Ability` value into `AbilitySet`
+       - `map` *should* only map with the `required_by` a single `AbilitySet` value 
+         into `Ability` values. So I omit the `map`(?). THIS IS THE MOST SUSPICIOUS 
+         PART I HAVE OCCURRED TO
+       - Later this `Ability` value is further processed with a `fold`. This `fold`
+         uses a customized `next` to get the next value, until `next` returns `None`.
+    *)
     Definition into_iter (a : Self) : Ability.t :=
       let '(Build_t z) := a in Ability.Build_t z.
 
@@ -1027,11 +1035,10 @@ Module CompiledModule.
         handle
     }
     *)
-
-    Definition debug_struct_handle : StructHandle.t. Admitted.
+    Definition default_struct_handle : StructHandle.t. Admitted.
     Definition struct_handle_at (self : Self) (idx : StructHandleIndex.t) : StructHandle.t :=
       let idx := idx.(StructHandleIndex.a0) in
-      let handle := List.nth (Z.to_nat idx) self.(struct_handles) debug_struct_handle in
+      let handle := List.nth (Z.to_nat idx) self.(struct_handles) default_struct_handle in
       (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
       handle.
 
