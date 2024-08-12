@@ -12,7 +12,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(misc tasks):
 - (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
 - See if we need to handle the `?` and debugs with `panic` monad. See NOTEs everywhere
-- `List.nth` issue: check every occurrences and see if we can remove the default param
 *)
 
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
