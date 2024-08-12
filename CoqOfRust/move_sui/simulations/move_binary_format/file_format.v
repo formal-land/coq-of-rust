@@ -11,8 +11,8 @@ Module StatusCode := vm_status.StatusCode.
 
 (* TODO(misc tasks):
 - (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
+- See if we need to handle the `?` and debugs with `panic` monad. See NOTEs everywhere
 - `List.nth` issue: check every occurrences and see if we can remove the default param
-- Reformat the modules into better order
 *)
 
 (* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
@@ -174,13 +174,6 @@ pub enum Ability {
 }
 *)
 Module Ability.
-  (* Record t : Set := { a0 : Z; }.
-
-  Definition Copy  := 0x1.
-  Definition Drop  := 0x2.
-  Definition Store := 0x4.
-  Definition Key   := 0x8. *)
-
   Inductive t : Set :=
   | Copy
   | Drop
@@ -283,7 +276,8 @@ Module AbilitySet.
           | (Ability::Key as u8),
   );
   *)
-  Definition EMPTY      := Build_t 0.
+  Definition EMPTY      := 
+    Build_t 0.
   Definition PRIMITIVES := 
     Build_t $ Z.lor (Ability.to_Z Ability.Copy) 
             $ Z.lor (Ability.to_Z Ability.Drop) (Ability.to_Z Ability.Store).
@@ -887,7 +881,7 @@ pub struct Constant {
 Module Constant.
   Record t : Set := {
     type_ : SignatureToken.t;
-    data : list Z;
+    data  : list Z;
   }.
 End Constant.
 
@@ -1026,7 +1020,6 @@ pub struct CompiledModule {
 }
 *)
 Module CompiledModule.
-(* TODO: Implement the struct *)
   Record t : Set := { 
     version : Z;
     (* self_module_handle_idx : ModuleHandleIndex; *)
