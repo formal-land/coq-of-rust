@@ -23,6 +23,9 @@ Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module Constant := file_format.Constant.
 Module FieldHandle := file_format.FieldHandle.
 Module StructFieldInformation := file_format.StructFieldInformation.
+Module FieldDefinition := file_format.FieldDefinition.
+Module TypeParameterIndex := file_format.TypeParameterIndex.
+Module TypeSignature := file_format.TypeSignature.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -59,13 +62,8 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - Mutual dependency: deal with the temporary `coerce`
       - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
       - And `StatusCode` for `PartialVMError` as well
-*)
-
-(* TODO:(IMPORTANT) Check for occurences like the following:
-    letS? _ := returnS? $ Result.Err err in
-    returnS? $ Result.Ok tt
-
-  FIX WHEN WE NEED TO RETURN AN ERROR
+      - (IMPORTANT) Check all helper functions correctly handled the control flows
+      - (IMPORTANT) Correctly handle all `?` and `return` occurrences
 *)
 
 (* DRAFT: template for adding trait parameters *)
@@ -94,6 +92,10 @@ Definition safe_unwrap_err {State A Error : Set} (value : Result.t A Error)
   end.
 
 (* The equivalent of `?` operator in Rust. `|?-` is defined for this operation. *)
+(* NOTE: This might not be the correct way to treat the `?`, especially when there
+is a `return` clause in the middle of the code. For now we just keep make it simple
+and later we'll fix all the `?` and `return` occurences at once.
+*)
 Definition question_mark_unwrap {State A Error : Set} (value : Result.t A Error)
   : MS? State string (Result.t A Error) :=
   match value with
@@ -189,10 +191,12 @@ Module TypeSafetyChecker.
         self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
+      (* NOTE: There are 2 axioms involved in this function:
+        1. `coerce` in this file, and
+        2. `PartialVMError.new` in `file_format`
+        Since they're together we should be able to treat it nicely
+      *)
         coerce $
-        (* TODO: we might be able to directly transfer the PartialVMResult from there to here...
-            since it's relatively pretty simple to do for PartialVMResult
-        *)
           CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
             self.(module)
             t 
@@ -240,10 +244,11 @@ Module TypeSafetyChecker.
       letS? meter := readS? in
       Meter.Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.add_items
         Scope.Function
-        TYPE_NODE_COST
-        $ Z.mul (SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+        TYPE_NODE_COST $
+        Z.mul 
+          (SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
             .preorder_traversal_count ty)
-            n.
+          n.
 
     (* 
       fn charge_ty(
@@ -305,8 +310,7 @@ Module TypeSafetyChecker.
           | Result.Ok _ => returnS? $ Result.Ok tt
           | Result.Err _ => returnS? $ Result.Err unknown_err
           end
-      end
-      .
+      end.
 
     (* 
       fn push_n(
@@ -353,6 +357,78 @@ Definition materialize_type (struct_handle : StructHandleIndex.t) (type_args : S
   then SignatureToken.Struct struct_handle
   else SignatureToken.StructInstantiation (struct_handle, type_args).
 
+(* 
+fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
+    use SignatureToken::*;
+
+    if subst.0.is_empty() {
+        return token.clone();
+    }
+
+    match token {
+        Bool => Bool,
+        U8 => U8,
+        U16 => U16,
+        U32 => U32,
+        U64 => U64,
+        U128 => U128,
+        U256 => U256,
+        Address => Address,
+        Signer => Signer,
+        Vector(ty) => Vector(Box::new(instantiate(ty, subst))),
+        Struct(idx) => Struct(*idx), //*)
+        StructInstantiation(struct_inst) => {
+            let (idx, struct_type_args) = &**struct_inst;
+            StructInstantiation(Box::new((
+                *idx,
+                struct_type_args
+                    .iter()
+                    .map(|ty| instantiate(ty, subst))
+                    .collect(),
+            )))
+        }
+        Reference(ty) => Reference(Box::new(instantiate(ty, subst))),
+        MutableReference(ty) => MutableReference(Box::new(instantiate(ty, subst))),
+        TypeParameter(idx) => {
+            // Assume that the caller has previously parsed and verified the structure of the
+            // file and that this guarantees that type parameter indices are always in bounds.
+            debug_assert!((*idx as usize) < subst.len()); //*)
+            subst.0[*idx as usize].clone()
+        }
+    }
+}
+*)
+Fixpoint instantiate (token : SignatureToken.t) (subst: Signature.t) : SignatureToken.t :=
+  let subst_0 := subst.(Signature.a0) in
+  if 0 =? Z.of_nat $ List.length subst_0 
+  then token
+  else
+    match token with
+    | SignatureToken.Bool => SignatureToken.Bool
+    | SignatureToken.U8 => SignatureToken.U8
+    | SignatureToken.U16 => SignatureToken.U16
+    | SignatureToken.U32 => SignatureToken.U32
+    | SignatureToken.U64 => SignatureToken.U64
+    | SignatureToken.U128 => SignatureToken.U128
+    | SignatureToken.U256 => SignatureToken.U256
+    | SignatureToken.Address => SignatureToken.Address
+    | SignatureToken.Signer => SignatureToken.Signer
+    | SignatureToken.Vector ty => SignatureToken.Vector $ instantiate ty subst
+    | SignatureToken.Struct idx => SignatureToken.Struct idx
+    | SignatureToken.StructInstantiation struct_inst =>
+        let '(idx, struct_type_args) := struct_inst in
+        SignatureToken.StructInstantiation (idx, 
+          List.map (fun ty => instantiate ty subst) struct_type_args)
+    | SignatureToken.Reference ty => SignatureToken.Reference $ instantiate ty subst
+    | SignatureToken.MutableReference ty => SignatureToken.MutableReference $ instantiate ty subst
+    | SignatureToken.TypeParameter idx =>
+      (* TODO: implement debug_assert *)
+      let idx := Z.to_nat $ idx.(TypeParameterIndex.a0) in
+      List.nth idx subst_0
+        SignatureToken.Bool (* We should never arrive here *)
+  end.
+
+Definition default_field_definition : FieldDefinition.t. Admitted.
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
 fn borrow_field(
@@ -403,6 +479,7 @@ fn borrow_field(
     Ok(())
 }
 *)
+(* TODO(IMPORTANT): Check the whole function body in parts *)
 Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -411,9 +488,7 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
     letS? operand := safe_unwrap_err operand in
 
-
-
-    (* TODO: FIX THIE OCCURENCE *)
+    (* TODO(PART 1): FIX THE OCCURENCE *)
     letS? result := if andb mut_ (negb $ SignatureToken
       .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
       .is_mutable_reference operand)
@@ -422,30 +497,57 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else returnS? $ Result.Ok tt in
-    (* NOTE: End of suspicious code section *)
 
-
-
+    (* TODO(PART 2): CHECK THE BODY *)
     let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
       .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
     let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
       .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
     let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-    (* 
-    match operand {
-        ST::Reference(inner) | ST::MutableReference(inner) if expected_type == *inner => (),
-        _ => return Err(verifier.error(StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR, offset)),
-    }
-    *)
-    (* letS? _ := match operand with
-    | SignatureToken.Reference inner |  *)
 
+    (* TODO(PART 3): CHECK THE BODY *)
+    let result_1 := match operand with
+    | SignatureToken.Reference _ =>
+      Result.Ok tt 
+    | SignatureToken.MutableReference inner =>
+      if SignatureToken.t_beq inner expected_type then Result.Ok tt
+      else Result.Err $ TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+    | _ => Result.Err $ TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+    end in
 
+    (* TODO(PART 4): check how should the `result_field_def propagate *)
+    let result_field_def := match struct_def.(StructDefinition.field_information) with
+    | StructFieldInformation.Native =>
+      (* TODO(PART 5): CHECK THE BODY *)
+      Result.Err $ TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
+    | StructFieldInformation.Declared fields =>
+      let field := Z.to_nat field_handle.(FieldHandle.field) in
+      Result.Ok $ List.nth field fields default_field_definition
+    end
+      in
 
+    (* TODO(PART 6): CHECK THE BODY *)
+    letS? field_def := safe_unwrap_err result_field_def in
+    let field_type := instantiate 
+      field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
 
-  returnS? $ Result.Ok tt.
-
-
+    (* TODO(PART 7): CHECK THE BODY *)
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push (
+        if mut_ 
+        then SignatureToken.MutableReference field_type
+        else SignatureToken.Reference field_type
+      ) in
+    (* TODO(PART 8): Check if the result has been correctly propagated *)
+    letS? result := |?- result in
+    returnS? result.
 
 (* 
 fn borrow_loc(
@@ -1119,22 +1221,19 @@ Definition verify_instr (bytecode : Bytecode.t)
           .abilities verifier.(TypeSafetyChecker.module) local_signature 
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
         letS? abilities := safe_unwrap_err abilities in
-
-        (* TODO: FIX THIS OCCURENCE *)
-        letS? _ := if negb $ AbilitySet
+        if negb $ AbilitySet
           .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
           .has_copy abilities
         then returnS? $ Result.Err $ 
           TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
-        else returnS? $ Result.Ok tt in
-        
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push local_signature in
-        letS? result := |?- result in
-        returnS? result
+        else 
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push local_signature in
+          letS? result := |?- result in
+          returnS? result
 
     (* 
     Bytecode::MoveLoc(idx) => {
@@ -1304,61 +1403,49 @@ Definition verify_instr (bytecode : Bytecode.t)
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
-
-        (* TODO: FIX THIS OCCURENCE *)
-        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+        if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else returnS? $ Result.Ok tt in
-
-
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U8 in
-        letS? result := |?- result in
-        returnS? result
+        else 
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push SignatureToken.U8 in
+          letS? result := |?- result in
+          returnS? result
     | Bytecode.CastU64 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
-
-        (* TODO: FIX THIS OCCURENCE *)
-        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+        if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else returnS? $ Result.Ok tt in
-
-
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U64 in
-        letS? result := |?- result in
-        returnS? result
+        else
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push SignatureToken.U64 in
+          letS? result := |?- result in
+          returnS? result
     | Bytecode.CastU128 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
-
-        (* TODO: FIX THIS OCCURENCE *)
-        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+        if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else returnS? $ Result.Ok tt in
-
-        
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U128 in
-        letS? result := |?- result in
-        returnS? result
+        else 
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push SignatureToken.U128 in
+          letS? result := |?- result in
+          returnS? result
 
     (* 
     Bytecode::Add
@@ -1380,29 +1467,29 @@ Definition verify_instr (bytecode : Bytecode.t)
     *)
     | Bytecode.Add | Bytecode.Sub | Bytecode.Mul | Bytecode.Mod 
     | Bytecode.Div | Bytecode.BitOr | Bytecode.BitAnd | Bytecode.Xor => 
-        letS? '(verifier, _) := readS? in
-        letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-        letS? operand1 := safe_unwrap_err operand1 in
-        letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-        letS? operand2 := safe_unwrap_err operand2 in
-        if andb
-            (SignatureToken
-              .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-              .is_integer operand1)
-            (SignatureToken.t_beq operand1 operand2)
-        then
-          letS? result := TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push operand1 in
-          letS? result := |?- result in
-          returnS? result
-        else 
-          returnS? $ Result.Err $ 
-            TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+      letS? '(verifier, _) := readS? in
+      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 := safe_unwrap_err operand1 in
+      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 := safe_unwrap_err operand2 in
+      if andb
+          (SignatureToken
+            .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+            .is_integer operand1)
+          (SignatureToken.t_beq operand1 operand2)
+      then
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push operand1 in
+        letS? result := |?- result in
+        returnS? result
+      else 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
 
     (* 
     Bytecode::Shl | Bytecode::Shr => {
@@ -1863,46 +1950,6 @@ Definition verify (module : CompiledModule.t) (function_context : FunctionContex
   : PartialVMResult.t unit. Admitted.
 
 (* 
-fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
-    use SignatureToken::*;
-
-    if subst.0.is_empty() {
-        return token.clone();
-    }
-
-    match token {
-        Bool => Bool,
-        U8 => U8,
-        U16 => U16,
-        U32 => U32,
-        U64 => U64,
-        U128 => U128,
-        U256 => U256,
-        Address => Address,
-        Signer => Signer,
-        Vector(ty) => Vector(Box::new(instantiate(ty, subst))),
-        Struct(idx) => Struct(*idx), //*)
-        StructInstantiation(struct_inst) => {
-            let (idx, struct_type_args) = &**struct_inst;
-            StructInstantiation(Box::new((
-                *idx,
-                struct_type_args
-                    .iter()
-                    .map(|ty| instantiate(ty, subst))
-                    .collect(),
-            )))
-        }
-        Reference(ty) => Reference(Box::new(instantiate(ty, subst))),
-        MutableReference(ty) => MutableReference(Box::new(instantiate(ty, subst))),
-        TypeParameter(idx) => {
-            // Assume that the caller has previously parsed and verified the structure of the
-            // file and that this guarantees that type parameter indices are always in bounds.
-            debug_assert!((*idx as usize) < subst.len()); //*)
-            subst.0[*idx as usize].clone()
-        }
-    }
-}
-
 fn get_vector_element_type(
     vector_ref_ty: SignatureToken,
     mut_ref_only: bool,
@@ -1929,7 +1976,6 @@ fn get_vector_element_type(
     }
 }
 *)
-Definition instantiate (token : SignatureToken.t) (subst: Signature.t) : SignatureToken.t. Admitted.
 
 Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
   option SignatureToken.t. Admitted.
