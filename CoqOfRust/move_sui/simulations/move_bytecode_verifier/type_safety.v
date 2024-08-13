@@ -57,6 +57,8 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - (IMPORTANT) write a `unpack` function for `?`s in Rust
   - Misc issues:
     - Mutual dependency: deal with the temporary `coerce`
+      - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
+      - And `StatusCode` for `PartialVMError` as well
 *)
 
 (* DRAFT: template for adding trait parameters *)
@@ -1081,7 +1083,28 @@ Definition verify_instr (bytecode : Bytecode.t)
       verifier.push(meter, local_signature)?
   }
   *)
-  | Bytecode.CopyLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.CopyLoc idx => 
+      letS? '(verifier, _) := readS? in
+      let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .local_at verifier $ LocalIndex.Build_t idx in
+      let abilities := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .abilities verifier.(TypeSafetyChecker.module) local_signature 
+          verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
+      letS? abilities := safe_unwrap_err (Error2 := PartialVMError.t) abilities in
+      letS? _ := if negb $ AbilitySet
+        .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+        .has_copy abilities
+      then returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
+      else returnS? $ Result.Ok tt in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push local_signature in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
 
   (* 
   Bytecode::MoveLoc(idx) => {
@@ -1104,8 +1127,14 @@ Definition verify_instr (bytecode : Bytecode.t)
 
   Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
   *)
-  | Bytecode.MutBorrowLoc idx => returnS? (Result.Ok tt)
-  | Bytecode.ImmBorrowLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.MutBorrowLoc idx => 
+      letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+  | Bytecode.ImmBorrowLoc idx => 
+      letS? result := borrow_loc offset false $ LocalIndex.Build_t idx in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
 
   (* 
   Bytecode::Call(idx) => {
