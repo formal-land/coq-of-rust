@@ -847,7 +847,7 @@ End SignatureToken.
 
 (* pub struct TypeSignature(pub SignatureToken); *)
 Module TypeSignature.
-  Record t : Set := { ao : SignatureToken.t; }.
+  Record t : Set := { a0 : SignatureToken.t; }.
 End TypeSignature.
 
 (* 
