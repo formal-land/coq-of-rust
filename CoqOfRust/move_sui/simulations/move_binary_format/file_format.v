@@ -143,7 +143,7 @@ End FieldInstantiation.
 Module FunctionInstantiation.
   Record t : Set := {
     handle : FunctionHandleIndex.t;
-    type_parameters : list SignatureIndex.t;
+    type_parameters : SignatureIndex.t;
   }.
 End FunctionInstantiation.
 
