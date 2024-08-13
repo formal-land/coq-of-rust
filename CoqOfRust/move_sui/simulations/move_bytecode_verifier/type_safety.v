@@ -26,6 +26,7 @@ Module StructFieldInformation := file_format.StructFieldInformation.
 Module FieldDefinition := file_format.FieldDefinition.
 Module TypeParameterIndex := file_format.TypeParameterIndex.
 Module TypeSignature := file_format.TypeSignature.
+Module FieldInstantiation := file_format.FieldInstantiation.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -479,8 +480,8 @@ fn borrow_field(
     Ok(())
 }
 *)
-(* TODO(IMPORTANT): Check the whole function body in parts *)
-Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
+(* CHECKED: `return` propagation *)
+Definition borrow_field (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
     letS? '(verifier, _) := readS? in
@@ -1026,6 +1027,7 @@ Definition verify_instr (bytecode : Bytecode.t)
     | Bytecode.Ret => returnS? $ Result.Ok tt
 
     (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.Branch _ | Bytecode.Nop => returnS? $ Result.Ok tt
 
     (* 
@@ -1064,8 +1066,10 @@ Definition verify_instr (bytecode : Bytecode.t)
         &Signature(vec![]),
     )?,
     *)
-    (* TODO: implement `borrow_field` *)
-    | Bytecode.MutBorrowField idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.MutBorrowField field_handle_index => 
+      borrow_field offset true field_handle_index $ 
+        Signature.Build_t []
 
     (*
     Bytecode::MutBorrowFieldGeneric(field_inst_index) => {
@@ -1075,8 +1079,28 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
     }
     *)
-    (* TODO: implement `borrow_field` *)
-    | Bytecode.MutBorrowFieldGeneric idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.MutBorrowFieldGeneric field_inst_index => 
+      letS? '(verifier, _) := readS? in
+      let field_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .field_instantiation_at
+          verifier.(TypeSafetyChecker.module) field_inst_index in
+      let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
+      let type_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at
+          verifier.(TypeSafetyChecker.module) type_parameters in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_inst.(Signature.a0)
+      in
+      match result with
+      | Result.Err x => returnS? $ Result.Err x
+      | Result.Ok x => borrow_field offset true 
+        field_inst.(FieldInstantiation.handle) type_inst
+      end
 
     (* 
     Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
@@ -1088,8 +1112,11 @@ Definition verify_instr (bytecode : Bytecode.t)
         &Signature(vec![]),
     )?,
     *)
-    (* TODO: implement `borrow_field` *)
-    | Bytecode.ImmBorrowField idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.ImmBorrowField field_handle_index => 
+      borrow_field offset false field_handle_index $
+        Signature.Build_t []
+
 
     (*
     Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
