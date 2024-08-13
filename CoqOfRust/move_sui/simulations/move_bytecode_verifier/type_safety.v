@@ -523,7 +523,7 @@ Definition borrow_field (offset : CodeOffset.t)
 
       match result_2 with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ =>
+      | _ =>
 
         let result_3 := match struct_def.(StructDefinition.field_information) with
         | StructFieldInformation.Native =>
@@ -727,7 +727,7 @@ Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t)
   letS? result := fold parameters in
   match result with
   | Result.Err x => returnS? $ Result.Err x
-  | Result.Ok _ =>
+  | _ =>
     let return_types := CompiledModule
       .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
       .signature_at verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.return_) in
@@ -743,7 +743,7 @@ Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t)
         .push $ instantiate return_type type_actuals in
         match result with
         | Result.Err x => returnS? $ Result.Err x
-        | Result.Ok _ => fold ls
+        | _ => fold ls
         end
       end
     ) in fold return_types
@@ -845,7 +845,7 @@ Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
     letS? result := fold field_sig in
     match result with
     | Result.Err x => returnS? $ Result.Err x
-    | Result.Ok _ => 
+    | _ => 
       letS? result_1 := TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push struct_type in
@@ -906,7 +906,7 @@ Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
                   .push sig in
                 match result with
                 | Result.Err x => returnS? $ Result.Err x
-                | Result.Ok _ => fold ls
+                | _ => fold ls
                 end
               end
             ) in
@@ -1040,8 +1040,49 @@ fn move_to(
     }
 }
 *)
-Definition move_to (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
+Definition move_to (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
+  (type_args : Signature.t) 
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+  let abilities := TypeSafetyChecker
+  .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+  .abilities verifier struct_type in
+  match abilities with
+  | Result.Err err => returnS? $ Result.Err err
+  | Result.Ok abilities =>
+    if negb $ AbilitySet
+      .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+      .has_key abilities
+    then returnS? $ Result.Err $ 
+      TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.MOVETO_WITHOUT_KEY_ABILITY offset
+    else 
+      let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+      letS? key_struct_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? key_struct_operand := safe_unwrap_err key_struct_operand in
+      letS? signer_reference_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? signer_reference_operand := safe_unwrap_err signer_reference_operand in
+      if negb $ SignatureToken.t_beq key_struct_operand struct_type
+      then returnS? $ Result.Err $ 
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.MOVETO_TYPE_MISMATCH_ERROR offset
+      else
+        match signer_reference_operand with
+        | SignatureToken.Reference inner => 
+          match inner with
+          | SignatureToken.Signer => returnS? $ Result.Ok tt
+          | _ => returnS? $ Result.Err $ 
+            TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.MOVETO_TYPE_MISMATCH_ERROR offset
+          end
+        | _ => returnS? $ Result.Err $ 
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.MOVETO_TYPE_MISMATCH_ERROR offset
+        end
+  end.
 
 (* 
 fn borrow_vector_element(
@@ -1340,9 +1381,9 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_inst.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ result
-      | Result.Ok _ => borrow_field offset false 
+      | _ => borrow_field offset false 
         field_inst.(FieldInstantiation.handle) type_inst
-      end (* match `result` *)
+      end
 
     (* 
     Bytecode::LdU8(_) => {
@@ -1514,8 +1555,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_args.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ => call offset func_handle type_args
-      end (* match `result` *)
+      | _ => call offset func_handle type_args
+      end
 
     (* 
     Bytecode::Pack(idx) => {
@@ -1561,8 +1602,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_args.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ => pack offset struct_def type_args
-      end (* match `result` *)
+      | _ => pack offset struct_def type_args
+      end
 
     (* 
     Bytecode::Unpack(idx) => {
@@ -1608,8 +1649,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_args.(Signature.a0) in
         match result with
         | Result.Err x => returnS? $ Result.Err x
-        | Result.Ok _ => unpack offset struct_def type_args
-        end (* match `result` *)
+        | _ => unpack offset struct_def type_args
+        end 
 
     (* 
     Bytecode::ReadRef => {
@@ -1937,8 +1978,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_inst.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
-      end (* match `result` *)
+      |  => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
+      end 
 
     (* 
     Bytecode::ImmBorrowGlobalDeprecated(idx) => {
@@ -1967,10 +2008,10 @@ Definition verify_instr (bytecode : Bytecode.t)
         TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .charge_tys type_inst.(Signature.a0) in
-        match result with
-        | Result.Err x => returnS? $ Result.Err x
-        | Result.Ok _ => borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
-        end (* match `result` *)
+      match result with
+      | Result.Err x => returnS? $ Result.Err x
+      | _ => borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
+      end
     
     (* 
     Bytecode::ExistsDeprecated(idx) => {
@@ -2011,8 +2052,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_args.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ => _exists offset struct_def type_args
-      end (* match `result` *)
+      | _ => _exists offset struct_def type_args
+      end
 
     (* 
     Bytecode::MoveFromDeprecated(idx) => {
@@ -2051,7 +2092,10 @@ Definition verify_instr (bytecode : Bytecode.t)
       TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .charge_tys type_args.(Signature.a0) in
-    move_from offset struct_def type_args
+    match result with
+    | Result.Err err => returnS? $ Result.Err err
+    | _ => move_from offset struct_def type_args
+    end
 
     (* 
     Bytecode::MoveToDeprecated(idx) => {
@@ -2059,7 +2103,11 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_to(verifier, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    | Bytecode.MoveTo idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveTo idx => 
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) idx in
+      move_to offset struct_def $ Signature.Build_t []
 
     (* 
     Bytecode::MoveToGenericDeprecated(idx) => {
@@ -2070,7 +2118,26 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_to(verifier, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.MoveToGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveToGeneric idx =>  
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.def) in
+      let type_args := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_args.(Signature.a0) in
+      match result with
+      | Result.Err err => returnS? $ Result.Err err
+      | _ => move_to offset struct_def type_args
+      end
 
     (* 
     Bytecode::VecPack(idx, num) => {
