@@ -1156,9 +1156,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* **************** *)
-    (* TODO: CHECK below for `return` propagation *)
-    (* **************** *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.Abort => 
         letS? '(verifier, _) := readS? in
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
@@ -1181,6 +1179,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.Ret => 
       letS? '(verifier, _) := readS? in
       let return_ := verifier
@@ -1219,6 +1218,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.FreezeRef => 
         letS? '(verifier, _) := readS? in
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
@@ -1226,11 +1226,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         letS? operand := safe_unwrap_err operand in
         match operand with
         | SignatureToken.MutableReference inner =>
-            letS? result := TypeSafetyChecker
+            TypeSafetyChecker
               .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-              .push $ SignatureToken.Reference inner in
-            letS? result := |?- result in
-            returnS? result
+              .push $ SignatureToken.Reference inner
         | _ => returnS? $ Result.Err $ 
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
             .error verifier StatusCode.FREEZEREF_TYPE_MISMATCH_ERROR offset
@@ -1350,6 +1348,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U256)?;
     }
     *)
+    (* **************** *)
+    (* TODO: CHECK below for `return` propagation *)
+    (* **************** *)
     (* TOCHECK: `return` propagation *)
     | Bytecode.LdU8 idx => 
         letS? '(verifier, _) := readS? in
@@ -1525,10 +1526,28 @@ Definition verify_instr (bytecode : Bytecode.t)
               call(verifier, meter, offset, func_handle, type_args)?
           }
     *)
-    (* **************** *)
-    (* TODO: Finish below *)
-    (* **************** *)
-    | Bytecode.CallGeneric idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.CallGeneric idx => 
+      letS? '(verifier, _) := readS? in
+      let func_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .function_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let func_handle := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .function_handle_at verifier.(TypeSafetyChecker.module) 
+          func_inst.(FunctionInstantiation.handle) in
+      let type_args := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) 
+          func_inst.(FunctionInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_args.(Signature.a0) in
+      match result with
+      | Result.Err x => returnS? $ Result.Err x
+      | Result.Ok _ => call offset function_handle type_args
+      end (* match `result` *)
 
     (* 
     Bytecode::Pack(idx) => {
@@ -1648,6 +1667,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
+    (* **************** *)
+    (* TODO: Finish below *)
+    (* **************** *)
     | Bytecode.ReadRef => returnS? $ Result.Ok tt
 
     (* 
@@ -2035,6 +2057,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         | Result.Err x => returnS? $ Result.Err x
         | Result.Ok _ => borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
         end (* match `result` *)
+
     (* 
     Bytecode::ExistsDeprecated(idx) => {
         let struct_def = verifier.module.struct_def_at(*idx); //*)
