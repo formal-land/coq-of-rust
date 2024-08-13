@@ -81,7 +81,6 @@ Definition unknown_err := PartialVMError
   .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
   .new (StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR).
 
-(* NOTE: Sometimes we need to explicitly provide the `Error2` as argument *)
 Definition safe_unwrap_err {State A Error : Set} (value : Result.t A Error)
   : MS? State string A :=
   match value with
@@ -89,13 +88,13 @@ Definition safe_unwrap_err {State A Error : Set} (value : Result.t A Error)
   | Result.Err _ => return!?toS? $ panic!? "safe_unwrap_err: Value is empty."
   end.
 
+(* The equivalent of `?` operator in Rust. `|?-` is defined for this operation. *)
 Definition question_mark_unwrap {State A Error : Set} (value : Result.t A Error)
   : MS? State string (Result.t A Error) :=
   match value with
   | Result.Ok x => returnS? $ Result.Ok x
   | Result.Err _ => return!?toS? $ panic!? "question_mark_unwrap: Value is empty."
   end.
-
 Notation "|?- x" := (question_mark_unwrap x) (at level 140).
 
 (* **************** *)
