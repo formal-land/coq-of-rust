@@ -639,20 +639,6 @@ Module SignatureToken.
           }
       }
 
-      /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
-      pub fn is_reference(&self) -> bool {
-          use SignatureToken::*;
-
-          matches!(self, Reference(_) | MutableReference(_))
-      }
-
-      /// Returns true if the `SignatureToken` is a mutable reference.
-      pub fn is_mutable_reference(&self) -> bool {
-          use SignatureToken::*;
-
-          matches!(self, MutableReference(_))
-      }
-
       /// Returns true if the `SignatureToken` is a signer
       pub fn is_signer(&self) -> bool {
           use SignatureToken::*;
@@ -792,6 +778,33 @@ Module SignatureToken.
 
   Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
     Definition Self := move_sui.simulations.move_binary_format.file_format.SignatureToken.t.
+    (* 
+    /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
+    pub fn is_reference(&self) -> bool {
+        use SignatureToken::*;
+
+        matches!(self, Reference(_) | MutableReference(_))
+    }
+    *)
+    Definition is_reference (self : Self) : bool :=
+      match self with
+      | Reference _ | MutableReference _ => true
+      | _ => false
+      end.
+
+    (* 
+    /// Returns true if the `SignatureToken` is a mutable reference.
+    pub fn is_mutable_reference(&self) -> bool {
+        use SignatureToken::*;
+
+        matches!(self, MutableReference(_))
+    }
+    *)
+    Definition is_mutable_reference (self : Self) : bool :=
+      match self with
+      | MutableReference _ => true
+      | _ => false
+      end.
 
     (* 
     // Returns `true` if the `SignatureToken` is an integer type.
