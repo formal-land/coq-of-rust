@@ -686,14 +686,34 @@ NOTE: lenses to use:
 - TypeSafetyChecker -> Abstractstack
 *)
 
-Definition test_verify_instr (bytecode : Bytecode.t) 
+Definition debug_verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
   (* NOTE: 
       This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. *)
-
+  (*
+  Bytecode::Ret => {
+      let return_ = &verifier.function_context.return_().0;
+      for return_type in return_.iter().rev() {
+          let operand = safe_unwrap_err!(verifier.stack.pop());
+          if &operand != return_type {
+              return Err(verifier.error(StatusCode::RET_TYPE_MISMATCH_ERROR, offset));
+          }
+      }
+  }
+  *)
+  | Bytecode.Ret => 
+      letS? '(verifier, _) := readS? in
+      let return_ := verifier
+        .(TypeSafetyChecker.function_context)
+        .(FunctionContext.return_).(Signature.a0) in
+      let return_ := List.rev return_ in
+      (* TODO: fold on a monad *)
+  
+  
+  returnS? (Result.Ok tt)
 
 
   | _ => returnS? (Result.Ok tt)
@@ -788,10 +808,10 @@ Definition verify_instr (bytecode : Bytecode.t)
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
       if negb $ SignatureToken.t_beq operand SignatureToken.U64
-      then returnS? (Result.Err (
+      then returnS? $ Result.Err $
         TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.ABORT_TYPE_MISMATCH_ERROR offset))
-      else returnS? (Result.Ok tt)
+          .error verifier StatusCode.ABORT_TYPE_MISMATCH_ERROR offset
+      else returnS? $ Result.Ok tt
 
   (*
   Bytecode::Ret => {
@@ -804,6 +824,9 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
   }
   *)
+  (* **************** *)
+  (* TODO: Finish below *)
+  (* **************** *)
   | Bytecode.Ret => returnS? (Result.Ok tt)
 
   (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
@@ -820,10 +843,20 @@ Definition verify_instr (bytecode : Bytecode.t)
   *)
   | Bytecode.FreezeRef => 
       letS? '(verifier, _) := readS? in
-      let _stack := verifier.(TypeSafetyChecker.stack) in
-      let operand := AbstractStack.pop _stack in
-      (* TODO: fill here *)
-      returnS? (Result.Ok tt)
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      match operand with
+      | SignatureToken.MutableReference inner =>
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push $ SignatureToken.Reference inner in
+          letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+          returnS? $ Result.Ok result
+      | _ => returnS? $ Result.Err $ 
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.FREEZEREF_TYPE_MISMATCH_ERROR offset
+      end
 
   (*
   Bytecode::MutBorrowField(field_handle_index) => borrow_field(
@@ -846,6 +879,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
   }
   *)
+  (* TODO: implement `borrow_field` *)
   | Bytecode.MutBorrowFieldGeneric idx => returnS? (Result.Ok tt)
 
   (* 
@@ -858,6 +892,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       &Signature(vec![]),
   )?,
   *)
+  (* TODO: implement `borrow_field` *)
   | Bytecode.ImmBorrowField idx => returnS? (Result.Ok tt)
 
   (*
@@ -951,8 +986,13 @@ Definition verify_instr (bytecode : Bytecode.t)
       verifier.push(meter, ST::Bool)?;
   }
   *)
-  | Bytecode.LdTrue => returnS? (Result.Ok tt)
-  | Bytecode.LdFalse => returnS? (Result.Ok tt)
+  | Bytecode.LdTrue | Bytecode.LdFalse => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.Bool in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
 
   (* 
   Bytecode::CopyLoc(idx) => {
@@ -978,7 +1018,15 @@ Definition verify_instr (bytecode : Bytecode.t)
             verifier.push(meter, local_signature)?
         }
   *)
-  | Bytecode.MoveLoc idx => returnS? (Result.Ok tt)
+  | Bytecode.MoveLoc idx => 
+    letS? '(verifier, _) := readS? in
+    let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .local_at verifier $ LocalIndex.Build_t idx in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push local_signature in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? $ Result.Ok result
 
   (* 
   Bytecode::MutBorrowLoc(idx) => borrow_loc(verifier, meter, offset, true, *idx)?,
