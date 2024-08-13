@@ -10,17 +10,17 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(misc tasks):
-- (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
 - See if we need to handle the `?` and debugs with `panic` monad. See NOTEs everywhere
 *)
 
-(* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
-   since this file has mutual dependency with another file. Although it works 
-   for now, we shouldn't ignore this. *)
+(* NOTE(MUTUAL DEPENDENCY ISSUE): This is just a stub to fill in needed information
+  to use else where. When other files are using this type, they should have to
+  extract the `StatusCode` and construct the actual PartialVMError by themselves. *)
 Module PartialVMError.
-  Inductive t : Set := .
-
-  Definition new (s : StatusCode.t) : t. Admitted.
+  Inductive t : Set := 
+  (* A very rough stub here *)
+  | new : StatusCode.t -> t (* Since we only use this function *)
+  .
 End PartialVMError.
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
