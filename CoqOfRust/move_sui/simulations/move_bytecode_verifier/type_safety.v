@@ -858,9 +858,9 @@ Definition verify_instr (bytecode : Bytecode.t)
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.t_beq operand SignatureToken.Bool
-        then returnS? (Result.Err (
+        then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset
         else returnS? $ Result.Ok tt
 
     (* 
@@ -879,9 +879,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .local_at verifier (LocalIndex.Build_t idx)
-        then returnS? (Result.Err (
+        then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset
         else returnS? $ Result.Ok tt
 
     (* 
@@ -1119,6 +1119,8 @@ Definition verify_instr (bytecode : Bytecode.t)
           .abilities verifier.(TypeSafetyChecker.module) local_signature 
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
         letS? abilities := safe_unwrap_err abilities in
+
+        (* TODO: FIX THIS OCCURENCE *)
         letS? _ := if negb $ AbilitySet
           .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
           .has_copy abilities
@@ -1127,6 +1129,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
         else returnS? $ Result.Ok tt in
+        
         letS? result := TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .push local_signature in
@@ -1301,12 +1304,16 @@ Definition verify_instr (bytecode : Bytecode.t)
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
+
+        (* TODO: FIX THIS OCCURENCE *)
         letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
         else returnS? $ Result.Ok tt in
+
+
         letS? result := TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .push SignatureToken.U8 in
@@ -1317,12 +1324,16 @@ Definition verify_instr (bytecode : Bytecode.t)
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
+
+        (* TODO: FIX THIS OCCURENCE *)
         letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
         else returnS? $ Result.Ok tt in
+
+
         letS? result := TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .push SignatureToken.U64 in
@@ -1333,12 +1344,16 @@ Definition verify_instr (bytecode : Bytecode.t)
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
         letS? operand := safe_unwrap_err operand in
         letS? '(verifier, _) := readS? in
+
+        (* TODO: FIX THIS OCCURENCE *)
         letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
           .is_integer operand
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
         else returnS? $ Result.Ok tt in
+
+        
         letS? result := TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .push SignatureToken.U128 in
