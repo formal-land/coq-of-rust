@@ -1101,7 +1101,9 @@ Definition debug_verify_instr (bytecode : Bytecode.t)
 Definition verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : 
   MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
-  letS? _ :=
+  (* NOTE: Here we directly return the `match` clause since every cases return
+    a `Result` value. In original code, these cases either `()`s or `Err`s,
+    eventually return `Ok` after everything has been checked. *)
     match bytecode with
     (* 
     Bytecode::Pop => {
@@ -1455,7 +1457,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .abilities verifier.(TypeSafetyChecker.module) local_signature 
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
         match abilities with
-        | Result.Err err => returnS? $ Result.Err err
+        | Result.Err err => returnS? $ Result.Err $ coerse_PVME err
         | Result.Ok abilities =>
           if negb $ AbilitySet
             .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
@@ -2323,8 +2325,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U64 in
         letS? result := |?- result in
         returnS? result
-    end in
-  returnS? $ Result.Ok tt.
+    end.
 
 (* 
 pub(crate) fn verify<'a>(
