@@ -21,6 +21,7 @@ Module Bytecode := file_format.Bytecode.
 Module StructHandleIndex := file_format.StructHandleIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module Constant := file_format.Constant.
+Module FieldHandle := file_format.FieldHandle.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -325,6 +326,22 @@ Module TypeSafetyChecker.
 End TypeSafetyChecker.
 
 (* 
+fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
+    if type_args.is_empty() {
+        ST::Struct(struct_handle)
+    } else {
+        ST::StructInstantiation(Box::new((struct_handle, type_args.0.clone())))
+    }
+}
+*)
+Definition materialize_type (struct_handle : StructHandleIndex.t) (type_args : Signature.t)
+  : SignatureToken.t :=
+  let type_args := Signature.a0 type_args in
+  if Nat.eqb (List.length type_args) 0%nat
+  then SignatureToken.Struct struct_handle
+  else SignatureToken.StructInstantiation (struct_handle, type_args).
+
+(* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
 fn borrow_field(
     verifier: &mut TypeSafetyChecker,
@@ -376,7 +393,40 @@ fn borrow_field(
 *)
 Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
-  : PartialVMResult.t unit. Admitted.
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    letS? '(verifier, _) := readS? in
+    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+    (* TODO: Ask to the team if this style is applicable *)
+    letS? _ := if andb mut_ (negb $ SignatureToken
+      .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+      .is_mutable_reference operand)
+    then returnS? $ Result.Err $ 
+      TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+    else returnS? $ Result.Ok tt in
+
+    (* 
+    let field_handle = verifier.module.field_handle_at(field_handle_index);
+    let struct_def = verifier.module.struct_def_at(field_handle.owner);
+    let expected_type = materialize_type(struct_def.struct_handle, type_args);
+    match operand {
+        ST::Reference(inner) | ST::MutableReference(inner) if expected_type == *inner => (),
+        _ => return Err(verifier.error(StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR, offset)),
+    }
+    *)
+    let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
+    let struct_def := ompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+    .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
+
+
+
+
+  returnS? $ Result.Ok tt.
+
 
 
 (* 
@@ -1562,14 +1612,6 @@ Definition verify (module : CompiledModule.t) (function_context : FunctionContex
   : PartialVMResult.t unit. Admitted.
 
 (* 
-fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
-    if type_args.is_empty() {
-        ST::Struct(struct_handle)
-    } else {
-        ST::StructInstantiation(Box::new((struct_handle, type_args.0.clone())))
-    }
-}
-
 fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
     use SignatureToken::*;
 
@@ -1636,9 +1678,6 @@ fn get_vector_element_type(
     }
 }
 *)
-Definition materialize_type (struct_handle : StructHandleIndex.t) (type_args : Signature.t)
-  : SignatureToken.t. Admitted.
-
 Definition instantiate (token : SignatureToken.t) (subst: Signature.t) : SignatureToken.t. Admitted.
 
 Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
