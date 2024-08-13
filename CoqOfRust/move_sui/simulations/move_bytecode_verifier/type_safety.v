@@ -1652,11 +1652,56 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
+    | Bytecode.ReadRef => 
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      match operand with
+      | SignatureToken.Reference inner =>
+        let abilities := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .abilities verifier inner in
+        match abilities with
+        | Result.Err err => returnS? $ Result.Err err
+        | Result.Ok abilities =>
+          if negb $ AbilitySet
+            .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+            .has_copy abilities
+          then returnS? $ Result.Err $ 
+            TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .error verifier StatusCode.READREF_WITHOUT_COPY_ABILITY offset
+          else TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push inner
+        end
+      (* Actually exactly the same content *)
+      | SignatureToken.MutableReference inner =>
+        let abilities := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .abilities verifier inner in
+          match abilities with
+          | Result.Err err => returnS? $ Result.Err err
+          | Result.Ok abilities =>
+            if negb $ AbilitySet
+              .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+              .has_copy abilities
+            then returnS? $ Result.Err $ 
+              TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+                .error verifier StatusCode.READREF_WITHOUT_COPY_ABILITY offset
+            else TypeSafetyChecker
+              .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .push inner
+          end
+      | _ => returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.READREF_TYPE_MISMATCH_ERROR offset
+      end
+
+      
     (* **************** *)
     (* TODO: Finish below *)
     (* **************** *)
-    | Bytecode.ReadRef => returnS? $ Result.Ok tt
-
     (* 
     Bytecode::WriteRef => {
         let ref_operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1678,7 +1723,27 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    | Bytecode.WriteRef => returnS? $ Result.Ok tt
+    | Bytecode.WriteRef => 
+      letS? ref_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? ref_operand := safe_unwrap_err ref_operand in
+      letS? val_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? val_operand := safe_unwrap_err val_operand in
+      (* 
+        let ref_inner_signature = match ref_operand {
+            ST::MutableReference(inner) => *inner,
+            _ => {
+                return Err(
+                    verifier.error(StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR, offset)
+                )
+            }
+        };
+      *)
+    
+    
+    
+    returnS? $ Result.Ok tt
 
     (* 
     Bytecode::CastU8 => {
