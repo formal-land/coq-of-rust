@@ -662,8 +662,61 @@ fn call(
     Ok(())
 }
 *)
-Definition call (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(function_handle : FunctionHandle.t) (type_actuals : Signature.t) : PartialVMResult.t unit. Admitted.
+Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t) 
+  (type_actuals : Signature.t) 
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  let parameters := CompiledModule
+    .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+    .signature_at verifier.(TypeSafetyChecker.module) 
+      function_handle.(FunctionHandle.parameters) in
+  let parameters := List.rev parameters.(Signature.a0) in
+  let fold :=
+  (fix fold (l : list SignatureToken.t) 
+    : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    match l with
+    | [] => returnS? $ Result.Ok tt
+    | parameter :: ls => 
+      letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? arg := safe_unwrap_err arg in
+      if orb ((0 =? Z.of_nat $ List.length type_actuals.(Signature.a0)) 
+        && (negb $ SignatureToken.t_beq arg parameter))
+       ((negb (0 =? Z.of_nat $ List.length type_actuals.(Signature.a0)))
+        && (negb $ SignatureToken.t_beq arg (instantiate parameter type_actuals)))
+      then
+        returnS? $ Result.Err $ TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.CALL_TYPE_MISMATCH_ERROR offset
+      else fold ls
+    end
+  ) in
+  letS? result := fold parameters in
+  match result with
+  | Result.Err x => returnS? $ Result.Err x
+  | Result.Ok _ =>
+    let return_types := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .signature_at verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.return_) in
+    let return_types := Signature.a0 return_types in
+    let fold :=
+    (fix fold (l : list SignatureToken.t)
+      : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+      match l with
+      | [] => returnS? $ Result.Ok tt
+      | return_type :: ls =>
+        letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push $ instantiate return_type type_actuals in
+        match result with
+        | Result.Err x => returnS? $ Result.Err x
+        | Result.Ok _ => fold ls
+        end
+      end
+    ) in
+    fold return_types
+  end (* match `result` *)
+  .
 
 (* 
 fn type_fields_signature(
@@ -2120,6 +2173,5 @@ fn get_vector_element_type(
     }
 }
 *)
-
 Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
   option SignatureToken.t. Admitted.
