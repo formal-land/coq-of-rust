@@ -52,13 +52,7 @@ Module Scope := move_bytecode_verifier_meter.lib.Scope.
 Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
-  - (PART 1)Push the progress on this file by:
-    - [x] Implement `safe_unwrap_err!` macro
-    - [x] Implement `mut` functions in this file
-    - [x] Implement `AWbilitySet` in `file_format`
-    - [x] Implement `CompiledModule` in `file_format`
-    - [x] Classyfy different cases for `verify_instr` to split the task
-  - (PART 2) Implement cases for `verify_instr` by
+  - Implement cases for `verify_instr` by
     - [x] Format all cases nicely with comments
     - [ ] Do all the works
   - Misc issues:
