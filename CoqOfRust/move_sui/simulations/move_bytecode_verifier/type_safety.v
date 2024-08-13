@@ -1377,57 +1377,30 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U256)?;
     }
     *)
-    (* **************** *)
-    (* TODO: CHECK below for `return` propagation *)
-    (* **************** *)
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU8 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U8 in
-        letS? result := |?- result in
-        returnS? result
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU16 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U16 in
-        letS? result := |?- result in
-        returnS? result
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU32 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U32 in
-        letS? result := |?- result in
-        returnS? result
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU64 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U64 in
-        letS? result := |?- result in
-        returnS? result
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU128 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U128 in
-        letS? result := |?- result in
-        returnS? result
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdU256 idx => 
-        letS? '(verifier, _) := readS? in
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U256 in
-        letS? result := |?- result in
-        returnS? result
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU8 idx => TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U8
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU16 idx => TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U16
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU32 idx => TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U32
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU64 idx => TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U64
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU128 idx =>TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U128
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdU256 idx => TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U256
 
     (* 
     Bytecode::LdConst(idx) => {
@@ -1435,32 +1408,26 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, signature)?;
           }
     *)
-    (* TOCHECK: `return` propagation *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.LdConst idx => 
         letS? '(verifier, _) := readS? in
         let constant := 
           CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
           .constant_at verifier.(TypeSafetyChecker.module) idx in
         let type_ := constant.(Constant.type_) in
-        letS? result := TypeSafetyChecker
+        TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push type_ in
-        letS? result := |?- result in
-        returnS? result
+          .push type_ 
 
     (* 
     Bytecode::LdTrue | Bytecode::LdFalse => {
         verifier.push(meter, ST::Bool)?;
     }
     *)
-    (* TOCHECK: `return` propagation *)
-    | Bytecode.LdTrue | Bytecode.LdFalse => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
+    (* CHECKED: `return` propagation *)
+    | Bytecode.LdTrue | Bytecode.LdFalse => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.Bool in
-      letS? result := |?- result in
-      returnS? result
+        .push SignatureToken.Bool
 
     (* 
     Bytecode::CopyLoc(idx) => {
@@ -1478,7 +1445,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, local_signature)?
     }
     *)
-    (* TOCHECK: `return` propagation *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.CopyLoc idx => 
         letS? '(verifier, _) := readS? in
         let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
@@ -1487,20 +1454,20 @@ Definition verify_instr (bytecode : Bytecode.t)
           .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
           .abilities verifier.(TypeSafetyChecker.module) local_signature 
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
-        letS? abilities := safe_unwrap_err abilities in
-        if negb $ AbilitySet
-          .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-          .has_copy abilities
-        then returnS? $ Result.Err $ 
-          TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
-        else 
-          letS? result := TypeSafetyChecker
+        match abilities with
+        | Result.Err err => returnS? $ Result.Err err
+        | Result.Ok abilities =>
+          if negb $ AbilitySet
+            .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+            .has_copy abilities
+          then returnS? $ Result.Err $ 
+            TypeSafetyChecker
             .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push local_signature in
-          letS? result := |?- result in
-          returnS? result
+            .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
+          else TypeSafetyChecker
+              .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .push local_signature
+        end (* match `abilities` *)
 
     (* 
     Bytecode::MoveLoc(idx) => {
@@ -1508,16 +1475,14 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, local_signature)?
           }
     *)
-    (* TOCHECK: `return` propagation *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.MoveLoc idx => 
       letS? '(verifier, _) := readS? in
       let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .local_at verifier $ LocalIndex.Build_t idx in
-      letS? result := TypeSafetyChecker
+      TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push local_signature in
-      letS? result := |?- result in
-      returnS? result
+        .push local_signature
 
     (* 
     Bytecode::MutBorrowLoc(idx) => borrow_loc(verifier, meter, offset, true, *idx)?,
@@ -1698,6 +1663,7 @@ Definition verify_instr (bytecode : Bytecode.t)
     *)
     (* **************** *)
     (* TODO: Finish below *)
+    (* TODO: CHECK below for `return` propagation *)
     (* **************** *)
     | Bytecode.ReadRef => returnS? $ Result.Ok tt
 
