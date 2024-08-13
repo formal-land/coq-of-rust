@@ -1101,7 +1101,24 @@ fn get_vector_element_type(
 }
 *)
 Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
-  option SignatureToken.t. Admitted.
+  option SignatureToken.t :=
+  match vector_ref_ty with
+  | SignatureToken.Reference referred_type =>
+    if mut_ref_only then None
+    else 
+      match referred_type with
+      | SignatureToken.Vector element_type =>
+        Some element_type
+      | _ => None
+      end
+  | SignatureToken.MutableReference referred_type =>
+      match referred_type with
+      | SignatureToken.Vector element_type =>
+        Some element_type
+      | _ => None
+      end
+  | _ => None
+  end.
 
 (* 
 fn borrow_vector_element(
@@ -1134,8 +1151,39 @@ fn borrow_vector_element(
     Ok(())
 }
 *)
-Definition borrow_vector_element (verifier : TypeSafetyChecker.t) (declared_element_type : SignatureToken.t) 
-(offset : CodeOffset.t) (mut_ref_only : bool) : PartialVMResult.t unit. Admitted.
+Definition borrow_vector_element (declared_element_type : SignatureToken.t) 
+  (offset : CodeOffset.t) (mut_ref_only : bool)
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  letS? operand_idx := liftS? TypeSafetyChecker.lens_self_meter_self (
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  letS? operand_idx := safe_unwrap_err operand_idx in
+  letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  letS? operand_vec := safe_unwrap_err operand_vec in
+  if negb $ SignatureToken.t_beq operand_idx SignatureToken.U64
+  then returnS? $ Result.Err $
+    TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+    .error verifier (StatusCode.TYPE_MISMATCH) offset
+  else 
+    (* NOTE: This pattern is interesting. Could be useful for monad *)
+    letS? element_type := match get_vector_element_type operand_vec mut_ref_only with
+      | Some ty => if SignatureToken.t_beq ty declared_element_type then
+          returnS? $ Result.Ok ty
+        else returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier (StatusCode.TYPE_MISMATCH) offset
+      | _ => returnS? $ Result.Err $
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier (StatusCode.TYPE_MISMATCH) offset 
+      end in
+    match element_type with
+    | Result.Err err => returnS? $ Result.Err err
+    | Result.Ok element_type =>
+      TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push $ SignatureToken.Reference element_type
+    end.
 
 (* 
 fn verify_instr(
@@ -1153,10 +1201,10 @@ fn verify_instr(
 Definition debug_verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
-  (* NOTE: 
-      This is a function that is intended to test the cases for `verify_instr`
+  (* NOTE: This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
-      fill it here. *)
+      fill it here. THIS FUNCTION SHOULD BE DELETED ONLY AFTER ALL FUNCTIONS ARE
+      IMPLEMENTED IN THE NEW MONAD *)
 
 
 
