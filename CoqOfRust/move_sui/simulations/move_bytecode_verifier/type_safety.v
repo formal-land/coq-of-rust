@@ -67,6 +67,12 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - Extract the `letS? '(verifier, _) := readS?` outside the match clause of `verify_instr`
 *)
 
+(* NOTE: Thoughts on mutual dependency issue:
+For A A', there should be a function to:
+- extract information/operations stored in A'
+- use these information/operations to construct back the item of type A
+*)
+
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
