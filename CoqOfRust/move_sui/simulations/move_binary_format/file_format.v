@@ -553,6 +553,22 @@ Module FunctionHandle.
   }.
 End FunctionHandle.
 
+Module MemberCount.
+  Definition t := Z.
+End MemberCount.
+(* 
+pub struct FieldHandle {
+    pub owner: StructDefinitionIndex,
+    pub field: MemberCount,
+}
+*)
+Module FieldHandle.
+  Record t : Set := {
+    owner: StructDefinitionIndex.t;
+    field: MemberCount.t;
+  }.
+End FieldHandle.
+
 (* 
 pub enum SignatureToken {
     /// Boolean, `true` or `false`.
@@ -1034,7 +1050,7 @@ Module CompiledModule.
     (* module_handles : list ModuleHandle; *)
     struct_handles : list StructHandle.t;
     function_handles : list FunctionHandle.t;
-    (* field_handles : list FieldHandle; *)
+    field_handles : list FieldHandle.t;
     (* friend_decls : list ModuleHandle; *)
     struct_def_instantiations : list StructDefInstantiation.t;
     function_instantiations : list FunctionInstantiation.t;
@@ -1049,6 +1065,21 @@ Module CompiledModule.
   }.
   Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
+
+    (* 
+    pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
+        let handle = &self.field_handles[idx.into_index()];
+        debug_assert!(handle.owner.into_index() < self.struct_defs.len()); // invariant
+        handle
+    }
+    *)
+    Definition default_field_handle : FieldHandle.t. Admitted.
+    Definition field_handle_at (self : Self) (idx : FieldHandleIndex.t)
+      : FieldHandle.t :=
+      let idx := idx.(FieldHandleIndex.a0) in
+      let handle := List.nth (Z.to_nat idx) self.(field_handles) default_field_handle in
+      (* TODO: Implement debugs *)
+      handle.
 
     (* 
     pub fn struct_instantiation_at(
