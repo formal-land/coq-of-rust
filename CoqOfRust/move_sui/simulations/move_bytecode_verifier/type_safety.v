@@ -1982,6 +1982,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
     }
     *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowGlobalGeneric idx => 
       letS? '(verifier, _) := readS? in
       let struct_inst := CompiledModule
@@ -1999,20 +2000,42 @@ Definition verify_instr (bytecode : Bytecode.t)
       | Result.Err x => returnS? $ Result.Err x
       | Result.Ok _ => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
       end (* match `result` *)
-    
-    (* 
 
+    (* 
     Bytecode::ImmBorrowGlobalDeprecated(idx) => {
         borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
     }
+    *)
+    (* CHECKED: `return` propagation *)
+    | Bytecode.ImmBorrowGlobal idx => borrow_global offset false idx $ Signature.Build_t []
 
+    (* 
     Bytecode::ImmBorrowGlobalGenericDeprecated(idx) => {
         let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
         let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
         verifier.charge_tys(meter, &type_inst.0)?;
         borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
     }
-
+    *)
+    (* CHECKED: `return` propagation *)
+    | Bytecode.ImmBorrowGlobalGeneric idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_inst.(Signature.a0) in
+        match result with
+        | Result.Err x => returnS? $ Result.Err x
+        | Result.Ok _ => borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
+        end (* match `result` *)
+    (* 
     Bytecode::ExistsDeprecated(idx) => {
         let struct_def = verifier.module.struct_def_at(*idx); //*)
         exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
@@ -2053,8 +2076,6 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
-    | Bytecode.ImmBorrowGlobal idx => returnS? $ Result.Ok tt
-    | Bytecode.ImmBorrowGlobalGeneric idx => returnS? $ Result.Ok tt
     | Bytecode.Exists idx => returnS? $ Result.Ok tt
     | Bytecode.ExistsGeneric idx => returnS? $ Result.Ok tt
     | Bytecode.MoveFrom idx => returnS? $ Result.Ok tt
