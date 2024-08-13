@@ -57,7 +57,6 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - (IMPORTANT) write a `unpack` function for `?`s in Rust
   - Misc issues:
     - Mutual dependency: deal with the temporary `coerce`
-    - List.nth: find a way to provide a better default values at all occurences
 *)
 
 (* DRAFT: template for adding trait parameters *)
@@ -121,12 +120,10 @@ Module Locals.
     Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
       let idx := i.(LocalIndex.a0) in 
       if idx <? self.(param_count)
-      (* NOTE: temporarily provide `SignatureToken.Bool` as default value. 
-        Since we already checked the length of list, it shouldn't occur by
-        any means. *)
-      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) SignatureToken.Bool
-      else List.nth (Z.to_nat $ idx - self.(param_count)) 
-              self.(locals).(Signature.a0) SignatureToken.Bool.
+      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) 
+        SignatureToken.Bool (* This should never arrive at *)
+      else List.nth (Z.to_nat $ idx - self.(param_count)) self.(locals).(Signature.a0) 
+        SignatureToken.Bool. (* This should never arrive at *)
 
   End Impl_move_sui_simulations_move_bytecode_verifier_type_safety_Locals.
 End Locals.
@@ -407,6 +404,7 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else returnS? $ Result.Ok tt in
+    (* NOTE: End of suspicious code section *)
     let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
       .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
     let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
