@@ -5,6 +5,7 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Module PVME := file_format.PartialVMError.
 Module Signature := file_format.Signature.
 Module SignatureToken.
   Include file_format.SignatureToken.
@@ -28,7 +29,7 @@ Module TypeParameterIndex := file_format.TypeParameterIndex.
 Module TypeSignature := file_format.TypeSignature.
 Module FieldInstantiation := file_format.FieldInstantiation.
 Module StructDefInstantiation := file_format.StructDefInstantiation.
-Module PVME := file_format.PartialVMError.
+Module FunctionInstantiation := file_format.FunctionInstantiation.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -1574,7 +1575,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_args.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      | Result.Ok _ => call offset function_handle type_args
+      | Result.Ok _ => call offset func_handle type_args
       end (* match `result` *)
 
     (* 
@@ -2040,7 +2041,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
       let type_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-        .struct_instantiation_at verifier.(TypeSafetyChecker.module) 
+        .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
         TypeSafetyChecker
@@ -2073,7 +2074,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       let struct_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let struct_inst := CompiledModule
+      let type_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
@@ -2085,13 +2086,22 @@ Definition verify_instr (bytecode : Bytecode.t)
         | Result.Err x => returnS? $ Result.Err x
         | Result.Ok _ => borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
         end (* match `result` *)
-
+    
     (* 
     Bytecode::ExistsDeprecated(idx) => {
         let struct_def = verifier.module.struct_def_at(*idx); //*)
         exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
+    *)
+    (* CHECKED: `return` propagation *)
+    | Bytecode.Exists idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) idx in
+        _exists offset struct_def $ Signature.Build_t []
 
+    (* 
     Bytecode::ExistsGenericDeprecated(idx) => {
         let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
         let struct_def = verifier.module.struct_def_at(struct_inst.def);
@@ -2099,12 +2109,39 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.charge_tys(meter, &type_args.0)?;
         exists(verifier, meter, offset, struct_def, type_args)?
     }
+    *)
+    (* CHECKED: `return` propagation *)
+    | Bytecode.ExistsGeneric idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.def) in
+      let type_args := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_args.(Signature.a0) in
+      match result with
+      | Result.Err x => returnS? $ Result.Err x
+      | Result.Ok _ => _exists offset struct_def type_args
+      end (* match `result` *)
 
+    (* 
     Bytecode::MoveFromDeprecated(idx) => {
         let struct_def = verifier.module.struct_def_at(*idx); //*)
         move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
+    *)
+    | Bytecode.MoveFrom idx => returnS? $ Result.Ok tt
 
+    (* 
     Bytecode::MoveFromGenericDeprecated(idx) => {
         let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
         let struct_def = verifier.module.struct_def_at(struct_inst.def);
@@ -2112,12 +2149,18 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.charge_tys(meter, &type_args.0)?;
         move_from(verifier, meter, offset, struct_def, type_args)?
     }
+    *)
+    | Bytecode.MoveFromGeneric idx => returnS? $ Result.Ok tt
 
+    (* 
     Bytecode::MoveToDeprecated(idx) => {
         let struct_def = verifier.module.struct_def_at(*idx); //*)
         move_to(verifier, offset, struct_def, &Signature(vec![]))?
     }
+    *)
+    | Bytecode.MoveTo idx => returnS? $ Result.Ok tt
 
+    (* 
     Bytecode::MoveToGenericDeprecated(idx) => {
         let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
         let struct_def = verifier.module.struct_def_at(struct_inst.def);
@@ -2126,12 +2169,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_to(verifier, offset, struct_def, type_args)?
     }
     *)
-    (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
-    | Bytecode.Exists idx => returnS? $ Result.Ok tt
-    | Bytecode.ExistsGeneric idx => returnS? $ Result.Ok tt
-    | Bytecode.MoveFrom idx => returnS? $ Result.Ok tt
-    | Bytecode.MoveFromGeneric idx => returnS? $ Result.Ok tt
-    | Bytecode.MoveTo idx => returnS? $ Result.Ok tt
     | Bytecode.MoveToGeneric idx => returnS? $ Result.Ok tt
 
     (* 
