@@ -60,11 +60,10 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Format all cases nicely with comments
     - [ ] Do all the works
   - Misc issues:
+    - (IMPORTANT) Check `return` propagation for all functions
     - Mutual dependency: deal with the temporary `coerce`
       - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
       - And `StatusCode` for `PartialVMError` as well
-      - (IMPORTANT) Check all helper functions correctly handled the control flows
-      - (IMPORTANT) Correctly handle all `?` and `return` occurrences
 *)
 
 (* DRAFT: template for adding trait parameters *)
@@ -634,8 +633,9 @@ fn borrow_global(
     Ok(())
 }
 *)
-Definition borrow_global (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(mut_ : bool) (idx : StructDefinitionIndex.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
+(* TOCHECK: `return` propagation *)
+Definition borrow_global (offset : CodeOffset.t) (mut_ : bool) (idx : StructDefinitionIndex.t) 
+  (type_args : Signature.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit). Admitted.
 
 (* 
 fn call(
