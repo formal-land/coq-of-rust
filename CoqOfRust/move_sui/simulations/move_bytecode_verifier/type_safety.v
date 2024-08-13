@@ -407,20 +407,19 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else returnS? $ Result.Ok tt in
-
+    let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
+    let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
+    let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
     (* 
-    let field_handle = verifier.module.field_handle_at(field_handle_index);
-    let struct_def = verifier.module.struct_def_at(field_handle.owner);
-    let expected_type = materialize_type(struct_def.struct_handle, type_args);
     match operand {
         ST::Reference(inner) | ST::MutableReference(inner) if expected_type == *inner => (),
         _ => return Err(verifier.error(StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR, offset)),
     }
     *)
-    let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-      .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
-    let struct_def := ompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-    .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
+    (* letS? _ := match operand with
+    | SignatureToken.Reference inner |  *)
 
 
 
