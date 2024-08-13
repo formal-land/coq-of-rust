@@ -49,14 +49,12 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - (PART 1)Push the progress on this file by:
     - [x] Implement `safe_unwrap_err!` macro
     - [x] Implement `mut` functions in this file
-    - [x] Implement `AbilitySet` in `file_format`
+    - [x] Implement `AWbilitySet` in `file_format`
     - [x] Implement `CompiledModule` in `file_format`
     - [x] Classyfy different cases for `verify_instr` to split the task
   - (PART 2) Implement cases for `verify_instr` by
     - [x] Format all cases nicely with comments
-    - [ ] Split the cases into collaborative tasks maybe
-    - [ ] Implement them one by one
-  - (IMPORTANT) write a `unpack` function for `?`s in Rust
+    - [ ] Do all the works
   - Misc issues:
     - Mutual dependency: deal with the temporary `coerce`
       - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
