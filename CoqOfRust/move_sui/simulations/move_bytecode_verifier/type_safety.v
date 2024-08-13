@@ -57,19 +57,26 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [x] Format all cases nicely with comments
     - [ ] Do all the works
   - Misc issues:
-    - Check `return` propagation for all functions
     - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
 *)
+
+(* DRAFT: template for adding trait parameters *)
+(* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
+
+(* **************** *)
 
 (* NOTE: Thoughts on mutual dependency issue:
 For A A', there should be a function to:
 - extract information/operations stored in A'
 - use these information/operations to construct back the item of type A
 *)
+Definition coerse_PVME (e : PVME.t) : PartialVMError.t :=
+  let '(PVME.new code) := e in
+  PartialVMError
+    .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+    .new code.
 
-(* DRAFT: template for adding trait parameters *)
-(* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
-
+(* NOTE: `safe_unwrap_err` and `|?-` should be outdated. To be fixed with the new monad *)
 (* NOTE:
 - `safe_unwrap_err` macro does the following:
   1. Return `Ok x` for `PartialVMResult` value of `Ok x`
@@ -101,12 +108,6 @@ Definition question_mark_unwrap {State A Error : Set} (value : Result.t A Error)
   | Result.Err _ => return!?toS? $ panic!? "|?- failure: Value is empty."
   end.
 Notation "|?- x" := (question_mark_unwrap x) (at level 140).
-
-Definition coerse_PVME (e : PVME.t) : PartialVMError.t :=
-  let '(PVME.new code) := e in
-  PartialVMError
-    .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-    .new code.
 
 (* **************** *)
 
@@ -1073,6 +1074,36 @@ Definition move_to (offset : CodeOffset.t) (struct_def : StructDefinition.t)
   end.
 
 (* 
+fn get_vector_element_type(
+    vector_ref_ty: SignatureToken,
+    mut_ref_only: bool,
+) -> Option<SignatureToken> {
+    use SignatureToken::*;
+    match vector_ref_ty {
+        Reference(referred_type) => {
+            if mut_ref_only {
+                None
+            } else if let ST::Vector(element_type) = *referred_type {
+                Some(*element_type) //*)
+            } else {
+                None
+            }
+        }
+        MutableReference(referred_type) => {
+            if let ST::Vector(element_type) = *referred_type {
+                Some(*element_type) //*)
+            } else {
+                None
+            }
+        }
+        _ => None,
+    }
+}
+*)
+Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
+  option SignatureToken.t. Admitted.
+
+(* 
 fn borrow_vector_element(
     verifier: &mut TypeSafetyChecker,
     meter: &mut (impl Meter + ?Sized),
@@ -1152,7 +1183,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* CHEDKED: `return` propagation *)
     | Bytecode.Pop => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1198,7 +1228,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
     }
     *)
-    (* CHEDKED: `return` propagation *)
     | Bytecode.StLoc idx => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -2405,32 +2434,3 @@ pub(crate) fn verify<'a>(
 Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
   : PartialVMResult.t unit. Admitted.
 
-(* 
-fn get_vector_element_type(
-    vector_ref_ty: SignatureToken,
-    mut_ref_only: bool,
-) -> Option<SignatureToken> {
-    use SignatureToken::*;
-    match vector_ref_ty {
-        Reference(referred_type) => {
-            if mut_ref_only {
-                None
-            } else if let ST::Vector(element_type) = *referred_type {
-                Some(*element_type) //*)
-            } else {
-                None
-            }
-        }
-        MutableReference(referred_type) => {
-            if let ST::Vector(element_type) = *referred_type {
-                Some(*element_type) //*)
-            } else {
-                None
-            }
-        }
-        _ => None,
-    }
-}
-*)
-Definition get_vector_element_type (vector_ref_ty : SignatureToken.t) (mut_ref_only : bool) :
-  option SignatureToken.t. Admitted.
