@@ -500,31 +500,6 @@ Module StructHandle.
 End StructHandle.
 
 (* 
-/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
-/// user-specified fields declared on the type.
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
-#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-pub struct StructDefinition {
-    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
-    /// for the type.
-    pub struct_handle: StructHandleIndex,
-    /// Contains either
-    /// - Information indicating the struct is native and has no accessible fields
-    /// - Information indicating the number of fields and the start `FieldDefinition`s
-    pub field_information: StructFieldInformation,
-}
-*)
-Module StructDefinition.
-  Record t : Set := { 
-    struct_handle: StructHandleIndex.t;
-    (* field_information: StructFieldInformation.t; *)
-  }.
-End StructDefinition.
-
-(* 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
 #[cfg_attr(any(test, feature = "fuzzing"), proptest(params = "usize"))]
@@ -869,6 +844,75 @@ Module SignatureToken.
 
   End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
 End SignatureToken.
+
+(* pub struct TypeSignature(pub SignatureToken); *)
+Module TypeSignature.
+  Record t : Set := { ao : SignatureToken.t; }.
+End TypeSignature.
+
+(* 
+/// A `FieldDefinition` is the definition of a field: its name and the field type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct FieldDefinition {
+    /// The name of the field.
+    pub name: IdentifierIndex,
+    /// The type of the field.
+    pub signature: TypeSignature,
+}
+*)
+Module FieldDefinition.
+  Record t : Set := {
+    name      : IdentifierIndex.t;
+    signature : TypeSignature.t;
+  }.
+End FieldDefinition.
+
+(* 
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub enum StructFieldInformation {
+    Native,
+    Declared(Vec<FieldDefinition>),
+}
+*)
+Module StructFieldInformation.
+  Inductive t : Set :=
+  | Native
+  | Declared : list FieldDefinition.t -> t
+  .
+End StructFieldInformation.
+
+(* 
+/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
+/// user-specified fields declared on the type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct StructDefinition {
+    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
+    /// for the type.
+    pub struct_handle: StructHandleIndex,
+    /// Contains either
+    /// - Information indicating the struct is native and has no accessible fields
+    /// - Information indicating the number of fields and the start `FieldDefinition`s
+    pub field_information: StructFieldInformation,
+}
+*)
+Module StructDefinition.
+  Record t : Set := { 
+    struct_handle: StructHandleIndex.t;
+    field_information: StructFieldInformation.t;
+  }.
+End StructDefinition.
 
 (* 
 pub struct Signature(
