@@ -59,7 +59,6 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - Misc issues:
     - Check `return` propagation for all functions
     - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
-    - Extract the `letS? '(verifier, _) := readS?` outside the match clause of `verify_instr`
 *)
 
 (* NOTE: Thoughts on mutual dependency issue:
@@ -950,6 +949,7 @@ fn exists(
     Ok(())
 }
 *)
+(* CHECKED: `return` propagation *)
 Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -1004,8 +1004,23 @@ fn move_from(
     Ok(())
 }
 *)
-Definition move_from (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
+(* CHECKED: `return` propagation *)
+Definition move_from (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
+  (type_args : Signature.t)
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+  letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  letS? operand := safe_unwrap_err operand in
+  if negb $ SignatureToken.t_beq operand SignatureToken.Address
+  then returnS? $ Result.Err $ 
+    TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.MOVEFROM_TYPE_MISMATCH_ERROR offset
+  else 
+    TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push $ SignatureToken.Reference struct_type.
 
 (* 
 fn move_to(
@@ -2078,7 +2093,12 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    | Bytecode.MoveFrom idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.MoveFrom idx => 
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) idx in
+      move_from offset struct_def $ Signature.Build_t []
 
     (* 
     Bytecode::MoveFromGenericDeprecated(idx) => {
