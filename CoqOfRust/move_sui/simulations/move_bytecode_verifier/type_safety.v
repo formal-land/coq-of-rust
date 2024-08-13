@@ -1520,7 +1520,30 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
   }
   *)
-  | Bytecode.Lt | Bytecode.Gt | Bytecode.Le | Bytecode.Ge => returnS? (Result.Ok tt)
+  | Bytecode.Lt | Bytecode.Gt | Bytecode.Le | Bytecode.Ge => 
+    letS? '(verifier, _) := readS? in
+    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand1 := safe_unwrap_err (Error2 := PartialVMError.t) operand1 in
+    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand2 := safe_unwrap_err (Error2 := PartialVMError.t) operand2 in
+    if andb 
+        (SignatureToken
+          .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand1)
+        (SignatureToken.t_beq operand1 operand2)
+    then 
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+    else 
+      returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
 
   (* 
   Bytecode::MutBorrowGlobalDeprecated(idx) => {
