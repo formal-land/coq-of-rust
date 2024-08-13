@@ -488,8 +488,7 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
     letS? operand := safe_unwrap_err operand in
 
-    (* TODO(PART 1): FIX THE OCCURENCE *)
-    letS? result := if andb mut_ (negb $ SignatureToken
+    letS? result_1 := if andb mut_ (negb $ SignatureToken
       .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
       .is_mutable_reference operand)
     then returnS? $ Result.Err $ 
@@ -498,56 +497,61 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else returnS? $ Result.Ok tt in
 
-    (* TODO(PART 2): CHECK THE BODY *)
-    let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-      .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
-    let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-      .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
-    let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+    match result_1 with
+    | Result.Err x => returnS? $ Result.Err x
+    | Result.Ok _ =>
+      let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
+      let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
+      let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
 
-    (* TODO(PART 3): CHECK THE BODY *)
-    let result_1 := match operand with
-    | SignatureToken.Reference _ =>
-      Result.Ok tt 
-    | SignatureToken.MutableReference inner =>
-      if SignatureToken.t_beq inner expected_type then Result.Ok tt
-      else Result.Err $ TypeSafetyChecker
+      let result_2 := match operand with
+      | SignatureToken.Reference _ =>
+        Result.Ok tt 
+      | SignatureToken.MutableReference inner =>
+        if SignatureToken.t_beq inner expected_type then Result.Ok tt
+        else Result.Err $ TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+      | _ => Result.Err $ TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
-    | _ => Result.Err $ TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
-    end in
+      end in
 
-    (* TODO(PART 4): check how should the `result_field_def propagate *)
-    let result_field_def := match struct_def.(StructDefinition.field_information) with
-    | StructFieldInformation.Native =>
-      (* TODO(PART 5): CHECK THE BODY *)
-      Result.Err $ TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
-    | StructFieldInformation.Declared fields =>
-      let field := Z.to_nat field_handle.(FieldHandle.field) in
-      Result.Ok $ List.nth field fields default_field_definition
-    end
-      in
+      match result_2 with
+      | Result.Err x => returnS? $ Result.Err x
+      | Result.Ok _ =>
 
-    (* TODO(PART 6): CHECK THE BODY *)
-    letS? field_def := safe_unwrap_err result_field_def in
-    let field_type := instantiate 
-      field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
+        let result_3 := match struct_def.(StructDefinition.field_information) with
+        | StructFieldInformation.Native =>
+          Result.Err $ TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
+        | StructFieldInformation.Declared fields =>
+          let field := Z.to_nat field_handle.(FieldHandle.field) in
+          Result.Ok $ List.nth field fields default_field_definition
+        end in
 
-    (* TODO(PART 7): CHECK THE BODY *)
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push (
-        if mut_ 
-        then SignatureToken.MutableReference field_type
-        else SignatureToken.Reference field_type
-      ) in
-    (* TODO(PART 8): Check if the result has been correctly propagated *)
-    letS? result := |?- result in
-    returnS? result.
+        match result_3 with
+        | Result.Err x_3 => returnS? $ Result.Err x_3
+        | Result.Ok field_def =>
+          let field_type := instantiate 
+            field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
+
+          letS? result_4 := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push (
+              if mut_ 
+              then SignatureToken.MutableReference field_type
+              else SignatureToken.Reference field_type
+            ) in
+          
+          returnS? result_4
+        end (* end match for result_3 *)
+      end (* end match for result_2 *)
+    end (* end match for result_1 *)
+    .
 
 (* 
 fn borrow_loc(
