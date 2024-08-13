@@ -491,24 +491,20 @@ Definition borrow_field (offset : CodeOffset.t)
       liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
     letS? operand := safe_unwrap_err operand in
 
-    letS? result_1 := if andb mut_ (negb $ SignatureToken
+    if andb mut_ (negb $ SignatureToken
       .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
       .is_mutable_reference operand)
     then returnS? $ Result.Err $ 
       TypeSafetyChecker
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
-    else returnS? $ Result.Ok tt in
-
-    match result_1 with
-    | Result.Err x => returnS? $ Result.Err x
-    | Result.Ok _ =>
+    else 
       let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
         .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
       let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
       let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-
+      (* NOTE: The following patterns on result are interesting... *)
       let result_2 := match operand with
       | SignatureToken.Reference _ =>
         Result.Ok tt 
@@ -521,11 +517,9 @@ Definition borrow_field (offset : CodeOffset.t)
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
       end in
-
       match result_2 with
       | Result.Err x => returnS? $ Result.Err x
       | _ =>
-
         let result_3 := match struct_def.(StructDefinition.field_information) with
         | StructFieldInformation.Native =>
           Result.Err $ TypeSafetyChecker
@@ -535,21 +529,17 @@ Definition borrow_field (offset : CodeOffset.t)
           let field := Z.to_nat field_handle.(FieldHandle.field) in
           Result.Ok $ List.nth field fields default_field_definition
         end in
-
         match result_3 with
-        | Result.Err x_3 => returnS? $ Result.Err x_3
+        | Result.Err x => returnS? $ Result.Err x
         | Result.Ok field_def =>
           let field_type := instantiate 
             field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
-
           TypeSafetyChecker
             .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
             .push $ if mut_ then SignatureToken.MutableReference field_type
               else SignatureToken.Reference field_type
         end (* end match for result_3 *)
-      end (* end match for result_2 *)
-    end. (* end match for result_1 *)
-
+      end (* end match for result_2 *).
 (* 
 fn borrow_loc(
     verifier: &mut TypeSafetyChecker,
@@ -2314,7 +2304,31 @@ Definition verify_instr (bytecode : Bytecode.t)
         };
     }
     *)
-    | Bytecode.VecLen idx => returnS? $ Result.Ok tt
+    | Bytecode.VecLen idx => 
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      let declared_element_type := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      match get_vector_element_type operand false with
+      | Some derived_element_type => 
+        if SignatureToken.t_beq derived_element_type declared_element_type
+        then TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U64
+        else returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.TYPE_MISMATCH offset
+      | _ => returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.TYPE_MISMATCH offset
+      end
 
     (* 
     Bytecode::VecImmBorrow(idx) => {
@@ -2322,7 +2336,14 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_vector_element(verifier, meter, declared_element_type, offset, false)?
     }
     *)
-    | Bytecode.VecImmBorrow idx => returnS? $ Result.Ok tt
+    | Bytecode.VecImmBorrow idx => 
+      let declared_element_type := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      borrow_vector_element declared_element_type offset false
 
     (* 
     Bytecode::VecMutBorrow(idx) => {
@@ -2330,7 +2351,14 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_vector_element(verifier, meter, declared_element_type, offset, true)?
     }
     *)
-    | Bytecode.VecMutBorrow idx => returnS? $ Result.Ok tt
+    | Bytecode.VecMutBorrow idx =>       
+      let declared_element_type := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      borrow_vector_element declared_element_type offset true
 
     (* 
     Bytecode::VecPushBack(idx) => {
@@ -2346,7 +2374,32 @@ Definition verify_instr (bytecode : Bytecode.t)
         };
     }
     *)
-    | Bytecode.VecPushBack idx => returnS? $ Result.Ok tt
+    | Bytecode.VecPushBack idx => 
+      letS? operand_elem := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_elem := safe_unwrap_err operand_elem in
+      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec := safe_unwrap_err operand_vec in
+      let declared_element_type := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      match get_vector_element_type operand_vec true with
+      | Some derived_element_type => 
+        if SignatureToken.t_beq derived_element_type declared_element_type
+        then returnS? $ Result.Ok tt
+        else returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.TYPE_MISMATCH offset
+      | _ => returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.TYPE_MISMATCH offset
+      end
 
     (*
     Bytecode::VecPopBack(idx) => {
@@ -2360,7 +2413,31 @@ Definition verify_instr (bytecode : Bytecode.t)
         };
     }
     *)
-    | Bytecode.VecPopBack idx => returnS? $ Result.Ok tt
+    | Bytecode.VecPopBack idx => 
+      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec := safe_unwrap_err operand_vec in
+      let declared_element_type := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      match get_vector_element_type operand_vec true with
+      | Some derived_element_type => 
+        if SignatureToken.t_beq derived_element_type declared_element_type
+        then TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push derived_element_type
+        else returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.TYPE_MISMATCH offset
+      | _ => returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.TYPE_MISMATCH offset
+      end
 
     (* 
     Bytecode::VecUnpack(idx, num) => {
@@ -2389,7 +2466,43 @@ Definition verify_instr (bytecode : Bytecode.t)
         };
     }
     *)
-    | Bytecode.VecSwap idx => returnS? $ Result.Ok tt
+    | Bytecode.VecSwap idx => 
+      letS? operand_idx2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_idx2 := safe_unwrap_err operand_idx2 in
+      letS? operand_idx1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_idx1 := safe_unwrap_err operand_idx1 in
+      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec := safe_unwrap_err operand_vec in
+      if andb 
+        (negb $ SignatureToken.t_beq operand_idx1 SignatureToken.U64)
+        (negb $ SignatureToken.t_beq operand_idx2 SignatureToken.U64)
+      then returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.TYPE_MISMATCH offset
+      else
+        let declared_element_type := CompiledModule
+          .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+          .signature_at verifier.(TypeSafetyChecker.module) idx in
+        let declared_element_type := 
+          List.nth 0 declared_element_type.(Signature.a0) 
+            SignatureToken.Bool (* We should never reach here *) in
+        match get_vector_element_type operand_vec true with
+        | Some derived_element_type => 
+          if SignatureToken.t_beq derived_element_type declared_element_type
+          then returnS? $ Result.Ok tt
+          else returnS? $ Result.Err $ 
+            TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.TYPE_MISMATCH offset
+        | _ => returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.TYPE_MISMATCH offset
+        end
 
     (* 
     Bytecode::CastU16 => {
