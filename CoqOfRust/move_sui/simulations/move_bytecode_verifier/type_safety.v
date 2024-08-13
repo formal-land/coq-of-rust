@@ -279,7 +279,7 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    Definition push (ty : SignatureToken.t) {A : Set} : 
+    Definition push (ty : SignatureToken.t) : 
       MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
       letS? result := liftS? lens_self_meter_meter $ charge_ty ty in
       match result with
@@ -693,6 +693,17 @@ Definition verify_instr_test (bytecode : Bytecode.t)
       This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. *)
+  (* 
+  Bytecode::CastU8 => {
+      let operand = safe_unwrap_err!(verifier.stack.pop());
+      if !operand.is_integer() {
+          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+      }
+      verifier.push(meter, ST::U8)?;
+  }
+  *) 
+
+
 
   (* DEBUG:
   Bytecode::LdU8(_) => {
@@ -739,10 +750,9 @@ Definition verify_instr (bytecode : Bytecode.t)
       letS? abilities := safe_unwrap_err (Error2 := PartialVMError.t) abilities in
       let abilities : AbilitySet.t := abilities in
       if negb (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
-      then returnS?
-        (Result.Err 
-          (TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset))
+      then returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset
       else 
         returnS? (Result.Ok tt)
 
@@ -1102,9 +1112,54 @@ Definition verify_instr (bytecode : Bytecode.t)
       verifier.push(meter, ST::U128)?;
   }
   *)
-  | Bytecode.CastU8 => returnS? (Result.Ok tt)
-  | Bytecode.CastU64 => returnS? (Result.Ok tt)
-  | Bytecode.CastU128 => returnS? (Result.Ok tt)
+  | Bytecode.CastU8 => 
+    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+      letS? '(verifier, _) := readS? in
+      letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+        .is_integer operand
+      then returnS? $ Result.Err $
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+      else returnS? $ Result.Ok tt in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U8 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+  | Bytecode.CastU64 => 
+  letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+    letS? '(verifier, _) := readS? in
+    letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+      .is_integer operand
+    then returnS? $ Result.Err $
+      TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+    else returnS? $ Result.Ok tt in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U64 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? $ Result.Ok result
+  | Bytecode.CastU128 => 
+  letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+    letS? '(verifier, _) := readS? in
+    letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+      .is_integer operand
+    then returnS? $ Result.Err $
+      TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+    else returnS? $ Result.Ok tt in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U128 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? $ Result.Ok result
 
   (* 
   Bytecode::Add
