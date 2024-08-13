@@ -482,7 +482,6 @@ fn borrow_field(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition borrow_field (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -580,7 +579,6 @@ fn borrow_loc(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
@@ -636,7 +634,6 @@ fn borrow_global(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition borrow_global (offset : CodeOffset.t) (mut_ : bool) (idx : StructDefinitionIndex.t) 
   (type_args : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -698,7 +695,6 @@ fn call(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t) 
   (type_actuals : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -776,7 +772,6 @@ fn type_fields_signature(
     }
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t Signature.t :=
   match struct_def.(StructDefinition.field_information) with
@@ -820,7 +815,6 @@ fn pack(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -883,7 +877,6 @@ fn unpack(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -949,7 +942,6 @@ fn exists(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -1004,7 +996,6 @@ fn move_from(
     Ok(())
 }
 *)
-(* CHECKED: `return` propagation *)
 Definition move_from (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -1160,7 +1151,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1200,7 +1190,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Abort => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1222,7 +1211,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Ret => 
       let return_ := verifier
         .(TypeSafetyChecker.function_context)
@@ -1248,7 +1236,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       fold return_
 
     (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Branch _ | Bytecode.Nop => returnS? $ Result.Ok tt
 
     (* 
@@ -1260,7 +1247,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.FreezeRef => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1285,7 +1271,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         &Signature(vec![]),
     )?,
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowField field_handle_index => 
       borrow_field offset true field_handle_index $ 
         Signature.Build_t []
@@ -1298,7 +1283,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowFieldGeneric field_inst_index => 
       let field_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1330,7 +1314,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         &Signature(vec![]),
     )?,
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.ImmBorrowField field_handle_index => 
       borrow_field offset false field_handle_index $
         Signature.Build_t []
@@ -1343,7 +1326,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.ImmBorrowFieldGeneric field_inst_index => 
       let field_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1387,27 +1369,21 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U256)?;
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU8 idx => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U8
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU16 idx => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U16
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU32 idx => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U32
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU64 idx => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U64
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU128 idx =>TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U128
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdU256 idx => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U256
@@ -1418,7 +1394,6 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, signature)?;
           }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdConst idx => 
         let constant := 
           CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1433,7 +1408,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::Bool)?;
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.LdTrue | Bytecode.LdFalse => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.Bool
@@ -1454,7 +1428,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, local_signature)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.CopyLoc idx => 
         let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .local_at verifier $ LocalIndex.Build_t idx in
@@ -1483,7 +1456,6 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, local_signature)?
           }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MoveLoc idx => 
       let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .local_at verifier $ LocalIndex.Build_t idx in
@@ -1496,7 +1468,6 @@ Definition verify_instr (bytecode : Bytecode.t)
 
     Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowLoc idx => 
         letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
         returnS? result
@@ -1510,7 +1481,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         call(verifier, meter, offset, function_handle, &Signature(vec![]))?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Call idx => 
       let function_handle := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1526,7 +1496,6 @@ Definition verify_instr (bytecode : Bytecode.t)
               call(verifier, meter, offset, func_handle, type_args)?
           }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.CallGeneric idx => 
       let func_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1560,7 +1529,6 @@ Definition verify_instr (bytecode : Bytecode.t)
               )?
         }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Pack idx => 
       let struct_definition := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1576,7 +1544,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         pack(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.PackGeneric idx => 
       let module := verifier.(TypeSafetyChecker.module) in
       let struct_inst := CompiledModule
@@ -1609,7 +1576,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         )?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Unpack idx => 
       let struct_definition := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1625,7 +1591,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         unpack(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.UnpackGeneric idx => 
       let struct_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -1664,7 +1629,6 @@ Definition verify_instr (bytecode : Bytecode.t)
     *)
     (* **************** *)
     (* TODO: Finish below *)
-    (* TODO: CHECK below for `return` propagation *)
     (* **************** *)
     | Bytecode.ReadRef => returnS? $ Result.Ok tt
 
@@ -1714,7 +1678,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U128)?;
     }
     *)
-    (* TOCHECK: `return` propagation *)
     | Bytecode.CastU8 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1724,13 +1687,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else 
-          letS? result := TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push SignatureToken.U8 in
-          letS? result := |?- result in
-          returnS? result
-    (* TOCHECK: `return` propagation *)
+        else TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U8
     | Bytecode.CastU64 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1740,13 +1699,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else
-          letS? result := TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push SignatureToken.U64 in
-          letS? result := |?- result in
-          returnS? result
-    (* TOCHECK: `return` propagation *)
+        else TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U64
     | Bytecode.CastU128 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1756,12 +1711,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         then returnS? $ Result.Err $
           TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-        else 
-          letS? result := TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push SignatureToken.U128 in
-          letS? result := |?- result in
-          returnS? result
+        else TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U128
 
     (* 
     Bytecode::Add
@@ -1794,12 +1746,9 @@ Definition verify_instr (bytecode : Bytecode.t)
             .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
             .is_integer operand1)
           (SignatureToken.t_beq operand1 operand2)
-      then
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push operand1 in
-        letS? result := |?- result in
-        returnS? result
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push operand1
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
@@ -1829,12 +1778,9 @@ Definition verify_instr (bytecode : Bytecode.t)
             .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
             .is_integer operand2)
           (SignatureToken.t_beq operand1 SignatureToken.U8)
-      then
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push operand2 in
-        letS? result := |?- result in
-        returnS? result
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push operand2
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
@@ -1859,20 +1805,16 @@ Definition verify_instr (bytecode : Bytecode.t)
       letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       letS? operand2 := safe_unwrap_err operand2 in
-      if andb
-          (SignatureToken.t_beq operand1 SignatureToken.Bool)
-          (SignatureToken.t_beq operand1 SignatureToken.Bool)
-      then
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.Bool in
-        letS? result := |?- result in
-        returnS? result
+      if andb (SignatureToken.t_beq operand1 SignatureToken.Bool)
+        (SignatureToken.t_beq operand1 SignatureToken.Bool)
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
 
     (* 
     Bytecode::Not => {
@@ -1889,17 +1831,14 @@ Definition verify_instr (bytecode : Bytecode.t)
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       letS? operand := safe_unwrap_err operand in
       if SignatureToken.t_beq operand SignatureToken.Bool
-      then
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.Bool in
-        letS? result := |?- result in
-        returnS? result
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
 
     (* 
     Bytecode::Eq | Bytecode::Neq => {
@@ -1928,12 +1867,9 @@ Definition verify_instr (bytecode : Bytecode.t)
             .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
             .has_drop abilities)
           (SignatureToken.t_beq operand1 operand2)
-      then 
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.Bool in
-        letS? result := |?- result in
-        returnS? result
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
@@ -1963,12 +1899,9 @@ Definition verify_instr (bytecode : Bytecode.t)
             .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
             .is_integer operand1)
           (SignatureToken.t_beq operand1 operand2)
-      then 
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.Bool in
-        letS? result := |?- result in
-        returnS? result
+      then TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool
       else 
         returnS? $ Result.Err $ 
           TypeSafetyChecker
@@ -1980,7 +1913,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowGlobal idx => borrow_global offset true idx $ Signature.Build_t []
 
     (* 
@@ -1991,7 +1923,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowGlobalGeneric idx => 
       let struct_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -2014,7 +1945,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.ImmBorrowGlobal idx => borrow_global offset false idx $ Signature.Build_t []
 
     (* 
@@ -2025,7 +1955,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.ImmBorrowGlobalGeneric idx => 
       let struct_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -2049,7 +1978,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.Exists idx => 
       let struct_def := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -2065,7 +1993,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         exists(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.ExistsGeneric idx => 
       let struct_inst := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -2093,7 +2020,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    (* CHECKED: `return` propagation *)
     | Bytecode.MoveFrom idx => 
       let struct_def := CompiledModule
         .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -2109,7 +2035,23 @@ Definition verify_instr (bytecode : Bytecode.t)
         move_from(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.MoveFromGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveFromGeneric idx => 
+    let struct_inst := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+    let struct_def := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .struct_def_at verifier.(TypeSafetyChecker.module) 
+        struct_inst.(StructDefInstantiation.def) in
+    let type_args := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .signature_at verifier.(TypeSafetyChecker.module) 
+        struct_inst.(StructDefInstantiation.type_parameters) in
+    letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+      TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .charge_tys type_args.(Signature.a0) in
+    move_from offset struct_def type_args
 
     (* 
     Bytecode::MoveToDeprecated(idx) => {
