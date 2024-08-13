@@ -102,6 +102,12 @@ Definition question_mark_unwrap {State A Error : Set} (value : Result.t A Error)
   end.
 Notation "|?- x" := (question_mark_unwrap x) (at level 140).
 
+Definition coerse_PVME (e : PVME.t) : PartialVMError.t :=
+  let '(PVME.new code) := e in
+  PartialVMError
+    .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+    .new code.
+
 (* **************** *)
 
 Module Locals.
@@ -191,20 +197,13 @@ Module TypeSafetyChecker.
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
       let result := 
         CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
-          self.(module)
-          t 
-          $ FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+          self.(module) t $ FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
             self.(function_context) in
       (* NOTE(MUTUAL DEPENDENCY ISSUE): Since we're just using a stub in the `file_format`, 
         here we convert the stub into actual PartialVMError... *)
       match result with
       | Result.Ok x => Result.Ok x
-      | Result.Err err => 
-        let '(PVME.new code) := err in
-        let err := PartialVMError
-          .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
-          .new code in
-        Result.Err err
+      | Result.Err err => Result.Err $ coerse_PVME err
       end.
 
     (* 
@@ -1097,7 +1096,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .abilities verifier.(TypeSafetyChecker.module) operand
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
         match abilities with
-        | Result.Err err => returnS? $ Result.Err err
+        | Result.Err err => returnS? $ Result.Err $ coerse_PVME err
         | Result.Ok abilities =>
           if negb (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
             .has_drop abilities)
@@ -1971,13 +1970,37 @@ Definition verify_instr (bytecode : Bytecode.t)
     Bytecode::MutBorrowGlobalDeprecated(idx) => {
         borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
     }
+    *)
+    (* CHECKED: `return` propagation *)
+    | Bytecode.MutBorrowGlobal idx => borrow_global offset true idx $ Signature.Build_t []
 
+    (* 
     Bytecode::MutBorrowGlobalGenericDeprecated(idx) => {
         let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
         let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
         verifier.charge_tys(meter, &type_inst.0)?;
         borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
     }
+    *)
+    | Bytecode.MutBorrowGlobalGeneric idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let type_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_inst.(Signature.a0) in
+      match result with
+      | Result.Err x => returnS? $ Result.Err x
+      | Result.Ok _ => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
+      end (* match `result` *)
+    
+    (* 
 
     Bytecode::ImmBorrowGlobalDeprecated(idx) => {
         borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
@@ -2030,8 +2053,6 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
-    | Bytecode.MutBorrowGlobal idx => returnS? $ Result.Ok tt
-    | Bytecode.MutBorrowGlobalGeneric idx => returnS? $ Result.Ok tt
     | Bytecode.ImmBorrowGlobal idx => returnS? $ Result.Ok tt
     | Bytecode.ImmBorrowGlobalGeneric idx => returnS? $ Result.Ok tt
     | Bytecode.Exists idx => returnS? $ Result.Ok tt
