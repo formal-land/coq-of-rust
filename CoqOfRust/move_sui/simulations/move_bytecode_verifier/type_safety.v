@@ -83,7 +83,7 @@ Definition safe_unwrap_err {State A Error : Set} (value : Result.t A Error)
   : MS? State string A :=
   match value with
   | Result.Ok x => returnS? x
-  | Result.Err _ => return!?toS? $ panic!? "safe_unwrap_err: Value is empty."
+  | Result.Err _ => return!?toS? $ panic!? "safe_unwrap_err failure: Value is empty."
   end.
 
 (* The equivalent of `?` operator in Rust. `|?-` is defined for this operation. *)
@@ -91,7 +91,7 @@ Definition question_mark_unwrap {State A Error : Set} (value : Result.t A Error)
   : MS? State string (Result.t A Error) :=
   match value with
   | Result.Ok x => returnS? $ Result.Ok x
-  | Result.Err _ => return!?toS? $ panic!? "question_mark_unwrap: Value is empty."
+  | Result.Err _ => return!?toS? $ panic!? "|?- failure: Value is empty."
   end.
 Notation "|?- x" := (question_mark_unwrap x) (at level 140).
 
