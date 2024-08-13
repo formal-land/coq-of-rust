@@ -20,6 +20,7 @@ Module StructDefinition := file_format.StructDefinition.
 Module Bytecode := file_format.Bytecode.
 Module StructHandleIndex := file_format.StructHandleIndex.
 Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
+Module Constant := file_format.Constant.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -424,9 +425,6 @@ Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
         else SignatureToken.Reference loc_signature
       ) in
     returnS? $ Result.Ok tt.
-  
-  
-  
 
 (* 
 fn borrow_global(
@@ -702,12 +700,6 @@ fn verify_instr(
     Ok(())
 }
 *)
-
-(* 
-NOTE: lenses to use:
-- TypeSafetyChecker -> Abstractstack
-*)
-
 Definition debug_verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
@@ -960,40 +952,40 @@ Definition verify_instr (bytecode : Bytecode.t)
       letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
       returnS? (Result.Ok result)
   | Bytecode.LdU16 idx => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U16 in
-    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result)
+      letS? '(verifier, _) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U16 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
   | Bytecode.LdU32 idx => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U32 in
-    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result)
+      letS? '(verifier, _) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U32 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
   | Bytecode.LdU64 idx => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U64 in
-    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result)
+      letS? '(verifier, _) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U64 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
   | Bytecode.LdU128 idx => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U128 in
-    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result)
+      letS? '(verifier, _) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U128 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
   | Bytecode.LdU256 idx => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U256 in
-    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result)
+      letS? '(verifier, _) := readS? in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U256 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
 
   (* 
   Bytecode::LdConst(idx) => {
@@ -1001,7 +993,17 @@ Definition verify_instr (bytecode : Bytecode.t)
             verifier.push(meter, signature)?;
         }
   *)
-  | Bytecode.LdConst idx => returnS? (Result.Ok tt)
+  | Bytecode.LdConst idx => 
+      letS? '(verifier, _) := readS? in
+      let constant := 
+        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .constant_at verifier.(TypeSafetyChecker.module) idx in
+      let type_ := constant.(Constant.type_) in
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push type_ in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
 
   (* 
   Bytecode::LdTrue | Bytecode::LdFalse => {
