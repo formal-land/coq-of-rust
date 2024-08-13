@@ -850,6 +850,7 @@ fn unpack(
     Ok(())
 }
 *)
+(* CHECKED: `return` propagation *)
 Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
 (type_args : Signature.t) 
 : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
@@ -885,7 +886,6 @@ Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
           ) in
         fold field_sig
         end (* match  field_sig` *).
-
 
 (* 
 fn exists(
@@ -1558,7 +1558,13 @@ Definition verify_instr (bytecode : Bytecode.t)
         )?
     }
     *)
-    | Bytecode.Unpack idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.Unpack idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_definition := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) idx in
+      unpack offset struct_definition $ Signature.Build_t []
 
     (* 
     Bytecode::UnpackGeneric(idx) => {
@@ -1569,7 +1575,27 @@ Definition verify_instr (bytecode : Bytecode.t)
         unpack(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.UnpackGeneric idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.UnpackGeneric idx => 
+      letS? '(verifier, _) := readS? in
+      let struct_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
+      let struct_def := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .struct_def_at verifier.(TypeSafetyChecker.module) struct_inst.(StructDefInstantiation.def) in
+      let type_args := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) 
+          struct_inst.(StructDefInstantiation.type_parameters) in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_args.(Signature.a0) in
+        match result with
+        | Result.Err x => returnS? $ Result.Err x
+        | Result.Ok _ => unpack offset struct_def type_args
+        end (* match `result` *)
 
     (* 
     Bytecode::ReadRef => {
