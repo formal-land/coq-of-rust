@@ -28,6 +28,7 @@ Module TypeParameterIndex := file_format.TypeParameterIndex.
 Module TypeSignature := file_format.TypeSignature.
 Module FieldInstantiation := file_format.FieldInstantiation.
 Module StructDefInstantiation := file_format.StructDefInstantiation.
+Module PVME := file_format.PartialVMError.
 
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Module FunctionContext := absint.FunctionContext.
@@ -64,16 +65,10 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - (IMPORTANT) Check `return` propagation for all functions
     - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
     - Extract the `letS? '(verifier, _) := readS?` outside the match clause of `verify_instr`
-    - Mutual dependency: deal with the temporary `coerce`
-      - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
-      - And `StatusCode` for `PartialVMError` as well
 *)
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
-
-(* NOTE: MUTUAL DEPENDENCY: temp brutal helper function. Should be removed in the future *)
-Axiom coerce : forall (a : file_format.PartialVMResult.t file_format.AbilitySet.t), PartialVMResult.t AbilitySet.t.
 
 (* NOTE:
 - `safe_unwrap_err` macro does the following:
@@ -194,17 +189,23 @@ Module TypeSafetyChecker.
         self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-      (* NOTE: There are 2 axioms involved in this function:
-        1. `coerce` in this file, and
-        2. `PartialVMError.new` in `file_format`
-        Since they're together we should be able to treat it nicely
-      *)
-        coerce $
-          CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
-            self.(module)
-            t 
-            $ FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
-              self.(function_context).
+      let result := 
+        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.abilities
+          self.(module)
+          t 
+          $ FunctionContext.Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.type_parameters
+            self.(function_context) in
+      (* NOTE(MUTUAL DEPENDENCY ISSUE): Since we're just using a stub in the `file_format`, 
+        here we convert the stub into actual PartialVMError... *)
+      match result with
+      | Result.Ok x => Result.Ok x
+      | Result.Err err => 
+        let '(PVME.new code) := err in
+        let err := PartialVMError
+          .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+          .new code in
+        Result.Err err
+      end.
 
     (* 
     fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
