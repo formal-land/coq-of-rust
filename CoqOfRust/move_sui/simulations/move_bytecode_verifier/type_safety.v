@@ -1698,10 +1698,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         .error verifier StatusCode.READREF_TYPE_MISMATCH_ERROR offset
       end
 
-      
-    (* **************** *)
-    (* TODO: Finish below *)
-    (* **************** *)
     (* 
     Bytecode::WriteRef => {
         let ref_operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1730,20 +1726,39 @@ Definition verify_instr (bytecode : Bytecode.t)
       letS? val_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
       letS? val_operand := safe_unwrap_err val_operand in
-      (* 
-        let ref_inner_signature = match ref_operand {
-            ST::MutableReference(inner) => *inner,
-            _ => {
-                return Err(
-                    verifier.error(StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR, offset)
-                )
-            }
-        };
-      *)
-    
-    
-    
-    returnS? $ Result.Ok tt
+      (* NOTE: This pattern for `ref_inner_signature` is quite different. Maybe 
+          useful in future `bind` constructions *)
+      letS? ref_inner_signature := match ref_operand with
+        | SignatureToken.MutableReference inner => returnS? $ Result.Ok inner
+        | _ => returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.WRITEREF_NO_MUTABLE_REFERENCE_ERROR offset
+        end in
+      match ref_inner_signature with
+      | Result.Err err => returnS? $ Result.Err err
+      | Result.Ok ref_inner_signature =>
+        let abilities := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .abilities verifier ref_inner_signature in
+        match abilities with
+        | Result.Err err => returnS? $ Result.Err err
+        | Result.Ok abilities =>
+          if AbilitySet
+              .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+              .has_drop abilities
+          then returnS? $ Result.Err $ 
+            TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.WRITEREF_WITHOUT_DROP_ABILITY offset
+          else if negb $ SignatureToken.t_beq val_operand ref_inner_signature
+          then returnS? $ Result.Err $ 
+            TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.WRITEREF_TYPE_MISMATCH_ERROR offset
+          else returnS? $ Result.Ok tt
+        end
+      end
 
     (* 
     Bytecode::CastU8 => {
@@ -2188,6 +2203,10 @@ Definition verify_instr (bytecode : Bytecode.t)
       | _ => move_to offset struct_def type_args
       end
 
+    
+    (* **************** *)
+    (* TODO: Finish below *)
+    (* **************** *)
     (* 
     Bytecode::VecPack(idx, num) => {
         let element_type = &verifier.module.signature_at(*idx).0[0]; //*)
