@@ -686,37 +686,15 @@ NOTE: lenses to use:
 - TypeSafetyChecker -> Abstractstack
 *)
 
-Definition verify_instr_test (bytecode : Bytecode.t) 
+Definition test_verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   match bytecode with
   (* NOTE: 
       This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. *)
-  (* 
-  Bytecode::CastU8 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U8)?;
-  }
-  *) 
 
 
-
-  (* DEBUG:
-  Bytecode::LdU8(_) => {
-      verifier.push(meter, ST::U8)?;
-  }
-  *)
-  (* | Bytecode.LdU8 idx => 
-    letS? '(verifier, meter) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.U8 in
-    letS? result := safe_unwrap_err (A := PartialVMResult.t unit) (Error2 := PartialVMError.t) result in
-    returnS? (Result.Ok result) *)
 
   | _ => returnS? (Result.Ok tt)
   end.
@@ -917,17 +895,48 @@ Definition verify_instr (bytecode : Bytecode.t)
       verifier.push(meter, ST::U256)?;
   }
   *)
-  | Bytecode.LdU8 idx => returnS? (Result.Ok tt)
-      (* letS? '(verifier, meter) := readS? in
+  | Bytecode.LdU8 idx => 
+      letS? '(verifier, _) := readS? in
       letS? result := TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push SignatureToken.U8 in
-      safe_unwrap_err (Error2 := PartialVMError.t) result  *)
-  | Bytecode.LdU16 idx => returnS? (Result.Ok tt)
-  | Bytecode.LdU32 idx => returnS? (Result.Ok tt)
-  | Bytecode.LdU64 idx => returnS? (Result.Ok tt)
-  | Bytecode.LdU128 idx => returnS? (Result.Ok tt)
-  | Bytecode.LdU256 idx => returnS? (Result.Ok tt)
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? (Result.Ok result)
+  | Bytecode.LdU16 idx => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U16 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
+  | Bytecode.LdU32 idx => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U32 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
+  | Bytecode.LdU64 idx => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U64 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
+  | Bytecode.LdU128 idx => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U128 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
+  | Bytecode.LdU256 idx => 
+    letS? '(verifier, _) := readS? in
+    letS? result := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push SignatureToken.U256 in
+    letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+    returnS? (Result.Ok result)
 
   (* 
   Bytecode::LdConst(idx) => {
