@@ -885,40 +885,40 @@ fn unpack(
 *)
 (* CHECKED: `return` propagation *)
 Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
-(type_args : Signature.t) 
-: MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
-  letS? '(verifier, meter) := readS? in
-  let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-  letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-  letS? arg := safe_unwrap_err arg in
-  if negb $ SignatureToken.t_beq arg struct_type
-    then returnS? $ Result.Err $
-      TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .error verifier (StatusCode.UNPACK_TYPE_MISMATCH_ERROR) offset
-    else 
-      let field_sig := type_fields_signature verifier offset struct_def type_args in
-      match field_sig with
-      | Result.Err err => returnS? $ Result.Err err
-      | Result.Ok field_sig =>
-        let field_sig := field_sig.(Signature.a0) in
-        let fold :=
-          (fix fold (l : list SignatureToken.t) 
-            : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
-            match l with
-            | [] => returnS? $ Result.Ok tt
-            | sig :: ls =>
-              letS? result := TypeSafetyChecker
-                .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-                .push sig in
-              match result with
-              | Result.Err x => returnS? $ Result.Err x
-              | Result.Ok _ => fold ls
+  (type_args : Signature.t) 
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    letS? '(verifier, meter) := readS? in
+    let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+    letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
+            liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? arg := safe_unwrap_err arg in
+    if negb $ SignatureToken.t_beq arg struct_type
+      then returnS? $ Result.Err $
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier (StatusCode.UNPACK_TYPE_MISMATCH_ERROR) offset
+      else 
+        let field_sig := type_fields_signature verifier offset struct_def type_args in
+        match field_sig with
+        | Result.Err err => returnS? $ Result.Err err
+        | Result.Ok field_sig =>
+          let field_sig := field_sig.(Signature.a0) in
+          let fold :=
+            (fix fold (l : list SignatureToken.t) 
+              : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+              match l with
+              | [] => returnS? $ Result.Ok tt
+              | sig :: ls =>
+                letS? result := TypeSafetyChecker
+                  .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+                  .push sig in
+                match result with
+                | Result.Err x => returnS? $ Result.Err x
+                | Result.Ok _ => fold ls
+                end
               end
-            end
-          ) in
-        fold field_sig
-        end (* match  field_sig` *).
+            ) in
+          fold field_sig
+          end (* match  field_sig` *).
 
 (* 
 fn exists(
@@ -949,8 +949,36 @@ fn exists(
     Ok(())
 }
 *)
-Definition _exists (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-(struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t unit. Admitted.
+Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
+  (type_args : Signature.t) 
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+  let abilities := TypeSafetyChecker
+    .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+    .abilities verifier struct_type in
+  match abilities with
+  | Result.Err err => returnS? $ Result.Err err
+  | Result.Ok abilities =>
+    if negb $ AbilitySet
+      .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+      .has_key abilities
+    then returnS? $ Result.Err $
+      TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier (StatusCode.EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT) offset
+    else
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      if negb $ SignatureToken.t_beq operand SignatureToken.Address
+      then returnS? $ Result.Err $
+        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier (StatusCode.EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT) offset
+      else
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.Bool
+  end (* match `abilities` *).
 
 (* 
 fn move_from(
