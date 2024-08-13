@@ -53,11 +53,9 @@ Module Scope := move_bytecode_verifier_meter.lib.Scope.
 Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
 (* TODO(progress):
-  - Implement cases for `verify_instr` by
-    - [x] Format all cases nicely with comments
-    - [ ] Do all the works
-  - Misc issues:
-    - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
+  - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
+  - Check `push` and `push_n` has got the correct value
+  - Check for sole `if` clauses, `Err`s has been *correctly* propagated to the end
 *)
 
 (* DRAFT: template for adding trait parameters *)
@@ -1190,12 +1188,12 @@ fn verify_instr(
 *)
 Definition debug_verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
   match bytecode with
   (* NOTE: This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. THIS FUNCTION SHOULD BE DELETED ONLY AFTER ALL FUNCTIONS ARE
       IMPLEMENTED IN THE NEW MONAD *)
-
 
 
   (* END OF DEBUG SECTION *)
@@ -2270,10 +2268,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       | _ => move_to offset struct_def type_args
       end
 
-    
-    (* **************** *)
-    (* TODO: Finish below *)
-    (* **************** *)
     (* 
     Bytecode::VecPack(idx, num) => {
         let element_type = &verifier.module.signature_at(*idx).0[0]; //*)
@@ -2290,7 +2284,38 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::Vector(Box::new(element_type.clone())))?;
     }
     *)
-    | Bytecode.VecPack idx num => returnS? $ Result.Ok tt
+    | Bytecode.VecPack idx num => 
+      let element_type := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .signature_at verifier.(TypeSafetyChecker.module) idx in
+
+      let element_type := 
+        List.nth 0 element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      letS? result := if num >? 0
+        then 
+          let num_to_pop := num in
+          letS? is_mismatched := liftS? TypeSafetyChecker.lens_self_meter_self (
+            liftS? TypeSafetyChecker.lens_self_stack $ 
+              AbstractStack.pop_eq_n num_to_pop) in
+          let is_mismatched := match is_mismatched with
+          | Result.Err _ => true
+          | Result.Ok x => SignatureToken.t_beq x element_type
+          end in
+          if is_mismatched
+          then returnS? $ Result.Err $
+            TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier (StatusCode.TYPE_MISMATCH) offset
+          else returnS? $ Result.Ok tt
+        else returnS? $ Result.Ok tt in
+      match result with
+      | Result.Err err => returnS? $ Result.Err err
+      | _ => 
+      let item := SignatureToken.Vector element_type in
+      TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push $ SignatureToken.Reference item
+      end
 
     (* 
     Bytecode::VecLen(idx) => {
@@ -2449,7 +2474,26 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push_n(meter, declared_element_type.clone(), *num)?;
     }
     *)
-    | Bytecode.VecUnpack idx num => returnS? $ Result.Ok tt
+    | Bytecode.VecUnpack idx num => 
+      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec := safe_unwrap_err operand_vec in
+      let declared_element_type := CompiledModule
+      .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+      .signature_at verifier.(TypeSafetyChecker.module) idx in
+      let declared_element_type := 
+        List.nth 0 declared_element_type.(Signature.a0) 
+          SignatureToken.Bool (* We should never reach here *) in
+      if negb $ SignatureToken.t_beq operand_vec $
+        SignatureToken.Vector declared_element_type
+      then returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.TYPE_MISMATCH offset
+      else 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push_n declared_element_type num
 
     (* 
     Bytecode::VecSwap(idx) => {
@@ -2593,5 +2637,16 @@ pub(crate) fn verify<'a>(
 }
 *)
 Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
-  : PartialVMResult.t unit. Admitted.
+  : PartialVMResult.t unit :=
+  (* DRAFT
+  let verifier := TypeSafetyChecker
+    .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+    .new module function_context in
+  let state := (verifier, meter) in
+
+  let fold :=
+  (
+    fix fold : MS? State string A :=
+  ) *)
+  Result.Ok tt.
 
