@@ -1383,29 +1383,29 @@ Definition verify_instr (bytecode : Bytecode.t)
   }
   *)
   | Bytecode.Shl | Bytecode.Shr => 
-      letS? '(verifier, _) := readS? in
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand1 := safe_unwrap_err (Error2 := PartialVMError.t) operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand2 := safe_unwrap_err (Error2 := PartialVMError.t) operand2 in
-      if andb
-          (SignatureToken
-            .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-            .is_integer operand1)
-          (SignatureToken.t_beq operand1 SignatureToken.U8)
-      then
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push operand2 in
-        letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
-        returnS? $ Result.Ok result
-      else 
-        returnS? $ Result.Err $ 
-          TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+    letS? '(verifier, _) := readS? in
+    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand1 := safe_unwrap_err (Error2 := PartialVMError.t) operand1 in
+    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand2 := safe_unwrap_err (Error2 := PartialVMError.t) operand2 in
+    if andb
+        (SignatureToken
+          .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand2)
+        (SignatureToken.t_beq operand1 SignatureToken.U8)
+    then
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push operand2 in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+    else 
+      returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
 
   (* 
   Bytecode::Or | Bytecode::And => {
@@ -1418,7 +1418,28 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
   }
   *)
-  | Bytecode.Or | Bytecode.And => returnS? (Result.Ok tt)
+  | Bytecode.Or | Bytecode.And =>
+    letS? '(verifier, _) := readS? in
+    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand1 := safe_unwrap_err (Error2 := PartialVMError.t) operand1 in
+    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand2 := safe_unwrap_err (Error2 := PartialVMError.t) operand2 in
+    if andb
+        (SignatureToken.t_beq operand1 SignatureToken.Bool)
+        (SignatureToken.t_beq operand1 SignatureToken.Bool)
+    then
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+    else 
+      returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
 
   (* 
   Bytecode::Not => {
@@ -1430,7 +1451,23 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
   }
   *)
-  | Bytecode.Not => returnS? (Result.Ok tt)
+  | Bytecode.Not => 
+    letS? '(verifier, _) := readS? in
+    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand := safe_unwrap_err (Error2 := PartialVMError.t) operand in
+    if SignatureToken.t_beq operand SignatureToken.Bool
+    then
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+    else 
+      returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
 
   (* 
   Bytecode::Eq | Bytecode::Neq => {
@@ -1443,7 +1480,34 @@ Definition verify_instr (bytecode : Bytecode.t)
       }
   }
   *)
-  | Bytecode.Eq | Bytecode.Neq => returnS? (Result.Ok tt)
+  | Bytecode.Eq | Bytecode.Neq => 
+    letS? '(verifier, _) := readS? in
+    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand1 := safe_unwrap_err (Error2 := PartialVMError.t) operand1 in
+    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand2 := safe_unwrap_err (Error2 := PartialVMError.t) operand2 in
+    let abilities := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .abilities verifier operand1 in
+    letS? abilities := safe_unwrap_err (Error2 := PartialVMError.t) abilities in
+    if andb 
+        (AbilitySet
+          .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+          .has_drop abilities)
+        (SignatureToken.t_beq operand1 operand2)
+    then 
+      letS? result := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.Bool in
+      letS? result := safe_unwrap_err (Error2 := PartialVMError.t) result in
+      returnS? $ Result.Ok result
+    else 
+      returnS? $ Result.Err $ 
+        TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .error verifier StatusCode.EQUALITY_OP_TYPE_MISMATCH_ERROR offset
 
   (* 
   Bytecode::Lt | Bytecode::Gt | Bytecode::Le | Bytecode::Ge => {
