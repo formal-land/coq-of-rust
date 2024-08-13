@@ -403,8 +403,30 @@ fn borrow_loc(
     Ok(())
 }
 *)
-Definition borrow_loc (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-  (mut_ : bool) (idx : LocalIndex.t) : PartialVMResult.t unit. Admitted.
+Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
+  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  letS? '(verifier, _) := readS? in
+  let loc_signature := TypeSafetyChecker
+    .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+    .local_at verifier idx in
+  if SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+    .is_reference loc_signature
+  then returnS? $ Result.Err $ 
+    TypeSafetyChecker
+    .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+    .error verifier StatusCode.BORROWLOC_REFERENCE_ERROR offset
+  else 
+    letS? _ := TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .push (
+        if mut_ 
+        then SignatureToken.MutableReference loc_signature
+        else SignatureToken.Reference loc_signature
+      ) in
+    returnS? $ Result.Ok tt.
+  
+  
+  
 
 (* 
 fn borrow_global(
