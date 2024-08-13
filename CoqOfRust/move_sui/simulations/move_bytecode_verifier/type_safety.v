@@ -61,6 +61,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
     - [ ] Do all the works
   - Misc issues:
     - (IMPORTANT) Check `return` propagation for all functions
+    - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
     - Mutual dependency: deal with the temporary `coerce`
       - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
       - And `StatusCode` for `PartialVMError` as well
@@ -897,29 +898,10 @@ Definition debug_verify_instr (bytecode : Bytecode.t)
       This is a function that is intended to test the cases for `verify_instr`
       for better debugging experience. When you need to debug a case just
       fill it here. *)
-  (*
-  Bytecode::Ret => {
-      let return_ = &verifier.function_context.return_().0;
-      for return_type in return_.iter().rev() {
-          let operand = safe_unwrap_err!(verifier.stack.pop());
-          if &operand != return_type {
-              return Err(verifier.error(StatusCode::RET_TYPE_MISMATCH_ERROR, offset));
-          }
-      }
-  }
-  *)
-  | Bytecode.Ret => 
-      letS? '(verifier, _) := readS? in
-      let return_ := verifier
-        .(TypeSafetyChecker.function_context)
-        .(FunctionContext.return_).(Signature.a0) in
-      let return_ := List.rev return_ in
-      (* TODO: fold on a monad *)
-  
-  
-  returnS? $ Result.Ok tt
 
 
+
+  (* END OF DEBUG SECTION *)
   | _ => returnS? $ Result.Ok tt
   end.
 
@@ -1032,10 +1014,30 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
-    (* **************** *)
-    (* TODO: Finish below *)
-    (* **************** *)
-    | Bytecode.Ret => returnS? $ Result.Ok tt
+    | Bytecode.Ret => 
+      letS? '(verifier, _) := readS? in
+      let return_ := verifier
+        .(TypeSafetyChecker.function_context)
+        .(FunctionContext.return_).(Signature.a0) in
+      let return_ := List.rev return_ in
+      let fold :=
+      (fix fold (l : list SignatureToken.t) 
+        : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+        match l with
+        | [] => returnS? $ Result.Ok tt
+        | return_type ::ls =>
+          letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+            liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+          letS? operand := safe_unwrap_err operand in
+          if negb $ SignatureToken.t_beq operand return_type
+          then returnS? $ Result.Err $
+            TypeSafetyChecker
+              .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .error verifier StatusCode.RET_TYPE_MISMATCH_ERROR offset
+          else fold ls 
+        end
+      ) in
+      fold return_
 
     (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
     (* CHECKED: `return` propagation *)
@@ -1339,6 +1341,9 @@ Definition verify_instr (bytecode : Bytecode.t)
         call(verifier, meter, offset, function_handle, &Signature(vec![]))?
     }
     *)
+    (* **************** *)
+    (* TODO: Finish below *)
+    (* **************** *)
     | Bytecode.Call idx => returnS? $ Result.Ok tt
 
     (* 
