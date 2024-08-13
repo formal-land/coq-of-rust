@@ -579,6 +579,7 @@ fn borrow_loc(
     Ok(())
 }
 *)
+(* CHECKED: `return` propagation *)
 Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
   : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
@@ -592,15 +593,14 @@ Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
     .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
     .error verifier StatusCode.BORROWLOC_REFERENCE_ERROR offset
   else 
-    letS? _ := TypeSafetyChecker
+    letS? result := TypeSafetyChecker
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .push (
         if mut_ 
         then SignatureToken.MutableReference loc_signature
         else SignatureToken.Reference loc_signature
       ) in
-    returnS? $ Result.Ok tt.
-
+    returnS? result.
 (* 
 fn borrow_global(
     verifier: &mut TypeSafetyChecker,
@@ -686,10 +686,18 @@ fn type_fields_signature(
     }
 }
 *)
+(* TOCHECK: `return` propagation *)
 Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
-  (struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t Signature.t. 
-  (* TODO: Implement `StructFieldInformation` *)
-  Admitted.
+  (struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t Signature.t :=
+  match struct_def.(StructDefinition.field_information) with
+  | StructFieldInformation.Native => Result.Err $ 
+    TypeSafetyChecker
+      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+      .error verifier StatusCode.PACK_TYPE_MISMATCH_ERROR offset
+  | StructFieldInformation.Declared fields =>
+    (* TODO: Implement a loop *)
+    Result.Ok $ Signature.Build_t [SignatureToken.Bool] (* stub *)
+  end.
 
 (* 
 fn pack(
@@ -920,6 +928,9 @@ Definition verify_instr (bytecode : Bytecode.t)
   MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
   letS? _ :=
     match bytecode with
+    (* **************** *)
+    (* TODO: CHECK below for `return` propagation *)
+    (* **************** *)
     (* 
     Bytecode::Pop => {
         let operand = safe_unwrap_err!(verifier.stack.pop());
@@ -1117,7 +1128,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       borrow_field offset false field_handle_index $
         Signature.Build_t []
 
-
     (*
     Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
         let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
@@ -1126,7 +1136,25 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
     }
     *)
-    | Bytecode.ImmBorrowFieldGeneric idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.ImmBorrowFieldGeneric field_inst_index => 
+      letS? '(verifier, _) := readS? in
+      let field_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .field_instantiation_at verifier.(TypeSafetyChecker.module) field_inst_index in
+      let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
+      let type_inst := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .signature_at verifier.(TypeSafetyChecker.module) type_parameters in
+      letS? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
+        TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .charge_tys type_inst.(Signature.a0) in
+      match result with
+      | Result.Err x => returnS? $ result
+      | Result.Ok _ => borrow_field offset false 
+        field_inst.(FieldInstantiation.handle) type_inst
+      end (* match `result` *)
 
     (* 
     Bytecode::LdU8(_) => {
@@ -1153,6 +1181,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U256)?;
     }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU8 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1160,6 +1189,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U8 in
         letS? result := |?- result in
         returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU16 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1167,6 +1197,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U16 in
         letS? result := |?- result in
         returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU32 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1174,6 +1205,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U32 in
         letS? result := |?- result in
         returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU64 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1181,6 +1213,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U64 in
         letS? result := |?- result in
         returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU128 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1188,6 +1221,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .push SignatureToken.U128 in
         letS? result := |?- result in
         returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdU256 idx => 
         letS? '(verifier, _) := readS? in
         letS? result := TypeSafetyChecker
@@ -1202,6 +1236,7 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, signature)?;
           }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdConst idx => 
         letS? '(verifier, _) := readS? in
         let constant := 
@@ -1219,6 +1254,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::Bool)?;
     }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.LdTrue | Bytecode.LdFalse => 
       letS? '(verifier, _) := readS? in
       letS? result := TypeSafetyChecker
@@ -1243,6 +1279,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, local_signature)?
     }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.CopyLoc idx => 
         letS? '(verifier, _) := readS? in
         let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
@@ -1272,6 +1309,7 @@ Definition verify_instr (bytecode : Bytecode.t)
               verifier.push(meter, local_signature)?
           }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.MoveLoc idx => 
       letS? '(verifier, _) := readS? in
       let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
@@ -1287,13 +1325,12 @@ Definition verify_instr (bytecode : Bytecode.t)
 
     Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
     *)
+    (* CHECKED: `return` propagation *)
     | Bytecode.MutBorrowLoc idx => 
         letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
-        letS? result := |?- result in
         returnS? result
     | Bytecode.ImmBorrowLoc idx => 
         letS? result := borrow_loc offset false $ LocalIndex.Build_t idx in
-        letS? result := |?- result in
         returnS? result
 
     (* 
@@ -1429,6 +1466,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         verifier.push(meter, ST::U128)?;
     }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.CastU8 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1445,6 +1483,7 @@ Definition verify_instr (bytecode : Bytecode.t)
             .push SignatureToken.U8 in
           letS? result := |?- result in
           returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.CastU64 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1461,6 +1500,7 @@ Definition verify_instr (bytecode : Bytecode.t)
             .push SignatureToken.U64 in
           letS? result := |?- result in
           returnS? result
+    (* TOCHECK: `return` propagation *)
     | Bytecode.CastU128 => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
