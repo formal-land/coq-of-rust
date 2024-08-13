@@ -687,7 +687,7 @@ fn type_fields_signature(
     }
 }
 *)
-(* TOCHECK: `return` propagation *)
+(* CHECKED: `return` propagation *)
 Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
   (struct_def : StructDefinition.t) (type_args : Signature.t) : PartialVMResult.t Signature.t :=
   match struct_def.(StructDefinition.field_information) with
@@ -696,8 +696,18 @@ Definition type_fields_signature (verifier : TypeSafetyChecker.t) (offset : Code
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
       .error verifier StatusCode.PACK_TYPE_MISMATCH_ERROR offset
   | StructFieldInformation.Declared fields =>
-    (* TODO: Implement a loop *)
-    Result.Ok $ Signature.Build_t [SignatureToken.Bool] (* stub *)
+    let fold :=
+    (fix fold (l : list FieldDefinition.t) (field_sig : list SignatureToken.t) 
+      : list SignatureToken.t :=
+      match l with
+      | [] => field_sig
+      | field_def :: xs =>
+        let signature := field_def.(FieldDefinition.signature).(TypeSignature.a0) in
+        let item := instantiate signature type_args in
+        fold xs (List.app field_sig [item]) 
+      end
+    ) in
+    Result.Ok $ Signature.Build_t $ fold fields []
   end.
 
 (* 
