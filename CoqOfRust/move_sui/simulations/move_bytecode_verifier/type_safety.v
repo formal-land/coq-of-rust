@@ -541,15 +541,10 @@ Definition borrow_field (offset : CodeOffset.t)
           let field_type := instantiate 
             field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
 
-          letS? result_4 := TypeSafetyChecker
+          TypeSafetyChecker
             .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push (
-              if mut_ 
-              then SignatureToken.MutableReference field_type
+            .push $ if mut_ then SignatureToken.MutableReference field_type
               else SignatureToken.Reference field_type
-            ) in
-          
-          returnS? result_4
         end (* end match for result_3 *)
       end (* end match for result_2 *)
     end. (* end match for result_1 *)
@@ -591,15 +586,10 @@ Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
     TypeSafetyChecker
     .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
     .error verifier StatusCode.BORROWLOC_REFERENCE_ERROR offset
-  else 
-    letS? result := TypeSafetyChecker
+  else TypeSafetyChecker
       .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push (
-        if mut_ 
-        then SignatureToken.MutableReference loc_signature
-        else SignatureToken.Reference loc_signature
-      ) in
-    returnS? result.
+      .push $ if mut_ then SignatureToken.MutableReference loc_signature 
+        else SignatureToken.Reference loc_signature.
 
 (* 
 fn borrow_global(
@@ -845,11 +835,9 @@ Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
     letS? result := fold field_sig in
     match result with
     | Result.Err x => returnS? $ Result.Err x
-    | _ => 
-      letS? result_1 := TypeSafetyChecker
+    | _ => TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push struct_type in
-      returnS? result_1
+        .push struct_type
     end (* match `result_1` *)
   end. (* match `result` *)
 
@@ -1509,12 +1497,8 @@ Definition verify_instr (bytecode : Bytecode.t)
 
     Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
     *)
-    | Bytecode.MutBorrowLoc idx => 
-        letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
-        returnS? result
-    | Bytecode.ImmBorrowLoc idx => 
-        letS? result := borrow_loc offset false $ LocalIndex.Build_t idx in
-        returnS? result
+    | Bytecode.MutBorrowLoc idx => borrow_loc offset true $ LocalIndex.Build_t idx
+    | Bytecode.ImmBorrowLoc idx => borrow_loc offset false $ LocalIndex.Build_t idx
 
     (* 
     Bytecode::Call(idx) => {
@@ -1978,7 +1962,7 @@ Definition verify_instr (bytecode : Bytecode.t)
           .charge_tys type_inst.(Signature.a0) in
       match result with
       | Result.Err x => returnS? $ Result.Err x
-      |  => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
+      | _ => borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
       end 
 
     (* 
@@ -2281,12 +2265,9 @@ Definition verify_instr (bytecode : Bytecode.t)
           TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else 
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U16 in
-        letS? result := |?- result in
-        returnS? result
+      else TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U16
     | Bytecode.CastU32 => 
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -2299,12 +2280,9 @@ Definition verify_instr (bytecode : Bytecode.t)
           TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else 
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U32 in
-        letS? result := |?- result in
-        returnS? result
+      else TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U32
     | Bytecode.CastU256 => 
       letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -2317,12 +2295,9 @@ Definition verify_instr (bytecode : Bytecode.t)
           TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else 
-        letS? result := TypeSafetyChecker
-          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push SignatureToken.U64 in
-        letS? result := |?- result in
-        returnS? result
+      else TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .push SignatureToken.U64
     end.
 
 (* 
