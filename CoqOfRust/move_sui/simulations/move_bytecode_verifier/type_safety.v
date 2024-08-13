@@ -63,6 +63,7 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
   - Misc issues:
     - (IMPORTANT) Check `return` propagation for all functions
     - (IMPORTANT) In the future, check `safe_unwrap_err` propagation
+    - Extract the `letS? '(verifier, _) := readS?` outside the match clause of `verify_instr`
     - Mutual dependency: deal with the temporary `coerce`
       - Carefully check all parts where we referenced the `PartialVMError` in `file_format`
       - And `StatusCode` for `PartialVMError` as well
@@ -1019,6 +1020,7 @@ Definition verify_instr (bytecode : Bytecode.t)
         }
     }
     *)
+    (* TOCHECK: `return` propagation *)
     | Bytecode.Pop => 
         letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
           liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1436,10 +1438,13 @@ Definition verify_instr (bytecode : Bytecode.t)
         call(verifier, meter, offset, function_handle, &Signature(vec![]))?
     }
     *)
-    (* **************** *)
-    (* TODO: Finish below *)
-    (* **************** *)
-    | Bytecode.Call idx => returnS? $ Result.Ok tt
+    (* CHECKED: `return` propagation *)
+    | Bytecode.Call idx => 
+      letS? '(verifier, _) := readS? in
+      let function_handle := CompiledModule
+        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+        .function_handle_at verifier.(TypeSafetyChecker.module) idx in
+      call offset function_handle $ Signature.Build_t []
 
     (* 
     Bytecode::CallGeneric(idx) => {
@@ -1450,6 +1455,9 @@ Definition verify_instr (bytecode : Bytecode.t)
               call(verifier, meter, offset, func_handle, type_args)?
           }
     *)
+    (* **************** *)
+    (* TODO: Finish below *)
+    (* **************** *)
     | Bytecode.CallGeneric idx => returnS? $ Result.Ok tt
 
     (* 
