@@ -61,6 +61,13 @@ Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
       - And `StatusCode` for `PartialVMError` as well
 *)
 
+(* TODO:(IMPORTANT) Check for occurences like the following:
+    letS? _ := returnS? $ Result.Err err in
+    returnS? $ Result.Ok tt
+
+  FIX WHEN WE NEED TO RETURN AN ERROR
+*)
+
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
@@ -403,8 +410,11 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
     letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
       liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
     letS? operand := safe_unwrap_err operand in
-    (* TODO: Ask to the team if this style is applicable *)
-    letS? _ := if andb mut_ (negb $ SignatureToken
+
+
+
+    (* TODO: FIX THIE OCCURENCE *)
+    letS? result := if andb mut_ (negb $ SignatureToken
       .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
       .is_mutable_reference operand)
     then returnS? $ Result.Err $ 
@@ -413,6 +423,9 @@ Definition borrow_field (verifier : TypeSafetyChecker.t) (offset : CodeOffset.t)
       .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else returnS? $ Result.Ok tt in
     (* NOTE: End of suspicious code section *)
+
+
+
     let field_handle := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
       .field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
     let struct_def := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
@@ -789,568 +802,605 @@ Definition debug_verify_instr (bytecode : Bytecode.t)
       (* TODO: fold on a monad *)
   
   
-  returnS? (Result.Ok tt)
+  returnS? $ Result.Ok tt
 
 
-  | _ => returnS? (Result.Ok tt)
+  | _ => returnS? $ Result.Ok tt
   end.
 
 Definition verify_instr (bytecode : Bytecode.t) 
   (offset : CodeOffset.t) : 
   MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
-  match bytecode with
-  (* 
-  Bytecode::Pop => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      let abilities = verifier
-          .module
-          .abilities(&operand, verifier.function_context.type_parameters());
-      if !abilities?.has_drop() {
-          return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
-      }
-  }
-  *)
-  | Bytecode.Pop => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      letS? '(verifier, _) := readS? in
-      let abilities := 
-        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-        .abilities
-          verifier.(TypeSafetyChecker.module)
-          operand
-          verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
-      letS? abilities := safe_unwrap_err abilities in
-      let abilities : AbilitySet.t := abilities in
-      if negb (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
-      then returnS? $ Result.Err $
-            TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset
-      else 
-        returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if operand != ST::Bool {
-          return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
-      letS? '(verifier, _) := readS? in
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      if negb $ SignatureToken.t_beq operand SignatureToken.Bool
-      then returnS? (Result.Err (
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
-      else returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::StLoc(idx) => {
-    let operand = safe_unwrap_err!(verifier.stack.pop());
-    if &operand != verifier.local_at(*idx) { //*)
-        return Err(verifier.error(StatusCode::STLOC_TYPE_MISMATCH_ERROR, offset));
-    }
-  }
-  *)
-  | Bytecode.StLoc idx => 
-      letS? '(verifier, _) := readS? in
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .local_at verifier (LocalIndex.Build_t idx)
-      then returnS? (Result.Err (
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
-      else returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::Abort => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if operand != ST::U64 {
-          return Err(verifier.error(StatusCode::ABORT_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Abort => 
-      letS? '(verifier, _) := readS? in
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      if negb $ SignatureToken.t_beq operand SignatureToken.U64
-      then returnS? $ Result.Err $
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.ABORT_TYPE_MISMATCH_ERROR offset
-      else returnS? $ Result.Ok tt
-
-  (*
-  Bytecode::Ret => {
-      let return_ = &verifier.function_context.return_().0;
-      for return_type in return_.iter().rev() {
-          let operand = safe_unwrap_err!(verifier.stack.pop());
-          if &operand != return_type {
-              return Err(verifier.error(StatusCode::RET_TYPE_MISMATCH_ERROR, offset));
-          }
-      }
-  }
-  *)
-  (* **************** *)
-  (* TODO: Finish below *)
-  (* **************** *)
-  | Bytecode.Ret => returnS? (Result.Ok tt)
-
-  (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
-  | Bytecode.Branch _ | Bytecode.Nop => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::FreezeRef => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      match operand {
-          ST::MutableReference(inner) => verifier.push(meter, ST::Reference(inner))?,
-          _ => return Err(verifier.error(StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR, offset)),
-      }
-  }
-  *)
-  | Bytecode.FreezeRef => 
-      letS? '(verifier, _) := readS? in
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      match operand with
-      | SignatureToken.MutableReference inner =>
-          letS? result := TypeSafetyChecker
-            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-            .push $ SignatureToken.Reference inner in
-          letS? result := |?- result in
-          returnS? result
-      | _ => returnS? $ Result.Err $ 
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .error verifier StatusCode.FREEZEREF_TYPE_MISMATCH_ERROR offset
-      end
-
-  (*
-  Bytecode::MutBorrowField(field_handle_index) => borrow_field(
-      verifier,
-      meter,
-      offset,
-      true,
-      *field_handle_index,
-      &Signature(vec![]),
-  )?,
-  *)
-  (* TODO: implement `borrow_field` *)
-  | Bytecode.MutBorrowField idx => returnS? (Result.Ok tt)
-
-  (*
-  Bytecode::MutBorrowFieldGeneric(field_inst_index) => {
-      let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
-      let type_inst = verifier.module.signature_at(field_inst.type_parameters);
-      verifier.charge_tys(meter, &type_inst.0)?;
-      borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
-  }
-  *)
-  (* TODO: implement `borrow_field` *)
-  | Bytecode.MutBorrowFieldGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
-      verifier,
-      meter,
-      offset,
-      false,
-      *field_handle_index,
-      &Signature(vec![]),
-  )?,
-  *)
-  (* TODO: implement `borrow_field` *)
-  | Bytecode.ImmBorrowField idx => returnS? (Result.Ok tt)
-
-  (*
-  Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
-      let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
-      let type_inst = verifier.module.signature_at(field_inst.type_parameters);
-      verifier.charge_tys(meter, &type_inst.0)?;
-      borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
-  }
-  *)
-  | Bytecode.ImmBorrowFieldGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::LdU8(_) => {
-      verifier.push(meter, ST::U8)?;
-  }
-  
-  Bytecode::LdU16(_) => {
-      verifier.push(meter, ST::U16)?;
-  }
-
-  Bytecode::LdU32(_) => {
-      verifier.push(meter, ST::U32)?;
-  }
-  
-  Bytecode::LdU64(_) => {
-      verifier.push(meter, ST::U64)?;
-  }
-  
-  Bytecode::LdU128(_) => {
-      verifier.push(meter, ST::U128)?;
-  }
-
-  Bytecode::LdU256(_) => {
-      verifier.push(meter, ST::U256)?;
-  }
-  *)
-  | Bytecode.LdU8 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U8 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.LdU16 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U16 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.LdU32 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U32 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.LdU64 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U64 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.LdU128 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U128 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.LdU256 idx => 
-      letS? '(verifier, _) := readS? in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U256 in
-      letS? result := |?- result in
-      returnS? result
-
-  (* 
-  Bytecode::LdConst(idx) => {
-            let signature = verifier.module.constant_at(*idx).type_.clone(); //*)
-            verifier.push(meter, signature)?;
+  letS? _ :=
+    match bytecode with
+    (* 
+    Bytecode::Pop => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        let abilities = verifier
+            .module
+            .abilities(&operand, verifier.function_context.type_parameters());
+        if !abilities?.has_drop() {
+            return Err(verifier.error(StatusCode::POP_WITHOUT_DROP_ABILITY, offset));
         }
-  *)
-  | Bytecode.LdConst idx => 
+    }
+    *)
+    | Bytecode.Pop => 
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        letS? '(verifier, _) := readS? in
+        let abilities := 
+          CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+          .abilities
+            verifier.(TypeSafetyChecker.module)
+            operand
+            verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
+        letS? abilities := safe_unwrap_err abilities in
+        let abilities : AbilitySet.t := abilities in
+        if negb (AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.has_drop abilities)
+        then returnS? $ Result.Err $
+              TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .error verifier (StatusCode.POP_WITHOUT_DROP_ABILITY) offset
+        else 
+          returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::BrTrue(_) | Bytecode::BrFalse(_) => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if operand != ST::Bool {
+            return Err(verifier.error(StatusCode::BR_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
+        letS? '(verifier, _) := readS? in
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        if negb $ SignatureToken.t_beq operand SignatureToken.Bool
+        then returnS? (Result.Err (
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+        else returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::StLoc(idx) => {
+      let operand = safe_unwrap_err!(verifier.stack.pop());
+      if &operand != verifier.local_at(*idx) { //*)
+          return Err(verifier.error(StatusCode::STLOC_TYPE_MISMATCH_ERROR, offset));
+      }
+    }
+    *)
+    | Bytecode.StLoc idx => 
+        letS? '(verifier, _) := readS? in
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .local_at verifier (LocalIndex.Build_t idx)
+        then returnS? (Result.Err (
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset))
+        else returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::Abort => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if operand != ST::U64 {
+            return Err(verifier.error(StatusCode::ABORT_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.Abort => 
+        letS? '(verifier, _) := readS? in
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        if negb $ SignatureToken.t_beq operand SignatureToken.U64
+        then returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.ABORT_TYPE_MISMATCH_ERROR offset
+        else returnS? $ Result.Ok tt
+
+    (*
+    Bytecode::Ret => {
+        let return_ = &verifier.function_context.return_().0;
+        for return_type in return_.iter().rev() {
+            let operand = safe_unwrap_err!(verifier.stack.pop());
+            if &operand != return_type {
+                return Err(verifier.error(StatusCode::RET_TYPE_MISMATCH_ERROR, offset));
+            }
+        }
+    }
+    *)
+    (* **************** *)
+    (* TODO: Finish below *)
+    (* **************** *)
+    | Bytecode.Ret => returnS? $ Result.Ok tt
+
+    (* Bytecode::Branch(_) | Bytecode::Nop => (), *)
+    | Bytecode.Branch _ | Bytecode.Nop => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::FreezeRef => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        match operand {
+            ST::MutableReference(inner) => verifier.push(meter, ST::Reference(inner))?,
+            _ => return Err(verifier.error(StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR, offset)),
+        }
+    }
+    *)
+    | Bytecode.FreezeRef => 
+        letS? '(verifier, _) := readS? in
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        match operand with
+        | SignatureToken.MutableReference inner =>
+            letS? result := TypeSafetyChecker
+              .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+              .push $ SignatureToken.Reference inner in
+            letS? result := |?- result in
+            returnS? result
+        | _ => returnS? $ Result.Err $ 
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.FREEZEREF_TYPE_MISMATCH_ERROR offset
+        end
+
+    (*
+    Bytecode::MutBorrowField(field_handle_index) => borrow_field(
+        verifier,
+        meter,
+        offset,
+        true,
+        *field_handle_index,
+        &Signature(vec![]),
+    )?,
+    *)
+    (* TODO: implement `borrow_field` *)
+    | Bytecode.MutBorrowField idx => returnS? $ Result.Ok tt
+
+    (*
+    Bytecode::MutBorrowFieldGeneric(field_inst_index) => {
+        let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
+        let type_inst = verifier.module.signature_at(field_inst.type_parameters);
+        verifier.charge_tys(meter, &type_inst.0)?;
+        borrow_field(verifier, meter, offset, true, field_inst.handle, type_inst)?
+    }
+    *)
+    (* TODO: implement `borrow_field` *)
+    | Bytecode.MutBorrowFieldGeneric idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
+        verifier,
+        meter,
+        offset,
+        false,
+        *field_handle_index,
+        &Signature(vec![]),
+    )?,
+    *)
+    (* TODO: implement `borrow_field` *)
+    | Bytecode.ImmBorrowField idx => returnS? $ Result.Ok tt
+
+    (*
+    Bytecode::ImmBorrowFieldGeneric(field_inst_index) => {
+        let field_inst = verifier.module.field_instantiation_at(*field_inst_index); //*)
+        let type_inst = verifier.module.signature_at(field_inst.type_parameters);
+        verifier.charge_tys(meter, &type_inst.0)?;
+        borrow_field(verifier, meter, offset, false, field_inst.handle, type_inst)?
+    }
+    *)
+    | Bytecode.ImmBorrowFieldGeneric idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::LdU8(_) => {
+        verifier.push(meter, ST::U8)?;
+    }
+    
+    Bytecode::LdU16(_) => {
+        verifier.push(meter, ST::U16)?;
+    }
+
+    Bytecode::LdU32(_) => {
+        verifier.push(meter, ST::U32)?;
+    }
+    
+    Bytecode::LdU64(_) => {
+        verifier.push(meter, ST::U64)?;
+    }
+    
+    Bytecode::LdU128(_) => {
+        verifier.push(meter, ST::U128)?;
+    }
+
+    Bytecode::LdU256(_) => {
+        verifier.push(meter, ST::U256)?;
+    }
+    *)
+    | Bytecode.LdU8 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U8 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.LdU16 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U16 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.LdU32 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U32 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.LdU64 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U64 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.LdU128 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U128 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.LdU256 idx => 
+        letS? '(verifier, _) := readS? in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U256 in
+        letS? result := |?- result in
+        returnS? result
+
+    (* 
+    Bytecode::LdConst(idx) => {
+              let signature = verifier.module.constant_at(*idx).type_.clone(); //*)
+              verifier.push(meter, signature)?;
+          }
+    *)
+    | Bytecode.LdConst idx => 
+        letS? '(verifier, _) := readS? in
+        let constant := 
+          CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+          .constant_at verifier.(TypeSafetyChecker.module) idx in
+        let type_ := constant.(Constant.type_) in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push type_ in
+        letS? result := |?- result in
+        returnS? result
+
+    (* 
+    Bytecode::LdTrue | Bytecode::LdFalse => {
+        verifier.push(meter, ST::Bool)?;
+    }
+    *)
+    | Bytecode.LdTrue | Bytecode.LdFalse => 
       letS? '(verifier, _) := readS? in
-      let constant := 
-        CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-        .constant_at verifier.(TypeSafetyChecker.module) idx in
-      let type_ := constant.(Constant.type_) in
       letS? result := TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push type_ in
+        .push SignatureToken.Bool in
       letS? result := |?- result in
       returnS? result
 
-  (* 
-  Bytecode::LdTrue | Bytecode::LdFalse => {
-      verifier.push(meter, ST::Bool)?;
-  }
-  *)
-  | Bytecode.LdTrue | Bytecode.LdFalse => 
-    letS? '(verifier, _) := readS? in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push SignatureToken.Bool in
-    letS? result := |?- result in
-    returnS? result
+    (* 
+    Bytecode::CopyLoc(idx) => {
+        let local_signature = verifier.local_at(*idx).clone(); //*)
+        if !verifier
+            .module
+            .abilities(
+                &local_signature,
+                verifier.function_context.type_parameters(),
+            )?
+            .has_copy()
+        {
+            return Err(verifier.error(StatusCode::COPYLOC_WITHOUT_COPY_ABILITY, offset));
+        }
+        verifier.push(meter, local_signature)?
+    }
+    *)
+    | Bytecode.CopyLoc idx => 
+        letS? '(verifier, _) := readS? in
+        let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .local_at verifier $ LocalIndex.Build_t idx in
+        let abilities := CompiledModule
+          .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
+          .abilities verifier.(TypeSafetyChecker.module) local_signature 
+            verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
+        letS? abilities := safe_unwrap_err abilities in
+        letS? _ := if negb $ AbilitySet
+          .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+          .has_copy abilities
+        then returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
+        else returnS? $ Result.Ok tt in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push local_signature in
+        letS? result := |?- result in
+        returnS? result
 
-  (* 
-  Bytecode::CopyLoc(idx) => {
-      let local_signature = verifier.local_at(*idx).clone(); //*)
-      if !verifier
-          .module
-          .abilities(
-              &local_signature,
-              verifier.function_context.type_parameters(),
-          )?
-          .has_copy()
-      {
-          return Err(verifier.error(StatusCode::COPYLOC_WITHOUT_COPY_ABILITY, offset));
-      }
-      verifier.push(meter, local_signature)?
-  }
-  *)
-  | Bytecode.CopyLoc idx => 
+    (* 
+    Bytecode::MoveLoc(idx) => {
+              let local_signature = verifier.local_at(*idx).clone(); //*)
+              verifier.push(meter, local_signature)?
+          }
+    *)
+    | Bytecode.MoveLoc idx => 
       letS? '(verifier, _) := readS? in
       let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .local_at verifier $ LocalIndex.Build_t idx in
-      let abilities := CompiledModule
-        .Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule
-        .abilities verifier.(TypeSafetyChecker.module) local_signature 
-          verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
-      letS? abilities := safe_unwrap_err abilities in
-      letS? _ := if negb $ AbilitySet
-        .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-        .has_copy abilities
-      then returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.COPYLOC_WITHOUT_COPY_ABILITY offset
-      else returnS? $ Result.Ok tt in
       letS? result := TypeSafetyChecker
         .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
         .push local_signature in
       letS? result := |?- result in
       returnS? result
 
-  (* 
-  Bytecode::MoveLoc(idx) => {
-            let local_signature = verifier.local_at(*idx).clone(); //*)
-            verifier.push(meter, local_signature)?
-        }
-  *)
-  | Bytecode.MoveLoc idx => 
-    letS? '(verifier, _) := readS? in
-    let local_signature := TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .local_at verifier $ LocalIndex.Build_t idx in
-    letS? result := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .push local_signature in
-    letS? result := |?- result in
-    returnS? result
+    (* 
+    Bytecode::MutBorrowLoc(idx) => borrow_loc(verifier, meter, offset, true, *idx)?,
 
-  (* 
-  Bytecode::MutBorrowLoc(idx) => borrow_loc(verifier, meter, offset, true, *idx)?,
+    Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
+    *)
+    | Bytecode.MutBorrowLoc idx => 
+        letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.ImmBorrowLoc idx => 
+        letS? result := borrow_loc offset false $ LocalIndex.Build_t idx in
+        letS? result := |?- result in
+        returnS? result
 
-  Bytecode::ImmBorrowLoc(idx) => borrow_loc(verifier, meter, offset, false, *idx)?,
-  *)
-  | Bytecode.MutBorrowLoc idx => 
-      letS? result := borrow_loc offset true $ LocalIndex.Build_t idx in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.ImmBorrowLoc idx => 
-      letS? result := borrow_loc offset false $ LocalIndex.Build_t idx in
-      letS? result := |?- result in
-      returnS? result
+    (* 
+    Bytecode::Call(idx) => {
+        let function_handle = verifier.module.function_handle_at(*idx); //*)
+        call(verifier, meter, offset, function_handle, &Signature(vec![]))?
+    }
+    *)
+    | Bytecode.Call idx => returnS? $ Result.Ok tt
 
-  (* 
-  Bytecode::Call(idx) => {
-      let function_handle = verifier.module.function_handle_at(*idx); //*)
-      call(verifier, meter, offset, function_handle, &Signature(vec![]))?
-  }
-  *)
-  | Bytecode.Call idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::CallGeneric(idx) => {
-            let func_inst = verifier.module.function_instantiation_at(*idx); //*)
-            let func_handle = verifier.module.function_handle_at(func_inst.handle);
-            let type_args = &verifier.module.signature_at(func_inst.type_parameters);
-            verifier.charge_tys(meter, &type_args.0)?;
-            call(verifier, meter, offset, func_handle, type_args)?
-        }
-  *)
-  | Bytecode.CallGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::Pack(idx) => {
-            let struct_definition = verifier.module.struct_def_at(*idx); //*) 
-            pack(
-                verifier,
-                meter,
-                offset,
-                struct_definition,
-                &Signature(vec![]),
-            )?
-      }
-  *)
-  | Bytecode.Pack idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::PackGeneric(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let struct_def = verifier.module.struct_def_at(struct_inst.def);
-      let type_args = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_args.0)?;
-      pack(verifier, meter, offset, struct_def, type_args)?
-  }
-  *)
-  | Bytecode.PackGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::Unpack(idx) => {
-      let struct_definition = verifier.module.struct_def_at(*idx); //*)
-      unpack(
-          verifier,
-          meter,
-          offset,
-          struct_definition,
-          &Signature(vec![]),
-      )?
-  }
-  *)
-  | Bytecode.Unpack idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::UnpackGeneric(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let struct_def = verifier.module.struct_def_at(struct_inst.def);
-      let type_args = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_args.0)?;
-      unpack(verifier, meter, offset, struct_def, type_args)?
-  }
-  *)
-  | Bytecode.UnpackGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::ReadRef => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      match operand {
-          ST::Reference(inner) | ST::MutableReference(inner) => {
-              if !verifier.abilities(&inner)?.has_copy() {
-                  return Err(
-                      verifier.error(StatusCode::READREF_WITHOUT_COPY_ABILITY, offset)
-                  );
-              }
-              verifier.push(meter, *inner)?;
+    (* 
+    Bytecode::CallGeneric(idx) => {
+              let func_inst = verifier.module.function_instantiation_at(*idx); //*)
+              let func_handle = verifier.module.function_handle_at(func_inst.handle);
+              let type_args = &verifier.module.signature_at(func_inst.type_parameters);
+              verifier.charge_tys(meter, &type_args.0)?;
+              call(verifier, meter, offset, func_handle, type_args)?
           }
-          _ => return Err(verifier.error(StatusCode::READREF_TYPE_MISMATCH_ERROR, offset)),
-      }
-  }
-  *)
-  | Bytecode.ReadRef => returnS? (Result.Ok tt)
+    *)
+    | Bytecode.CallGeneric idx => returnS? $ Result.Ok tt
 
-  (* 
-  Bytecode::WriteRef => {
-      let ref_operand = safe_unwrap_err!(verifier.stack.pop());
-      let val_operand = safe_unwrap_err!(verifier.stack.pop());
-      let ref_inner_signature = match ref_operand {
-          ST::MutableReference(inner) => *inner,
-          _ => {
-              return Err(
-                  verifier.error(StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR, offset)
-              )
+    (* 
+    Bytecode::Pack(idx) => {
+              let struct_definition = verifier.module.struct_def_at(*idx); //*) 
+              pack(
+                  verifier,
+                  meter,
+                  offset,
+                  struct_definition,
+                  &Signature(vec![]),
+              )?
+        }
+    *)
+    | Bytecode.Pack idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::PackGeneric(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let struct_def = verifier.module.struct_def_at(struct_inst.def);
+        let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_args.0)?;
+        pack(verifier, meter, offset, struct_def, type_args)?
+    }
+    *)
+    | Bytecode.PackGeneric idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::Unpack(idx) => {
+        let struct_definition = verifier.module.struct_def_at(*idx); //*)
+        unpack(
+            verifier,
+            meter,
+            offset,
+            struct_definition,
+            &Signature(vec![]),
+        )?
+    }
+    *)
+    | Bytecode.Unpack idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::UnpackGeneric(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let struct_def = verifier.module.struct_def_at(struct_inst.def);
+        let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_args.0)?;
+        unpack(verifier, meter, offset, struct_def, type_args)?
+    }
+    *)
+    | Bytecode.UnpackGeneric idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::ReadRef => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        match operand {
+            ST::Reference(inner) | ST::MutableReference(inner) => {
+                if !verifier.abilities(&inner)?.has_copy() {
+                    return Err(
+                        verifier.error(StatusCode::READREF_WITHOUT_COPY_ABILITY, offset)
+                    );
+                }
+                verifier.push(meter, *inner)?;
+            }
+            _ => return Err(verifier.error(StatusCode::READREF_TYPE_MISMATCH_ERROR, offset)),
+        }
+    }
+    *)
+    | Bytecode.ReadRef => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::WriteRef => {
+        let ref_operand = safe_unwrap_err!(verifier.stack.pop());
+        let val_operand = safe_unwrap_err!(verifier.stack.pop());
+        let ref_inner_signature = match ref_operand {
+            ST::MutableReference(inner) => *inner,
+            _ => {
+                return Err(
+                    verifier.error(StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR, offset)
+                )
+            }
+        };
+        if !verifier.abilities(&ref_inner_signature)?.has_drop() {
+            return Err(verifier.error(StatusCode::WRITEREF_WITHOUT_DROP_ABILITY, offset));
+        }
+
+        if val_operand != ref_inner_signature {
+            return Err(verifier.error(StatusCode::WRITEREF_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.WriteRef => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::CastU8 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U8)?;
+    }
+    Bytecode::CastU64 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U64)?;
+    }
+    Bytecode::CastU128 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U128)?;
+    }
+    *)
+    | Bytecode.CastU8 => 
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        letS? '(verifier, _) := readS? in
+        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand
+        then returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+        else returnS? $ Result.Ok tt in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U8 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.CastU64 => 
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        letS? '(verifier, _) := readS? in
+        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand
+        then returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+        else returnS? $ Result.Ok tt in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U64 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.CastU128 => 
+        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand := safe_unwrap_err operand in
+        letS? '(verifier, _) := readS? in
+        letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand
+        then returnS? $ Result.Err $
+          TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+        else returnS? $ Result.Ok tt in
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U128 in
+        letS? result := |?- result in
+        returnS? result
+
+    (* 
+    Bytecode::Add
+      | Bytecode::Sub
+      | Bytecode::Mul
+      | Bytecode::Mod
+      | Bytecode::Div
+      | Bytecode::BitOr
+      | Bytecode::BitAnd
+      | Bytecode::Xor => {
+          let operand1 = safe_unwrap_err!(verifier.stack.pop());
+          let operand2 = safe_unwrap_err!(verifier.stack.pop());
+          if operand1.is_integer() && operand1 == operand2 {
+              verifier.push(meter, operand1)?;
+          } else {
+              return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
           }
-      };
-      if !verifier.abilities(&ref_inner_signature)?.has_drop() {
-          return Err(verifier.error(StatusCode::WRITEREF_WITHOUT_DROP_ABILITY, offset));
       }
+    *)
+    | Bytecode.Add | Bytecode.Sub | Bytecode.Mul | Bytecode.Mod 
+    | Bytecode.Div | Bytecode.BitOr | Bytecode.BitAnd | Bytecode.Xor => 
+        letS? '(verifier, _) := readS? in
+        letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand1 := safe_unwrap_err operand1 in
+        letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand2 := safe_unwrap_err operand2 in
+        if andb
+            (SignatureToken
+              .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+              .is_integer operand1)
+            (SignatureToken.t_beq operand1 operand2)
+        then
+          letS? result := TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .push operand1 in
+          letS? result := |?- result in
+          returnS? result
+        else 
+          returnS? $ Result.Err $ 
+            TypeSafetyChecker
+            .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+            .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
 
-      if val_operand != ref_inner_signature {
-          return Err(verifier.error(StatusCode::WRITEREF_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.WriteRef => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::CastU8 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U8)?;
-  }
-  Bytecode::CastU64 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U64)?;
-  }
-  Bytecode::CastU128 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U128)?;
-  }
-  *)
-  | Bytecode.CastU8 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      letS? '(verifier, _) := readS? in
-      letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-      then returnS? $ Result.Err $
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else returnS? $ Result.Ok tt in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U8 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.CastU64 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      letS? '(verifier, _) := readS? in
-      letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-      then returnS? $ Result.Err $
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else returnS? $ Result.Ok tt in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U64 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.CastU128 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-      letS? operand := safe_unwrap_err operand in
-      letS? '(verifier, _) := readS? in
-      letS? _ := if negb $ SignatureToken.Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-      then returnS? $ Result.Err $
-        TypeSafetyChecker.Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else returnS? $ Result.Ok tt in
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U128 in
-      letS? result := |?- result in
-      returnS? result
-
-  (* 
-  Bytecode::Add
-    | Bytecode::Sub
-    | Bytecode::Mul
-    | Bytecode::Mod
-    | Bytecode::Div
-    | Bytecode::BitOr
-    | Bytecode::BitAnd
-    | Bytecode::Xor => {
+    (* 
+    Bytecode::Shl | Bytecode::Shr => {
         let operand1 = safe_unwrap_err!(verifier.stack.pop());
         let operand2 = safe_unwrap_err!(verifier.stack.pop());
-        if operand1.is_integer() && operand1 == operand2 {
-            verifier.push(meter, operand1)?;
+        if operand2.is_integer() && operand1 == ST::U8 {
+            verifier.push(meter, operand2)?;
         } else {
             return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
         }
     }
-  *)
-  | Bytecode.Add | Bytecode.Sub | Bytecode.Mul | Bytecode.Mod 
-  | Bytecode.Div | Bytecode.BitOr | Bytecode.BitAnd | Bytecode.Xor => 
+    *)
+    | Bytecode.Shl | Bytecode.Shr => 
       letS? '(verifier, _) := readS? in
       letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
         liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1361,12 +1411,12 @@ Definition verify_instr (bytecode : Bytecode.t)
       if andb
           (SignatureToken
             .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-            .is_integer operand1)
-          (SignatureToken.t_beq operand1 operand2)
+            .is_integer operand2)
+          (SignatureToken.t_beq operand1 SignatureToken.U8)
       then
         letS? result := TypeSafetyChecker
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-          .push operand1 in
+          .push operand2 in
         letS? result := |?- result in
         returnS? result
       else 
@@ -1375,443 +1425,406 @@ Definition verify_instr (bytecode : Bytecode.t)
           .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
 
-  (* 
-  Bytecode::Shl | Bytecode::Shr => {
-      let operand1 = safe_unwrap_err!(verifier.stack.pop());
-      let operand2 = safe_unwrap_err!(verifier.stack.pop());
-      if operand2.is_integer() && operand1 == ST::U8 {
-          verifier.push(meter, operand2)?;
-      } else {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Shl | Bytecode.Shr => 
-    letS? '(verifier, _) := readS? in
-    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand1 := safe_unwrap_err operand1 in
-    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand2 := safe_unwrap_err operand2 in
-    if andb
-        (SignatureToken
+    (* 
+    Bytecode::Or | Bytecode::And => {
+        let operand1 = safe_unwrap_err!(verifier.stack.pop());
+        let operand2 = safe_unwrap_err!(verifier.stack.pop());
+        if operand1 == ST::Bool && operand2 == ST::Bool {
+            verifier.push(meter, ST::Bool)?;
+        } else {
+            return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.Or | Bytecode.And =>
+      letS? '(verifier, _) := readS? in
+      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 := safe_unwrap_err operand1 in
+      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 := safe_unwrap_err operand2 in
+      if andb
+          (SignatureToken.t_beq operand1 SignatureToken.Bool)
+          (SignatureToken.t_beq operand1 SignatureToken.Bool)
+      then
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.Bool in
+        letS? result := |?- result in
+        returnS? result
+      else 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
+
+    (* 
+    Bytecode::Not => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if operand == ST::Bool {
+            verifier.push(meter, ST::Bool)?;
+        } else {
+            return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.Not => 
+      letS? '(verifier, _) := readS? in
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      if SignatureToken.t_beq operand SignatureToken.Bool
+      then
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.Bool in
+        letS? result := |?- result in
+        returnS? result
+      else 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
+
+    (* 
+    Bytecode::Eq | Bytecode::Neq => {
+        let operand1 = safe_unwrap_err!(verifier.stack.pop());
+        let operand2 = safe_unwrap_err!(verifier.stack.pop());
+        if verifier.abilities(&operand1)?.has_drop() && operand1 == operand2 {
+            verifier.push(meter, ST::Bool)?;
+        } else {
+            return Err(verifier.error(StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.Eq | Bytecode.Neq => 
+      letS? '(verifier, _) := readS? in
+      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 := safe_unwrap_err operand1 in
+      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 := safe_unwrap_err operand2 in
+      let abilities := TypeSafetyChecker
+        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+        .abilities verifier operand1 in
+      letS? abilities := safe_unwrap_err abilities in
+      if andb 
+          (AbilitySet
+            .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
+            .has_drop abilities)
+          (SignatureToken.t_beq operand1 operand2)
+      then 
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.Bool in
+        letS? result := |?- result in
+        returnS? result
+      else 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.EQUALITY_OP_TYPE_MISMATCH_ERROR offset
+
+    (* 
+    Bytecode::Lt | Bytecode::Gt | Bytecode::Le | Bytecode::Ge => {
+        let operand1 = safe_unwrap_err!(verifier.stack.pop());
+        let operand2 = safe_unwrap_err!(verifier.stack.pop());
+        if operand1.is_integer() && operand1 == operand2 {
+            verifier.push(meter, ST::Bool)?
+        } else {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+    }
+    *)
+    | Bytecode.Lt | Bytecode.Gt | Bytecode.Le | Bytecode.Ge => 
+      letS? '(verifier, _) := readS? in
+      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 := safe_unwrap_err operand1 in
+      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 := safe_unwrap_err operand2 in
+      if andb 
+          (SignatureToken
+            .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+            .is_integer operand1)
+          (SignatureToken.t_beq operand1 operand2)
+      then 
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.Bool in
+        letS? result := |?- result in
+        returnS? result
+      else 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+
+    (* 
+    Bytecode::MutBorrowGlobalDeprecated(idx) => {
+        borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
+    }
+
+    Bytecode::MutBorrowGlobalGenericDeprecated(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_inst.0)?;
+        borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
+    }
+
+    Bytecode::ImmBorrowGlobalDeprecated(idx) => {
+        borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
+    }
+
+    Bytecode::ImmBorrowGlobalGenericDeprecated(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_inst.0)?;
+        borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
+    }
+
+    Bytecode::ExistsDeprecated(idx) => {
+        let struct_def = verifier.module.struct_def_at(*idx); //*)
+        exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
+    }
+
+    Bytecode::ExistsGenericDeprecated(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let struct_def = verifier.module.struct_def_at(struct_inst.def);
+        let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_args.0)?;
+        exists(verifier, meter, offset, struct_def, type_args)?
+    }
+
+    Bytecode::MoveFromDeprecated(idx) => {
+        let struct_def = verifier.module.struct_def_at(*idx); //*)
+        move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
+    }
+
+    Bytecode::MoveFromGenericDeprecated(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let struct_def = verifier.module.struct_def_at(struct_inst.def);
+        let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_args.0)?;
+        move_from(verifier, meter, offset, struct_def, type_args)?
+    }
+
+    Bytecode::MoveToDeprecated(idx) => {
+        let struct_def = verifier.module.struct_def_at(*idx); //*)
+        move_to(verifier, offset, struct_def, &Signature(vec![]))?
+    }
+
+    Bytecode::MoveToGenericDeprecated(idx) => {
+        let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
+        let struct_def = verifier.module.struct_def_at(struct_inst.def);
+        let type_args = verifier.module.signature_at(struct_inst.type_parameters);
+        verifier.charge_tys(meter, &type_args.0)?;
+        move_to(verifier, offset, struct_def, type_args)?
+    }
+    *)
+    (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
+    | Bytecode.MutBorrowGlobal idx => returnS? $ Result.Ok tt
+    | Bytecode.MutBorrowGlobalGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.ImmBorrowGlobal idx => returnS? $ Result.Ok tt
+    | Bytecode.ImmBorrowGlobalGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.Exists idx => returnS? $ Result.Ok tt
+    | Bytecode.ExistsGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveFrom idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveFromGeneric idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveTo idx => returnS? $ Result.Ok tt
+    | Bytecode.MoveToGeneric idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecPack(idx, num) => {
+        let element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        if let Some(num_to_pop) = NonZeroU64::new(*num) { //*)
+            let is_mismatched = verifier
+                .stack
+                .pop_eq_n(num_to_pop)
+                .map(|t| element_type != &t)
+                .unwrap_or(true);
+            if is_mismatched {
+                return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+            }
+        }
+        verifier.push(meter, ST::Vector(Box::new(element_type.clone())))?;
+    }
+    *)
+    | Bytecode.VecPack idx num => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecLen(idx) => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        match get_vector_element_type(operand, false) { 
+            Some(derived_element_type) if &derived_element_type == declared_element_type => {
+                verifier.push(meter, ST::U64)?;
+            }
+            _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+        };
+    }
+    *)
+    | Bytecode.VecLen idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecImmBorrow(idx) => {
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        borrow_vector_element(verifier, meter, declared_element_type, offset, false)?
+    }
+    *)
+    | Bytecode.VecImmBorrow idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecMutBorrow(idx) => {
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        borrow_vector_element(verifier, meter, declared_element_type, offset, true)?
+    }
+    *)
+    | Bytecode.VecMutBorrow idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecPushBack(idx) => {
+        let operand_elem = safe_unwrap_err!(verifier.stack.pop());
+        let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        if declared_element_type != &operand_elem {
+            return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+        }
+        match get_vector_element_type(operand_vec, true) {
+            Some(derived_element_type) if &derived_element_type == declared_element_type => {}
+            _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+        };
+    }
+    *)
+    | Bytecode.VecPushBack idx => returnS? $ Result.Ok tt
+
+    (*
+    Bytecode::VecPopBack(idx) => {
+        let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        match get_vector_element_type(operand_vec, true) {
+            Some(derived_element_type) if &derived_element_type == declared_element_type => {
+                verifier.push(meter, derived_element_type)?;
+            }
+            _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+        };
+    }
+    *)
+    | Bytecode.VecPopBack idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecUnpack(idx, num) => {
+        let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        if operand_vec != ST::Vector(Box::new(declared_element_type.clone())) {
+            return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+        }
+        verifier.push_n(meter, declared_element_type.clone(), *num)?;
+    }
+    *)
+    | Bytecode.VecUnpack idx num => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::VecSwap(idx) => {
+        let operand_idx2 = safe_unwrap_err!(verifier.stack.pop());
+        let operand_idx1 = safe_unwrap_err!(verifier.stack.pop());
+        let operand_vec = safe_unwrap_err!(verifier.stack.pop());
+        if operand_idx1 != ST::U64 || operand_idx2 != ST::U64 {
+            return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
+        }
+        let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
+        match get_vector_element_type(operand_vec, true) {
+            Some(derived_element_type) if &derived_element_type == declared_element_type => {}
+            _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
+        };
+    }
+    *)
+    | Bytecode.VecSwap idx => returnS? $ Result.Ok tt
+
+    (* 
+    Bytecode::CastU16 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U16)?;
+    }
+    Bytecode::CastU32 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U32)?;
+    }
+    Bytecode::CastU256 => {
+        let operand = safe_unwrap_err!(verifier.stack.pop());
+        if !operand.is_integer() {
+            return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
+        }
+        verifier.push(meter, ST::U256)?;
+    }
+    *)
+    | Bytecode.CastU16 => 
+      letS? '(verifier, _) := readS? in
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      if negb $ SignatureToken
           .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-          .is_integer operand2)
-        (SignatureToken.t_beq operand1 SignatureToken.U8)
-    then
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push operand2 in
-      letS? result := |?- result in
-      returnS? result
-    else 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-
-  (* 
-  Bytecode::Or | Bytecode::And => {
-      let operand1 = safe_unwrap_err!(verifier.stack.pop());
-      let operand2 = safe_unwrap_err!(verifier.stack.pop());
-      if operand1 == ST::Bool && operand2 == ST::Bool {
-          verifier.push(meter, ST::Bool)?;
-      } else {
-          return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Or | Bytecode.And =>
-    letS? '(verifier, _) := readS? in
-    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand1 := safe_unwrap_err operand1 in
-    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand2 := safe_unwrap_err operand2 in
-    if andb
-        (SignatureToken.t_beq operand1 SignatureToken.Bool)
-        (SignatureToken.t_beq operand1 SignatureToken.Bool)
-    then
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.Bool in
-      letS? result := |?- result in
-      returnS? result
-    else 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
-
-  (* 
-  Bytecode::Not => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if operand == ST::Bool {
-          verifier.push(meter, ST::Bool)?;
-      } else {
-          return Err(verifier.error(StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Not => 
-    letS? '(verifier, _) := readS? in
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand := safe_unwrap_err operand in
-    if SignatureToken.t_beq operand SignatureToken.Bool
-    then
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.Bool in
-      letS? result := |?- result in
-      returnS? result
-    else 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.BOOLEAN_OP_TYPE_MISMATCH_ERROR offset
-
-  (* 
-  Bytecode::Eq | Bytecode::Neq => {
-      let operand1 = safe_unwrap_err!(verifier.stack.pop());
-      let operand2 = safe_unwrap_err!(verifier.stack.pop());
-      if verifier.abilities(&operand1)?.has_drop() && operand1 == operand2 {
-          verifier.push(meter, ST::Bool)?;
-      } else {
-          return Err(verifier.error(StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Eq | Bytecode.Neq => 
-    letS? '(verifier, _) := readS? in
-    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand1 := safe_unwrap_err operand1 in
-    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand2 := safe_unwrap_err operand2 in
-    let abilities := TypeSafetyChecker
-      .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-      .abilities verifier operand1 in
-    letS? abilities := safe_unwrap_err abilities in
-    if andb 
-        (AbilitySet
-          .Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-          .has_drop abilities)
-        (SignatureToken.t_beq operand1 operand2)
-    then 
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.Bool in
-      letS? result := |?- result in
-      returnS? result
-    else 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.EQUALITY_OP_TYPE_MISMATCH_ERROR offset
-
-  (* 
-  Bytecode::Lt | Bytecode::Gt | Bytecode::Le | Bytecode::Ge => {
-      let operand1 = safe_unwrap_err!(verifier.stack.pop());
-      let operand2 = safe_unwrap_err!(verifier.stack.pop());
-      if operand1.is_integer() && operand1 == operand2 {
-          verifier.push(meter, ST::Bool)?
-      } else {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-  }
-  *)
-  | Bytecode.Lt | Bytecode.Gt | Bytecode.Le | Bytecode.Ge => 
-    letS? '(verifier, _) := readS? in
-    letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand1 := safe_unwrap_err operand1 in
-    letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand2 := safe_unwrap_err operand2 in
-    if andb 
-        (SignatureToken
+          .is_integer operand
+      then 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+      else 
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U16 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.CastU32 => letS? '(verifier, _) := readS? in
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      if negb $ SignatureToken
           .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-          .is_integer operand1)
-        (SignatureToken.t_beq operand1 operand2)
-    then 
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.Bool in
-      letS? result := |?- result in
-      returnS? result
-    else 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-
-  (* 
-  Bytecode::MutBorrowGlobalDeprecated(idx) => {
-      borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
-  }
-
-  Bytecode::MutBorrowGlobalGenericDeprecated(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_inst.0)?;
-      borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
-  }
-
-  Bytecode::ImmBorrowGlobalDeprecated(idx) => {
-      borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
-  }
-
-  Bytecode::ImmBorrowGlobalGenericDeprecated(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let type_inst = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_inst.0)?;
-      borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
-  }
-
-  Bytecode::ExistsDeprecated(idx) => {
-      let struct_def = verifier.module.struct_def_at(*idx); //*)
-      exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
-  }
-
-  Bytecode::ExistsGenericDeprecated(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let struct_def = verifier.module.struct_def_at(struct_inst.def);
-      let type_args = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_args.0)?;
-      exists(verifier, meter, offset, struct_def, type_args)?
-  }
-
-  Bytecode::MoveFromDeprecated(idx) => {
-      let struct_def = verifier.module.struct_def_at(*idx); //*)
-      move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
-  }
-
-  Bytecode::MoveFromGenericDeprecated(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let struct_def = verifier.module.struct_def_at(struct_inst.def);
-      let type_args = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_args.0)?;
-      move_from(verifier, meter, offset, struct_def, type_args)?
-  }
-
-  Bytecode::MoveToDeprecated(idx) => {
-      let struct_def = verifier.module.struct_def_at(*idx); //*)
-      move_to(verifier, offset, struct_def, &Signature(vec![]))?
-  }
-
-  Bytecode::MoveToGenericDeprecated(idx) => {
-      let struct_inst = verifier.module.struct_instantiation_at(*idx); //*)
-      let struct_def = verifier.module.struct_def_at(struct_inst.def);
-      let type_args = verifier.module.signature_at(struct_inst.type_parameters);
-      verifier.charge_tys(meter, &type_args.0)?;
-      move_to(verifier, offset, struct_def, type_args)?
-  }
-  *)
-  (* NOTE: In our simulation `Deprecate` suffixes are omitted *)
-  | Bytecode.MutBorrowGlobal idx => returnS? (Result.Ok tt)
-  | Bytecode.MutBorrowGlobalGeneric idx => returnS? (Result.Ok tt)
-  | Bytecode.ImmBorrowGlobal idx => returnS? (Result.Ok tt)
-  | Bytecode.ImmBorrowGlobalGeneric idx => returnS? (Result.Ok tt)
-  | Bytecode.Exists idx => returnS? (Result.Ok tt)
-  | Bytecode.ExistsGeneric idx => returnS? (Result.Ok tt)
-  | Bytecode.MoveFrom idx => returnS? (Result.Ok tt)
-  | Bytecode.MoveFromGeneric idx => returnS? (Result.Ok tt)
-  | Bytecode.MoveTo idx => returnS? (Result.Ok tt)
-  | Bytecode.MoveToGeneric idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecPack(idx, num) => {
-      let element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      if let Some(num_to_pop) = NonZeroU64::new(*num) { //*)
-          let is_mismatched = verifier
-              .stack
-              .pop_eq_n(num_to_pop)
-              .map(|t| element_type != &t)
-              .unwrap_or(true);
-          if is_mismatched {
-              return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
-          }
-      }
-      verifier.push(meter, ST::Vector(Box::new(element_type.clone())))?;
-  }
-  *)
-  | Bytecode.VecPack idx num => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecLen(idx) => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      match get_vector_element_type(operand, false) { 
-          Some(derived_element_type) if &derived_element_type == declared_element_type => {
-              verifier.push(meter, ST::U64)?;
-          }
-          _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
-      };
-  }
-  *)
-  | Bytecode.VecLen idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecImmBorrow(idx) => {
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      borrow_vector_element(verifier, meter, declared_element_type, offset, false)?
-  }
-  *)
-  | Bytecode.VecImmBorrow idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecMutBorrow(idx) => {
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      borrow_vector_element(verifier, meter, declared_element_type, offset, true)?
-  }
-  *)
-  | Bytecode.VecMutBorrow idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecPushBack(idx) => {
-      let operand_elem = safe_unwrap_err!(verifier.stack.pop());
-      let operand_vec = safe_unwrap_err!(verifier.stack.pop());
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      if declared_element_type != &operand_elem {
-          return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
-      }
-      match get_vector_element_type(operand_vec, true) {
-          Some(derived_element_type) if &derived_element_type == declared_element_type => {}
-          _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
-      };
-  }
-  *)
-  | Bytecode.VecPushBack idx => returnS? (Result.Ok tt)
-
-  (*
-  Bytecode::VecPopBack(idx) => {
-      let operand_vec = safe_unwrap_err!(verifier.stack.pop());
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      match get_vector_element_type(operand_vec, true) {
-          Some(derived_element_type) if &derived_element_type == declared_element_type => {
-              verifier.push(meter, derived_element_type)?;
-          }
-          _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
-      };
-  }
-  *)
-  | Bytecode.VecPopBack idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecUnpack(idx, num) => {
-      let operand_vec = safe_unwrap_err!(verifier.stack.pop());
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      if operand_vec != ST::Vector(Box::new(declared_element_type.clone())) {
-          return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
-      }
-      verifier.push_n(meter, declared_element_type.clone(), *num)?;
-  }
-  *)
-  | Bytecode.VecUnpack idx num => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::VecSwap(idx) => {
-      let operand_idx2 = safe_unwrap_err!(verifier.stack.pop());
-      let operand_idx1 = safe_unwrap_err!(verifier.stack.pop());
-      let operand_vec = safe_unwrap_err!(verifier.stack.pop());
-      if operand_idx1 != ST::U64 || operand_idx2 != ST::U64 {
-          return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset));
-      }
-      let declared_element_type = &verifier.module.signature_at(*idx).0[0]; //*)
-      match get_vector_element_type(operand_vec, true) {
-          Some(derived_element_type) if &derived_element_type == declared_element_type => {}
-          _ => return Err(verifier.error(StatusCode::TYPE_MISMATCH, offset)),
-      };
-  }
-  *)
-  | Bytecode.VecSwap idx => returnS? (Result.Ok tt)
-
-  (* 
-  Bytecode::CastU16 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U16)?;
-  }
-  Bytecode::CastU32 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U32)?;
-  }
-  Bytecode::CastU256 => {
-      let operand = safe_unwrap_err!(verifier.stack.pop());
-      if !operand.is_integer() {
-          return Err(verifier.error(StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR, offset));
-      }
-      verifier.push(meter, ST::U256)?;
-  }
-  *)
-  | Bytecode.CastU16 => 
-    letS? '(verifier, _) := readS? in
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand := safe_unwrap_err operand in
-    if negb $ SignatureToken
-        .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-    then 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-    else 
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U16 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.CastU32 => letS? '(verifier, _) := readS? in
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand := safe_unwrap_err operand in
-    if negb $ SignatureToken
-        .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-    then 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-    else 
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U32 in
-      letS? result := |?- result in
-      returnS? result
-  | Bytecode.CastU256 => 
-    letS? '(verifier, _) := readS? in
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
-    letS? operand := safe_unwrap_err operand in
-    if negb $ SignatureToken
-        .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
-        .is_integer operand
-    then 
-      returnS? $ Result.Err $ 
-        TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-    else 
-      letS? result := TypeSafetyChecker
-        .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
-        .push SignatureToken.U64 in
-      letS? result := |?- result in
-      returnS? result
-  end
-  (* Ok(()) *)
-  .
+          .is_integer operand
+      then 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+      else 
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U32 in
+        letS? result := |?- result in
+        returnS? result
+    | Bytecode.CastU256 => 
+      letS? '(verifier, _) := readS? in
+      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand := safe_unwrap_err operand in
+      if negb $ SignatureToken
+          .Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken
+          .is_integer operand
+      then 
+        returnS? $ Result.Err $ 
+          TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
+      else 
+        letS? result := TypeSafetyChecker
+          .Impl_move_sui_simulations_move_bytecode_verifier_type_safety_TypeSafetyChecker
+          .push SignatureToken.U64 in
+        letS? result := |?- result in
+        returnS? result
+    end in
+  returnS? $ Result.Ok tt.
 
 (* 
 pub(crate) fn verify<'a>(
