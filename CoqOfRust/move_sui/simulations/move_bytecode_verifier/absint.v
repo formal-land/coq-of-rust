@@ -52,7 +52,7 @@ Module FunctionContext.
     cfg : VMControlFlowGraph.t;
   }.
 
-  Module Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
+  Module Impl_FunctionContext.
     Definition Self : Set := 
       move_sui.simulations.move_bytecode_verifier.absint.FunctionContext.t.
 
@@ -76,7 +76,7 @@ Module FunctionContext.
     *)
     Definition new (module : CompiledModule.t) (index : FunctionDefinitionIndex.t) (code : CodeUnit.t)
       (function_handle : FunctionHandle.t) :=
-      let signature_at := CompiledModule.Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.signature_at in
+      let signature_at := CompiledModule.Impl_CompiledModule.signature_at in
       let result : Self :=
       {|
         index := Some index;
@@ -102,5 +102,5 @@ Module FunctionContext.
     Definition return_ (self : Self) := self.(return_). 
 
     Definition code (self : Self) := self.(code).
-  End Impl_move_sui_simulations_move_bytecode_verifier_absint_FunctionContext.
+  End Impl_FunctionContext.
 End FunctionContext.

@@ -71,7 +71,7 @@ Module PartialVMError.
     _ : PartialVMError_.t;
   }.
 
-  Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.
+  Module Impl_PartialVMError.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMError.t.
     (* 
     impl PartialVMError {
@@ -236,14 +236,14 @@ Module PartialVMError.
       let pvme_ := pvme_ <| PartialVMError_.offsets := offsets |> in
       PartialVMError.Build_t pvme_.
 
-  End Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.
+  End Impl_PartialVMError.
 End PartialVMError.
 
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 
-  Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
+  Module Impl_PartialVMResult.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.t.
-  End Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
+  End Impl_PartialVMResult.
 End PartialVMResult.
