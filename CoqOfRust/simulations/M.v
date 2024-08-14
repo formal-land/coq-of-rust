@@ -161,6 +161,36 @@ Module StatePanicNotations.
   Notation "return!?toS?" := StatePanic.lift_from_panic.
 End StatePanicNotations.
 
+Module StatePanicResult.
+  Import StatePanicNotations.
+
+  Definition return_ {State Panic Error A : Set} (value : A) :
+      StatePanic.t State Panic (Result.t A Error) :=
+    returnS? (Result.Ok value).
+
+  Definition bind {State Panic Error A B : Set}
+      (value : StatePanic.t State Panic (Result.t A Error))
+      (f : A -> StatePanic.t State Panic (Result.t B Error)) :
+      StatePanic.t State Panic (Result.t B Error) :=
+    letS? value := value in
+    match value with
+    | Result.Ok value => f value
+    | Result.Err error => returnS? (Result.Err error)
+    end.
+End StatePanicResult.
+
+Module StatePanicResultNotations.
+  Notation "returnS??" := StatePanicResult.return_.
+
+  Notation "'letS??' x ':=' X 'in' Y" :=
+    (StatePanicResult.bind X (fun x => Y))
+    (at level 200, x name, X at level 100, Y at level 200).
+
+  Notation "'letS??' ' x ':=' X 'in' Y" :=
+    (StatePanicResult.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
+End StatePanicResultNotations.
+
 (** ** Lens that are useful for the definition of simulations. *)
 
 Module Lens.
