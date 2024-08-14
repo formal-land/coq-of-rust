@@ -324,7 +324,7 @@ Module AbilitySet.
       end in
     Build_t abs.
 
-  Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
+  Module Impl_AbilitySet.
     Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
 
     Definition has_ability (self : Self) (ability : Ability.t) : bool := 
@@ -474,7 +474,7 @@ Module AbilitySet.
           intersect acc ty_arg_abilities
       ) abs declared_abilities in
       Result.Ok abs.
-  End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
+  End Impl_AbilitySet.
 End AbilitySet.
 
 (* 
@@ -767,7 +767,7 @@ Module SignatureToken.
     *)
   End SignatureTokenPreorderTraversalIter.
 
-  Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
+  Module Impl_SignatureToken.
     Definition Self := move_sui.simulations.move_binary_format.file_format.SignatureToken.t.
     (* 
     /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
@@ -842,7 +842,7 @@ Module SignatureToken.
     Definition preorder_traversal_count (self : Self) : Z :=
       Z.of_nat $ count_nat self.
 
-  End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
+  End Impl_SignatureToken.
 End SignatureToken.
 
 (* pub struct TypeSignature(pub SignatureToken); *)
@@ -1107,7 +1107,7 @@ Module CompiledModule.
     struct_defs : list StructDefinition.t;
     (* function_defs : list FunctionDefinition; *)
   }.
-  Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+  Module Impl_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
 
     (* 
@@ -1290,12 +1290,9 @@ Module CompiledModule.
       | SignatureToken.Vector ty => 
       let abilities_result := abilities self ty constraints in
         match abilities_result with
-        | Result.Ok  a => AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-                            .polymorphic_abilities
-                              AbilitySet.VECTOR
-                              [false]
-                              [a]
-        | Result.Err x => Result.Err x (* TODO: maybe make this into a panic *)
+        | Result.Ok  a => AbilitySet.Impl_AbilitySet
+                            .polymorphic_abilities AbilitySet.VECTOR [false] [a]
+        | Result.Err x => Result.Err x
         end
 
       | SignatureToken.Struct idx =>
@@ -1327,15 +1324,12 @@ Module CompiledModule.
             check_type_arguments type_arguments [] in
           match type_arguments with
           | Result.Ok  type_arguments =>
-              AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-                .polymorphic_abilities
-                  declared_abilities
-                  is_phantom_list
-                  type_arguments
+              AbilitySet.Impl_AbilitySet.polymorphic_abilities
+                declared_abilities is_phantom_list type_arguments
           (* NOTE: maybe handle with a panic? *)
           | Result.Err err            => Result.Err err
           end
       end.
 
-  End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+  End Impl_CompiledModule.
 End CompiledModule.

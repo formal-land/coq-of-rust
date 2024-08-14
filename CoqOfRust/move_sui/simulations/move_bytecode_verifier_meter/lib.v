@@ -83,7 +83,7 @@ Module Bounds.
   
   Definition State := t.
 
-  Module Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
+  Module Impl_Bounds.
     Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Bounds.t.
 
     (* 
@@ -116,7 +116,7 @@ Module Bounds.
         if new_units >? max 
         then 
           returnS? $ Result.Err $ PartialVMError
-            .Impl_move_sui_simulations_move_binary_format_errors_PartialVMError
+            .Impl_PartialVMError
             .new StatusCode.CONSTRAINT_NOT_SATISFIED
         else 
           let self := self <| Bounds.units := units |> in
@@ -125,7 +125,7 @@ Module Bounds.
       | None => 
           returnS? $ Result.Ok tt
       end.
-  End Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.
+  End Impl_Bounds.
 End Bounds.
 
 (* 
@@ -179,7 +179,7 @@ Module Meter.
     Record t : Set := { }.
 
     (* impl Meter for DummyMeter  *)
-    Module Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
+    Module Impl_DummyMeter.
       Definition Self := t.
 
       (* fn enter_scope(&mut self, _name: &str, _scope: Scope.t) {} *)
@@ -190,7 +190,7 @@ Module Meter.
 
       (* fn add(&mut self, _scope: Scope, _units: u128) -> PartialVMResult<()> { Ok(()) } *)
       Definition add (self : Self) (_scope : Scope.t) (_units : Z) : PartialVMResult.t unit := return?? tt.
-    End Impl_move_sui_simulations_move_bytecode_verifier_meter_DummyMeter.
+    End Impl_DummyMeter.
   End DummyMeter.
 
   (* 
@@ -249,7 +249,7 @@ Module Meter.
         }
     }
     *)
-    Module Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
+    Module Impl_BoundMeter.
       Definition Self := move_sui.simulations.move_bytecode_verifier_meter.lib.Meter.BoundMeter.t.
 
       (* 
@@ -305,7 +305,7 @@ Module Meter.
         : MS? State string (PartialVMResult.t unit) :=
         liftS?of!? (get_bounds_mut scope) (
           letS? bounds := readS? in
-          Bounds.Impl_move_sui_simulations_move_bytecode_verifier_meter_Bounds.add 
+          Bounds.Impl_Bounds.add 
             units
         ).
 
@@ -344,6 +344,6 @@ Module Meter.
         else letS? self := readS? in
         add scope $ saturating_mul units_per_item items.
       
-    End Impl_move_sui_simulations_move_bytecode_verifier_meter_BoundMeter.
+    End Impl_BoundMeter.
   End BoundMeter.
 End Meter.
