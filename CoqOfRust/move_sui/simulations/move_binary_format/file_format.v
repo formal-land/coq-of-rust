@@ -10,17 +10,17 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(misc tasks):
-- (IMPORTANT) Make a adequate coercion for `PartialVMError` (maybe make it in `type_safety`)
 - See if we need to handle the `?` and debugs with `panic` monad. See NOTEs everywhere
 *)
 
-(* NOTE(MUTUAL DEPENDENCY ISSUE): The following structs are temporary stub 
-   since this file has mutual dependency with another file. Although it works 
-   for now, we shouldn't ignore this. *)
+(* NOTE(MUTUAL DEPENDENCY ISSUE): This is just a stub to fill in needed information
+  to use else where. When other files are using this type, they should have to
+  extract the `StatusCode` and construct the actual PartialVMError by themselves. *)
 Module PartialVMError.
-  Inductive t : Set := .
-
-  Definition new (s : StatusCode.t) : t. Admitted.
+  Inductive t : Set := 
+  (* A very rough stub here *)
+  | new : StatusCode.t -> t (* Since we only use this function *)
+  .
 End PartialVMError.
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
@@ -136,14 +136,14 @@ End FunctionInstantiationIndex.
 Module FieldInstantiation.
   Record t : Set := {
     handle : FieldHandleIndex.t;
-    type_parameters : list SignatureIndex.t;
+    type_parameters : SignatureIndex.t;
   }.
 End FieldInstantiation.
 
 Module FunctionInstantiation.
   Record t : Set := {
     handle : FunctionHandleIndex.t;
-    type_parameters : list SignatureIndex.t;
+    type_parameters : SignatureIndex.t;
   }.
 End FunctionInstantiation.
 
@@ -324,7 +324,7 @@ Module AbilitySet.
       end in
     Build_t abs.
 
-  Module Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
+  Module Impl_AbilitySet.
     Definition Self := move_sui.simulations.move_binary_format.file_format.AbilitySet.t.
 
     Definition has_ability (self : Self) (ability : Ability.t) : bool := 
@@ -474,7 +474,7 @@ Module AbilitySet.
           intersect acc ty_arg_abilities
       ) abs declared_abilities in
       Result.Ok abs.
-  End Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet.
+  End Impl_AbilitySet.
 End AbilitySet.
 
 (* 
@@ -498,31 +498,6 @@ Module StructHandle.
     type_parameters : list AbilitySet.StructTypeParameter.t;
   }.
 End StructHandle.
-
-(* 
-/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
-/// user-specified fields declared on the type.
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
-#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-pub struct StructDefinition {
-    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
-    /// for the type.
-    pub struct_handle: StructHandleIndex,
-    /// Contains either
-    /// - Information indicating the struct is native and has no accessible fields
-    /// - Information indicating the number of fields and the start `FieldDefinition`s
-    pub field_information: StructFieldInformation,
-}
-*)
-Module StructDefinition.
-  Record t : Set := { 
-    struct_handle: StructHandleIndex.t;
-    (* field_information: StructFieldInformation.t; *)
-  }.
-End StructDefinition.
 
 (* 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -552,6 +527,22 @@ Module FunctionHandle.
     type_parameters : list AbilitySet.t;
   }.
 End FunctionHandle.
+
+Module MemberCount.
+  Definition t := Z.
+End MemberCount.
+(* 
+pub struct FieldHandle {
+    pub owner: StructDefinitionIndex,
+    pub field: MemberCount,
+}
+*)
+Module FieldHandle.
+  Record t : Set := {
+    owner: StructDefinitionIndex.t;
+    field: MemberCount.t;
+  }.
+End FieldHandle.
 
 (* 
 pub enum SignatureToken {
@@ -637,20 +628,6 @@ Module SignatureToken.
               // be completely removed. `SignatureTokenView::kind()` should be used instead.
               TypeParameter(_) => SignatureTokenKind::Value,
           }
-      }
-
-      /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
-      pub fn is_reference(&self) -> bool {
-          use SignatureToken::*;
-
-          matches!(self, Reference(_) | MutableReference(_))
-      }
-
-      /// Returns true if the `SignatureToken` is a mutable reference.
-      pub fn is_mutable_reference(&self) -> bool {
-          use SignatureToken::*;
-
-          matches!(self, MutableReference(_))
       }
 
       /// Returns true if the `SignatureToken` is a signer
@@ -790,8 +767,35 @@ Module SignatureToken.
     *)
   End SignatureTokenPreorderTraversalIter.
 
-  Module Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
+  Module Impl_SignatureToken.
     Definition Self := move_sui.simulations.move_binary_format.file_format.SignatureToken.t.
+    (* 
+    /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
+    pub fn is_reference(&self) -> bool {
+        use SignatureToken::*;
+
+        matches!(self, Reference(_) | MutableReference(_))
+    }
+    *)
+    Definition is_reference (self : Self) : bool :=
+      match self with
+      | Reference _ | MutableReference _ => true
+      | _ => false
+      end.
+
+    (* 
+    /// Returns true if the `SignatureToken` is a mutable reference.
+    pub fn is_mutable_reference(&self) -> bool {
+        use SignatureToken::*;
+
+        matches!(self, MutableReference(_))
+    }
+    *)
+    Definition is_mutable_reference (self : Self) : bool :=
+      match self with
+      | MutableReference _ => true
+      | _ => false
+      end.
 
     (* 
     // Returns `true` if the `SignatureToken` is an integer type.
@@ -838,8 +842,77 @@ Module SignatureToken.
     Definition preorder_traversal_count (self : Self) : Z :=
       Z.of_nat $ count_nat self.
 
-  End Impl_move_sui_simulations_move_binary_format_file_format_SignatureToken.
+  End Impl_SignatureToken.
 End SignatureToken.
+
+(* pub struct TypeSignature(pub SignatureToken); *)
+Module TypeSignature.
+  Record t : Set := { a0 : SignatureToken.t; }.
+End TypeSignature.
+
+(* 
+/// A `FieldDefinition` is the definition of a field: its name and the field type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct FieldDefinition {
+    /// The name of the field.
+    pub name: IdentifierIndex,
+    /// The type of the field.
+    pub signature: TypeSignature,
+}
+*)
+Module FieldDefinition.
+  Record t : Set := {
+    name      : IdentifierIndex.t;
+    signature : TypeSignature.t;
+  }.
+End FieldDefinition.
+
+(* 
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub enum StructFieldInformation {
+    Native,
+    Declared(Vec<FieldDefinition>),
+}
+*)
+Module StructFieldInformation.
+  Inductive t : Set :=
+  | Native
+  | Declared : list FieldDefinition.t -> t
+  .
+End StructFieldInformation.
+
+(* 
+/// A `StructDefinition` is a type definition. It either indicates it is native or defines all the
+/// user-specified fields declared on the type.
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
+#[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
+#[cfg_attr(feature = "fuzzing", derive(arbitrary::Arbitrary))]
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct StructDefinition {
+    /// The `StructHandle` for this `StructDefinition`. This has the name and the abilities
+    /// for the type.
+    pub struct_handle: StructHandleIndex,
+    /// Contains either
+    /// - Information indicating the struct is native and has no accessible fields
+    /// - Information indicating the number of fields and the start `FieldDefinition`s
+    pub field_information: StructFieldInformation,
+}
+*)
+Module StructDefinition.
+  Record t : Set := { 
+    struct_handle: StructHandleIndex.t;
+    field_information: StructFieldInformation.t;
+  }.
+End StructDefinition.
 
 (* 
 pub struct Signature(
@@ -1021,7 +1094,7 @@ Module CompiledModule.
     (* module_handles : list ModuleHandle; *)
     struct_handles : list StructHandle.t;
     function_handles : list FunctionHandle.t;
-    (* field_handles : list FieldHandle; *)
+    field_handles : list FieldHandle.t;
     (* friend_decls : list ModuleHandle; *)
     struct_def_instantiations : list StructDefInstantiation.t;
     function_instantiations : list FunctionInstantiation.t;
@@ -1034,8 +1107,23 @@ Module CompiledModule.
     struct_defs : list StructDefinition.t;
     (* function_defs : list FunctionDefinition; *)
   }.
-  Module Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+  Module Impl_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
+
+    (* 
+    pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
+        let handle = &self.field_handles[idx.into_index()];
+        debug_assert!(handle.owner.into_index() < self.struct_defs.len()); // invariant
+        handle
+    }
+    *)
+    Definition default_field_handle : FieldHandle.t. Admitted.
+    Definition field_handle_at (self : Self) (idx : FieldHandleIndex.t)
+      : FieldHandle.t :=
+      let idx := idx.(FieldHandleIndex.a0) in
+      let handle := List.nth (Z.to_nat idx) self.(field_handles) default_field_handle in
+      (* TODO: Implement debugs *)
+      handle.
 
     (* 
     pub fn struct_instantiation_at(
@@ -1202,12 +1290,9 @@ Module CompiledModule.
       | SignatureToken.Vector ty => 
       let abilities_result := abilities self ty constraints in
         match abilities_result with
-        | Result.Ok  a => AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-                            .polymorphic_abilities
-                              AbilitySet.VECTOR
-                              [false]
-                              [a]
-        | Result.Err x => Result.Err x (* TODO: maybe make this into a panic *)
+        | Result.Ok  a => AbilitySet.Impl_AbilitySet
+                            .polymorphic_abilities AbilitySet.VECTOR [false] [a]
+        | Result.Err x => Result.Err x
         end
 
       | SignatureToken.Struct idx =>
@@ -1239,15 +1324,12 @@ Module CompiledModule.
             check_type_arguments type_arguments [] in
           match type_arguments with
           | Result.Ok  type_arguments =>
-              AbilitySet.Impl_move_sui_simulations_move_binary_format_file_format_AbilitySet
-                .polymorphic_abilities
-                  declared_abilities
-                  is_phantom_list
-                  type_arguments
+              AbilitySet.Impl_AbilitySet.polymorphic_abilities
+                declared_abilities is_phantom_list type_arguments
           (* NOTE: maybe handle with a panic? *)
           | Result.Err err            => Result.Err err
           end
       end.
 
-  End Impl_move_sui_simulations_move_binary_format_file_format_CompiledModule.
+  End Impl_CompiledModule.
 End CompiledModule.

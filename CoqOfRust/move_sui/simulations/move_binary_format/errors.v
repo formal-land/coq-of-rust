@@ -37,13 +37,13 @@ End Location.
 
 Module VMError_.
   Record t : Set := {
-    major_status: StatusCode.t;
-    sub_status: option Z;
-    message: option string;
-    exec_state: option ExecutionState.t;
-    location: Location.t;
-    indices: list (IndexKind.t * TableIndex.t);
-    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
+    major_status  : StatusCode.t;
+    sub_status    : option Z;
+    message       : option string;
+    exec_state    : option ExecutionState.t;
+    location      : Location.t;
+    indices       : list (IndexKind.t * TableIndex.t);
+    offsets       : list (FunctionDefinitionIndex.t * CodeOffset.t);
   }.
 End VMError_.
 
@@ -53,12 +53,12 @@ End VMError.
 
 Module PartialVMError_.
   Record t : Set := {
-    major_status: StatusCode.t;
-    sub_status : option Z;
-    message: option string;
-    exec_state: option ExecutionState.t;
-    indices: list (IndexKind.t * TableIndex.t);
-    offsets: list (FunctionDefinitionIndex.t * CodeOffset.t);
+    major_status  : StatusCode.t;
+    sub_status    : option Z;
+    message       : option string;
+    exec_state    : option ExecutionState.t;
+    indices       : list (IndexKind.t * TableIndex.t);
+    offsets       : list (FunctionDefinitionIndex.t * CodeOffset.t);
   }.
 End PartialVMError_.
 
@@ -71,7 +71,7 @@ Module PartialVMError.
     _ : PartialVMError_.t;
   }.
 
-  Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.
+  Module Impl_PartialVMError.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMError.t.
     (* 
     impl PartialVMError {
@@ -213,12 +213,12 @@ Module PartialVMError.
     *)
     Definition new (major_status : StatusCode.t) : Self :=
       let pvme_ : PartialVMError_.t := {|
-        PartialVMError_.major_status := major_status;
-        PartialVMError_.sub_status := None;
-        PartialVMError_.message := None;
-        PartialVMError_.exec_state := None;
-        PartialVMError_.indices := [];
-        PartialVMError_.offsets := [];
+        PartialVMError_.major_status  := major_status;
+        PartialVMError_.sub_status    := None;
+        PartialVMError_.message       := None;
+        PartialVMError_.exec_state    := None;
+        PartialVMError_.indices       := [];
+        PartialVMError_.offsets       := [];
       |} in
       PartialVMError.Build_t pvme_.
 
@@ -236,14 +236,14 @@ Module PartialVMError.
       let pvme_ := pvme_ <| PartialVMError_.offsets := offsets |> in
       PartialVMError.Build_t pvme_.
 
-  End Impl_move_sui_simulations_move_binary_format_errors_PartialVMError.
+  End Impl_PartialVMError.
 End PartialVMError.
 
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 
-  Module Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
+  Module Impl_PartialVMResult.
     Definition Self := move_sui.simulations.move_binary_format.errors.PartialVMResult.t.
-  End Impl_move_sui_simulations_move_binary_format_errors_PartialVMResult.
+  End Impl_PartialVMResult.
 End PartialVMResult.
