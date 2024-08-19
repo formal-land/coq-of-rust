@@ -320,9 +320,9 @@ Module AbstractStack.
     letS? self := readS? in
     letS? _ := assert_eqS? (List.length (values self)) (List.length lengths) in
     letS? sum :=
-      foldS? (fun acc '((actual, _), expected) =>
+      foldS? 0 (List.combine (values self) lengths) (fun acc '((actual, _), expected) =>
         letS? _ := assert_eqS? actual expected in
         returnS? (acc + expected)%Z
-      ) (List.combine (values self) lengths) 0 in
+      ) in
     assert_eqS? (len self) sum.
 End AbstractStack.

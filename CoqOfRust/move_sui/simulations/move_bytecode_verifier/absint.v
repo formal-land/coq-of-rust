@@ -4,31 +4,18 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.control_flow_graph.
+Module BlockId := control_flow_graph.BlockId.
+Module VMControlFlowGraph := control_flow_graph.VMControlFlowGraph.
+
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module Signature := file_format.Signature.
 Module AbilitySet := file_format.AbilitySet.
-Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
+Module Bytecode := file_format.Bytecode.
 Module CodeUnit := file_format.CodeUnit.
 Module CompiledModule := file_format.CompiledModule.
+Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
 Module FunctionHandle := file_format.FunctionHandle.
-Module Bytecode := file_format.Bytecode.
-
-(* 
-pub struct VMControlFlowGraph {
-    /// The basic blocks
-    blocks: Map<BlockId, BasicBlock>,
-    /// Basic block ordering for traversal
-    traversal_successors: Map<BlockId, BlockId>,
-    /// Map of loop heads with all of their back edges
-    loop_heads: Map<BlockId, /* back edges */ Set<BlockId>>,
-}
-*)
-(* NOTE: STUB: only implement if necessary *)
-Module VMControlFlowGraph.
-  Record t : Set := { }.
-End VMControlFlowGraph.
-
-Definition VMControlFlowGraph_new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
+Module Signature := file_format.Signature.
 
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
@@ -85,10 +72,10 @@ Module FunctionContext.
         return_ := signature_at module function_handle.(FunctionHandle.return_);
         locals := signature_at module code.(CodeUnit.locals);
         type_parameters := function_handle.(FunctionHandle.type_parameters);
-        cfg := VMControlFlowGraph_new code.(CodeUnit.code);
+        cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(CodeUnit.code);
       |} in
       result.
-    
+
     Definition parameters (self : Self) := self.(parameters).
 
     Definition locals (self : Self) := self.(locals).
