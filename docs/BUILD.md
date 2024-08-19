@@ -132,12 +132,14 @@ to run the Coq project in WSL environment. Specifically:
 
 ### Known Issues
 
-WSL has a different format from Windows. Since we run Coq on WSL
-only, the files being generated should be in WSL's file format. We 
-usually put the project on Windows, `make` it in WSL, to generate 
-Coq files of WSL's file format. The format differences here usually
-lead to significantly longer `make` time for WSL than other systems. 
+[WSL has a different file format from Windows](https://blog.jyotiprakash.org/the-windows-file-system-and-the-wsl-file-systems-are-different)
+(Also [here](https://learn.microsoft.com/en-us/windows/wsl/filesystems)). 
+Since we run Coq on WSL only, the files being generated should be in 
+WSL's file format. We usually put the project on Windows, `make` it 
+in WSL, to generate Coq files of WSL's file format. The format differences 
+here usually lead to significantly longer `make` time for WSL than other 
+systems. 
 
-As an alternative, you might copy the project under WSL's `/mnt` and
+As an alternative, you might copy the project under WSL's `/home` and
 observe the performance boost under WSL's `make`, with a tradeoff of
 extra time on copying the project from Windows to WSL.
