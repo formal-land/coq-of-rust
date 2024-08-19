@@ -2236,16 +2236,26 @@ pub(crate) fn verify<'a>(
     Ok(())
 }
 *)
-Definition verify (module : CompiledModule.t) (function_context : FunctionContext.t) 
-  : PartialVMResult.t unit :=
-  (* DRAFT
-  let verifier := TypeSafetyChecker
-    .Impl_TypeSafetyChecker
-    .new module function_context in
-  let state := (verifier, meter) in
-
-  let fold :=
-  (
-    fix fold : MS? State string A :=
-  ) *)
-  Result.Ok tt.
+Definition verify
+    (module : CompiledModule.t)
+    (function_context : FunctionContext.t) :
+    MS? Meter.t string (PartialVMResult.t unit) :=
+  let verifier := TypeSafetyChecker.Impl_TypeSafetyChecker.new module function_context in
+  let cfg := FunctionContext.Impl_FunctionContext.cfg function_context in
+  letS? _ :=
+    borrowS? (fun meter => (verifier, meter)) (fun '(verifier, meter) => (meter, verifier)) (
+      foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.blocks cfg) (fun _ block_id =>
+        foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.instr_indexes cfg block_id) (fun _ offset =>
+          let instr :=
+            List.nth
+              (Z.to_nat offset)
+              verifier
+                .(TypeSafetyChecker.function_context)
+                .(FunctionContext.code)
+                .(file_format.CodeUnit.code)
+              Bytecode.Nop in
+          verify_instr instr offset
+        )
+      )
+    ) in
+  returnS? (Result.Ok tt).

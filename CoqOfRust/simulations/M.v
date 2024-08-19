@@ -110,13 +110,15 @@ Module StatePanic.
       | Panic.Panic error => (Panic.Panic error, state)
       end.
 
-  (* same as [List.fold_left] but for functions that return a monadic value *)
+  (** Same as [List.fold_left] but for functions that return a monadic value. We use the order of
+      parameters from the `for` operator, with initialization first, the remaining elements, and then
+      the body of the loop. *)
   Fixpoint fold {State Error A B : Set}
-      (f : A -> B -> t State Error A) (l : list B) (init : A) :
+      (init : A) (l : list B) (f : A -> B -> t State Error A) :
       t State Error A :=
     match l with
     | nil => return_ init
-    | cons x xs => bind (fold f xs init) (fun init => f init x)
+    | cons x xs => bind (fold init xs f) (fun init => f init x)
     end.
 
   Definition read {State Error : Set} : t State Error State :=
@@ -133,6 +135,21 @@ Module StatePanic.
 
   Definition lift_from_panic {State Error A : Set} (value : M!? Error A) : t State Error A :=
     fun state => (value, state).
+
+  (** Use a value of type [Borrowed] to initialize a new part of the state, and return it at the
+      end. *)
+  Definition borrow {Big_State State Error Borrowed A : Set}
+      (take : State -> Big_State) (give_back : Big_State -> State * Borrowed)
+      (value : t Big_State Error A) :
+      t State Error (A * Borrowed) :=
+    fun state =>
+      let big_state := take state in
+      let (value, big_state) := value big_state in
+      let (state, borrowed) := give_back big_state in
+      match value with
+      | Panic.Value success => (Panic.Value (success, borrowed), state)
+      | Panic.Panic error => (Panic.Panic error, state)
+      end.
 End StatePanic.
 
 Module StatePanicNotations.
@@ -159,6 +176,8 @@ Module StatePanicNotations.
   Notation "panicS?" := StatePanic.panic.
 
   Notation "return!?toS?" := StatePanic.lift_from_panic.
+
+  Notation "borrowS?" := StatePanic.borrow.
 End StatePanicNotations.
 
 Module StatePanicResult.

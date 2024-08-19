@@ -79,8 +79,9 @@ Module TypeParameterIndex.
   Record t : Set := { a0 : Z; }.
 End TypeParameterIndex.
 
+(* pub type CodeOffset = u16; *)
 Module CodeOffset.
-  Record t : Set := { a0 : Z; }.
+  Definition t : Set := Z.
 End CodeOffset.
 
 Module ModuleHandleIndex.
