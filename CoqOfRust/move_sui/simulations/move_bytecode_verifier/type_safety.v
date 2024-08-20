@@ -52,12 +52,6 @@ Module Scope := move_bytecode_verifier_meter.lib.Scope.
    since it's the only implementation that contains useful logic *)
 Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
 
-(* TODO(progress):
-  - Integrate the new monad into this simulation:
-    - Check `safe_unwrap_err` propagation
-    - Check for sole `if` clauses, `Err`s has been *correctly* propagated to the end
-*)
-
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
 
