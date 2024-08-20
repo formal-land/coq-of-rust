@@ -9,7 +9,10 @@ Module Bytecode := file_format.Bytecode.
 
 (* TODO(progress):
 - Implement `Stack`'s `push` and `pop` operations
-- Implement `GasMeter`?
+- Implement `Resolver`
+- Implement `InstrRet`
+- Implement `GasMeter`? Or should we ignore it?
+- Implement `values::Locals` temporarily in this file
 *)
 
 (* NOTE: This trait doesn't have a complete implementation throughout the library
