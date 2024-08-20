@@ -7,6 +7,206 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 
+(* TODO(progress):
+- Implement `Stack`'s `push` and `pop` operations
+- Implement `GasMeter`?
+*)
+
+(* NOTE: This trait doesn't have a complete implementation throughout the library
+/// Trait that defines a generic gas meter interface, allowing clients of the Move VM to implement
+/// their own metering scheme.
+pub trait GasMeter {
+    /// Charge an instruction and fail if not enough gas units are left.
+    fn charge_simple_instr(&mut self, instr: SimpleInstruction) -> PartialVMResult<()>;
+
+    fn charge_pop(&mut self, popped_val: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_call(
+        &mut self,
+        module_id: &ModuleId,
+        func_name: &str,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+        num_locals: NumArgs,
+    ) -> PartialVMResult<()>;
+
+    fn charge_call_generic(
+        &mut self,
+        module_id: &ModuleId,
+        func_name: &str,
+        ty_args: impl ExactSizeIterator<Item = impl TypeView>,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+        num_locals: NumArgs,
+    ) -> PartialVMResult<()>;
+
+    fn charge_ld_const(&mut self, size: NumBytes) -> PartialVMResult<()>;
+
+    fn charge_ld_const_after_deserialization(&mut self, val: impl ValueView)
+        -> PartialVMResult<()>;
+
+    fn charge_copy_loc(&mut self, val: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_move_loc(&mut self, val: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_store_loc(&mut self, val: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_pack(
+        &mut self,
+        is_generic: bool,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    fn charge_unpack(
+        &mut self,
+        is_generic: bool,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    fn charge_read_ref(&mut self, val: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_write_ref(
+        &mut self,
+        new_val: impl ValueView,
+        old_val: impl ValueView,
+    ) -> PartialVMResult<()>;
+
+    fn charge_eq(&mut self, lhs: impl ValueView, rhs: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_neq(&mut self, lhs: impl ValueView, rhs: impl ValueView) -> PartialVMResult<()>;
+
+    fn charge_vec_pack<'a>(
+        &mut self,
+        ty: impl TypeView + 'a,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    fn charge_vec_len(&mut self, ty: impl TypeView) -> PartialVMResult<()>;
+
+    fn charge_vec_borrow(
+        &mut self,
+        is_mut: bool,
+        ty: impl TypeView,
+        is_success: bool,
+    ) -> PartialVMResult<()>;
+
+    fn charge_vec_push_back(
+        &mut self,
+        ty: impl TypeView,
+        val: impl ValueView,
+    ) -> PartialVMResult<()>;
+
+    fn charge_vec_pop_back(
+        &mut self,
+        ty: impl TypeView,
+        val: Option<impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    // TODO(Gas): Expose the elements
+    fn charge_vec_unpack(
+        &mut self,
+        ty: impl TypeView,
+        expect_num_elements: NumArgs,
+        elems: impl ExactSizeIterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    // TODO(Gas): Expose the two elements
+    fn charge_vec_swap(&mut self, ty: impl TypeView) -> PartialVMResult<()>;
+
+    fn charge_native_function(
+        &mut self,
+        amount: InternalGas,
+        ret_vals: Option<impl ExactSizeIterator<Item = impl ValueView>>,
+    ) -> PartialVMResult<()>;
+
+    fn charge_native_function_before_execution(
+        &mut self,
+        ty_args: impl ExactSizeIterator<Item = impl TypeView>,
+        args: impl ExactSizeIterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    fn charge_drop_frame(
+        &mut self,
+        locals: impl Iterator<Item = impl ValueView>,
+    ) -> PartialVMResult<()>;
+
+    /// Returns the gas left
+    fn remaining_gas(&self) -> InternalGas;
+
+    fn get_profiler_mut(&mut self) -> Option<&mut GasProfiler>;
+
+    fn set_profiler(&mut self, profiler: GasProfiler);
+}
+*)
+
+(* move-vm-types/src/values/values_impl.rs
+enum ValueImpl {
+    Invalid,
+
+    U8(u8),
+    U16(u16),
+    U32(u32),
+    U64(u64),
+    U128(u128),
+    U256(u256::U256),
+    Bool(bool),
+    Address(AccountAddress),
+
+    Container(Container),
+
+    ContainerRef(ContainerRef),
+    IndexedRef(IndexedRef),
+}
+*)
+Module ValueImpl.
+  Inductive t : Set :=
+  | Invalid
+  | U8 : Z -> t
+  | U16 : Z -> t
+  | U32 : Z -> t
+  | U64 : Z -> t
+  | U128 : Z -> t
+  | U256 : Z -> t
+  | Bool : bool -> t
+  (* TODO: Implement below *)
+  | Address (*(AccountAddress) *)
+  | Container (* (Container) *)
+  | ContainerRef (* (ContainerRef) *)
+  | IndexedRef (* (IndexedRef) *)
+  .
+
+End ValueImpl.
+
+(* pub struct Value(ValueImpl); *)
+Module Value.
+  Record t := { a0 : ValueImpl.t }.
+End Value.
+(* 
+/// The operand stack.
+struct Stack {
+    value: Vec<Value>,
+}
+*)
+Module Stack.
+  Record t := { value : list Value.t }.
+End Stack.
+
+(* 
+/// `Interpreter` instances can execute Move functions.
+///
+/// An `Interpreter` instance is a stand alone execution context for a function.
+/// It mimics execution on a single thread, with an call stack and an operand stack.
+pub(crate) struct Interpreter {
+    /// Operand stack, where Move `Value`s are stored for stack operations.
+    operand_stack: Stack,
+    /// The stack of active functions.
+    call_stack: CallStack,
+    /// Limits imposed at runtime
+    runtime_limits_config: VMRuntimeLimitsConfig,
+}
+*)
+Module Interpreter.
+
+End Interpreter.
+
 (* 
 struct Frame {
     pc: u16,
