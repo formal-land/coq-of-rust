@@ -41,6 +41,18 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
 ```
 Functions such as&nbsp;`BinOp.Panic.add` are part of the standard library for Rust in Coq that we provide. We can then express and verify specifications on the code in Coq.
 
+## Workflow
+
+```mermaid
+graph TB
+    R[Rust code 🦀] -- coq-of-rust --> T[Translated code 🐓]
+    T -- name resolutions --> L[Linked code 🐓]
+    L -- refinement --> S[Simulations 🐓]
+    S --> P
+    SP[Specifications 🐓] --> P[Proofs 🐓]
+    P -.-> X[100% reliable code! 🦄]
+```
+
 ## Rationale
 Formal verification allows the prevention of all bugs in critical software.
 
