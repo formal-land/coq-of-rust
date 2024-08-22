@@ -4,9 +4,9 @@
 
 Even if Rust's type system prevents many mistakes, including memory errors, the code is still not immune to vulnerabilities, such as unexpected panics or wrongly implemented business rules.
 
-The way to go further is to **mathematically** prove that it is bug-free: this is named "formal verification" and what `coq-of-rust` proposes!
+The way to go further is to **mathematically** prove that it is bug-free: this is named "formal verification" and what `coq-of-rust` proposes! This is the only way to ensure your code contains no bugs or vulnerabilities, even against state-level actors 🧚.
 
-| We propose formal verification as a service, including designing the specification and the proofs.<br /><br />Price: $10/loc 💰<br /><br />**➡️ [Get started 🦸](https://n25o5qrzcx2.typeform.com/to/UPZq4O6U) ⬅️** |
+| We propose formal verification as a service, including designing the specification and the proofs.<br /><br />Price: $10 / Rust loc 💰<br /><br />**➡️ [Get started 🦸](https://n25o5qrzcx2.typeform.com/to/UPZq4O6U) ⬅️** |
 | --- |
 
 _The development of `coq-of-rust` was mainly funded by the&nbsp;[Aleph Zero Foundation](https://alephzero.org/). We thank them for their support!_
