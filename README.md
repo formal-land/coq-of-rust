@@ -43,6 +43,8 @@ Functions such as&nbsp;`BinOp.Panic.add` are part of the standard library for Ru
 
 ## Workflow
 
+Here is the typical workflow of usage for `coq-of-rust`:
+
 ```mermaid
 graph TB
     R[Rust code 🦀] -- coq-of-rust --> T[Translated code 🐓]
@@ -52,6 +54,21 @@ graph TB
     SP[Specifications 🐓] --> P[Proofs 🐓]
     P -.-> X[100% reliable code! 🦄]
 ```
+
+We start by generating an automatic translation of the Rust we verify to Coq code with `coq-of-rust`. The translation is originally verbose. We go through two semi-automated refinement steps, links and simulations, that gradually make the code more amenable to formal verification.
+
+Finally, we write the **specifications** and **prove** that our Rust program fulfills them **with any possible user input 🔥**.
+
+Examples of typical specifications are:
+
+- The code cannot panic.
+- This clever data structure is equivalent to its naive version, except for the execution time.
+- This new release, which introduces new endpoints and does a lot of refactoring, is fully backward-compatible with the previous version.
+- Data invariants are properly preserved.
+- The storage system is sound, as what goes in goes out (this generally amounts to state that the serialization/deserialization functions are inverse).
+- The implementation behaves as a special case of what the whitepaper describes once formally expressed.
+
+With that in hand, you can virtually reduce your code vulnerabilities to zero 🦸!
 
 ## Rationale
 Formal verification allows the prevention of all bugs in critical software.
