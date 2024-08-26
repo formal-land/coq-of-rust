@@ -92,7 +92,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
                     [],
                     "into_iter",
                     []
@@ -115,6 +115,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::ops::range::RangeFrom")
+                                    []
                                     [ Ty.path "u32" ],
                                   [],
                                   "next",
@@ -254,22 +255,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::filter::Filter")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
                             Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                           (Ty.path "bool")
                       ];
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                       (Ty.path "bool")
                   ],
                 [],
@@ -282,22 +286,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
                             Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                           (Ty.path "bool")
                       ],
                     [],
                     "filter",
                     [
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                         (Ty.path "bool")
                     ]
                   |),
@@ -307,15 +313,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
                             Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ],
                         [],
                         "take_while",
                         [
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                             (Ty.path "bool")
                         ]
                       |),
@@ -323,7 +330,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.path "u32" ],
+                            Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
                             [],
                             "map",
                             [

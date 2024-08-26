@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Person";
+    const_params := [];
     ty_params := [];
     fields := [ ("name", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
   } *)
@@ -61,6 +62,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
 (* StructTuple
   {
     name := "Unit";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -68,6 +70,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32"; Ty.path "f32" ];
   } *)
@@ -75,6 +78,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f32"); ("y", Ty.path "f32") ];
   } *)
@@ -82,6 +86,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [ ("top_left", Ty.path "structures::Point"); ("bottom_right", Ty.path "structures::Point") ];
@@ -152,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
                 []
               |),

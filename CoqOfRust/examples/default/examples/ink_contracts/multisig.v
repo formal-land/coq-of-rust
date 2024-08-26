@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
   (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -60,7 +61,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
@@ -132,6 +133,7 @@ End Impl_multisig_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -381,6 +383,7 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
@@ -395,13 +398,15 @@ Definition value_WRONG_TRANSACTION_ID : Value.t :=
 (* StructTuple
   {
     name := "CallInput";
+    const_params := [];
     ty_params := [];
-    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
+    fields := [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ];
   } *)
 
 (*
 Enum ConfirmationStatus
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -455,13 +460,14 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 (* StructRecord
   {
     name := "Transaction";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("selector", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]);
         ("input",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
         ("transferred_value", Ty.path "u128");
         ("gas_limit", Ty.path "u64");
         ("allow_reentry", Ty.path "bool")
@@ -494,7 +500,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
                   [],
                   "default",
                   []
@@ -507,6 +513,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -556,6 +563,7 @@ End Impl_core_default_Default_for_multisig_Transaction.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -665,11 +673,15 @@ End Impl_core_cmp_Eq_for_multisig_Error.
 (* StructRecord
   {
     name := "Transactions";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("transactions",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
         ("next_id", Ty.path "u32")
       ];
   } *)
@@ -691,6 +703,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -718,6 +731,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Confirmation";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -730,6 +744,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Revocation";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32"); ("from", Ty.path "multisig::AccountId") ];
   } *)
@@ -737,6 +752,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Submission";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32") ];
   } *)
@@ -744,6 +760,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Cancellation";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32") ];
   } *)
@@ -751,6 +768,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Execution";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -758,12 +776,15 @@ End Impl_core_default_Default_for_multisig_Transactions.
         ("result",
           Ty.apply
             (Ty.path "core::result::Result")
+            []
             [
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ];
               Ty.path "multisig::Error"
@@ -774,6 +795,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "OwnerAddition";
+    const_params := [];
     ty_params := [];
     fields := [ ("owner", Ty.path "multisig::AccountId") ];
   } *)
@@ -781,6 +803,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "OwnerRemoval";
+    const_params := [];
     ty_params := [];
     fields := [ ("owner", Ty.path "multisig::AccountId") ];
   } *)
@@ -788,6 +811,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "RequirementChange";
+    const_params := [];
     ty_params := [];
     fields := [ ("new_requirement", Ty.path "u32") ];
   } *)
@@ -795,6 +819,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -895,26 +920,30 @@ End Impl_multisig_Env.
 (* StructRecord
   {
     name := "Multisig";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("confirmations",
           Ty.apply
             (Ty.path "multisig::Mapping")
+            []
             [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]);
         ("confirmation_count",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ]);
         ("transactions",
           Ty.apply
             (Ty.path "multisig::Mapping")
+            []
             [ Ty.path "u32"; Ty.path "multisig::Transaction" ]);
         ("transaction_list", Ty.path "multisig::Transactions");
         ("owners",
           Ty.apply
             (Ty.path "alloc::vec::Vec")
+            []
             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]);
         ("is_owner",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
+          Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
         ("requirement", Ty.path "u32")
       ];
   } *)
@@ -936,6 +965,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
                   [],
                   "default",
@@ -947,7 +977,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                  Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ],
                   [],
                   "default",
                   []
@@ -960,6 +990,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   [],
                   "default",
@@ -984,6 +1015,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -997,6 +1029,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   [],
                   "default",
@@ -1152,7 +1185,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                   "sort_unstable",
                   []
                 |),
@@ -1162,6 +1195,7 @@ Module Impl_multisig_Multisig.
                       "core::ops::deref::DerefMut",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "deref_mut",
@@ -1178,6 +1212,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "dedup",
                   []
@@ -1195,6 +1230,7 @@ Module Impl_multisig_Multisig.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                         "len",
                         []
@@ -1214,9 +1250,11 @@ Module Impl_multisig_Multisig.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "&")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -1240,6 +1278,7 @@ Module Impl_multisig_Multisig.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Iter")
+                                      []
                                       [ Ty.path "multisig::AccountId" ],
                                     [],
                                     "next",
@@ -1269,6 +1308,7 @@ Module Impl_multisig_Multisig.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "multisig::Mapping")
+                                              []
                                               [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                             "insert",
                                             []
@@ -1360,7 +1400,7 @@ Module Impl_multisig_Multisig.
                             (BinOp.Pure.ge
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   "expect",
                                   []
                                 |),
@@ -1369,6 +1409,7 @@ Module Impl_multisig_Multisig.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "multisig::Mapping")
+                                        []
                                         [ Ty.path "u32"; Ty.path "u32" ],
                                       "get",
                                       []
@@ -1437,7 +1478,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "multisig::Transaction" ],
                   "expect",
                   []
                 |),
@@ -1446,6 +1487,7 @@ Module Impl_multisig_Multisig.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "multisig::Mapping")
+                        []
                         [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                       "get",
                       []
@@ -1497,6 +1539,7 @@ Module Impl_multisig_Multisig.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "multisig::Mapping")
+                                  []
                                   [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                 "contains",
                                 []
@@ -1723,6 +1766,7 @@ Module Impl_multisig_Multisig.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "multisig::Mapping")
+                                    []
                                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                   "contains",
                                   []
@@ -1809,6 +1853,7 @@ Module Impl_multisig_Multisig.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                           "len",
                           []
@@ -1838,6 +1883,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "insert",
                   []
@@ -1859,6 +1905,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "push",
                   []
@@ -1918,7 +1965,7 @@ Module Impl_multisig_Multisig.
         M.rust_cast
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               "expect",
               []
             |),
@@ -1926,12 +1973,12 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "multisig::AccountId" ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "multisig::AccountId" ],
                   [],
                   "position",
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -1939,7 +1986,7 @@ Module Impl_multisig_Multisig.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                         "iter",
                         []
                       |),
@@ -1949,6 +1996,7 @@ Module Impl_multisig_Multisig.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref",
@@ -2032,9 +2080,11 @@ Module Impl_multisig_Multisig.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "&")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
                       ],
                     [],
@@ -2066,7 +2116,7 @@ Module Impl_multisig_Multisig.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                   [],
                                   "next",
                                   []
@@ -2109,6 +2159,7 @@ Module Impl_multisig_Multisig.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "multisig::Mapping")
+                                                      []
                                                       [
                                                         Ty.tuple
                                                           [
@@ -2141,6 +2192,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "multisig::Mapping")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -2168,6 +2220,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "u32" ],
                                                   "unwrap_or",
                                                   []
@@ -2177,6 +2230,7 @@ Module Impl_multisig_Multisig.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "multisig::Mapping")
+                                                        []
                                                         [ Ty.path "u32"; Ty.path "u32" ],
                                                       "get",
                                                       []
@@ -2209,6 +2263,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "multisig::Mapping")
+                                                    []
                                                     [ Ty.path "u32"; Ty.path "u32" ],
                                                   "insert",
                                                   []
@@ -2291,6 +2346,7 @@ Module Impl_multisig_Multisig.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                       "len",
                       []
@@ -2342,6 +2398,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "swap_remove",
                   []
@@ -2362,6 +2419,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "remove",
                   []
@@ -2484,6 +2542,7 @@ Module Impl_multisig_Multisig.
                   "core::ops::index::IndexMut",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   [ Ty.path "usize" ],
                   "index_mut",
@@ -2506,6 +2565,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "remove",
                   []
@@ -2526,6 +2586,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "insert",
                   []
@@ -2641,6 +2702,7 @@ Module Impl_multisig_Multisig.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                         "len",
                         []
@@ -2741,14 +2803,14 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   "unwrap_or",
                   []
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                      Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ],
                       "get",
                       []
                     |),
@@ -2774,6 +2836,7 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "multisig::Mapping")
+                      []
                       [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
                     "contains",
                     []
@@ -2808,6 +2871,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [
                                 Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                 Ty.tuple []
@@ -2830,7 +2894,10 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                            Ty.apply
+                              (Ty.path "multisig::Mapping")
+                              []
+                              [ Ty.path "u32"; Ty.path "u32" ],
                             "insert",
                             []
                           |),
@@ -3007,7 +3074,7 @@ Module Impl_multisig_Multisig.
               |),
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   "expect",
                   []
                 |),
@@ -3026,6 +3093,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   "insert",
                   []
@@ -3047,6 +3115,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                   "push",
                   []
@@ -3154,6 +3223,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   "get",
                   []
@@ -3181,6 +3251,7 @@ Module Impl_multisig_Multisig.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.path "multisig::Transaction" ],
                               "is_some",
                               []
@@ -3195,6 +3266,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                             "remove",
                             []
@@ -3213,7 +3285,7 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             "expect",
                             []
                           |),
@@ -3221,12 +3293,12 @@ Module Impl_multisig_Multisig.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                 [],
                                 "position",
                                 [
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                                     (Ty.path "bool")
                                 ]
                               |),
@@ -3234,7 +3306,7 @@ Module Impl_multisig_Multisig.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                       "iter",
                                       []
                                     |),
@@ -3244,6 +3316,7 @@ Module Impl_multisig_Multisig.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                                           [],
                                           "deref",
@@ -3278,8 +3351,8 @@ Module Impl_multisig_Multisig.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
-                                                    Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                                     "eq",
                                                     []
                                                   |),
@@ -3304,6 +3377,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                             "swap_remove",
                             []
@@ -3331,6 +3405,7 @@ Module Impl_multisig_Multisig.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
+                                  []
                                   [ Ty.path "multisig::AccountId" ],
                                 [],
                                 "into_iter",
@@ -3339,7 +3414,7 @@ Module Impl_multisig_Multisig.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                                     "iter",
                                     []
                                   |),
@@ -3349,6 +3424,7 @@ Module Impl_multisig_Multisig.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "multisig::AccountId";
                                             Ty.path "alloc::alloc::Global"
@@ -3384,6 +3460,7 @@ Module Impl_multisig_Multisig.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "multisig::AccountId" ],
                                               [],
                                               "next",
@@ -3418,6 +3495,7 @@ Module Impl_multisig_Multisig.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "multisig::Mapping")
+                                                        []
                                                         [
                                                           Ty.tuple
                                                             [
@@ -3454,7 +3532,10 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                            Ty.apply
+                              (Ty.path "multisig::Mapping")
+                              []
+                              [ Ty.path "u32"; Ty.path "u32" ],
                             "remove",
                             []
                           |),
@@ -3520,6 +3601,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "multisig::Transaction" ],
                             "is_some",
                             []
@@ -3702,6 +3784,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [
                                 Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                 Ty.tuple []
@@ -3726,6 +3809,7 @@ Module Impl_multisig_Multisig.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "multisig::Mapping")
+                            []
                             [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple []
                             ],
                           "remove",
@@ -3745,7 +3829,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                           "expect",
                           []
                         |),
@@ -3754,6 +3838,7 @@ Module Impl_multisig_Multisig.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "multisig::Mapping")
+                                []
                                 [ Ty.path "u32"; Ty.path "u32" ],
                               "get",
                               []
@@ -3784,7 +3869,10 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                          Ty.apply
+                            (Ty.path "multisig::Mapping")
+                            []
+                            [ Ty.path "u32"; Ty.path "u32" ],
                           "insert",
                           []
                         |),
@@ -3887,7 +3975,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "multisig::Transaction" ],
                   "expect",
                   []
                 |),
@@ -4023,23 +4111,28 @@ Module Impl_multisig_Multisig.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "multisig::Error" ],
                                 "map",
                                 [
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                     ];
                                   Ty.function
                                     [ Ty.tuple [ Ty.tuple [] ] ]
                                     (Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                       ])
                                 ]

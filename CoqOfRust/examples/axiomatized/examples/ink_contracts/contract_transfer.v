@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "contract_transfer::AccountId") ];
   } *)
@@ -74,6 +76,7 @@ End Impl_contract_transfer_Env.
 (* StructTuple
   {
     name := "GiveMe";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

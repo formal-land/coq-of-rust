@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -16,6 +17,7 @@ Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_c
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("count", Ty.path "u32") ];
   } *)

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Years";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i64" ];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Days";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i64" ];
   } *)

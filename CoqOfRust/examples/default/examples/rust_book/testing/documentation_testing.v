@@ -48,7 +48,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Divide-by-zero error" |) ]
                       |)

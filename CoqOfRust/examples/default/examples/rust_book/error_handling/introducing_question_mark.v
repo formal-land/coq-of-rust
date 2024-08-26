@@ -27,6 +27,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         [],
                         "branch",
@@ -59,10 +60,12 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "core::num::error::ParseIntError"
@@ -99,6 +102,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         [],
                         "branch",
@@ -131,10 +135,12 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "core::num::error::ParseIntError"

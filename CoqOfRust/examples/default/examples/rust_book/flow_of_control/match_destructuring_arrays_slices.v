@@ -260,7 +260,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 1 ]
+                                            [ Ty.path "i32" ]
+                                        ]
                                       |),
                                       [ tail ]
                                     |)
@@ -321,7 +326,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 1 ]
+                                            [ Ty.path "i32" ]
+                                        ]
                                       |),
                                       [ middle ]
                                     |);

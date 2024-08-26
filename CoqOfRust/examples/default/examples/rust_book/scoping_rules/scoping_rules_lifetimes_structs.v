@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Borrowed";
+    const_params := [];
     ty_params := [];
-    fields := [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ];
+    fields := [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
@@ -52,11 +53,12 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 (* StructRecord
   {
     name := "NamedBorrowed";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("x", Ty.apply (Ty.path "&") [ Ty.path "i32" ]);
-        ("y", Ty.apply (Ty.path "&") [ Ty.path "i32" ])
+        ("x", Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]);
+        ("y", Ty.apply (Ty.path "&") [] [ Ty.path "i32" ])
       ];
   } *)
 
@@ -113,6 +115,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 (*
 Enum Either
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -123,7 +126,7 @@ Enum Either
       };
       {
         name := "Ref";
-        item := StructTuple [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ];
+        item := StructTuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ];
         discriminant := None;
       }
     ];

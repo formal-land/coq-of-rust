@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Container";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32"; Ty.path "i32" ];
   } *)

@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("data", T) ];
   } *)
 
 Module Impl_polymorphic_associated_function_Foo_A.
   Definition Self (A : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ].
+    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ A ].
   
   Parameter convert : forall (A : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   

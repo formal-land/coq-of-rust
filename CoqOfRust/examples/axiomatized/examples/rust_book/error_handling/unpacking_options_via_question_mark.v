@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "PhoneNumber";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("area_code", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ]);
+        ("area_code", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]);
         ("number", Ty.path "u32")
       ];
   } *)
@@ -35,12 +36,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 (* StructRecord
   {
     name := "Job";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("phone_number",
           Ty.apply
             (Ty.path "core::option::Option")
+            []
             [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ])
       ];
   } *)
@@ -68,12 +71,14 @@ End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 (* StructRecord
   {
     name := "Person";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("job",
           Ty.apply
             (Ty.path "core::option::Option")
+            []
             [ Ty.path "unpacking_options_via_question_mark::Job" ])
       ];
   } *)

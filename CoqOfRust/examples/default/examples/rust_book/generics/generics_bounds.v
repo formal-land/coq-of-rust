@@ -7,6 +7,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
   } *)
@@ -64,6 +65,7 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 (* StructRecord
   {
     name := "Triangle";
+    const_params := [];
     ty_params := [];
     fields := [ ("length", Ty.path "f64"); ("height", Ty.path "f64") ];
   } *)
@@ -144,7 +146,7 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)

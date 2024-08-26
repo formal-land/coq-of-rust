@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -73,6 +74,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "call_runtime::AccountId") ];
   } *)
@@ -80,6 +82,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (*
 Enum MultiAddress
 {
+  const_params := [];
   ty_params := [ "AccountId"; "AccountIndex" ];
   variants := [];
 }
@@ -89,6 +92,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Definition Self : Ty.t :=
     Ty.apply
       (Ty.path "call_runtime::MultiAddress")
+      []
       [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
   
   (*
@@ -109,6 +113,7 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 (*
 Enum BalancesCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -120,6 +125,7 @@ Enum BalancesCall
               ("dest",
                 Ty.apply
                   (Ty.path "call_runtime::MultiAddress")
+                  []
                   [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
               ("value", Ty.path "u128")
             ];
@@ -132,6 +138,7 @@ Enum BalancesCall
 (*
 Enum RuntimeCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -147,6 +154,7 @@ Enum RuntimeCall
 (* StructTuple
   {
     name := "RuntimeCaller";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -172,6 +180,7 @@ End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 (*
 Enum RuntimeError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -278,6 +287,7 @@ End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 (*
 Enum EnvError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -329,7 +339,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Unexpected error from `pallet-contracts`." |) ]
                       |)
@@ -442,6 +452,7 @@ Module Impl_call_runtime_RuntimeCaller.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
+              []
               [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
             "map_err",
             [
@@ -484,6 +495,7 @@ Module Impl_call_runtime_RuntimeCaller.
                                 [
                                   Ty.apply
                                     (Ty.path "call_runtime::MultiAddress")
+                                    []
                                     [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
                                 ],
                                 "into",
@@ -526,6 +538,7 @@ Module Impl_call_runtime_RuntimeCaller.
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
+              []
               [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
             "map_err",
             [

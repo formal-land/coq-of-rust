@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Droppable";
+    const_params := [];
     ty_params := [];
-    fields := [ ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("name", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]) ];
   } *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.

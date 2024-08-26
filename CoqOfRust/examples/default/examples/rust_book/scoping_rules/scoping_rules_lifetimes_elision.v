@@ -40,7 +40,7 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ x ]
                               |)
@@ -99,7 +99,7 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ x ]
                               |)
@@ -212,7 +212,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -262,7 +262,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|

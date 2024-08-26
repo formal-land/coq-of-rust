@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Sheep";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Cow";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -109,6 +111,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
                                   Ty.path "returning_traits_with_dyn::Sheep";
                                   Ty.path "alloc::alloc::Global"
@@ -128,6 +131,7 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.path "returning_traits_with_dyn::Cow";
                                 Ty.path "alloc::alloc::Global"
@@ -200,7 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.alloc (|

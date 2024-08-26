@@ -29,8 +29,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "eq",
                             []
                           |),
@@ -43,7 +43,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                       |)
@@ -80,7 +80,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ beverage ]
                               |)

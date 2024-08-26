@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum DoubleError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -88,9 +89,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "wrapping_errors::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "wrapping_errors::DoubleError" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "wrapping_errors::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "wrapping_errors::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
@@ -304,8 +305,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                             Ty.path "wrapping_errors::DoubleError"
                           ],
                         [],
@@ -317,7 +322,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
-                              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               ],
                             "ok_or",
                             [ Ty.path "wrapping_errors::DoubleError" ]
@@ -327,7 +337,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "first",
                                 []
                               |),
@@ -337,8 +348,9 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::deref::Deref",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
@@ -374,10 +386,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "wrapping_errors::DoubleError"
@@ -414,6 +428,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         [],
                         "branch",
@@ -446,10 +461,12 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "core::num::error::ParseIntError"
@@ -668,6 +685,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
+                                                      []
                                                       [ Ty.dyn [ ("core::error::Error::Trait", []) ]
                                                       ]
                                                   ]
@@ -714,7 +732,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -726,8 +744,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -754,7 +776,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
@@ -765,7 +788,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -777,8 +800,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",

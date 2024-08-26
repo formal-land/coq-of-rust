@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Ref";
+    const_params := [];
     ty_params := [ "T" ];
-    fields := [ Ty.apply (Ty.path "&") [ T ] ];
+    fields := [ Ty.apply (Ty.path "&") [] [ T ] ];
   } *)
 
 Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
+    Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ T ].
   
   (* Debug *)
   Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -155,7 +156,7 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -195,7 +196,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "scoping_rules_lifetimes_bounds::print_ref",
-                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] ]
+                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
               |),
               [ ref_x ]
             |)
@@ -205,7 +206,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "scoping_rules_lifetimes_bounds::print",
-                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ Ty.path "i32" ] ]
+                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
               |),
               [ M.read (| ref_x |) ]
             |)

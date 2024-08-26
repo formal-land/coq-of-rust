@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "e2e_call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "e2e_call_runtime::AccountId") ];
   } *)
@@ -61,6 +63,7 @@ End Impl_e2e_call_runtime_Env.
 (* StructTuple
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

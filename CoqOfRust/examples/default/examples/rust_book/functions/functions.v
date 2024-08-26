@@ -274,7 +274,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                   [],
                   "into_iter",
                   []
@@ -282,7 +282,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                       "new",
                       []
                     |),
@@ -305,6 +305,7 @@ Definition fizzbuzz_to (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeInclusive")
+                                  []
                                   [ Ty.path "u32" ],
                                 [],
                                 "next",

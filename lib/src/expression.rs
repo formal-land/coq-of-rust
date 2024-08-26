@@ -402,6 +402,25 @@ impl Literal {
             Literal::Error => coq::Expression::just_name("UnsupportedLiteral"),
         }
     }
+
+    fn to_name(&self) -> String {
+        match self {
+            Literal::Bool(b) => b.to_string(),
+            Literal::Integer(LiteralInteger {
+                negative_sign,
+                value,
+            }) => {
+                if *negative_sign {
+                    format!("minus_{}", value)
+                } else {
+                    value.to_string()
+                }
+            }
+            Literal::Char(c) => format!("char_{}", c),
+            Literal::String(s) => format!("string_{}", s),
+            Literal::Error => "error".to_string(),
+        }
+    }
 }
 
 impl Expr {
@@ -607,6 +626,14 @@ impl Expr {
             Expr::Comment(message, expr) => {
                 coq::Expression::Comment(message.to_owned(), expr.to_coq().into())
             }
+        }
+    }
+
+    pub(crate) fn to_name(&self) -> String {
+        match self {
+            Expr::LocalVar(name) => name.clone(),
+            Expr::Literal(literal) => literal.to_name(),
+            _ => "expr".to_string(),
         }
     }
 }

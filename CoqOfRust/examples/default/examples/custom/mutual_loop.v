@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "LoopA";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -47,6 +48,7 @@ End Impl_mutual_loop_LoopA.
 (*
 Enum LoopB
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

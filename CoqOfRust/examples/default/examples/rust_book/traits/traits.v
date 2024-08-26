@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Sheep";
+    const_params := [];
     ty_params := [];
-    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]) ];
   } *)
 
 (* Trait *)
@@ -45,7 +46,7 @@ Module Animal.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [
                                     M.alloc (|
@@ -66,7 +67,7 @@ Module Animal.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [
                                     M.alloc (|
@@ -183,7 +184,7 @@ Module Impl_traits_Sheep.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                           |),
                                           [
                                             M.alloc (|
@@ -243,7 +244,7 @@ Module Impl_traits_Sheep.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                           |),
                                           [
                                             M.SubPointer.get_struct_record_field (|
@@ -396,7 +397,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -410,7 +411,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [
                                     M.alloc (|

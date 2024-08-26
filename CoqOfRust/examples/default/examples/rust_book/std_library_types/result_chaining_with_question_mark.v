@@ -5,6 +5,7 @@ Module checked.
   (*
   Enum MathError
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -92,6 +93,7 @@ Module checked.
     (Ty.path "result_chaining_with_question_mark::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
+        []
         [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError" ]).
   
   (*
@@ -284,6 +286,7 @@ Module checked.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "f64";
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
@@ -322,6 +325,7 @@ Module checked.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "f64";
                                           Ty.path
@@ -330,6 +334,7 @@ Module checked.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path
@@ -367,6 +372,7 @@ Module checked.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "f64";
                               Ty.path "result_chaining_with_question_mark::checked::MathError"
@@ -405,6 +411,7 @@ Module checked.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "f64";
                                           Ty.path
@@ -413,6 +420,7 @@ Module checked.
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.path
@@ -494,7 +502,7 @@ Module checked.
                       M.call_closure (|
                         M.get_function (|
                           "core::panicking::panic_display",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
                           M.match_operator (|

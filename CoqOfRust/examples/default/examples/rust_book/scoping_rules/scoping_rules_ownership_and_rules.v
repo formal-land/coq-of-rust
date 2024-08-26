@@ -45,6 +45,7 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -165,6 +166,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -203,6 +205,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),

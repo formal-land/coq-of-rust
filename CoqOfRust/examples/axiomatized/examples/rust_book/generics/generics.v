@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "A";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Single";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "generics::A" ];
   } *)
@@ -18,6 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "SingleGen";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ T ];
   } *)

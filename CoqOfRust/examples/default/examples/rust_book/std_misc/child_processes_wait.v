@@ -20,6 +20,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
                 "unwrap",
                 []
@@ -32,7 +33,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "std::process::Command",
                         "arg",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [
                         M.alloc (|
@@ -40,7 +41,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "std::process::Command",
                               "new",
-                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             |),
                             [ M.read (| Value.String "sleep" |) ]
                           |)
@@ -59,6 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
                 "unwrap",
                 []

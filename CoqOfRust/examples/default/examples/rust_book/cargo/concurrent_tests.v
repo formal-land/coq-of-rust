@@ -106,6 +106,7 @@ Module tests.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
                   []
@@ -115,7 +116,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
                       M.call_closure (|
@@ -161,7 +162,7 @@ Module tests.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -185,7 +186,7 @@ Module tests.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -213,6 +214,7 @@ Module tests.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
                                           []
@@ -283,6 +285,7 @@ Module tests.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
                   []
@@ -292,7 +295,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
                       M.call_closure (|
@@ -338,7 +341,7 @@ Module tests.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -362,7 +365,7 @@ Module tests.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -390,6 +393,7 @@ Module tests.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
                                           []

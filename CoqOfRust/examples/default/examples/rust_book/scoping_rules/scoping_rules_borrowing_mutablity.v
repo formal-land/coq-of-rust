@@ -4,11 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Book";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("author", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("title", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
+        ("author", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+        ("title", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
         ("year", Ty.path "u32")
       ];
   } *)
@@ -103,7 +104,7 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -193,7 +194,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|

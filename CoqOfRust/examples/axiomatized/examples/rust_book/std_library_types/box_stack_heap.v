@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -44,6 +45,7 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [

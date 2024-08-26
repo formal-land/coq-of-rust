@@ -36,6 +36,7 @@ Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
 (* StructTuple
   {
     name := "Matrix";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "f32"; Ty.path "f32"; Ty.path "f32"; Ty.path "f32" ];
   } *)
@@ -520,7 +521,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_debug",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ b ]
                                       |);

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Temperature
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

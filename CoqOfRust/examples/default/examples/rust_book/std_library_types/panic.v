@@ -31,7 +31,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_function (|
                         "std::panicking::begin_panic",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ M.read (| Value.String "division by zero" |) ]
                     |)
@@ -74,6 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []

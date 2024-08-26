@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "custom_environment::AccountId") ];
   } *)
@@ -53,6 +55,7 @@ Axiom Balance : (Ty.path "custom_environment::Balance") = (Ty.path "u128").
 (* StructTuple
   {
     name := "Topics";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -73,6 +76,7 @@ End Impl_core_default_Default_for_custom_environment_Topics.
 (* StructRecord
   {
     name := "EventWithTopics";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -100,6 +104,7 @@ End Impl_core_default_Default_for_custom_environment_EventWithTopics.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

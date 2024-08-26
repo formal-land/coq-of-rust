@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -73,6 +74,7 @@ Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "contract_transfer::AccountId") ];
   } *)
@@ -134,6 +136,7 @@ End Impl_contract_transfer_Env.
 (* StructTuple
   {
     name := "GiveMe";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -345,7 +348,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "insufficient funds!" |) ]
                         |)
@@ -364,7 +367,10 @@ Module Impl_contract_transfer_GiveMe.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.tuple [] ],
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.tuple [] ],
                             "is_err",
                             []
                           |),
@@ -419,7 +425,7 @@ Module Impl_contract_transfer_GiveMe.
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
                           M.read (|
@@ -551,7 +557,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "payment was not ten" |) ]
                         |)

@@ -4,11 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Account";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("username", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("password", Ty.apply (Ty.path "&") [ Ty.path "str" ])
+        ("username", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+        ("password", Ty.apply (Ty.path "&") [] [ Ty.path "str" ])
       ];
   } *)
 
@@ -37,8 +38,8 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.apply (Ty.path "&") [ Ty.path "str" ],
-              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "eq",
               []
             |),
@@ -59,8 +60,8 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
             (M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "eq",
                 []
               |),
@@ -150,7 +151,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::hash::Hash",
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                   [],
                   "hash",
                   [ __H ]
@@ -169,7 +170,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
             M.call_closure (|
               M.get_trait_method (|
                 "core::hash::Hash",
-                Ty.apply (Ty.path "&") [ Ty.path "str" ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 [],
                 "hash",
                 [ __H ]
@@ -199,11 +200,12 @@ End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 (* StructRecord
   {
     name := "AccountInfo";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]);
-        ("email", Ty.apply (Ty.path "&") [ Ty.path "str" ])
+        ("name", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]);
+        ("email", Ty.apply (Ty.path "&") [] [ Ty.path "str" ])
       ];
   } *)
 
@@ -211,6 +213,7 @@ Axiom Accounts :
   (Ty.path "hash_map_alternate_or_custom_key_types::Accounts") =
     (Ty.apply
       (Ty.path "std::collections::hash::map::HashMap")
+      []
       [
         Ty.path "hash_map_alternate_or_custom_key_types::Account";
         Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
@@ -269,7 +272,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ username ]
                               |)
@@ -307,7 +310,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ password ]
                               |)
@@ -352,6 +355,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "hash_map_alternate_or_custom_key_types::Account";
                     Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
@@ -426,7 +430,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
                                           M.SubPointer.get_struct_record_field (|
@@ -476,7 +480,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
                                           M.SubPointer.get_struct_record_field (|
@@ -562,6 +566,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "hash_map_alternate_or_custom_key_types::Account";
                     Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
@@ -597,6 +602,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "hash_map_alternate_or_custom_key_types::Account";
                     Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";

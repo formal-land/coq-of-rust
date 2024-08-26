@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -46,6 +47,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "call_runtime::AccountId") ];
   } *)
@@ -53,6 +55,7 @@ Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
 (*
 Enum MultiAddress
 {
+  const_params := [];
   ty_params := [ "AccountId"; "AccountIndex" ];
   variants := [];
 }
@@ -62,6 +65,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Definition Self : Ty.t :=
     Ty.apply
       (Ty.path "call_runtime::MultiAddress")
+      []
       [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ].
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -77,6 +81,7 @@ End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_
 (*
 Enum BalancesCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -88,6 +93,7 @@ Enum BalancesCall
               ("dest",
                 Ty.apply
                   (Ty.path "call_runtime::MultiAddress")
+                  []
                   [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
               ("value", Ty.path "u128")
             ];
@@ -100,6 +106,7 @@ Enum BalancesCall
 (*
 Enum RuntimeCall
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -115,6 +122,7 @@ Enum RuntimeCall
 (* StructTuple
   {
     name := "RuntimeCaller";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -135,6 +143,7 @@ End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 (*
 Enum RuntimeError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -212,6 +221,7 @@ End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
 (*
 Enum EnvError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

@@ -74,7 +74,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 21 ]
+                                          [ Ty.path "u8" ]
+                                      ]
                                   ]
                                 |),
                                 [ bytestring ]
@@ -119,7 +125,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 13 ]
+                                          [ Ty.path "u8" ]
+                                      ]
                                   ]
                                 |),
                                 [ escaped ]
@@ -161,7 +173,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 28 ]
+                                          [ Ty.path "u8" ]
+                                      ]
                                   ]
                                 |),
                                 [ raw_bytestring ]
@@ -222,7 +240,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                           |),
                                           [ my_str ]
                                         |)
@@ -285,7 +303,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ my_str ]
                                       |)

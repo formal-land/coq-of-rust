@@ -13,6 +13,7 @@ Axiom Function_decode_input : M.IsFunction "wildcard_selector::decode_input" dec
 (* StructTuple
   {
     name := "WildcardSelector";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -51,10 +52,11 @@ Module Impl_wildcard_selector_WildcardSelector.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple
                         [
-                          Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
                           Ty.path "alloc::string::String"
                         ];
                       Ty.tuple []
@@ -69,7 +71,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
                             Ty.path "alloc::string::String"
                           ]
                       ]
@@ -119,7 +121,12 @@ Module Impl_wildcard_selector_WildcardSelector.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
-                                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 4 ]
+                                                [ Ty.path "u8" ]
+                                            ]
                                           |),
                                           [ _selector ]
                                         |);

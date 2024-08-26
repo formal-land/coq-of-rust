@@ -5,6 +5,7 @@ Module underscore.
   (* StructRecord
     {
       name := "Foo";
+      const_params := [];
       ty_params := [];
       fields := [ ("test", Ty.path "bool") ];
     } *)
@@ -25,6 +26,7 @@ End underscore.
 (* StructRecord
   {
     name := "Bar";
+    const_params := [];
     ty_params := [];
     fields := [ ("test", Ty.path "alloc::string::String") ];
   } *)

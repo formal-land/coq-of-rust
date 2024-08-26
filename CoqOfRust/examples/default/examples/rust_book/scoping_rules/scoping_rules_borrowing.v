@@ -43,6 +43,7 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -102,7 +103,7 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ borrowed_i32 ]
                               |)
@@ -161,6 +162,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []

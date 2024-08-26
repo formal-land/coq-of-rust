@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -79,6 +80,7 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 (*
 Enum Day
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -299,13 +301,16 @@ Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
       (let food := M.alloc (| food |) in
       M.call_closure (|
         M.get_associated_function (|
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
           "and_then",
           [
             Ty.path "combinators_and_then::Food";
             Ty.function
               [ Ty.path "combinators_and_then::Food" ]
-              (Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_and_then::Food" ])
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "combinators_and_then::Food" ])
           ]
         |),
         [

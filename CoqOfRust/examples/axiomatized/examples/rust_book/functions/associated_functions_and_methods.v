@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -23,6 +24,7 @@ End Impl_associated_functions_and_methods_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -54,11 +56,12 @@ End Impl_associated_functions_and_methods_Rectangle.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 

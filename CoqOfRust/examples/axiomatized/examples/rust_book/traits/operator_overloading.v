@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Foo";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Bar";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -18,6 +20,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "FooBar";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -38,6 +41,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 (* StructTuple
   {
     name := "BarFoo";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

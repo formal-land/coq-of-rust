@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("data", T) ];
   } *)
 
 Module Impl_polymorphic_associated_function_Foo_A.
   Definition Self (A : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ].
+    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ A ].
   
   (*
       fn convert<B: From<A>>(self) -> Foo<B> {
@@ -71,7 +72,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ],
                 "convert",
                 [ Ty.path "f64" ]
               |),

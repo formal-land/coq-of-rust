@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Circle";
+    const_params := [];
     ty_params := [];
     fields := [ ("radius", Ty.path "i32") ];
   } *)

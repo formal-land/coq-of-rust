@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [] [ K; V ].
   
   (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -60,7 +61,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_dns_Mapping_K_V.
 
 Module Impl_dns_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [] [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
@@ -143,6 +144,7 @@ End Impl_dns_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -246,7 +248,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_dns_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (*
@@ -260,17 +262,20 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_dns_AccountId.
+End Impl_core_convert_From_array_32_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "dns::AccountId") ];
   } *)
@@ -278,20 +283,25 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
 (* StructRecord
   {
     name := "Register";
+    const_params := [];
     ty_params := [];
     fields :=
-      [ ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]); ("from", Ty.path "dns::AccountId") ];
+      [
+        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("from", Ty.path "dns::AccountId")
+      ];
   } *)
 
 (* StructRecord
   {
     name := "SetAddress";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_address", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
+        ("old_address", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -299,12 +309,13 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
 (* StructRecord
   {
     name := "Transfer";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
-        ("old_owner", Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ]);
+        ("old_owner", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_owner", Ty.path "dns::AccountId")
       ];
   } *)
@@ -312,6 +323,7 @@ Axiom Hash : (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" 
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -368,17 +380,26 @@ End Impl_dns_Env.
 (* StructRecord
   {
     name := "DomainNameService";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("name_to_address",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
+            []
+            [
+              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.path "dns::AccountId"
+            ]);
         ("name_to_owner",
           Ty.apply
             (Ty.path "dns::Mapping")
-            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ]);
+            []
+            [
+              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.path "dns::AccountId"
+            ]);
         ("default_address", Ty.path "dns::AccountId")
       ];
   } *)
@@ -395,7 +416,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
       (M.call_closure (|
         M.get_trait_method (|
           "core::convert::Into",
-          Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
           [ Ty.path "dns::AccountId" ],
           "into",
           []
@@ -435,7 +456,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "dns::Mapping")
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                    []
+                    [
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ],
                   "new",
                   []
                 |),
@@ -448,7 +473,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "dns::Mapping")
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                    []
+                    [
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ],
                   "insert",
                   []
                 |),
@@ -457,7 +486,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                       [],
                       "default",
                       []
@@ -474,7 +503,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "dns::Mapping")
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                    []
+                    [
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ],
                   "new",
                   []
                 |),
@@ -487,7 +520,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "dns::Mapping")
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                    []
+                    [
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                      Ty.path "dns::AccountId"
+                    ],
                   "insert",
                   []
                 |),
@@ -496,7 +533,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                       [],
                       "default",
                       []
@@ -532,6 +569,7 @@ End Impl_core_default_Default_for_dns_DomainNameService.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -638,9 +676,9 @@ Module Impl_core_cmp_Eq_for_dns_Error.
 End Impl_core_cmp_Eq_for_dns_Error.
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "dns::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "dns::Error" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "dns::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "dns::Error" ]).
 
 Module Impl_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
@@ -751,8 +789,12 @@ Module Impl_dns_DomainNameService.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "dns::Mapping")
+                                    []
                                     [
-                                      Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 32 ]
+                                        [ Ty.path "u8" ];
                                       Ty.path "dns::AccountId"
                                     ],
                                   "contains",
@@ -790,7 +832,11 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "dns::Mapping")
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                        []
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.path "dns::AccountId"
+                        ],
                       "insert",
                       []
                     |),
@@ -853,7 +899,7 @@ Module Impl_dns_DomainNameService.
         let name := M.alloc (| name |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
             []
           |),
@@ -862,7 +908,11 @@ Module Impl_dns_DomainNameService.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "dns::Mapping")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ],
                 "get",
                 []
               |),
@@ -991,7 +1041,11 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "dns::Mapping")
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                        []
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.path "dns::AccountId"
+                        ],
                       "get",
                       []
                     |),
@@ -1011,7 +1065,11 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "dns::Mapping")
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                        []
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.path "dns::AccountId"
+                        ],
                       "insert",
                       []
                     |),
@@ -1166,7 +1224,11 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "dns::Mapping")
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                        []
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.path "dns::AccountId"
+                        ],
                       "get",
                       []
                     |),
@@ -1186,7 +1248,11 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "dns::Mapping")
-                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                        []
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                          Ty.path "dns::AccountId"
+                        ],
                       "insert",
                       []
                     |),
@@ -1254,7 +1320,7 @@ Module Impl_dns_DomainNameService.
         let name := M.alloc (| name |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "dns::AccountId" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
             []
           |),
@@ -1263,7 +1329,11 @@ Module Impl_dns_DomainNameService.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "dns::Mapping")
-                  [ Ty.apply (Ty.path "array") [ Ty.path "u8" ]; Ty.path "dns::AccountId" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                    Ty.path "dns::AccountId"
+                  ],
                 "get",
                 []
               |),

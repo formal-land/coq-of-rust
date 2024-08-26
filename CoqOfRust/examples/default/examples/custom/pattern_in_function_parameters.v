@@ -117,6 +117,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "usize";
                                                   Ty.path "core::num::error::TryFromIntError"
@@ -150,6 +151,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "usize";
                                                   Ty.path "core::num::error::TryFromIntError"

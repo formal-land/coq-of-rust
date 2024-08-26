@@ -8,6 +8,7 @@ Axiom Function_decode_input : M.IsFunction "wildcard_selector::decode_input" dec
 (* StructTuple
   {
     name := "WildcardSelector";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

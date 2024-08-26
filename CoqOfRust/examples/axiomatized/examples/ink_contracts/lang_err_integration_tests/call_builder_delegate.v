@@ -2,11 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom Hash :
-  (Ty.path "call_builder_delegate::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "call_builder_delegate::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -22,6 +24,7 @@ Enum LangError
 (* StructRecord
   {
     name := "CallBuilderDelegateTest";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "i32") ];
   } *)

@@ -8,7 +8,7 @@ use rustc_hir::def::DefKind;
 use rustc_middle::mir::{BinOp, UnOp};
 use rustc_middle::thir;
 use rustc_middle::thir::{AdtExpr, LogicalOp};
-use rustc_middle::ty::TyKind;
+use rustc_middle::ty::{Const, ConstKind, TyKind};
 use std::rc::Rc;
 
 fn path_of_bin_op(
@@ -458,7 +458,8 @@ pub(crate) fn compile_expr<'a>(
                         func: Rc::new(CoqType::Path {
                             path: Path::new(&["alloc", "boxed", "Box"]),
                         }),
-                        args: vec![
+                        consts: vec![],
+                        tys: vec![
                             value_ty,
                             Rc::new(CoqType::Path {
                                 path: Path::new(&["alloc", "alloc", "Global"]),
@@ -1228,4 +1229,29 @@ fn compile_block<'a>(
     let block = thir.blocks.get(*block_id).unwrap();
 
     compile_stmts(env, generics, thir, &block.stmts, block.expr)
+}
+
+pub(crate) fn compile_const(const_: &Const) -> Rc<Expr> {
+    match &const_.kind() {
+        ConstKind::Param(param) => Expr::local_var(param.name.as_str()),
+        ConstKind::Infer(_) => Expr::local_var("InferConst"),
+        ConstKind::Bound(_, _) => Expr::local_var("BoundConst"),
+        ConstKind::Placeholder(_) => Expr::local_var("PlaceholderConst"),
+        ConstKind::Unevaluated(_) => Expr::local_var("UnevaluatedConst"),
+        ConstKind::Value(value) => {
+            // @TODO: for next version of the rustc API we will be able to make a translation
+            // according to the type of value, for booleans or negative integers.
+            match value {
+                rustc_middle::ty::ValTree::Leaf(leaf) => {
+                    Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
+                        negative_sign: false,
+                        value: leaf.try_to_uint(leaf.size()).unwrap(),
+                    }))))
+                }
+                rustc_middle::ty::ValTree::Branch(_) => Expr::local_var("ValueBranchConst"),
+            }
+        }
+        ConstKind::Error(_) => Expr::local_var("ErrorConst"),
+        ConstKind::Expr(_) => Expr::local_var("ExprConst"),
+    }
 }

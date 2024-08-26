@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "DoubleError";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -35,10 +36,11 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "defining_an_error_type::Result") [ T ]) =
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "defining_an_error_type::Result") [] [ T ]) =
     (Ty.apply
       (Ty.path "core::result::Result")
+      []
       [ T; Ty.path "defining_an_error_type::DoubleError" ]).
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.

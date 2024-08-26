@@ -1,12 +1,12 @@
-# examples/default/examples/ink_contracts/proofs/erc20.v
-# examples/default/examples/ink_contracts/proofs/lib.v
-# examples/default/examples/ink_contracts/simulations/erc20.v
-# examples/default/examples/ink_contracts/simulations/erc721.v
-# examples/default/examples/ink_contracts/proofs/erc721.v
-# examples/axiomatized/examples/custom/provided_method.v
-# examples/axiomatized/examples/rust_book/traits/traits.v
-# examples/axiomatized/examples/subtle.v
-examples/
+examples/default/examples/ink_contracts/proofs/erc20.v
+examples/default/examples/ink_contracts/proofs/lib.v
+examples/default/examples/ink_contracts/simulations/erc20.v
+examples/default/examples/ink_contracts/simulations/erc721.v
+examples/default/examples/ink_contracts/proofs/erc721.v
+examples/axiomatized/examples/custom/provided_method.v
+examples/axiomatized/examples/rust_book/traits/traits.v
+examples/axiomatized/examples/subtle.v
+# examples/
 move/
 revm/translations/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)

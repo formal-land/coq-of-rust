@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
   (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -60,7 +61,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -88,6 +89,7 @@ End Impl_erc20_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -157,6 +159,7 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc20::AccountId") ];
   } *)
@@ -164,15 +167,17 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Erc20";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("total_supply", Ty.path "u128");
         ("balances",
-          Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
+          Ty.apply (Ty.path "erc20::Mapping") [] [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
         ("allowances",
           Ty.apply
             (Ty.path "erc20::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
       ];
   } *)
@@ -205,6 +210,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -218,6 +224,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [
                       Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                       Ty.path "u128"
@@ -243,11 +250,12 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Transfer";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
         ("value", Ty.path "u128")
       ];
   } *)
@@ -255,6 +263,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Approval";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -267,6 +276,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -287,6 +297,7 @@ Enum Event
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -305,9 +316,9 @@ Enum Error
 *)
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc20::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "erc20::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc20::Error" ]).
 
 Module Impl_erc20_Env.
   Definition Self : Ty.t := Ty.path "erc20::Env".
@@ -400,6 +411,7 @@ Module Impl_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -428,6 +440,7 @@ Module Impl_erc20_Erc20.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   "insert",
                   []
@@ -473,6 +486,7 @@ Module Impl_erc20_Erc20.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [
                           Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                           Ty.path "u128"
@@ -526,14 +540,17 @@ Module Impl_erc20_Erc20.
         let owner := M.alloc (| owner |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
             []
           |),
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
+                Ty.apply
+                  (Ty.path "erc20::Mapping")
+                  []
+                  [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                 "get",
                 []
               |),
@@ -588,7 +605,7 @@ Module Impl_erc20_Erc20.
         let spender := M.alloc (| spender |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
             []
           |),
@@ -597,6 +614,7 @@ Module Impl_erc20_Erc20.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "erc20::Mapping")
+                  []
                   [
                     Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                     Ty.path "u128"
@@ -713,6 +731,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                       "insert",
                       []
@@ -741,6 +760,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                       "insert",
                       []
@@ -876,6 +896,7 @@ Module Impl_erc20_Erc20.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [
                       Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                       Ty.path "u128"
@@ -1005,6 +1026,7 @@ Module Impl_erc20_Erc20.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "erc20::Error" ],
                         [],
                         "branch",
@@ -1041,10 +1063,12 @@ Module Impl_erc20_Erc20.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "erc20::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "erc20::Error"
@@ -1077,6 +1101,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [
                           Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                           Ty.path "u128"

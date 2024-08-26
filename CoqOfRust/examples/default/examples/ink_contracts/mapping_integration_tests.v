@@ -4,17 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ].
   
   (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -29,7 +30,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -40,7 +41,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -62,7 +63,7 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
@@ -145,6 +146,7 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -214,6 +216,7 @@ Axiom Balance : (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128"
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "mapping_integration_tests::AccountId") ];
   } *)
@@ -247,12 +250,14 @@ End Impl_mapping_integration_tests_Env.
 (* StructRecord
   {
     name := "Mappings";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("balances",
           Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
+            []
             [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
       ];
   } *)
@@ -274,6 +279,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "mapping_integration_tests::Mapping")
+                    []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -332,6 +338,7 @@ Module Impl_mapping_integration_tests_Mappings.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "mapping_integration_tests::Mapping")
+                    []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -390,6 +397,7 @@ Module Impl_mapping_integration_tests_Mappings.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
+                  []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "get",
                 []
@@ -450,6 +458,7 @@ Module Impl_mapping_integration_tests_Mappings.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
+                  []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "insert",
                 []
@@ -511,6 +520,7 @@ Module Impl_mapping_integration_tests_Mappings.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
+                  []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "size",
                 []
@@ -570,6 +580,7 @@ Module Impl_mapping_integration_tests_Mappings.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
+                  []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "contains",
                 []
@@ -631,6 +642,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "mapping_integration_tests::Mapping")
+                    []
                     [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                   "remove",
                   []
@@ -692,6 +704,7 @@ Module Impl_mapping_integration_tests_Mappings.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
+                  []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 "take",
                 []

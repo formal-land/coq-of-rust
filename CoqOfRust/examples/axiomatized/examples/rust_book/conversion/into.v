@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Number";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "i32") ];
   } *)

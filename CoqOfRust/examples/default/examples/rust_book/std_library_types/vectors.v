@@ -63,12 +63,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                 [],
                 "collect",
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                 ]
               |),
@@ -110,6 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -127,7 +129,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -139,8 +141,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -187,6 +190,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -227,6 +231,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "push",
                 []
@@ -262,6 +267,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),
@@ -311,6 +317,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                         "len",
                                         []
@@ -364,6 +371,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::ops::index::Index",
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                       [ Ty.path "usize" ],
                                       "index",
@@ -409,7 +417,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -417,6 +425,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                         "pop",
                                         []
@@ -460,7 +469,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -468,7 +477,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "iter",
                         []
                       |),
@@ -478,6 +487,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref",
@@ -502,7 +512,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -560,6 +570,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "i32" ]
                                                             ]
                                                           |),
@@ -589,7 +600,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ] ],
+                      []
+                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ] ],
                     [],
                     "into_iter",
                     []
@@ -598,7 +610,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ],
                         [],
                         "enumerate",
                         []
@@ -606,7 +618,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                             "iter",
                             []
                           |),
@@ -616,6 +628,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                                 [],
                                 "deref",
@@ -644,7 +657,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "i32" ]
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "i32" ]
                                     ],
                                   [],
                                   "next",
@@ -715,6 +733,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [ Ty.path "i32" ]
                                                             ]
                                                           |),
@@ -742,7 +761,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -750,7 +769,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "iter_mut",
                         []
                       |),
@@ -760,6 +779,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::ops::deref::DerefMut",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref_mut",
@@ -784,7 +804,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ Ty.path "i32" ],
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::IterMut")
+                                    []
+                                    [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -851,6 +874,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                   ]
                                 |),

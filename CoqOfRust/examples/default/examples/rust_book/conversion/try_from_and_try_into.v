@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "EvenNumber";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)
@@ -219,11 +220,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ],
@@ -249,10 +252,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ];
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ]
@@ -314,11 +319,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ],
@@ -344,10 +351,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ];
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ]
@@ -415,11 +424,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ],
@@ -445,10 +456,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ];
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ]
@@ -512,11 +525,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ],
@@ -542,10 +557,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ];
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                           ]
                                       ]

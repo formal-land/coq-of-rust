@@ -8,6 +8,7 @@ Axiom Function_matching : M.IsFunction "constructor_as_function::matching" match
 (* StructTuple
   {
     name := "Constructor";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)

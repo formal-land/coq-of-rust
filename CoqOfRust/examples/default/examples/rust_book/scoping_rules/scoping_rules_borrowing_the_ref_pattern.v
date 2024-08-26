@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "i32"); ("y", Ty.path "i32") ];
   } *)
@@ -353,6 +354,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                             "new",
                             []
@@ -412,6 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
                                                 Ty.path "u32"
                                               ]

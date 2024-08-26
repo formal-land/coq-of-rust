@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Fibonacci";
+    const_params := [];
     ty_params := [];
     fields := [ ("curr", Ty.path "u32"); ("next", Ty.path "u32") ];
   } *)

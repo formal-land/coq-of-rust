@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "PhantomTuple";
+    const_params := [];
     ty_params := [ "A"; "B" ];
-    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ];
+    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -23,7 +24,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_
 
 Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
   Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -39,13 +40,15 @@ End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_
 (* StructRecord
   {
     name := "PhantomStruct";
+    const_params := [];
     ty_params := [ "A"; "B" ];
-    fields := [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ]) ];
+    fields :=
+      [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ]) ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -58,7 +61,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct
 
 Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
   Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   

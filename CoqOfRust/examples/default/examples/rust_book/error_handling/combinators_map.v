@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -78,6 +79,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 (* StructTuple
   {
     name := "Peeled";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -126,6 +128,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 (* StructTuple
   {
     name := "Chopped";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -174,6 +177,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 (* StructTuple
   {
     name := "Cooked";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -311,7 +315,7 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
       (let chopped := M.alloc (| chopped |) in
       M.call_closure (|
         M.get_associated_function (|
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
           [
             Ty.path "combinators_map::Cooked";
@@ -365,7 +369,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
       (let food := M.alloc (| food |) in
       M.call_closure (|
         M.get_associated_function (|
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
           [
             Ty.path "combinators_map::Cooked";
@@ -377,7 +381,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
         [
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Peeled" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Peeled" ],
               "map",
               [
                 Ty.path "combinators_map::Chopped";
@@ -389,7 +393,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Food" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ],
                   "map",
                   [
                     Ty.path "combinators_map::Peeled";

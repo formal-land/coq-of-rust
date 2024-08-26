@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [] [ K; V ].
   
   (* Default *)
   Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -60,7 +61,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mother_Mapping_K_V.
 
 Module Impl_mother_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "mother::Mapping") [] [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -88,6 +89,7 @@ End Impl_mother_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -233,11 +235,13 @@ Axiom Balance : (Ty.path "mother::Balance") = (Ty.path "u128").
 
 Axiom BlockNumber : (Ty.path "mother::BlockNumber") = (Ty.path "u32").
 
-Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "mother::AccountId") ];
   } *)
@@ -245,17 +249,21 @@ Axiom Hash : (Ty.path "mother::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u
 (* StructTuple
   {
     name := "Bids";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         Ty.apply
           (Ty.path "alloc::vec::Vec")
+          []
           [
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
                 Ty.path "alloc::alloc::Global"
               ];
@@ -280,12 +288,15 @@ Module Impl_core_default_Default_for_mother_Bids.
                 "core::default::Default",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
                         Ty.path "alloc::alloc::Global"
                       ];
@@ -335,12 +346,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             "core::cmp::PartialEq",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
                     Ty.path "alloc::alloc::Global"
                   ];
@@ -349,12 +363,15 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
                       Ty.path "alloc::alloc::Global"
                     ];
@@ -435,12 +452,15 @@ Module Impl_core_clone_Clone_for_mother_Bids.
                 "core::clone::Clone",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
                         Ty.path "alloc::alloc::Global"
                       ];
@@ -467,6 +487,7 @@ End Impl_core_clone_Clone_for_mother_Bids.
 (*
 Enum Outline
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -622,6 +643,7 @@ End Impl_core_clone_Clone_for_mother_Outline.
 (*
 Enum Status
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -959,17 +981,18 @@ End Impl_core_clone_Clone_for_mother_Status.
 (* StructRecord
   {
     name := "Auction";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("name", Ty.path "alloc::string::String");
-        ("subject", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("subject", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
         ("bids", Ty.path "mother::Bids");
-        ("terms", Ty.apply (Ty.path "array") [ Ty.path "u32" ]);
+        ("terms", Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ]);
         ("status", Ty.path "mother::Status");
         ("finalized", Ty.path "bool");
         ("vector",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -1025,8 +1048,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                          Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                          [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
                           "eq",
                           []
                         |),
@@ -1071,8 +1094,8 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.apply (Ty.path "array") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ] ],
                       "eq",
                       []
                     |),
@@ -1136,10 +1159,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 "core::cmp::PartialEq",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ],
                 "eq",
@@ -1287,7 +1312,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::clone::Clone",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                   [],
                   "clone",
                   []
@@ -1321,7 +1346,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::clone::Clone",
-                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ],
                   [],
                   "clone",
                   []
@@ -1368,6 +1393,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "clone",
@@ -1431,7 +1457,7 @@ Module Impl_core_default_Default_for_mother_Auction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
                   [],
                   "default",
                   []
@@ -1453,7 +1479,7 @@ Module Impl_core_default_Default_for_mother_Auction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "u32" ],
                   [],
                   "default",
                   []
@@ -1468,6 +1494,7 @@ Module Impl_core_default_Default_for_mother_Auction.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -1490,6 +1517,7 @@ End Impl_core_default_Default_for_mother_Auction.
 (*
 Enum Failure
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -1648,6 +1676,7 @@ End Impl_core_cmp_Eq_for_mother_Failure.
 (* StructRecord
   {
     name := "AuctionEchoed";
+    const_params := [];
     ty_params := [];
     fields := [ ("auction", Ty.path "mother::Auction") ];
   } *)
@@ -1655,6 +1684,7 @@ End Impl_core_cmp_Eq_for_mother_Failure.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -1701,12 +1731,13 @@ End Impl_mother_Env.
 (* StructRecord
   {
     name := "Mother";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("auction", Ty.path "mother::Auction");
         ("balances",
-          Ty.apply (Ty.path "mother::Mapping") [ Ty.path "mother::AccountId"; Ty.path "u128" ])
+          Ty.apply (Ty.path "mother::Mapping") [] [ Ty.path "mother::AccountId"; Ty.path "u128" ])
       ];
   } *)
 
@@ -1738,6 +1769,7 @@ Module Impl_core_default_Default_for_mother_Mother.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "mother::Mapping")
+                    []
                     [ Ty.path "mother::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -1810,6 +1842,7 @@ Module Impl_mother_Mother.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "mother::Mapping")
+                    []
                     [ Ty.path "mother::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -2030,7 +2063,7 @@ Module Impl_mother_Mother.
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Trapping on user demand!" |) ]
                       |)

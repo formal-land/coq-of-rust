@@ -16,6 +16,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "SomeOtherType";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u32" ];
   } *)

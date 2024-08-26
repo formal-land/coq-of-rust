@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -71,6 +72,7 @@ End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "contract_terminate::AccountId") ];
   } *)
@@ -114,6 +116,7 @@ End Impl_contract_terminate_Env.
 (* StructTuple
   {
     name := "JustTerminate";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

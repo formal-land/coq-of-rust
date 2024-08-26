@@ -20,6 +20,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function (|
           Ty.apply
             (Ty.path "core::result::Result")
+            []
             [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
           "and_then",
           [
@@ -28,6 +29,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.tuple [ Ty.path "i32" ] ]
               (Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
           ]
         |),
@@ -51,6 +53,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                               "map",
                               [

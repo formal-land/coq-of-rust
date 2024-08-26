@@ -10,6 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "u64") ];
   } *)

@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +28,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [] [ K; V ].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -69,6 +70,7 @@ End Impl_erc1155_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -130,7 +132,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -139,15 +141,17 @@ Module Impl_core_convert_From_array_u8_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_erc1155_AccountId.
+End Impl_core_convert_From_array_32_u8_for_erc1155_AccountId.
 
 Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc1155::AccountId") ];
   } *)
@@ -165,6 +169,7 @@ Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -252,9 +257,9 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
 End Impl_core_cmp_Eq_for_erc1155_Error.
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc1155::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc1155::Error" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "erc1155::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc1155::Error" ]).
 
 (* Trait *)
 (* Empty module 'Erc1155' *)
@@ -269,12 +274,13 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "TransferSingle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("operator", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc1155::AccountId" ]);
+        ("operator", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc1155::AccountId" ]);
         ("token_id", Ty.path "u128");
         ("value", Ty.path "u128")
       ];
@@ -283,6 +289,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "ApprovalForAll";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -295,6 +302,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (* StructRecord
   {
     name := "Uri";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "alloc::string::String"); ("token_id", Ty.path "u128") ];
   } *)
@@ -302,6 +310,7 @@ Axiom Operator : (Ty.path "erc1155::Operator") = (Ty.path "erc1155::AccountId").
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -339,16 +348,19 @@ End Impl_erc1155_Env.
 (* StructRecord
   {
     name := "Contract";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("balances",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ]);
         ("approvals",
           Ty.apply
             (Ty.path "erc1155::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
             ]);
         ("token_id_nonce", Ty.path "u128")

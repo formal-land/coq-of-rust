@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Axiom AliasedResult :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "core::num::error::ParseIntError" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "core::num::error::ParseIntError" ]).
 
 (*
 fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
@@ -25,6 +25,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function (|
           Ty.apply
             (Ty.path "core::result::Result")
+            []
             [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
           "and_then",
           [
@@ -33,6 +34,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.tuple [ Ty.path "i32" ] ]
               (Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
           ]
         |),
@@ -56,6 +58,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                               "map",
                               [

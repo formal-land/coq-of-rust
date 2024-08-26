@@ -9,6 +9,7 @@ Module main.
   (* StructTuple
     {
       name := "Structure";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.path "i32" ];
     } *)

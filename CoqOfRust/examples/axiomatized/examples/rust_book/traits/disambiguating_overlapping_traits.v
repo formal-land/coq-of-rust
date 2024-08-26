@@ -10,6 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Form";
+    const_params := [];
     ty_params := [];
     fields := [ ("username", Ty.path "alloc::string::String"); ("age", Ty.path "u8") ];
   } *)

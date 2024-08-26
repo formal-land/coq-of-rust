@@ -63,7 +63,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       Ty.apply
                         (Ty.path "&")
-                        [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
                     ]
                   |),
                   [ path ]

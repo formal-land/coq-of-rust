@@ -83,6 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::rc::Rc")
+                  []
                   [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -126,6 +127,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::rc::Rc")
+                                          []
                                           [
                                             Ty.path "alloc::string::String";
                                             Ty.path "alloc::alloc::Global"
@@ -180,6 +182,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::clone::Clone",
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "clone",
@@ -224,6 +227,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::Rc")
+                                            []
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.path "alloc::alloc::Global"
@@ -280,6 +284,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::Rc")
+                                            []
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.path "alloc::alloc::Global"
@@ -337,6 +342,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "alloc::rc::Rc")
+                                            []
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.path "alloc::alloc::Global"
@@ -344,6 +350,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::rc::Rc")
+                                              []
                                               [
                                                 Ty.path "alloc::string::String";
                                                 Ty.path "alloc::alloc::Global"
@@ -409,6 +416,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               "core::ops::deref::Deref",
                                               Ty.apply
                                                 (Ty.path "alloc::rc::Rc")
+                                                []
                                                 [
                                                   Ty.path "alloc::string::String";
                                                   Ty.path "alloc::alloc::Global"
@@ -463,6 +471,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::rc::Rc")
+                                        []
                                         [
                                           Ty.path "alloc::string::String";
                                           Ty.path "alloc::alloc::Global"
@@ -542,6 +551,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::rc::Rc")
+                                          []
                                           [
                                             Ty.path "alloc::string::String";
                                             Ty.path "alloc::alloc::Global"

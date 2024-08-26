@@ -72,7 +72,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "std::process::Command",
                                   "new",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ M.read (| Value.String "wc" |) ]
                               |)
@@ -170,6 +170,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "std::process::ChildStdin" ],
                         "unwrap",
                         []
@@ -294,6 +295,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [ Ty.path "std::process::ChildStdout" ],
                       "unwrap",
                       []

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum VeryVerboseEnumOfThingsToDoWithNumbers
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

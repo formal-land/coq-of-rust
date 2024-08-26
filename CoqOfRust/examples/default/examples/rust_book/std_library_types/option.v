@@ -274,7 +274,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] ]
                                 |),
                                 [ optional_float ]
                               |);
@@ -288,7 +288,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "f32" ],
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "f32" ],
                                         "unwrap",
                                         []
                                       |),
@@ -334,7 +337,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ none ]
                               |);
@@ -348,7 +351,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ],
                                         "unwrap",
                                         []
                                       |),

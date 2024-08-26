@@ -24,6 +24,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                       "unwrap",
                       []
@@ -46,6 +47,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                     "std::io::BufRead",
                     Ty.apply
                       (Ty.path "std::io::buffered::bufreader::BufReader")
+                      []
                       [ Ty.path "std::fs::File" ],
                     [],
                     "lines",
@@ -56,6 +58,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::io::buffered::bufreader::BufReader")
+                          []
                           [ Ty.path "std::fs::File" ],
                         "new",
                         []
@@ -114,9 +117,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "std::io::Lines")
+                    []
                     [
                       Ty.apply
                         (Ty.path "std::io::buffered::bufreader::BufReader")
+                        []
                         [ Ty.path "std::fs::File" ]
                     ],
                   [],
@@ -140,9 +145,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "std::io::Lines")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "std::io::buffered::bufreader::BufReader")
+                                      []
                                       [ Ty.path "std::fs::File" ]
                                   ],
                                 [],
@@ -206,6 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path "alloc::string::String";
                                                                     Ty.path "std::io::error::Error"

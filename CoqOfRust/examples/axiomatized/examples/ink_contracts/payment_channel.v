@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -90,7 +91,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -99,9 +100,10 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
+End Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
 
@@ -110,6 +112,7 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "payment_channel::AccountId") ];
   } *)
@@ -117,12 +120,13 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (* StructRecord
   {
     name := "PaymentChannel";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("sender", Ty.path "payment_channel::AccountId");
         ("recipient", Ty.path "payment_channel::AccountId");
-        ("expiration", Ty.apply (Ty.path "core::option::Option") [ Ty.path "u64" ]);
+        ("expiration", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]);
         ("withdrawn", Ty.path "u128");
         ("close_duration", Ty.path "u64")
       ];
@@ -131,6 +135,7 @@ Axiom Timestamp : (Ty.path "payment_channel::Timestamp") = (Ty.path "u64").
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -218,13 +223,14 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
 End Impl_core_cmp_Eq_for_payment_channel_Error.
 
 Axiom Result :
-  forall (T : Ty.t),
-  (Ty.apply (Ty.path "payment_channel::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "payment_channel::Error" ]).
+  forall ( : Ty.t) (T : Ty.t),
+  (Ty.apply (Ty.path "payment_channel::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "payment_channel::Error" ]).
 
 (* StructRecord
   {
     name := "SenderCloseStarted";
+    const_params := [];
     ty_params := [];
     fields := [ ("expiration", Ty.path "u64"); ("close_duration", Ty.path "u64") ];
   } *)
@@ -232,6 +238,7 @@ Axiom Result :
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -295,6 +302,7 @@ Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecd
 (*
 Enum Sha2x256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -303,6 +311,7 @@ Enum Sha2x256
 (*
 Enum Keccak256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -311,6 +320,7 @@ Enum Keccak256
 (*
 Enum Blake2x256
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -319,6 +329,7 @@ Enum Blake2x256
 (*
 Enum Blake2x128
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -327,7 +338,7 @@ Enum Blake2x128
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -340,7 +351,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -353,7 +364,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -366,7 +377,7 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance

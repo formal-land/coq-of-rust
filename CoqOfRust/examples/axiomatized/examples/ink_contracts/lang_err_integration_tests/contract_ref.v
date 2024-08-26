@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -43,11 +44,14 @@ End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "contract_ref::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "contract_ref::AccountId") ];
   } *)
@@ -55,6 +59,7 @@ Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.p
 (* StructRecord
   {
     name := "FlipperRef";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -62,6 +67,7 @@ Axiom Hash : (Ty.path "contract_ref::Hash") = (Ty.apply (Ty.path "array") [ Ty.p
 (* StructTuple
   {
     name := "FlipperError";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -114,6 +120,7 @@ End Impl_contract_ref_FlipperRef.
 (* StructRecord
   {
     name := "ContractRef";
+    const_params := [];
     ty_params := [];
     fields := [ ("flipper", Ty.path "contract_ref::FlipperRef") ];
   } *)

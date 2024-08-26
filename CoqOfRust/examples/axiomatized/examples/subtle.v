@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Choice";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u8" ];
   } *)
@@ -189,7 +190,7 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
   
   Parameter ct_eq : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -566,12 +567,13 @@ End Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_wh
 (* StructRecord
   {
     name := "CtOption";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("value", T); ("is_some", Ty.path "subtle::Choice") ];
   } *)
 
 Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Parameter clone : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -585,7 +587,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 End Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Axiom Implements :
     forall (T : Ty.t),
@@ -597,7 +599,7 @@ Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 End Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Parameter fmt : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -611,7 +613,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
   
   Parameter from : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -620,12 +622,12 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     M.IsTraitInstance
       "core::convert::From"
       (Self T)
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [ T ] ]
+      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ]
       (* Instance *) [ ("from", InstanceField.Method (from T)) ].
 End Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Parameter new : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -685,7 +687,7 @@ Module Impl_subtle_CtOption_T.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Parameter conditional_select : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -699,7 +701,7 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
 End Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
+  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [] [ T ].
   
   Parameter ct_eq : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -69,11 +70,13 @@ Module Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId.
 
 Axiom Hash :
-  (Ty.path "basic_contract_caller::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+  (Ty.path "basic_contract_caller::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -82,6 +85,7 @@ Enum Error
 (* StructRecord
   {
     name := "OtherContract";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)
@@ -167,6 +171,7 @@ End Impl_basic_contract_caller_OtherContract.
 (* StructRecord
   {
     name := "BasicContractCaller";
+    const_params := [];
     ty_params := [];
     fields := [ ("other_contract", Ty.path "basic_contract_caller::OtherContract") ];
   } *)

@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "PhantomTuple";
+    const_params := [];
     ty_params := [ "A"; "B" ];
-    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ];
+    fields := [ A; Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -23,7 +24,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_
 
 Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
   (* PartialEq *)
   Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -53,8 +54,8 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
             (M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ B ],
-                [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ],
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
                 []
               |),
@@ -87,13 +88,15 @@ End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_
 (* StructRecord
   {
     name := "PhantomStruct";
+    const_params := [];
     ty_params := [ "A"; "B" ];
-    fields := [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [ B ]) ];
+    fields :=
+      [ ("first", A); ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ]) ];
   } *)
 
 Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -106,7 +109,7 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct
 
 Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
+    Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
   (* PartialEq *)
   Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -136,8 +139,8 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
             (M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ B ],
-                [ Ty.apply (Ty.path "core::marker::PhantomData") [ B ] ],
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
                 []
               |),

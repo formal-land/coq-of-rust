@@ -80,7 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
                 []
               |),
@@ -281,6 +281,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -336,6 +337,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::boxed::Box")
+                                                            []
                                                             [
                                                               Ty.path "i32";
                                                               Ty.path "alloc::alloc::Global"
@@ -360,6 +362,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
+                                          []
                                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                       ]
                                     |),

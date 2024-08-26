@@ -4,17 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -29,7 +30,7 @@ End Impl_core_default_Default_where_core_default_Default_K_where_core_default_De
 
 Module Impl_mapping_integration_tests_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
+    Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -77,6 +78,7 @@ End Impl_mapping_integration_tests_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -119,6 +121,7 @@ Axiom Balance : (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128"
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "mapping_integration_tests::AccountId") ];
   } *)
@@ -134,12 +137,14 @@ End Impl_mapping_integration_tests_Env.
 (* StructRecord
   {
     name := "Mappings";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("balances",
           Ty.apply
             (Ty.path "mapping_integration_tests::Mapping")
+            []
             [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ])
       ];
   } *)

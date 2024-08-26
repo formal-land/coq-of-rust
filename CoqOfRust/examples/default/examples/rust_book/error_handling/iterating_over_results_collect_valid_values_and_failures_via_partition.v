@@ -21,7 +21,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -33,8 +33,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -62,14 +66,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ];
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
+                      ];
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                   ],
                 [],
@@ -77,9 +85,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
                       Ty.path "alloc::alloc::Global"
                     ];
@@ -87,9 +97,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       Ty.apply
                         (Ty.path "&")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
                         ]
                     ]
@@ -102,17 +114,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
+                      ],
                     [],
                     "map",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ] ]
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                     ]
                   |),
@@ -122,7 +138,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                            Ty.path "alloc::alloc::Global"
                           ],
                         [],
                         "into_iter",
@@ -158,6 +177,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                   "is_ok",
                   []
@@ -207,9 +227,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "i32";
                                                     Ty.path "core::num::error::ParseIntError"
@@ -263,9 +285,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "i32";
                                                     Ty.path "core::num::error::ParseIntError"

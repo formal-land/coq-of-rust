@@ -33,7 +33,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
@@ -47,7 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -71,7 +72,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -100,8 +101,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::clone::Clone",
                                           Ty.apply
                                             (Ty.path "alloc::sync::Arc")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
@@ -175,10 +177,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::sync::Arc")
+                                                                                          []
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "&")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "str"

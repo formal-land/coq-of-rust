@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "CustomAllocator";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("value",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 

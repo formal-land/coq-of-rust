@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Borrowed";
+    const_params := [];
     ty_params := [];
-    fields := [ ("x", Ty.apply (Ty.path "&") [ Ty.path "i32" ]) ];
+    fields := [ ("x", Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]) ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.

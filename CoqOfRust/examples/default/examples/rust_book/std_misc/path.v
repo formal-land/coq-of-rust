@@ -52,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::Path",
                 "join",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [
                 M.call_closure (|
@@ -69,7 +69,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "std::path::Path",
                           "join",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| path |); M.read (| Value.String "a" |) ]
                       |)
@@ -86,7 +86,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "c" |) ]
             |)
@@ -97,7 +97,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
             |)
@@ -108,7 +108,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "set_file_name",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ new_path; M.read (| Value.String "package.tgz" |) ]
             |)
@@ -140,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_function (|
                         "std::panicking::begin_panic",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ M.read (| Value.String "new path is not a valid UTF-8 sequence" |) ]
                     |)
@@ -182,7 +182,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [ s ]
                                     |)

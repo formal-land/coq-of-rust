@@ -43,7 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_trait_method (|
                       "core::convert::From",
                       Ty.path "alloc::string::String",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "from",
                       []
                     |),
@@ -54,6 +54,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -116,9 +117,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                               ]
                                           ]
@@ -214,6 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
+                                              []
                                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                           ]
                                         |),
@@ -246,12 +250,16 @@ Module main.
   (* StructRecord
     {
       name := "Person";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("name", Ty.path "alloc::string::String");
           ("age",
-            Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
         ];
     } *)
   

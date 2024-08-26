@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -70,11 +71,14 @@ End Impl_core_marker_Copy_for_call_builder_AccountId.
 
 Axiom Balance : (Ty.path "call_builder::Balance") = (Ty.path "u128").
 
-Axiom Hash : (Ty.path "call_builder::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "call_builder::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum LangError
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -95,6 +99,7 @@ Enum LangError
 (* StructTuple
   {
     name := "Selector";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -115,6 +120,7 @@ End Impl_call_builder_Selector.
 (* StructTuple
   {
     name := "CallBuilderTest";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

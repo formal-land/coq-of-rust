@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Container";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32"; Ty.path "i32" ];
   } *)
@@ -36,8 +37,8 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-              [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
               "eq",
               []
             |),
@@ -56,8 +57,8 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             (M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-                [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                 "eq",
                 []
               |),
@@ -271,7 +272,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ M.alloc (| number_1 |) ]
                               |);
@@ -279,7 +280,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [ M.alloc (| number_2 |) ]
                               |);

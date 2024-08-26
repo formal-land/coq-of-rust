@@ -20,7 +20,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -32,8 +32,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",

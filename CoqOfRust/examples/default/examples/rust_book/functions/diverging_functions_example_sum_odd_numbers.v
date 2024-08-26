@@ -122,7 +122,7 @@ Module main.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                       [],
                       "into_iter",
                       []
@@ -146,7 +146,10 @@ Module main.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "u32" ],
                                     [],
                                     "next",
                                     []

@@ -15,8 +15,8 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
       M.call_closure (|
         M.get_trait_method (|
           "core::ops::arith::Mul",
-          Ty.apply (Ty.path "&") [ Ty.path "i32" ],
-          [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ],
+          Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
           "mul",
           []
         |),
@@ -143,7 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                   |),
                                   [
                                     M.alloc (|

@@ -4,16 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc721_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [] [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -27,7 +28,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc721_Mapping_K_V.
 
 Module Impl_erc721_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc721::Mapping") [] [ K; V ].
   
   Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
   
@@ -69,6 +70,7 @@ End Impl_erc721_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -130,7 +132,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 
-Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
+Module Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   Parameter from : (list Ty.t) -> (list Value.t) -> M.
@@ -139,15 +141,17 @@ Module Impl_core_convert_From_array_u8_for_erc721_AccountId.
     M.IsTraitInstance
       "core::convert::From"
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+      (* Trait polymorphic types *)
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_u8_for_erc721_AccountId.
+End Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
 
 Axiom Balance : (Ty.path "erc721::Balance") = (Ty.path "u128").
 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc721::AccountId") ];
   } *)
@@ -157,18 +161,20 @@ Axiom TokenId : (Ty.path "erc721::TokenId") = (Ty.path "u32").
 (* StructRecord
   {
     name := "Erc721";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("token_owner",
-          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
         ("token_approvals",
-          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ]);
         ("owned_tokens_count",
-          Ty.apply (Ty.path "erc721::Mapping") [ Ty.path "erc721::AccountId"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "erc721::AccountId"; Ty.path "u32" ]);
         ("operator_approvals",
           Ty.apply
             (Ty.path "erc721::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ]; Ty.tuple [] ])
       ];
   } *)
@@ -189,6 +195,7 @@ End Impl_core_default_Default_for_erc721_Erc721.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -303,11 +310,12 @@ End Impl_core_marker_Copy_for_erc721_Error.
 (* StructRecord
   {
     name := "Transfer";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc721::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc721::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ]);
         ("id", Ty.path "u32")
       ];
   } *)
@@ -315,6 +323,7 @@ End Impl_core_marker_Copy_for_erc721_Error.
 (* StructRecord
   {
     name := "Approval";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -327,6 +336,7 @@ End Impl_core_marker_Copy_for_erc721_Error.
 (* StructRecord
   {
     name := "ApprovalForAll";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -339,6 +349,7 @@ End Impl_core_marker_Copy_for_erc721_Error.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

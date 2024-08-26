@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Fruit
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -156,6 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
                 "or",
                 []
@@ -165,6 +167,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
                     "or",
                     []
@@ -206,6 +209,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ]
                                   ]
                                 |),

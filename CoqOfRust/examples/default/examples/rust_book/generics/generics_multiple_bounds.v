@@ -38,7 +38,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -76,7 +76,7 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -134,7 +134,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                                 |),
                                 [ t ]
                               |)
@@ -171,7 +171,7 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ U ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ U ] ]
                                 |),
                                 [ u ]
                               |)
@@ -215,7 +215,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -227,8 +227,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -249,7 +250,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "generics_multiple_bounds::compare_prints",
-                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ string ]
             |)
@@ -260,9 +261,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_function (|
                 "generics_multiple_bounds::compare_types",
                 [
-                  Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                 ]
               |),

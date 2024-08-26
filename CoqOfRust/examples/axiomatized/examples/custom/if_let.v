@@ -8,6 +8,7 @@ Axiom Function_order : M.IsFunction "if_let::order" order.
 (*
 Enum Container
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

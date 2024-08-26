@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "ToDrop";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)

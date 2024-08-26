@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -42,6 +43,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 (* StructTuple
   {
     name := "Peeled";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -62,6 +64,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 (* StructTuple
   {
     name := "Chopped";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -82,6 +85,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 (* StructTuple
   {
     name := "Cooked";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)

@@ -72,8 +72,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
-                            Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+                            Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.tuple [] ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -89,7 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                             [],
                             "into_iter",
                             []
@@ -121,6 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "i32" ],
                                           [],
                                           "next",
@@ -156,6 +158,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "core::clone::Clone",
                                                   Ty.apply
                                                     (Ty.path "std::sync::mpsc::Sender")
+                                                    []
                                                     [ Ty.path "i32" ],
                                                   [],
                                                   "clone",
@@ -193,11 +196,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple [];
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "std::sync::mpsc::SendError")
+                                                                                  []
                                                                                   [ Ty.path "i32" ]
                                                                               ],
                                                                             "unwrap",
@@ -209,6 +214,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "std::sync::mpsc::Sender")
+                                                                                  []
                                                                                   [ Ty.path "i32" ],
                                                                                 "send",
                                                                                 []
@@ -296,9 +302,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "std::thread::JoinHandle")
+                                                        []
                                                         [ Ty.tuple [] ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
@@ -321,9 +329,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.path "i32"; Ty.path "std::sync::mpsc::RecvError" ];
                             Ty.path "alloc::alloc::Global"
                           ],
@@ -343,7 +353,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                             [],
                             "into_iter",
                             []
@@ -375,6 +385,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "i32" ],
                                           [],
                                           "next",
@@ -408,9 +419,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path "i32";
                                                           Ty.path "std::sync::mpsc::RecvError"
@@ -426,6 +439,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "std::sync::mpsc::Receiver")
+                                                        []
                                                         [ Ty.path "i32" ],
                                                       "recv",
                                                       []
@@ -451,8 +465,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.apply (Ty.path "std::thread::JoinHandle") [ Ty.tuple [] ];
+                                Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.tuple [] ];
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
@@ -476,9 +491,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "alloc::vec::into_iter::IntoIter")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "std::thread::JoinHandle")
+                                                []
                                                 [ Ty.tuple [] ];
                                               Ty.path "alloc::alloc::Global"
                                             ],
@@ -515,10 +532,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.tuple [];
                                                       Ty.apply
                                                         (Ty.path "alloc::boxed::Box")
+                                                        []
                                                         [
                                                           Ty.dyn
                                                             [
@@ -536,6 +555,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "std::thread::JoinHandle")
+                                                        []
                                                         [ Ty.tuple [] ],
                                                       "join",
                                                       []
@@ -587,9 +607,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "i32";
                                                     Ty.path "std::sync::mpsc::RecvError"

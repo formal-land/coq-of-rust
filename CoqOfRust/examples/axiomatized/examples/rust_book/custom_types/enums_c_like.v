@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Number
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -29,6 +30,7 @@ Enum Number
 (*
 Enum Color
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

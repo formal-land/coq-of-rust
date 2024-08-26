@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -48,6 +49,7 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "conditional_compilation::AccountId") ];
   } *)
@@ -58,6 +60,7 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
 (* StructRecord
   {
     name := "Changes";
+    const_params := [];
     ty_params := [];
     fields :=
       [ ("new_value", Ty.path "bool"); ("by_", Ty.path "conditional_compilation::AccountId") ];
@@ -66,6 +69,7 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
 (* StructRecord
   {
     name := "ChangesDated";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -78,6 +82,7 @@ Axiom BlockNumber : (Ty.path "conditional_compilation::BlockNumber") = (Ty.path 
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -114,6 +119,7 @@ End Impl_conditional_compilation_Env.
 (* StructRecord
   {
     name := "ConditionalCompilation";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "bool") ];
   } *)

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -42,6 +43,7 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 (*
 Enum Day
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

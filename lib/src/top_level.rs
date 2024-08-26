@@ -144,17 +144,20 @@ enum TopLevelItem {
     TypeAlias {
         name: String,
         path: Rc<Path>,
+        const_params: Vec<String>,
         ty_params: Vec<String>,
         ty: Rc<CoqType>,
     },
     TypeEnum {
         name: String,
+        const_params: Vec<String>,
         ty_params: Vec<String>,
         variants: Vec<Rc<TypeEnumVariant>>,
     },
     TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
         name: String,
+        const_params: Vec<String>,
         ty_params: Vec<String>,
         fields: Vec<Rc<CoqType>>,
     },
@@ -188,6 +191,7 @@ enum TopLevelItem {
 #[derive(Debug)]
 struct TypeStructStruct {
     name: String,
+    const_params: Vec<String>,
     ty_params: Vec<String>,
     fields: Vec<(String, Rc<CoqType>)>,
 }
@@ -423,14 +427,17 @@ fn compile_top_level_item_without_local_items<'a>(
             name,
             path,
             ty: compile_type(env, &item.owner_id.def_id, ty),
+            const_params: get_const_params(env, generics),
             ty_params: get_ty_params(env, generics),
         })],
         ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
         ItemKind::Enum(enum_def, generics) => {
+            let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
 
             vec![Rc::new(TopLevelItem::TypeEnum {
                 name,
+                const_params,
                 ty_params,
                 variants: enum_def
                     .variants
@@ -485,6 +492,7 @@ fn compile_top_level_item_without_local_items<'a>(
             })]
         }
         ItemKind::Struct(body, generics) => {
+            let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
 
             match body {
@@ -492,6 +500,7 @@ fn compile_top_level_item_without_local_items<'a>(
                     if fields.is_empty() {
                         return vec![Rc::new(TopLevelItem::TypeStructTuple {
                             name,
+                            const_params,
                             ty_params,
                             fields: vec![],
                         })];
@@ -507,6 +516,7 @@ fn compile_top_level_item_without_local_items<'a>(
                         .collect();
                     vec![Rc::new(TopLevelItem::TypeStructStruct(TypeStructStruct {
                         name,
+                        const_params,
                         ty_params,
                         fields,
                     }))]
@@ -514,6 +524,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 VariantData::Tuple(fields, _, _) => {
                     vec![Rc::new(TopLevelItem::TypeStructTuple {
                         name,
+                        const_params,
                         ty_params,
                         fields: fields
                             .iter()
@@ -524,6 +535,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 VariantData::Unit(_, _) => {
                     vec![Rc::new(TopLevelItem::TypeStructTuple {
                         name,
+                        const_params,
                         ty_params,
                         fields: vec![],
                     })]
@@ -916,6 +928,21 @@ fn get_arg_names<'a>(
         .collect()
 }
 
+/// compiles the const parameters from the generics
+fn get_const_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
+    generics
+        .params
+        .iter()
+        .filter_map(|param| match param.kind {
+            GenericParamKind::Const { .. } => Some(to_valid_coq_name(
+                IsValue::No,
+                &crate::thir_ty::compile_generic_param(env, param.def_id.to_def_id()),
+            )),
+            GenericParamKind::Lifetime { .. } | GenericParamKind::Type { .. } => None,
+        })
+        .collect()
+}
+
 /// extracts type parameters from the generics
 fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
     generics
@@ -1161,7 +1188,8 @@ impl DynNameGen {
             let ct = self.make_dyn_parm(arg);
             Rc::new(CoqType::Application {
                 func: CoqType::path(&[&name]),
-                args: vec![ct],
+                consts: vec![],
+                tys: vec![ct],
             })
         } else if let CoqType::Dyn(path) = arg.as_ref() {
             // We suppose `dyn` is only associated with one trait so we can directly extract the first element
@@ -1584,6 +1612,17 @@ impl TypeStructStruct {
                     body: coq::Expression::String(self.name.to_string()),
                 },
                 coq::Field {
+                    name: "const_params".to_string(),
+                    args: vec![],
+                    body: coq::Expression::List {
+                        exprs: self
+                            .const_params
+                            .iter()
+                            .map(|name| coq::Expression::String(name.to_string()))
+                            .collect(),
+                    },
+                },
+                coq::Field {
                     name: "ty_params".to_string(),
                     args: vec![],
                     body: coq::Expression::List {
@@ -1669,20 +1708,25 @@ impl TopLevelItem {
                 name,
                 path,
                 ty,
+                const_params,
                 ty_params,
             } => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                 name,
                 &coq::DefinitionKind::Axiom {
                     ty: coq::Expression::PiType {
-                        args: vec![coq::ArgDecl::of_ty_params(
-                            ty_params,
-                            coq::ArgSpecKind::Explicit,
-                        )],
+                        args: vec![
+                            coq::ArgDecl::of_ty_params(const_params, coq::ArgSpecKind::Explicit),
+                            coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Explicit),
+                        ],
                         image: Rc::new(coq::Expression::Equality {
                             lhs: Rc::new(
                                 CoqType::Application {
                                     func: Rc::new(CoqType::Path { path: path.clone() }),
-                                    args: ty_params
+                                    consts: const_params
+                                        .iter()
+                                        .map(|const_param| Expr::local_var(const_param))
+                                        .collect(),
+                                    tys: ty_params
                                         .iter()
                                         .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))
                                         .collect(),
@@ -1696,12 +1740,23 @@ impl TopLevelItem {
             ))],
             TopLevelItem::TypeEnum {
                 name,
+                const_params,
                 ty_params,
                 variants,
             } => vec![coq::TopLevelItem::Comment(vec![
                 coq::Expression::Message(format!("Enum {name}")),
                 coq::Expression::Record {
                     fields: vec![
+                        coq::Field {
+                            name: "const_params".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: const_params
+                                    .iter()
+                                    .map(|name| coq::Expression::String(name.to_string()))
+                                    .collect(),
+                            },
+                        },
                         coq::Field {
                             name: "ty_params".to_string(),
                             args: vec![],
@@ -1727,6 +1782,7 @@ impl TopLevelItem {
             }
             TopLevelItem::TypeStructTuple {
                 name,
+                const_params,
                 ty_params,
                 fields,
             } => vec![coq::TopLevelItem::Comment(vec![
@@ -1736,6 +1792,16 @@ impl TopLevelItem {
                             name: "name".to_string(),
                             args: vec![],
                             body: coq::Expression::String(name.to_string()),
+                        },
+                        coq::Field {
+                            name: "const_params".to_string(),
+                            args: vec![],
+                            body: coq::Expression::List {
+                                exprs: const_params
+                                    .iter()
+                                    .map(|name| coq::Expression::String(name.to_string()))
+                                    .collect(),
+                            },
                         },
                         coq::Field {
                             name: "ty_params".to_string(),

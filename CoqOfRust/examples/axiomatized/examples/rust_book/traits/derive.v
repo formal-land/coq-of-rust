@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Centimeters";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "f64" ];
   } *)
@@ -48,6 +49,7 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 (* StructTuple
   {
     name := "Inches";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)
@@ -77,6 +79,7 @@ End Impl_derive_Inches.
 (* StructTuple
   {
     name := "Seconds";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)

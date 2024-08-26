@@ -41,6 +41,7 @@ Axiom Function_matching : M.IsFunction "constructor_as_function::matching" match
 (* StructTuple
   {
     name := "Constructor";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32" ];
   } *)
@@ -105,9 +106,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
                     Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
                   ],
@@ -116,6 +119,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global"
                     ]
                 ]
@@ -126,6 +130,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "map",
@@ -140,6 +145,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "into_iter",
@@ -148,7 +154,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                             "into_vec",
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
@@ -160,8 +166,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer 3 ]
+                                          [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "new",
@@ -213,6 +223,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "constructor_as_function::Constructor";
                                         Ty.path "alloc::alloc::Global"

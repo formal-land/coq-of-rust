@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Val";
+    const_params := [];
     ty_params := [];
     fields := [ ("val", Ty.path "f64") ];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "GenVal";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("gen_val", T) ];
   } *)
@@ -40,7 +42,8 @@ Module Impl_generics_implementation_Val.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "generics_implementation::GenVal") [ T ].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_implementation::GenVal") [] [ T ].
   
   (*
       fn value(&self) -> &T {
@@ -118,7 +121,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -137,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -145,6 +148,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "generics_implementation::GenVal")
+                                          []
                                           [ Ty.path "i32" ],
                                         "value",
                                         []

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Unit";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -64,11 +65,12 @@ End Impl_core_marker_Copy_for_clone_Unit.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 
@@ -89,6 +91,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "core::clone::Clone",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "clone",
@@ -101,6 +104,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
                 "core::clone::Clone",
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "clone",
@@ -287,6 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -297,6 +302,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []

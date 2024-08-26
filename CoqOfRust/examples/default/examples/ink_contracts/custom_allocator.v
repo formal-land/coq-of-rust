@@ -4,11 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "CustomAllocator";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("value",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ])
       ];
   } *)
 
@@ -33,7 +37,7 @@ Module Impl_custom_allocator_CustomAllocator.
             ("value",
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "bool" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ],
                   "into_vec",
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
@@ -45,8 +49,9 @@ Module Impl_custom_allocator_CustomAllocator.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "array") [ Ty.path "bool" ];
+                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "bool" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
@@ -104,6 +109,7 @@ Module Impl_custom_allocator_CustomAllocator.
                   "core::ops::index::IndexMut",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                   [ Ty.path "usize" ],
                   "index_mut",
@@ -125,6 +131,7 @@ Module Impl_custom_allocator_CustomAllocator.
                       "core::ops::index::Index",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
                       [ Ty.path "usize" ],
                       "index",
@@ -164,6 +171,7 @@ Module Impl_custom_allocator_CustomAllocator.
               "core::ops::index::Index",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
               [ Ty.path "usize" ],
               "index",

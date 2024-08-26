@@ -85,7 +85,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_function (|
                         "core::panicking::unreachable_display",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ Value.String "Should never happen." ]
                     |)

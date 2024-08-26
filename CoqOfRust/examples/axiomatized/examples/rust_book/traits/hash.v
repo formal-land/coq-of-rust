@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Person";
+    const_params := [];
     ty_params := [];
     fields :=
       [ ("id", Ty.path "u32"); ("name", Ty.path "alloc::string::String"); ("phone", Ty.path "u64")

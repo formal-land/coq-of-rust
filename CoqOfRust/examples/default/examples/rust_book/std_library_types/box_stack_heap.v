@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -94,6 +95,7 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -133,6 +135,7 @@ Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
         M.get_associated_function (|
           Ty.apply
             (Ty.path "alloc::boxed::Box")
+            []
             [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
           "new",
           []
@@ -230,6 +233,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -257,6 +261,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -270,9 +275,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
                     Ty.path "alloc::alloc::Global"
                   ],
@@ -420,6 +427,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.path "box_stack_heap::Point";
                                               Ty.path "alloc::alloc::Global"
@@ -477,6 +485,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.path "box_stack_heap::Rectangle";
                                               Ty.path "alloc::alloc::Global"
@@ -534,9 +543,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [
                                                   Ty.path "box_stack_heap::Point";
                                                   Ty.path "alloc::alloc::Global"

@@ -4,8 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Sheep";
+    const_params := [];
     ty_params := [];
-    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("naked", Ty.path "bool"); ("name", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]) ];
   } *)
 
 (* Trait *)

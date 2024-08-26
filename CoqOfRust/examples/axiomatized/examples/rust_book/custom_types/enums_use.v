@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Status
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -24,6 +25,7 @@ Enum Status
 (*
 Enum Work
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [

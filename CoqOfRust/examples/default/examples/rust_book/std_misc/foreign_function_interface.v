@@ -175,6 +175,7 @@ Axiom Function_main : M.IsFunction "foreign_function_interface::main" main.
 (* StructRecord
   {
     name := "Complex";
+    const_params := [];
     ty_params := [];
     fields := [ ("re", Ty.path "f32"); ("im", Ty.path "f32") ];
   } *)

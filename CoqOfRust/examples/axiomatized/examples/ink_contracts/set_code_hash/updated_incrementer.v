@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -41,11 +42,14 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
-Axiom Hash : (Ty.path "updated_incrementer::Hash") = (Ty.apply (Ty.path "array") [ Ty.path "u8" ]).
+Axiom Hash :
+  (Ty.path "updated_incrementer::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
 
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -54,6 +58,7 @@ Enum Error
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "updated_incrementer::AccountId") ];
   } *)
@@ -70,6 +75,7 @@ End Impl_updated_incrementer_Env.
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("count", Ty.path "u32") ];
   } *)

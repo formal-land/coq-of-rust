@@ -9,12 +9,16 @@ Module main.
   (* StructRecord
     {
       name := "Person";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("name", Ty.path "alloc::string::String");
           ("age",
-            Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
         ];
     } *)
   

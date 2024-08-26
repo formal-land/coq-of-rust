@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -51,6 +52,7 @@ End Impl_associated_functions_and_methods_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -331,11 +333,12 @@ End Impl_associated_functions_and_methods_Rectangle.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 
@@ -413,6 +416,7 @@ Module Impl_associated_functions_and_methods_Pair.
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                             ]
                                           |),
@@ -425,6 +429,7 @@ Module Impl_associated_functions_and_methods_Pair.
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
+                                                []
                                                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                             ]
                                           |),
@@ -661,6 +666,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
@@ -671,6 +677,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []

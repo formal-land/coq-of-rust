@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants := [];
 }
@@ -21,6 +22,7 @@ Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_c
 (* StructRecord
   {
     name := "Incrementer";
+    const_params := [];
     ty_params := [];
     fields := [ ("count", Ty.path "u32") ];
   } *)
@@ -202,6 +204,7 @@ Module Impl_set_code_hash_Incrementer.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
                   "unwrap_or_else",
                   [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ]
@@ -210,7 +213,7 @@ Module Impl_set_code_hash_Incrementer.
                   M.call_closure (|
                     M.get_function (|
                       "set_code_hash::set_code_hash",
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
                     |),
                     [ code_hash ]
                   |);
@@ -229,7 +232,7 @@ Module Impl_set_code_hash_Incrementer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                       |),
                                       [
                                         M.read (|
@@ -274,7 +277,12 @@ Module Impl_set_code_hash_Incrementer.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 32 ]
+                                        [ Ty.path "u8" ]
+                                    ]
                                   |),
                                   [ code_hash ]
                                 |)
